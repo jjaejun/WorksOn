@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>내 근태 현황</title>
+</head>
+<style layout:fragment="style"></style>
+
+<div class="w-72 h-24 text-center text-black text-2xl font-medium font-['Inter']">2023년 01월 26일 (금)<br/></div>
+<div class="w-44 h-44 bg-red-900 rounded-full"></div>
+<div class="w-80 h-14 text-center text-black text-2xl font-medium font-['Inter']">이재용 회장</div>
+<div class="w-52 h-12 text-center text-black text-2xl font-medium font-['Inter']">황제부서</div>
+<div class="w-96 h-36 text-center text-black text-7xl font-medium font-['Inter']">15:44:34</div>
+<div class="w-28 h-36 text-right"><span style="text-red-600 text-base font-medium font-['Inter']"><br/></span><span style="text-black text-base font-medium font-['Inter']">미등록<br/>미등록</span></div>
+<div class="w-20 h-8 relative">
+    <div class="w-20 h-8 left-0 top-0 absolute bg-blue-400 rounded-2xl"></div>
+    <div class="left-[14.21px] top-[7.04px] absolute text-center text-black text-sm font-normal font-['Inter']">출근하기</div>
+</div>
+<div class="w-20 h-8 relative">
+    <div class="w-20 h-8 left-0 top-0 absolute bg-blue-400 rounded-2xl"></div>
+    <div class="left-[14.21px] top-[7.04px] absolute text-center text-black text-sm font-normal font-['Inter']">퇴근하기</div>
+</div>
+<div class="w-96 h-96 flex-col justify-center items-center inline-flex">
+    <div class="w-96 h-96 bg-white rounded-2xl border border-zinc-400"></div>
+</div>
+<div class="w-28 h-36 text-center text-black text-xs font-medium font-['Inter']">업무상태<br/>출근시간<br/>퇴근시간</div>
+
+<script layout:fragment="script"></script>
+</html>
