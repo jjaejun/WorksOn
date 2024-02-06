@@ -7,6 +7,7 @@ import com.sh.workson.employee.entity.WorkStatus;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import com.sh.workson.position.entity.Position;
 import com.sh.workson.position.repository.PositionRepository;
+import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
 import com.sh.workson.project.entity.ProjectEmployee;
 import com.sh.workson.project.entity.ProjectRole;
@@ -17,7 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,13 +49,16 @@ class ProjectRepositoryTest {
     @Autowired
     ProjectEmployeeRepository projectEmployeeRepository;
 
-    @DisplayName("모든 프로젝트 및 각 프로젝츠에 소속된 모든 employee 조회할 수 있다.")
+    @DisplayName("모든 프로젝트 및 각 프로젝트에 소속된 모든 employee 조회할 수 있다.")
     @Test
     void test1() {
         // given
         // select * from project p left join project_employee e on p.id = e.project_id
         // when
-        List<Project> projects = projectRepository.findAll();
+        final int pageSize = 5;
+        Pageable pageable = PageRequest.of(0, pageSize);
+
+        Page<Project> projects = projectRepository.findAll(pageable);
         // then
         assertThat(projects).isNotEmpty();
         assertThat(projects).allSatisfy(project -> {
@@ -97,5 +105,16 @@ class ProjectRepositoryTest {
         // then
     }
 
+
+    @DisplayName("내가 참여중인 프로젝트를 조회할 수 있다.")
+    @Test
+    void test6() {
+        final int pageSize = 5;
+        Pageable pageable = PageRequest.of(0, pageSize);
+
+        Long id = 151L;
+        List<Project> projects = projectRepository.findByEmpId(id);
+        System.out.println(projects);
+    }
 
 }

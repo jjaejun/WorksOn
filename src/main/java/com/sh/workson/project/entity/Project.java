@@ -39,5 +39,6 @@ public class Project {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @Builder.Default
     private List<ProjectEmployee> projectEmployees = new ArrayList<>();
 }
