@@ -229,12 +229,10 @@ create sequence seq_attachment_id start with 1 increment by 50;
 -- drop table reservation;
 
 -- sequence drop
--- drop sequence chat_read;
--- drop sequence chat_log;
--- drop sequence chat_emp;
--- drop sequence chat_room;
--- drop sequence chatroom;
--- drop sequence chatroom;
+-- drop sequence seq_chat_log_id;
+-- drop sequence seq_chat_room_id;
+-- drop sequence seq_tb_resource_id;
+-- drop sequence seq_reservation_id;
 
 -- 채팅방
 create table chat_room (
@@ -247,10 +245,10 @@ create sequence seq_chat_room_id start with 1 increment by 50;
 -- 채팅 인원
 create table chat_emp (
     chat_room_id number not null
-    , emp_id number not null
+    , employee_id number not null
     , constraint pk_chat_emp_chat_room_id primary key(chat_room_id)
     , constraint fk_chat_emp_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
-    , constraint fk_chat_emp_emp_id foreign key(emp_id) references employee(id) on delete cascade
+    , constraint fk_chat_emp_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
 
 -- 채팅 내역
@@ -258,9 +256,10 @@ create table chat_log(
     id number not null
     , content varchar2(900)
     , created_at timestamp default systimestamp
-    , emp_id number not null
+    , employee_id number not null
     , chat_room_id number not null
     , constraint pk_chat_log_id primary key(id)
+    , constraint fk_chat_log_employee_id foreign key(employee_id) references employee(id)
     , constraint fk_chat_log_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
 );
 create sequence seq_chat_log_id start with 1 increment by 50;
@@ -268,10 +267,10 @@ create sequence seq_chat_log_id start with 1 increment by 50;
 -- 채팅 읽지않음 확인
 create table chat_read(
     chat_log_id number not null
-    , emp_id number not null
+    , employee_id number not null
     , constraint pk_chat_read_chat_log_id primary key(chat_log_id)
     , constraint fk_chat_read_chat_log_id foreign key(chat_log_id) references chat_log(id) on delete cascade
-    , constraint fk_chat_read_emp_id foreign key(emp_id) references employee(id) on delete cascade
+    , constraint fk_chat_read_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
 
 -- 자원
