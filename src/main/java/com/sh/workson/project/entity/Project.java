@@ -39,5 +39,5 @@ public class Project {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    private List<ProjectEmployee> projectEmployees;
+    private List<ProjectEmployee> projectEmployees = new ArrayList<>();
 }

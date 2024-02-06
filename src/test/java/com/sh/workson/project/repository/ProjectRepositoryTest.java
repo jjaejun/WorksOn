@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@DataJpaTest // test에 관련된 bean만 로드하기 때문에 passwordencoder를 로드하지 못함
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional(propagation = Propagation.NOT_SUPPORTED) // 트랜젝션 사용 X 설정
-//@SpringBootTest
+//@DataJpaTest // test에 관련된 bean만 로드하기 때문에 passwordencoder를 로드하지 못함
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@Transactional(propagation = Propagation.NOT_SUPPORTED) // 트랜젝션 사용 X 설정
+@SpringBootTest
 class ProjectRepositoryTest {
     @Autowired
     EmployeeRepository employeeRepository;
@@ -43,12 +44,21 @@ class ProjectRepositoryTest {
     @Autowired
     ProjectEmployeeRepository projectEmployeeRepository;
 
-    @DisplayName("내가 참여중인 전체 프로젝트를 조회할 수 있다.")
+    @DisplayName("프로젝트에 소속된 모든 employee 조회할 수 있다.")
     @Test
     void test1() {
         // given
+        // select * from project p left join project_employee e on p.id = e.project_id
         // when
+
+        List<Project> projects = projectRepository.findAll();
         // then
+        assertThat(projects).isNotEmpty();
+        assertThat(projects).allSatisfy(project -> {
+            assertThat(project.getProjectEmployees()).isNotEmpty();
+            assertThat(project.getTitle()).
+        });
+
     }
     @DisplayName("프로젝트를 생성할 수 있다.")
     @Test
