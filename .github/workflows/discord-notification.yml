@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Notification
-        uses: distributhor/discord-webhook@v3
+        uses: kh352-230911/WorksOn
         with:
           url: ${{ secrets.DISCORD_WEBHOOK_URL }} # 디스코드 웹훅 URL을 저장소의 Secrets에 추가하고 여기에 연결합니다.
           content: A pull request has been opened or reopened!
