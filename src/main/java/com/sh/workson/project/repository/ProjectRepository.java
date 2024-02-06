@@ -13,4 +13,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("from Project p join p.projectEmployees")
     List<Project> findAll();
 
+    @Query("from Project p join p.projectEmployees where p.id = :id")
+    List<Project> findByProjectId(long id);
 }

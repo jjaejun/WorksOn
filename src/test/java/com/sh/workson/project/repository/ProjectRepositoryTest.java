@@ -44,39 +44,54 @@ class ProjectRepositoryTest {
     @Autowired
     ProjectEmployeeRepository projectEmployeeRepository;
 
-    @DisplayName("프로젝트에 소속된 모든 employee 조회할 수 있다.")
+    @DisplayName("모든 프로젝트 및 각 프로젝츠에 소속된 모든 employee 조회할 수 있다.")
     @Test
     void test1() {
         // given
         // select * from project p left join project_employee e on p.id = e.project_id
         // when
-
         List<Project> projects = projectRepository.findAll();
         // then
         assertThat(projects).isNotEmpty();
         assertThat(projects).allSatisfy(project -> {
             assertThat(project.getProjectEmployees()).isNotEmpty();
-            assertThat(project.getTitle()).
+            assertThat(project.getTitle()).isNotNull();
+        });
+
+    }
+    @DisplayName("프로젝트에 소속된 모든 employee 조회할 수 있다.")
+    @Test
+    void test2() {
+        // given
+        // select * from project p left join project_employee e on p.id = e.project_id
+        // prject_id = 101L
+        // when
+        List<Project> projects = projectRepository.findByProjectId(101L);
+        // then
+        assertThat(projects).isNotEmpty();
+        assertThat(projects).allSatisfy(project -> {
+            assertThat(project.getProjectEmployees()).isNotEmpty();
+            assertThat(project.getTitle()).isNotNull();
         });
 
     }
     @DisplayName("프로젝트를 생성할 수 있다.")
-    @Test
-    void test2() {
-        // given
-        // when
-        // then
-    }
-    @DisplayName("프로젝트 정보를 업데이트할 수 있다.")
     @Test
     void test3() {
         // given
         // when
         // then
     }
-    @DisplayName("프로젝트를 삭제할 수 있다.")
+    @DisplayName("프로젝트 정보를 업데이트할 수 있다.")
     @Test
     void test4() {
+        // given
+        // when
+        // then
+    }
+    @DisplayName("프로젝트를 삭제할 수 있다.")
+    @Test
+    void test5() {
         // given
         // when
         // then

@@ -18,15 +18,15 @@ import java.util.Set;
 @Builder
 public class ChatRoom {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_chatroom_id_generator")
-    @SequenceGenerator(name = "seq_chatroom_id_generator", sequenceName = "seq_chatroom_id", initialValue = 1, allocationSize = 50)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_chat_room_id_generator")
+    @SequenceGenerator(name = "seq_chat_room_id_generator", sequenceName = "seq_chat_room_id", initialValue = 1, allocationSize = 50)
     private Long id;
     private String name;
 
     @ManyToMany
     @JoinTable(
-            name = "chatemp",
-            joinColumns = @JoinColumn(name = "chatroom_id"),
+            name = "chat_emp",
+            joinColumns = @JoinColumn(name = "chat_room_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
     @Builder.Default
