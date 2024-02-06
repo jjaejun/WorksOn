@@ -29,6 +29,8 @@
 -- drop sequence seq_project_comment_id;
 
 
+-- 민정
+
 -- 부서
 create table department (
         id number not null,
@@ -216,3 +218,109 @@ create table attachment (
 create sequence seq_attachment_id start with 1 increment by 50;
 
 
+-- 재준
+
+-- table drop
+-- drop table chat_read;
+-- drop table chat_log;
+-- drop table chat_emp;
+-- drop table chat_room;
+-- drop table resource;
+-- drop table reservation;
+
+-- sequence drop
+-- drop sequence seq_chat_log_id;
+-- drop sequence seq_chat_room_id;
+-- drop sequence seq_tb_resource_id;
+-- drop sequence seq_reservation_id;
+
+-- 채팅방
+create table chat_room (
+    id number not null
+    , name varchar2(255) not null
+    , constraint pk_chat_room_id primary key(id)
+);
+create sequence seq_chat_room_id start with 1 increment by 50;
+
+-- 채팅 인원
+create table chat_emp (
+    chat_room_id number not null
+    , employee_id number not null
+    , constraint pk_chat_emp_chat_room_id primary key(chat_room_id)
+    , constraint fk_chat_emp_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
+    , constraint fk_chat_emp_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+
+-- 채팅 내역
+create table chat_log(
+    id number not null
+    , content varchar2(900)
+    , created_at timestamp default systimestamp
+    , employee_id number not null
+    , chat_room_id number not null
+    , constraint pk_chat_log_id primary key(id)
+    , constraint fk_chat_log_employee_id foreign key(employee_id) references employee(id)
+    , constraint fk_chat_log_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
+);
+create sequence seq_chat_log_id start with 1 increment by 50;
+
+-- 채팅 읽지않음 확인
+create table chat_read(
+    chat_log_id number not null
+    , employee_id number not null
+    , constraint pk_chat_read_chat_log_id primary key(chat_log_id)
+    , constraint fk_chat_read_chat_log_id foreign key(chat_log_id) references chat_log(id) on delete cascade
+    , constraint fk_chat_read_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+
+-- 자원
+create table tb_resource(
+    id number not null
+    , name varchar2(255)
+    , location varchar2(900)
+    , info varchar2(900)
+    , type varchar2(10)
+    , constraint pk_tb_resource_id primary key(id)
+    , constraint uq_tb_resource_name unique(name)
+);
+create sequence seq_tb_resource_id start with 1 increment by 50;
+
+-- 예약
+create table reservation(
+    id number not null
+    , start_at timestamp not null
+    , end_at timestamp not null
+    , content varchar(900) not null
+    , count number not null
+    , created_at timestamp default systimestamp
+    , emp_id number not null
+    , tb_resource_id number not null
+    , constraint pk_reservation_id primary key(id)
+    , constraint fk_reservation_emp_id foreign key(emp_id) references employee(id) on delete cascade
+    , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
+);
+create sequence seq_reservation_id start with 1 increment by 50;
+
+-- 우진
+
+-- table drop
+
+-- sequence drop
+
+-- 무진
+
+-- table drop
+
+-- sequence drop
+
+-- 준희
+
+-- table drop
+
+-- sequence drop
+
+-- 민준
+
+-- table drop
+
+-- sequence drop
