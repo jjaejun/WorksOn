@@ -30,8 +30,12 @@ public class Attend {
     private LocalDateTime startAt;
     @UpdateTimestamp
     private LocalDateTime endAt;
+    @Enumerated(EnumType.STRING)
     private State state;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
+    @OneToOne
+    @JoinColumn(name = "attend_request_id")
+    private AttendRequest attendRequest;
 }
