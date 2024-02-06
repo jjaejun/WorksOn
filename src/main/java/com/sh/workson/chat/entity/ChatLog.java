@@ -22,8 +22,11 @@ public class ChatLog {
     private Long id;
     private String content;
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "employee_id")
     private Long empId;
-    private Long chatroomId;
+    @Column(name = "chat_room_id")
+    private Long chatRoomId;
 }
 

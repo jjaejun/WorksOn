@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "chatroom")
+@Table(name = "chat_room")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

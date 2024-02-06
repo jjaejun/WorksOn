@@ -1,5 +1,6 @@
 package com.sh.workson.chat.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,7 +17,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChatRead {
     @Id
-    private Long chatlogId;
+    @Column(name = "chat_log_id")
+    private Long chatLogId;
+    @Column(name = "employee_id")
     private Long empId;
 }
 

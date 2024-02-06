@@ -19,6 +19,6 @@ public class ChatService {
     }
 
     private ChatRoom convertToChatRoom(ChatRoomCreateDto chatRoomCreateDto) {
-        return null;
+        return modelMapper.map(chatRoomCreateDto, ChatRoom.class);
     }
 }
