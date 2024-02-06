@@ -17,13 +17,16 @@ import java.time.LocalDateTime;
 @Builder
 public class ChatLog {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_chatlog_id_generator")
-    @SequenceGenerator(name = "seq_chatlog_id_generator", sequenceName = "seq_chatlog_id", initialValue = 1, allocationSize = 50)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_chat_log_id_generator")
+    @SequenceGenerator(name = "seq_chat_log_id_generator", sequenceName = "seq_chat_log_id", initialValue = 1, allocationSize = 50)
     private Long id;
     private String content;
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "employee_id")
     private Long empId;
-    private Long chatroomId;
+    @Column(name = "chat_room_id")
+    private Long chatRoomId;
 }
 
