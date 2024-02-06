@@ -117,4 +117,11 @@ class ProjectRepositoryTest {
         System.out.println(projects);
     }
 
+    @DisplayName("내가 생성한 프로젝트를 조회할 수 있다.")
+    @Test
+    void test7() {
+        Long id = 351L;
+        List<Project> projects = projectRepository.findByOwnerId(id);
+        System.out.println(projects);
+    }
 }
