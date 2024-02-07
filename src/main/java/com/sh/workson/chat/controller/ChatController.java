@@ -11,15 +11,15 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 public class ChatController {
 
-    @MessageMapping("/")
-    @SendTo("/")
+//    @MessageMapping("/")
+//    @SendTo("/")
     public String subMessage(String message) {
         log.debug("message = {}", message);
         return message;
     }
 
-    @MessageMapping("/")
-    @SendTo("/")
+//    @MessageMapping("/")
+//    @SendTo("/")
     public ChatLogCreateDto subMessage(@DestinationVariable Long chatRoomId, ChatLogCreateDto chatLogCreateDto) {
         log.debug("chatLogCreateDto = {}", chatLogCreateDto);
         return chatLogCreateDto;
