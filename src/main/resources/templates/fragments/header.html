@@ -44,11 +44,14 @@
             >
               <img
                 class="object-cover w-8 h-8 rounded-full"
-                src=""
-                alt=""
+                th:src="${#authentication.principal.employee.profileUrl}"
+                alt="사원 프로필 사진"
                 aria-hidden="true"
               />
             </button>
+          </li>
+          <li>
+            <span th:text="|${#authentication.principal.employee.name}님 [${#authentication.principal.employee.position.name}]|"></span>
           </li>
 
           <!-- Dropdown menu -->

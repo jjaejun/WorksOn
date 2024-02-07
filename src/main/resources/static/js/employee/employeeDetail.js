@@ -11,10 +11,14 @@ document.querySelector("#upFile").addEventListener('change', (e) => {
     }
 });
 
-document.updateProfile.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const frm = e.target;
+document.querySelector("#saveProfile").addEventListener('click', (e) => {
+    const input = document.querySelector("#upFile");
+    const frm = document.updateProfile;
+    console.log(frm);
     const frmData = new FormData(frm);
+
+    if(input.value === '') return;
+
 
    $.ajax({
        url: `${contextPath}employee/updateProfile.do`,
@@ -26,8 +30,8 @@ document.updateProfile.addEventListener('submit', (e) => {
        contentType: false,
        method: 'post',
        success(response){
-           console.log(response);
-
+           alert(response);
+           input.value = '';
        }
    })
 });

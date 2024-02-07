@@ -2,14 +2,10 @@ package com.sh.workson.attachment.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.sh.app.attachment.dto.AttachmentCreateDto;
-import com.sh.app.attachment.dto.AttachmentDetailDto;
+import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +23,7 @@ public class S3FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public AttachmentCreateDto upload(MultipartFile upFile) throws IOException {
+    public ProfileAttachmentDto upload(MultipartFile upFile) throws IOException {
         String key = UUID.randomUUID().toString();
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -39,7 +35,7 @@ public class S3FileService {
         // url 조회
         String url = amazonS3Client.getUrl(bucket, key).toString();
 
-        return new AttachmentCreateDto(null, upFile.getOriginalFilename(), key, url);
+        return new ProfileAttachmentDto(null, upFile.getOriginalFilename(), key, url);
     }
 
     /**
@@ -59,12 +55,12 @@ public class S3FileService {
      * @param attachmentDetailDto
      * @return
      */
-    public ResponseEntity<?> download(AttachmentDetailDto attachmentDetailDto) throws UnsupportedEncodingException {
-        // http:// https:// 은 UrlResource구현 객체를 통해 자원을 획득
-        Resource resource = resourceLoader.getResource(attachmentDetailDto.getUrl());
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(attachmentDetailDto.getOriginalFilename(), "UTF-8"))
-                .body(resource);
-    }
+//    public ResponseEntity<?> download(AttachmentDetailDto attachmentDetailDto) throws UnsupportedEncodingException {
+//        // http:// https:// 은 UrlResource구현 객체를 통해 자원을 획득
+//        Resource resource = resourceLoader.getResource(attachmentDetailDto.getUrl());
+//        return ResponseEntity
+//                .ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(attachmentDetailDto.getOriginalFilename(), "UTF-8"))
+//                .body(resource);
+//    }
 }
