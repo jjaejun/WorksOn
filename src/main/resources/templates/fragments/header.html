@@ -35,7 +35,7 @@
           </li>
           <!-- Profile menu -->
           <li class="relative">
-            <button
+            <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
               class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
               @click="toggleProfileMenu"
               @keydown.escape="closeProfileMenu"
@@ -50,16 +50,39 @@
               />
             </button>
           </li>
-          <th:block sec:authorize="isAuthenticated()">
-            <li>
-              <span sec:authentication="principal.username"></span>
-            </li>
-            <li>
-            <form th:action="@{/auth/logout.do}" method="post">
-              <button type="submit">Logout</button>
-            </form>
-          </li>
-          </th:block>
+
+          <!-- Dropdown menu -->
+          <div id="dropdownInformation" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-fit dark:bg-gray-700 dark:divide-gray-600">
+            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div>
+                <th:block sec:authorize="isAuthenticated()">
+                  <li>
+                    <span th:text="${#authentication.principal.employee.name}"></span>
+                  </li>
+                </th:block>
+              </div>
+              <div class="font-medium truncate">
+                <th:block sec:authorize="isAuthenticated()">
+                  <li>
+                    <span sec:authentication="principal.username"></span>
+                  </li>
+                </th:block>
+              </div>
+            </div>
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
+              <li>
+                <a th:href="@{/employee/employeeDetail.do}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">정보 조회</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">관리자 전환</a>
+              </li>
+            </ul>
+            <div class="py-2">
+              <form th:action="@{/auth/logout.do}" method="post" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <button type="submit">Logout</button>
+              </form>
+            </div>
+          </div>
         </ul>
       </div>
     </header> 
