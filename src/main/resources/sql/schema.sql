@@ -225,7 +225,7 @@ create sequence seq_attachment_id start with 1 increment by 50;
 -- drop table chat_log;
 -- drop table chat_emp;
 -- drop table chat_room;
--- drop table resource;
+-- drop table tb_resource;
 -- drop table reservation;
 
 -- sequence drop
