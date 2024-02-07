@@ -8,58 +8,74 @@
 </head>
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
-    <div class="w-full bg-gray-50 p-10">
 
         <!-- 카드 디자인 -->
         <!-- Cards -->
-        <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
+        <div class="w-full bg-gray-50 p-10 grid gap-6 mb-8 md:grid-cols-1 xl:grid-cols-1"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
             <!-- Card1 -->
-            <div class="flex items-center p-4 bg-white rounded-lg shadow-xs hover:shadow-lg transition-all">
-                <table>
-                    <tbody>
-                        <tr>
-                            <th class="w-64 h-64 bg-gray">
-                                <img src="" alt="">
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>사원명</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>부서</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>직급</th>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Card2 -->
-            <div class="flex items-center p-4 bg-white rounded-lg shadow-xs hover:shadow-lg transition-all col-span-2">
-                <div class="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
-                    <!--svg 형식의 이미지로 대체 가능-->
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                                d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
-                        ></path>
-                    </svg>
+            <div class="flex w-3/5 mx-auto items-center p-10 bg-white rounded-lg shadow-xs hover:shadow-lg transition-all">
+                <div class="w-1/2 p-4">
+                    <div th:id="img-wrap" class="rounded-full w-[300px] h-[300px] overflow-hidden bg-blue-50 mx-auto">
+                        <img src="" alt="" id="profile-preview">
+                    </div>
+                    <form class="p-4" method="post" enctype="multipart/form-data" name="updateProfile">
+<!--                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">프로필 사진 업로드</label>-->
+                        <input id="upFile" name="upFile" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" type="file">
+<!--                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">* 설명~</p>-->
+                        <div class="w-[50px]">
+                            <button type="submit" id="saveProfile"
+                                    class="text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                                    <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                        카드2
-                    </p>
-                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                        설명~
-                    </p>
-                </div>
-            </div>
 
+                <form class="w-1/2">
+                    <div class="flex w-full items-center my-2">
+                        <label for="name" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">사원이름</label>
+                        <input type="text" th:value="${#authentication.principal.employee.name}" name="name" id="name" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="flex w-full my-2">
+                        <label for="email" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">이메일</label>
+                        <input type="text" th:value="${#authentication.principal.employee.email}" name="email" id="email" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="flex w-full my-2">
+                        <label for="dept" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">부서</label>
+                        <input type="text" th:value="${#authentication.principal.employee.department.name}" name="dept" id="dept" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="flex w-full my-2">
+                        <label for="position" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">직급</label>
+                        <input type="text" th:value="${#authentication.principal.employee.position.name}" name="position" id="position" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="flex w-full my-2">
+                        <label for="birthday" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">생일</label>
+                        <input type="text" th:value="${#strings.substring(#authentication.principal.employee.birthday, 0, 10)}" name="birthday" id="birthday" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="flex w-full my-2">
+                        <label for="createdAt" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">입사일</label>
+                        <input type="text" th:value="${#temporals.format(#authentication.principal.employee.createdAt, 'yyyy/MM/dd')}" name="createdAt" id="createdAt" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+                    <div class="flex w-full my-2">
+                        <label for="updatedAt" class="inline-flex mb-2 w-[100px] text-lg font-medium text-gray-900 dark:text-white">최근수정일</label>
+                        <input type="text" th:value="${#temporals.format(#authentication.principal.employee.updatedAt, 'yyyy/MM/dd HH:mm')}" name="updatedAt" id="updatedAt" readonly
+                               class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
+
+
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<script layout:fragment="script">
+<script layout:fragment="script" th:src="@{/js/employee/employeeDetail.js}">
 </script>
 </html>
