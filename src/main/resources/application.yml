@@ -20,7 +20,19 @@ spring:
       schema-locations: classpath:/sql/schema.sql
       data-locations: classpath:/sql/data.sql
       mode:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: project1workson@gmail.com
+    password: ebju hftn qukm rine
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 logging:
   level:
     root: info
     com.sh.workson: debug
+

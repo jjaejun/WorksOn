@@ -27,10 +27,9 @@ dependencies {
     implementation 'com.oracle.database.security:oraclepki:21.11.0.0'
     implementation 'com.oracle.database.security:osdt_cert:21.11.0.0'
     implementation 'com.oracle.database.security:osdt_core:21.11.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework:spring-context:6.0.7'
-    implementation 'org.springframework:spring-context-support:6.0.7'
-    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail' // 메일 의존
+
 
     implementation 'org.modelmapper:modelmapper:3.2.0' // dto <-> entity로 변환
 
