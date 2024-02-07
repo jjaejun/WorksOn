@@ -1,5 +1,7 @@
 package com.sh.workson.employee.controller;
 
+import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.dto.EmployeeUpdateProfileDto;
@@ -35,6 +37,8 @@ public class EmployeeController {
      */
     @Autowired
     AuthService authService;
+    @Autowired
+    S3FileService s3FileService;
 
     @GetMapping("/employeeDetail.do")
     public void employeeDetail(
@@ -53,7 +57,27 @@ public class EmployeeController {
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             RedirectAttributes redirectAttributes
     ){
+        if(bindingResult.hasErrors()){
+            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+
         log.debug("upFiles = {}", upFiles);
+
+
+        // 첨부파일 S3에 저장
+        for(MultipartFile upFile : upFiles) {
+            if(upFile.getSize() > 0){
+                AttachmentCreateDto attachmentCreateDto = s3FileService.upload(upFile);
+                employeeUpdateProfileDto.addProfile(employeeUpdateProfileDto);
+            }
+        }
+
+
+        employeeUpdateProfileDto.setId(employeeDetails.getEmployee().getId());
+
+
+
+
 
         return null;
     }

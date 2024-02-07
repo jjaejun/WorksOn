@@ -14,18 +14,16 @@ document.querySelector("#upFile").addEventListener('change', (e) => {
 document.updateProfile.addEventListener('submit', (e) => {
     e.preventDefault();
     const frm = e.target;
-
-    console.log(`${contextPath}employee/updateProfile.do`);
-    console.log(frm.upFile);
+    const frmData = new FormData(frm);
 
    $.ajax({
        url: `${contextPath}employee/updateProfile.do`,
        headers: {
          [csrfHeaderName]: csrfToken
        },
-       data: {
-           upFile : frm.upFile[0],
-       },
+       data: frmData,
+       processData: false,
+       contentType: false,
        method: 'post',
        success(response){
            console.log(response);
