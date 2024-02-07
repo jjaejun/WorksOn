@@ -32,8 +32,8 @@ public class ApprovalEquipment {
 
     private String content;
 
-    @Column(nullable = false)
-    private String product_name;
+    @Column(nullable = false, name = "product_name")
+    private String productName;
 
     private String usage;
 
@@ -43,7 +43,7 @@ public class ApprovalEquipment {
     private Long count;
 
     @CreationTimestamp
-    @Column(nullable = false)
-    private Timestamp equipment_data;
+    @Column(nullable = false, name = "equipment_date")
+    private Timestamp equipmentDate;
 
 }

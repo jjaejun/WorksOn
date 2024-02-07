@@ -370,12 +370,12 @@ create table approval (
     , approval_type_id number
     , approval_start_date timestamp default systimestamp
     , approval_end_date timestamp
-    , emergency char(1) default 'N'
+    , emergency varchar2(10) default 'N'
     , status varchar2(20) default '대기' not null
     , constraints pk_approval_id primary key(id)
     , constraints fk_employee_id foreign key(emp_id) references employee(id) on delete set null
     , constraints ck_approval_emergency check (emergency in ('Y', 'N'))
-    , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려'))
+    , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
 );
 create sequence seq_approval_id start with 1 increment by 50;
 
@@ -404,7 +404,7 @@ create table approval_line (
     , status varchar2(20) default '진행'  not null
     , constraints pk_approval_line_id primary key(id)
     , constraints fk_approval_line_approval_id foreign key(approval_id) references approval(id) on delete set null
-    , constraints ck_approval_line_status check (status in ('대기', '진행중', '예정', '승인', '반려'))
+    , constraints ck_approval_line_status check (status in ('대기', '진행중', '예정', '승인', '반려', '임시저장'))
 );
 create sequence seq_approval_line_id start with 1 increment by 50;
 

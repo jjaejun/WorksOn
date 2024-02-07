@@ -32,20 +32,21 @@ public class ApprovalCooperation {
 
     private String content;
 
-    @Column(nullable = false)
-    @JoinColumn(referencedColumnName = "id")
-    private String cooperation_dept;
+    @Column(nullable = false, name = "cooperation_dept")
+    private String cooperationDept;
 
-    @Column(nullable = false)
-    private Timestamp cooperation_start_date;
+    @Column(nullable = false, name = "start_date")
+    private Timestamp StartDate;
 
-    private Timestamp cooperation_end_date;
+    @Column(name = "end_date")
+    private Timestamp EndDate;
 
     @Column(nullable = false)
     private Long people;
 
     @CreationTimestamp
-    private Timestamp created_at;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
 
 

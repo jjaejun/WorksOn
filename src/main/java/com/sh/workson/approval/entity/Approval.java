@@ -28,13 +28,14 @@ public class Approval {
     )
     private Long id;
 
-    @JoinColumn(referencedColumnName = "id")
-    private Long approval_type_id;
+    private Long approvalTypeId;
 
     @CreationTimestamp
-    private Timestamp approval_start_date;
+    @Column(name = "approval_start_date")
+    private Timestamp approvalStartDate;
 
-    private Timestamp approval_end_date;
+    @Column(name = "approval_end_date")
+    private Timestamp approvalEndDate;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -47,15 +48,14 @@ public class Approval {
     @Column(name = "emp_id")
     private Long empId;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_id")
+    @OneToMany(mappedBy = "approval", fetch = FetchType.LAZY)
     @Builder.Default
     private List<ApprovalAttachment> approvalAttachments = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_id")
+    @OneToMany(mappedBy = "approval", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<ApprovalLine> approvallines = new ArrayList<>();
+    private List<ApprovalLine> approvalLines = new ArrayList<>();
 
 
 }
+

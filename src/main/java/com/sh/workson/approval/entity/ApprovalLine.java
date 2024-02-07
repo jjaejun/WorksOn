@@ -24,18 +24,19 @@ public class ApprovalLine {
     )
     private Long id;
 
-    @Column(nullable = false)
-    @JoinColumn(referencedColumnName = "id")
-    private Long approver_id;
-
+    @Column(nullable = false, name = "approver_id")
+    private Long approverId;
 
     private String rejection;
 
-    private Timestamp confirm_date;
+    @Column(name = "confirm_date")
+    private Timestamp confirmDate;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
-    private String approval_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_id")
+    private Approval approval;
 }

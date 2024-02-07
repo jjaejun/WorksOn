@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ApprovalRepository extends JpaRepository<Approval, Long> {
 
-    @Query()
-    Page<Approval> findByTemporaryStorage(Pageable pageable);
+//    @Query()
+//    Page<Approval> findByTemporaryStorage(Pageable pageable);
 }

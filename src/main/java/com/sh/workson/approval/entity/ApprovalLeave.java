@@ -26,15 +26,17 @@ public class ApprovalLeave {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private Timestamp start_date;
+    @Column(nullable = false, name = "start_date")
+    private Timestamp startDate;
 
-    @Column(nullable = false)
-    private Timestamp end_date;
+    @Column(nullable = false, name = "end_date")
+    private Timestamp endDate;
 
-    private String leave_content;
+    @Column(name = "leave_content")
+    private String leaveContent;
 
     @CreationTimestamp
-    private Timestamp created_at;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
 }

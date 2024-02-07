@@ -29,18 +29,20 @@ public class ApprovalAttachment {
     @Column(nullable = false)
     private String path;
 
-    @Column(nullable = false)
-    private String renamed_filename;
+    @Column(nullable = false, name = "renamed_filename")
+    private String renamedFilename;
 
-    @Column(nullable = false)
-    private String original_filename;
+    @Column(nullable = false, name = "original_filename")
+    private String originalFilename;
 
     @Column(nullable = false)
     private String type;
 
     @CreationTimestamp
-    private Timestamp created_at;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
-    @Column(nullable = false)
-    private Long approval_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_id")
+    private Approval approval;
 }
