@@ -11,6 +11,6 @@ public interface AttendRepository extends JpaRepository<Attend, Long> {
         @Query("from Attend a join fetch a.employee where a.id = :id")
         Attend findByAttendId(Long id);
 
-        @Query("from Attend a join fetch a.employee")
-        Page<Attend> findAll(Pageable pageable);
+        @Query("from Attend a join fetch a.employee where a.employee.id = :id")
+        Page<Attend> findAll(Pageable pageable,Long id);
 }

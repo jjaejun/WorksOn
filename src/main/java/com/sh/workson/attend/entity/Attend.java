@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,7 +36,7 @@ public class Attend {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    @OneToOne
-    @JoinColumn(name = "attend_request_id")
-    private AttendRequest attendRequest;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "attend_id")
+    private List<AttendRequest> attendRequests = new ArrayList<>();
 }

@@ -22,7 +22,10 @@ public class AttendController {
 
     @GetMapping ("/attendList.do")
     public void attendList(@PageableDefault(value = 5, page = 0)Pageable pageable, Model model){
-    Page<AttendListDto> attendPage = attendService.findAll(pageable);
-
+        Long id = 952L;
+    Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
+    model.addAttribute("attends",attendPage.getContent());
+    model.addAttribute("totalCount", attendPage.getTotalElements());
+        log.debug("attends = {}", attendPage.getContent());
     }
 }

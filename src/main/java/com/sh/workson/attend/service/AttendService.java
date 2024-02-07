@@ -18,8 +18,8 @@ public class AttendService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Page<AttendListDto> findAll(Pageable pageable) {
-        Page<Attend> attendPage = attendRepository.findAll(pageable);
+    public Page<AttendListDto> findAll(Pageable pageable, Long id) {
+        Page<Attend> attendPage = attendRepository.findAll(pageable, id);
         return attendPage.map((attend) -> convertToAttendListDto(attend));
     }
 
@@ -30,7 +30,7 @@ public class AttendService {
                         .map((emloyee) -> emloyee.getId())
                         .orElse(null)
         );
-        attendListDto.setContent(attend.getAttendRequest().getContent());
+        attendListDto.setContent(String.valueOf(attend.getAttendRequests().size()));
         return attendListDto;
     }
 }

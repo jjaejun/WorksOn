@@ -20,11 +20,10 @@ public class AttendRequest {
             sequenceName = "seq_attend_request_id"
     )
     private Long id;
+    @Enumerated(EnumType.STRING)
     private Type type;
     private String content;
+    @Enumerated(EnumType.STRING)
     private CheckAr checkAr;
-    @OneToOne
-    @JoinColumn(name = "attend_id")
-    private Attend attend;
 
 }
