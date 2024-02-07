@@ -246,7 +246,6 @@ create sequence seq_chat_room_id start with 1 increment by 50;
 create table chat_emp (
     chat_room_id number not null
     , employee_id number not null
-    , constraint pk_chat_emp_chat_room_id primary key(chat_room_id)
     , constraint fk_chat_emp_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
     , constraint fk_chat_emp_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
@@ -268,7 +267,6 @@ create sequence seq_chat_log_id start with 1 increment by 50;
 create table chat_read(
     chat_log_id number not null
     , employee_id number not null
-    , constraint pk_chat_read_chat_log_id primary key(chat_log_id)
     , constraint fk_chat_read_chat_log_id foreign key(chat_log_id) references chat_log(id) on delete cascade
     , constraint fk_chat_read_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
