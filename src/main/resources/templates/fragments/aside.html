@@ -69,7 +69,7 @@
             </li>
 
             <!-- 우진 수정 링크 추가           -->
-            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/approval}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" id="approvalLi" th:onclick="|location.href='@{/approval/approvalHome.do}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
@@ -100,7 +100,7 @@
                 <span class="ml-4">게시판</span>
               </a>
             </li>
-            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" id="approvalLi" th:onclick="|location.href='@{/reservation}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/reservation}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
