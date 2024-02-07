@@ -13,5 +13,5 @@ import java.util.Set;
 public class ChatRoomCreateDto {
     private String name;
     @Builder.Default
-    private Set<Long> empId = new LinkedHashSet<>();
+    private Set<Long> empIds = new LinkedHashSet<>();
 }
