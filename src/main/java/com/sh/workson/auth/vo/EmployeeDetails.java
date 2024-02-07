@@ -6,11 +6,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
 @Data
-public class EmployeeDetails implements UserDetails {
+public class EmployeeDetails implements UserDetails, Serializable {
     final Employee employee;
     private Map<String, Object> attributes;
 
@@ -51,4 +52,5 @@ public class EmployeeDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -27,6 +27,17 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping("/totalProjectList.do")
+    public void totalProjectList(
+            @PageableDefault(size = 5, page = 0)Pageable pageable,
+            Model model
+    ){
+        Page<ProjectListDto> projects = projectService.findAll(pageable);
+        log.debug("project = {}", projects.getContent());
+        model.addAttribute("projects", projects.getContent());
+        model.addAttribute("totalCount", projects.getTotalElements());
+    }
+
+    @GetMapping("/projectList.do")
     public void projectList(
             @PageableDefault(size = 5, page = 0)Pageable pageable,
             Model model
