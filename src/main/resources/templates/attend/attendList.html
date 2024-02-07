@@ -112,6 +112,27 @@
             </table>
         </div>
     </div>
+    <table>
+        <thead>
+            <tr>
+                <th>날짜</th>
+                <th>출근시간</th>
+                <th>퇴근시간</th>
+                <th>상태</th>
+                <th>정정사유</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="attend, status : ${attends}" th:data-attend-id="${attend.id}">
+            <td th:text="${#temporals.format(attend.startAt,'yyyy/MM/dd')}"></td>
+            <td th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></td>
+            <td th:text="${attend.state.getDisplayName()}"></td>
+            <td th:text="${attend.content}"></td>
+
+        </tr>
+        </tbody>
+    </table>
     </body>
     </html>
 
