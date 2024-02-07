@@ -20,6 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,7 +61,7 @@ class EmployeeRepositoryTest {
 
         // when
         employeeRepository.save(employee);
-        Authority authority = Authority.builder().empId(employee.getId()).name(RoleAuth.EMP).build();
+        Authority authority = Authority.builder().empId(employee.getId()).name(RoleAuth.ROLE_EMP).build();
         authorityRepository.save(authority);
 
         // then
@@ -83,7 +86,7 @@ class EmployeeRepositoryTest {
                 .department(Department.builder().id(1L).build())
                 .build();
         employeeRepository.save(employee);
-        Authority authority = Authority.builder().empId(employee.getId()).name(RoleAuth.EMP).build();
+        Authority authority = Authority.builder().empId(employee.getId()).name(RoleAuth.ROLE_EMP).build();
         authorityRepository.save(authority);
 
         // when
@@ -98,5 +101,14 @@ class EmployeeRepositoryTest {
                     assertThat(_authority.getEmpId()).isEqualTo(employee.getId());
                     assertThat(_authority.getName()).isEqualTo(authority.getName());
                 });
+    }
+
+    @DisplayName("사원 정보를 업데이트할 수 있습니다.")
+    @Test
+    void test3() {
+        // 홍길동 사원에게 CEO 권한 주기
+        Long empId = 952L;
+        Authority authority = Authority.builder().empId(empId).name(RoleAuth.ROLE_CEO).build();
+        authorityRepository.save(authority);
     }
 }

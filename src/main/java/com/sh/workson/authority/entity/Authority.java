@@ -29,7 +29,7 @@ public class Authority {
     private Long id;
     @Column(name = "emp_id")
     private Long empId;
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleAuth name;
 
