@@ -36,8 +36,12 @@ public class Project {
     @Column
     @Enumerated(EnumType.STRING)
     private Status status;
+    @Column(name = "owner_id")
+    private Long ownerId;
+
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    private List<ProjectEmployee> projectEmployees;
+    @Builder.Default
+    private List<ProjectEmployee> projectEmployees = new ArrayList<>();
 }
