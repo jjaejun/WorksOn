@@ -1,8 +1,7 @@
 package com.sh.workson.config;
 
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,19 +17,9 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    ModelMapper modelMapperSet() {
+    ModelMapper modelMapperStrict() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addConverter(setToLongConverter());
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper;
-    }
-    @Bean
-    public Converter<LinkedHashSet<Long>, Long> setToLongConverter() {
-        return context -> {
-            LinkedHashSet<Long> source = context.getSource();
-            if (source != null && !source.isEmpty()) {
-                return source.iterator().next();
-            }
-            return null;
-        };
     }
 }
