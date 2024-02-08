@@ -465,5 +465,72 @@ create sequence seq_schedule_join_member_id start with 1 increment by 50;
 -- 민준
 
 -- table drop
-
 -- sequence drop
+-- drop table attend cascade constraints;
+-- drop table attend_request cascade constraints;
+-- drop table dayoff cascade constraints;
+-- drop table daily_work cascade constraints;
+-- drop table cherry cascade constraints;
+
+-- drop sequence seq_attend_id;
+-- drop sequence seq_attend_request_id;
+-- drop sequence seq_dayoff_id;
+-- drop sequence seq_daily_work_id;
+-- drop sequence seq_cherry_id;
+create table attend(
+                       id number,
+                       start_at timestamp,
+                       end_at timestamp,
+                       state varchar2(1000),
+                       employee_id number not null,
+                       constraints pk_attend_id primary key(id),
+                       constraints fk_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+create table attend_request(
+                               id number not null,
+                               type varchar2(1000) not null,
+                               content varchar2(1000) not null,
+                               attend_id number not null,
+                               check_ar varchar2(1000) not null,
+                               constraints pk_attend_request_id primary key(id),
+                               constraints fk_attend_id foreign key(attend_id) references attend(id) on delete cascade
+);
+create sequence seq_attend_request_id start with 1 increment by 50;
+ALTER TABLE attend_request
+    MODIFY content VARCHAR2(1000) NULL;
+---------------------------------------------------------------------------------------------------------------------
+create table dayoff(
+                       id number not null,
+                       type varchar2(1000) not null,
+                       start_at timestamp not null,
+                       end_at timestamp not null,
+                       count number not null,
+                       employee_id number not null,
+                       content varchar2(1000) not null,
+                       constraints pk_dayoff_id primary key(id),
+                       constraints fk_dayoff_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+create sequence seq_dayoff_id start with 1 increment by 50;
+-----------------------------------------------------------------------------------------------------------------------
+create table daily_work(
+                           id number not null,
+                           content varchar2(1000) not null,
+                           created_at timestamp default systimestamp,
+                           cherry_count number,
+                           employee_id number not null,
+                           constraints pk_daily_work primary key(id),
+                           constraints fk_daily_work_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+create sequence seq_daily_work_id start with 1 increment by 50;
+-------------------------------------------------------------------------------------------------------------------------
+create table cherry(
+                       id number not null,
+                       get_cherry number,
+                       daily_work_id number not null,
+                       employee_id number not null,
+                       constraints pk_cherry_id primary key(id),
+                       constraints fk_cherry_employee_id foreign key(employee_id) references employee(id) on delete cascade,
+                       constraints fk_cherry_daily_work_id foreign key(daily_work_id) references daily_work(id) on delete cascade
+);
+create sequence seq_cherry_id start with 1 increment by 50;
+
