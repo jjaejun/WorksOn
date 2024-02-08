@@ -6,11 +6,17 @@ import com.sh.workson.chat.entity.ChatLog;
 import com.sh.workson.chat.entity.ChatRoom;
 import com.sh.workson.chat.repository.ChatLogRepository;
 import com.sh.workson.chat.repository.ChatRoomRepository;
+import com.sh.workson.employee.entity.Employee;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ChatService {
     @Autowired
     private ChatRoomRepository chatRoomRepository;
@@ -19,14 +25,20 @@ public class ChatService {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private ModelMapper modelMapperSet;
+    private ModelMapper modelMapperStrict;
+
 
     public void createChatRoom(ChatRoomCreateDto chatRoomCreateDto) {
         chatRoomRepository.save(convertToChatRoom(chatRoomCreateDto));
     }
 
     private ChatRoom convertToChatRoom(ChatRoomCreateDto chatRoomCreateDto) {
-        return modelMapperSet.map(chatRoomCreateDto, ChatRoom.class);
+        ChatRoom chatRoom = modelMapperStrict.map(chatRoomCreateDto, ChatRoom.class);
+        Set<Employee> chatEmps = chatRoomCreateDto.getEmpIds().stream()
+                .map(id -> Employee.builder().id(id).build())
+                .collect(Collectors.toSet());
+        chatRoom.setChatEmps(chatEmps);
+        return chatRoom;
     }
 
     public void createChatLog(ChatLogCreateDto chatLogCreateDto) {

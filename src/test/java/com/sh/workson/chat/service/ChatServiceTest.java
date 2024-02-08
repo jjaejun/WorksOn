@@ -41,7 +41,7 @@ class ChatServiceTest {
 
         ChatRoomCreateDto chatRoomCreateDto = ChatRoomCreateDto.builder()
                 .name("ESC")
-                .empId(longs)
+                .empIds(longs)
                 .build();
         System.out.println("chatRoomCreateDto = " + chatRoomCreateDto);
 
