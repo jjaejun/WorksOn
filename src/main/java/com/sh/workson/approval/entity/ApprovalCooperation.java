@@ -48,6 +48,8 @@ public class ApprovalCooperation {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Approval approval;
 
 
 }

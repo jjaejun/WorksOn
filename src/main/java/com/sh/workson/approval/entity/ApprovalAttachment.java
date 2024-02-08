@@ -45,4 +45,6 @@ public class ApprovalAttachment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_id")
     private Approval approval;
+
+
 }

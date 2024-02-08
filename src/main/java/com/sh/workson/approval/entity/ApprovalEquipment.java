@@ -46,4 +46,6 @@ public class ApprovalEquipment {
     @Column(nullable = false, name = "equipment_date")
     private Timestamp equipmentDate;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Approval approval;
 }
