@@ -29,12 +29,11 @@ public class Attend {
     private Long id;
     @CreationTimestamp
     private LocalDateTime startAt;
-    @UpdateTimestamp
     private LocalDateTime endAt;
     @Enumerated(EnumType.STRING)
     private State state;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", unique = true)
     private Employee employee;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "attend_id")

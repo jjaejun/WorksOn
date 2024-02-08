@@ -56,7 +56,8 @@ public class AttendController {
                 throw new RuntimeException("출근시간 등록 오류:" + message);
             }
         }
-        attend = attendService.insertAttend(attend);
+        attend.setId(attend.getId());
+        attendService.insertAttend(attend);
         log.debug("attends = {}", attend);
         redirectAttributes.addFlashAttribute("msg", "출근 등록이 완료 되었습니다.");
         return "redirect:/";
