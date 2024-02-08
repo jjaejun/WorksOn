@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
         focusBar.classList.remove("opacity-0");
         focusBar.style.top = `${lis[0].offsetTop}px`;
     }
-    else if(window.location.pathname.startsWith("/WorksOn/calendar")){
+    else if(window.location.pathname.startsWith("/WorksOn/schedule")){
         removeStyle(lis);
         lis[1].classList.add("bg-blue-500");
         focusBar.classList.remove("opacity-0");
