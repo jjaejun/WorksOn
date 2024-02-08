@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 
 public interface AttendRepository extends JpaRepository<Attend, Long> {
-        @Query("from Attend a join fetch a.employee where a.id = :id")
+        @Query("from Attend a join fetch a.employee where a.id = :id order by a.startAt desc")
         Attend findByAttendId(Long id);
 
         @Query("from Attend a join fetch a.employee where a.employee.id = :id")
