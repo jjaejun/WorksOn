@@ -303,7 +303,108 @@ create sequence seq_reservation_id start with 1 increment by 50;
 
 -- table drop
 
+-- drop table approval_leave;
+-- drop table approval_equipment;
+-- drop table approval_cooperation;
+-- drop table approval_attachment;
+-- drop table approval_line;
+-- drop table approval;
+
 -- sequence drop
+
+-- drop sequence seq_approval_form_id;
+-- drop sequence seq_approval_id;
+-- drop sequence seq_approval_attachment_id;
+-- drop sequence seq_approval_line_id;
+
+-- 결재 연차 테이블
+create table approval_leave (
+    id number not null
+    , name varchar2(20) default '연차 신청' not null
+    , title varchar2(100) not null
+    , start_date timestamp not null
+    , end_date timestamp not null
+    , leave_content varchar2(500) 
+    , created_at timestamp default systimestamp
+    , constraints pk_approval_leave_id primary key(id)
+);
+-- 결재 양식 관련 ex 연차/비품/협조 같은 시퀀스 사용예정 각 시퀀스 사용시 조인시 겹칠 우려 있어서 원하는 값이 조회 안될듯
+create sequence seq_approval_form_id start with 1 increment by 50; 
+
+-- 결재 비품신청 테이블
+create table approval_equipment (
+    id number not null
+    , name varchar2(20) default '비품 신청' not null
+    , title varchar2(100) not null
+    , content varchar2(2000)
+    , product_name varchar2(50) not null
+    , usage varchar2(100)
+    , price number not null
+    , count number not null
+    , equipment_date timestamp default systimestamp
+    , constraints pk_approval_equipment_id primary key(id)
+);
+
+
+-- 결재 협조 테이블
+create table approval_cooperation (
+    id number not null
+    , name varchar2(20) default '협조 신청' not null
+    , title varchar2(100) not null
+    , content varchar2(2000)
+    , cooperation_dept varchar2(50) not null
+    , start_date timestamp not null
+    , end_date timestamp not null
+    , people number not null
+    , created_at timestamp default systimestamp
+    , constraints pk_approval_cooperation_id primary key(id)
+);
+
+
+-- 결재 테이블 테이블
+create table approval (
+    id number not null
+    , emp_id number not null
+    , approval_type_id number
+    , approval_start_date timestamp default systimestamp
+    , approval_end_date timestamp
+    , emergency varchar2(10) default 'N'
+    , status varchar2(20) default '대기' not null
+    , constraints pk_approval_id primary key(id)
+    , constraints fk_employee_id foreign key(emp_id) references employee(id) on delete set null
+    , constraints ck_approval_emergency check (emergency in ('Y', 'N'))
+    , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
+);
+create sequence seq_approval_id start with 1 increment by 50;
+
+-- 전자결재 첨부파일 테이블
+create table approval_attachment (
+    id number not null
+    , approval_id number not null
+    , path varchar2(100) not null
+    , renamed_filename varchar2(200) not null
+    , original_filename varchar2(200) not null
+    , type varchar2(30) not null
+    , created_at timestamp default systimestamp
+    , constraints pk_approval_attachment_id primary key(id)
+    , constraints fk_approval_id foreign key(approval_id) references approval(id) on delete set null
+);
+create sequence seq_approval_attachment_id start with 1 increment by 50;
+
+
+-- 결재라인 테이블
+create table approval_line (
+    id number not null
+    , approval_id number not null
+    , approver_id number not null
+    , rejection varchar2(200)
+    , confirm_date timestamp default systimestamp
+    , status varchar2(20) default '진행'  not null
+    , constraints pk_approval_line_id primary key(id)
+    , constraints fk_approval_line_approval_id foreign key(approval_id) references approval(id) on delete set null
+    , constraints ck_approval_line_status check (status in ('대기', '진행중', '예정', '승인', '반려', '임시저장'))
+);
+create sequence seq_approval_line_id start with 1 increment by 50;
 
 -- 무진
 
