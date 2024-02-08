@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/schedule/calender.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <!--
+        th:block 렌더링되는 태그없이 그룹핑 수행
+        th:insert fragment 태그 포함, 자식태그 가져옴
+        th:include fragment 태그 제외, 자식태그만 가져옴(내용만)
+    -->
+    <th:block th:include="~{fragments/head::head}"></th:block>
+
+    <!--
+      $LAYOUT_TITLE 앱 제목 (공용)
+      $CONTENT_TITLE 페이지 제목 (개별)
+    -->
+    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">Works-On</title>
+
+    <style layout:fragment="style"></style>
+    <!--
+      - 재사용 fragment
+        - head th:fragment -> th:include
+        - header th:fragment -> th:include
+        - footer th:fragment -> th:include
+      - 페이지별 fragment
+        - style layout:fragment -> layout:fragment
+        - content layout:fragment -> layout:fragment
+        - script layout:fragment -> layout:fragment
+    -->
+</head>
+<body>
+    <div id="container">
+        <header th:include="~{fragments/header::header}"></header>
+        <section id="content" class="flex">
+            <div class="mt-32 w-full mx-16">
+                <div layout:fragment="content">
+                    <div id="todo_container">
+                        <p id="cur_date">일정</p>
+                        <form id="todo_form">
+                            <input type="text">
+                        </form>
+                    </div>
+                    <!--<div id="v-line"></div>-->
+                    <div id='calendar'></div>
+                </div>
+            </div>
+        </section>
+        <footer th:include="~{fragments/footer::footer}"></footer>
+    </div>
+    <script layout:fragment="script" th:src="@{/js/schedule/calender.js}"></script>
+</body>
+</html>

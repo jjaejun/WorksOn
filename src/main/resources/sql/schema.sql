@@ -413,10 +413,53 @@ create sequence seq_approval_line_id start with 1 increment by 50;
 -- sequence drop
 
 -- 준희
+-- 스케쥴 카테고리
+create table schedule_category(
+    id number not null,
+    color varchar2(100) not null,
+    name varchar2(40) not null,
+    emp_id number not null,
+    constraint pk_schedule_category_id primary key(id),
+    constraint fk_schedule_category_emp_id foreign key(emp_id) references employee(id) on delete cascade
+);
+create sequence seq_schedule_category_id start with 1 increment by 50;
+
+select * from employee;
+-- 스케쥴
+create table schedule (
+    id number not null,
+    title varchar2(100) not null,
+    content varchar2(2000),
+    start_time timestamp not null,
+    end_time timestamp not null,
+    emp_id number not null,
+    schedule_category_id number,
+    constraint pk_schedule_id primary key(id),
+    constraint fk_schedule_emp_id foreign key(emp_id) references employee(id) on delete cascade,
+    constraint fk_schedule_category_id foreign key(schedule_category_id) references schedule_category(id) on delete set null 
+);
+create sequence seq_schedule_id start with 1 increment by 50;
+
+
+-- 스케쥴 참여 인원
+create table schedule_join_member(
+    id number not null,
+    schedule_id number not null,
+    emp_id number,
+    constraint pk_schedule_join_member_id primary key(id),
+    constraint fk_schedule_id foreign key(schedule_id) references schedule(id) on delete set null
+);
+create sequence seq_schedule_join_member_id start with 1 increment by 50;
 
 -- table drop
+-- drop table schedule cascade constraints;
+-- drop table schedule_join_member cascade constraints;
+-- drop table schedule_category cascade constraints;
 
 -- sequence drop
+-- drop sequence seq_schedule_join_member_id;
+-- drop sequence seq_schedule_category_id;
+-- drop sequence seq_schedule_id;
 
 -- 민준
 
