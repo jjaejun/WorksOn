@@ -33,7 +33,8 @@
         <header th:include="~{fragments/header::header}"></header>
         <section id="content" class="flex">
             <div th:include="~{fragments/aside::aside}"></div>
-            <div class="mt-32 w-full mx-12">
+            <div th:include="~{fragments/approval_aside::aside}"></div>
+            <div class="mt-32 w-full mx-16">
                 <div layout:fragment="content">
                 </div>
             </div>

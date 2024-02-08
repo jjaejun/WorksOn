@@ -1,5 +1,6 @@
 package com.sh.workson.project.dto;
 
+import com.sh.workson.employee.dto.EmployeeProjectOwnerDto;
 import com.sh.workson.project.entity.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -18,4 +19,6 @@ public class ProjectListDto {
     private LocalDateTime endAt;
     private LocalDateTime updatedAt;
     private String status;
+
+    private EmployeeProjectOwnerDto employee;
 }
