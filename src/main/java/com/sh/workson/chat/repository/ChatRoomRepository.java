@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-    @Query("from ChatRoom cr join fetch cr.chatEmps where cr.chatEmps = :id")
-    List<ChatRoom> findByEmpId(Long id);
+    @Query("from ChatRoom cr join fetch cr.chatEmps where cr.id = :id")
+    List<ChatRoom> findRoomByEmpId(Long id);
 }

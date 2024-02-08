@@ -36,9 +36,9 @@ public class ChatService {
 
     private ChatRoom convertToChatRoom(ChatRoomCreateDto chatRoomCreateDto) {
         ChatRoom chatRoom = modelMapperStrict.map(chatRoomCreateDto, ChatRoom.class);
-        Set<Employee> chatEmps = chatRoomCreateDto.getEmpIds().stream()
+        List<Employee> chatEmps = chatRoomCreateDto.getEmpIds().stream()
                 .map(id -> Employee.builder().id(id).build())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         chatRoom.setChatEmps(chatEmps);
         return chatRoom;
     }
@@ -51,8 +51,13 @@ public class ChatService {
         return modelMapper.map(chatLogCreateDto, ChatLog.class);
     }
 
-    public List<ChatRoom> findByEmpId(Long id) {
-        List<ChatRoom> chatRooms = chatRoomRepository.findByEmpId(id);
+    public List<ChatRoom> findRoomByEmpId(Long id) {
+        List<ChatRoom> chatRooms = chatRoomRepository.findRoomByEmpId(id);
+        return chatRooms;
+    }
+
+    public List<ChatRoom> findAll() {
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         return chatRooms;
     }
 }

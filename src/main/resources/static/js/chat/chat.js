@@ -1,3 +1,11 @@
+document.querySelector("chatroom-btn").addEventListener("click", (e) => {
+    const val = e.value;
+
+
+});
+
+
+
 const ws = new SockJS(`http://${location.host}${contextPath}stomp`);
 const stompClient = Stomp.over(ws);
 
