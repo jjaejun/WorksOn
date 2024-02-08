@@ -1,5 +1,6 @@
 package com.sh.workson.project.repository;
 
+import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByProjectId(long id);
 
     @Query("from Project p join fetch p.projectEmployees pe where pe.empId = :id")
-    List<Project> findByEmpId(Long id);
+    Page<Project> findByEmpId(Long id, Pageable pageable);
 
     @Query("from Project p join fetch p.projectEmployees pe where p.ownerId = :id")
     List<Project> findByOwnerId(Long id);
