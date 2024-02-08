@@ -3,7 +3,8 @@ server:
     context-path: /WorksOn
 spring:
   profiles:
-    default: test
+#    default: test
+    default: local
 #    active: test
   jpa:
     generate-ddl: true

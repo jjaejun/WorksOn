@@ -172,6 +172,8 @@ create table issue (
 );
 create sequence seq_issue_id start with 1 increment by 50;
 
+
+
 --게시판
 create table board (
    id number not null,
@@ -183,9 +185,14 @@ create table board (
    updated_at timestamp default systimestamp,
    emp_id number, -- fk on delete set null일 경우, not null이면 안되서 고쳤습니다~
    constraint pk_board_id primary key (id),
-   constraint fk_board_emp_id foreign key (emp_id) references employee(id) on delete set null
+   constraint fk_board_emp_id foreign key (emp_id) references employee(id) on delete set null,
+   constraint ck_board_type check (type in ('free', 'notification'))
+   
 );
 create sequence seq_board_id start with 1 increment by 50;
+select * from board;
+
+
 
 --댓글
 create table board_comment (
@@ -201,6 +208,7 @@ create table board_comment (
     constraint fk_comment_board_id foreign key (board_id) references board(id) on delete cascade,
     constraint fk_comment_employee_id foreign key (emp_id) references employee(id) on delete set null,
     constraint fk_comment_parent_id foreign key (parent_comment_id) references board_comment(id) on delete cascade
+    
 );
 create sequence seq_board_comment_id start with 1 increment by 50;
 
@@ -323,7 +331,6 @@ create table schedule_category(
 );
 create sequence seq_schedule_category_id start with 1 increment by 50;
 
-select * from employee;
 -- 스케쥴
 create table schedule (
     id number not null,

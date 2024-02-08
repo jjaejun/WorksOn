@@ -136,7 +136,6 @@ insert into schedule_category (id, color, name, emp_id) values
 insert into schedule_category (id, color, name, emp_id) values 
 (seq_schedule_category_id.nextval, 'Purple', 'Project', 801);
 
-select * from schedule;
 
 
 --schedule
@@ -155,14 +154,17 @@ insert into schedule (id, title, content, start_time, end_time, emp_id, schedule
 insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
 (seq_schedule_id.nextval, 'Team Workshop', 'Brainstorming session', timestamp '2024-02-10 11:00:00', timestamp '2024-02-10 13:00:00', 801, 201);
 
+
 --schedule_join_member
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 501, 51);
+(seq_schedule_join_member_id.nextval, 101, 51);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 501, 101);
+(seq_schedule_join_member_id.nextval, 101, 101);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 501, 201);
+(seq_schedule_join_member_id.nextval, 101, 201);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 151, 251);
+(seq_schedule_join_member_id.nextval, 151, 251);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 151, 801);
+(seq_schedule_join_member_id.nextval, 151, 801);
+
+

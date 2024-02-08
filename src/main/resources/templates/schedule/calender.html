@@ -37,14 +37,26 @@
         <section id="content" class="flex">
             <div class="mt-32 w-full mx-16">
                 <div layout:fragment="content">
-                    <div id="todo_container">
-                        <p id="cur_date">일정</p>
-                        <form id="todo_form">
-                            <input type="text">
-                        </form>
+                    <div id="main_page">
+                            <li>
+                                <a>
+                                    <span class="ml-4">일정 만들기</span>
+                                </a>
+                            </li>
+                            <table style="margin-top: 15px" thead>
+                                    <tr>
+                                        <th>카테고리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+
+                        </ul>
+                        <div id="v-line"></div>
+                        <div id='calendar'></div>
                     </div>
-                    <!--<div id="v-line"></div>-->
-                    <div id='calendar'></div>
                 </div>
             </div>
         </section>
