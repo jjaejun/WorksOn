@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectEmployee {
+public class ProjectEmployee{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_project_employee_id_generator")
     @SequenceGenerator(
