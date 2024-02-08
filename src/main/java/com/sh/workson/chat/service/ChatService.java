@@ -9,9 +9,11 @@ import com.sh.workson.chat.repository.ChatRoomRepository;
 import com.sh.workson.employee.entity.Employee;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,5 +49,10 @@ public class ChatService {
 
     private ChatLog convertToChatLog(ChatLogCreateDto chatLogCreateDto) {
         return modelMapper.map(chatLogCreateDto, ChatLog.class);
+    }
+
+    public List<ChatRoom> findByEmpId(Long id) {
+        List<ChatRoom> chatRooms = chatRoomRepository.findByEmpId(id);
+        return chatRooms;
     }
 }
