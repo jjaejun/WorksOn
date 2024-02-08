@@ -1,5 +1,6 @@
 package com.sh.workson.project.service;
 
+import com.sh.workson.employee.dto.EmployeeProjectOwnerDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
@@ -32,6 +33,16 @@ public class ProjectService {
 
     private ProjectListDto convertToProjectDto(Project project) {
         ProjectListDto projectListDto = modelMapper.map(project, ProjectListDto.class);
+
+        EmployeeProjectOwnerDto employeeProjectOwnerDto = EmployeeProjectOwnerDto.builder()
+                .id(project.getEmployee().getId())
+                .name(project.getEmployee().getName())
+                .deptName(project.getEmployee().getDepartment().getName())
+                .positionName(project.getEmployee().getPosition().getName())
+                .profileUrl(project.getEmployee().getProfileUrl())
+                .build();
+        projectListDto.setEmployee(employeeProjectOwnerDto);
+
         return projectListDto;
     }
 

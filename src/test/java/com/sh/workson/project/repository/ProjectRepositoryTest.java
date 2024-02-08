@@ -1,5 +1,7 @@
 package com.sh.workson.project.repository;
 
+import com.sh.workson.attachment.entity.Attachment;
+import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.department.repository.DepartmentRepository;
 import com.sh.workson.employee.entity.Employee;
@@ -48,6 +50,8 @@ class ProjectRepositoryTest {
     DepartmentRepository departmentRepository;
     @Autowired
     ProjectEmployeeRepository projectEmployeeRepository;
+    @Autowired
+    S3FileService s3FileService;
 
     @DisplayName("모든 프로젝트 및 각 프로젝트에 소속된 모든 employee 조회할 수 있다.")
     @Test
@@ -65,8 +69,8 @@ class ProjectRepositoryTest {
             assertThat(project.getProjectEmployees()).isNotEmpty();
             assertThat(project.getTitle()).isNotNull();
         });
-
     }
+
     @DisplayName("프로젝트에 소속된 모든 employee 조회할 수 있다.")
     @Test
     void test2() {
@@ -113,7 +117,7 @@ class ProjectRepositoryTest {
         Pageable pageable = PageRequest.of(0, pageSize);
 
         Long id = 151L;
-        List<Project> projects = projectRepository.findByEmpId(id);
+        Page<Project> projects = projectRepository.findByEmpId(id, pageable);
         System.out.println(projects);
     }
 
@@ -125,8 +129,19 @@ class ProjectRepositoryTest {
         System.out.println(projects);
     }
 
-    @DisplayName("")
+    @DisplayName("프로젝트를 생성할 수 있습니다. (사원 등록 및 첨부파일 등록)")
     @Test
-    void name() {
+    void test8() {
+        Project project = Project.builder()
+                .title("프로젝트 테스트")
+                .status(Status.ING)
+                .build();
+        projectRepository.save(project);
+        List<ProjectEmployee> projectEmployees = new ArrayList<>();
+        projectEmployees.add(ProjectEmployee.builder().empId(51L).projectId(project.getId()).role(ProjectRole.CREATE).build());
+        projectEmployees.add(ProjectEmployee.builder().empId(101L).projectId(project.getId()).role(ProjectRole.CREATE).build());
+        projectEmployees.add(ProjectEmployee.builder().empId(151L).projectId(project.getId()).role(ProjectRole.CREATE).build());
+        projectEmployeeRepository.saveAll(projectEmployees);
     }
+
 }
