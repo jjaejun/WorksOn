@@ -7,4 +7,9 @@ public enum RoleAuth {
     ROLE_LEADER,
     ROLE_MANAGER,
     ROLE_HR;
+
 }
+
+
+
+
