@@ -8,11 +8,11 @@
 </head>
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
-    <div class="w-full bg-gray-50 p-10">
+    <div class="w-full bg-gray-50 p-2">
         <table class="w-full">
             <tr class="w-full">
-                <td rowspan="3" class="w-1/3">
-                    <div class="m-2 text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
+                <td rowspan="3" class="w-1/3 h-full align-baseline">
+                    <div class="m-2 align-top text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
                         <h4 class="my-4">2023년 01월 26일(금)</h4>
                         <div th:id="img-wrap" class="my-2 rounded-full w-2/4 overflow-hidden bg-blue-50 mx-auto">
                             <img th:src="${#authentication.principal.employee.profileUrl}" alt="" id="profile-preview">
@@ -45,17 +45,105 @@
                         </div>
                     </div>
                 </td>
-                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>
-                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>
+                <td class="w-1/3 h-full align-baseline">
+                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                        <h1 class="text-2xl font-bold">내 프로젝트</h1>
+                        <ul class="mt-3">
+                           <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                               <span></span>
+                               <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                           </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td class="w-1/3 h-full align-baseline">
+                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                        <h1 class="text-2xl font-bold">이번달 내 체리현황</h1>
+                        <ul class="mt-3">
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
             <tr class="w-full">
-                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>
-                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>
+                <td class="w-1/3" rowspan="2">
+                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                        <h1 class="text-2xl font-bold">내 전자결재함</h1>
+                        <ul class="mt-3">
+                            <h1>결재 대기 문서</h1>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                        </ul>
+                        <ul class="mt-3">
+                            <h1>내 문서함</h1>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td class="w-1/3" rowspan="2">
+                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                        <h1 class="text-2xl font-bold">일일업무일지</h1>
+                        <ul class="mt-3">
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                                <span></span>
+                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
-            <tr class="w-full">
-                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>
-                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>
-            </tr>
+<!--            <tr class="w-full">-->
+<!--                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>-->
+<!--                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>-->
+<!--            </tr>-->
         </table>
     </div>
 </div>

@@ -28,7 +28,8 @@ public class Board {
             initialValue = 1,
             allocationSize = 50)
     private Long id;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!--
+        th:block 렌더링되는 태그없이 그룹핑 수행
+        th:insert fragment 태그 포함, 자식태그 가져옴
+        th:include fragment 태그 제외, 자식태그만 가져옴(내용만)
+    -->
+    <th:block th:include="~{fragments/head::head}"></th:block>
+
+    <!--
+      $LAYOUT_TITLE 앱 제목 (공용)
+      $CONTENT_TITLE 페이지 제목 (개별)
+    -->
+    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">Works-On</title>
+
+    <style layout:fragment="style"></style>
+    <!--
+      - 재사용 fragment
+        - head th:fragment -> th:include
+        - header th:fragment -> th:include
+        - footer th:fragment -> th:include
+      - 페이지별 fragment
+        - style layout:fragment -> layout:fragment
+        - content layout:fragment -> layout:fragment
+        - script layout:fragment -> layout:fragment
+    -->
+</head>
+<body>
+    <div id="container">
+        <header th:include="~{fragments/header::header}"></header>
+        <section id="content" class="flex">
+            <div th:include="~{fragments/aside::aside}"></div>
+            <div th:include="~{fragments/approval_aside::aside}"></div>
+            <div class="mt-32 w-full mx-16">
+                <div layout:fragment="content">
+                </div>
+            </div>
+        </section>
+        <footer th:include="~{fragments/footer::footer}"></footer>
+    </div>
+    <script layout:fragment="script"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.sh.workson.board.dto;
 
 import com.sh.workson.attachment.entity.Attachment;
+import com.sh.workson.board.entity.Type;
 import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -14,9 +15,10 @@ import java.util.List;
 @Data
 public class BoardListDto {
     private Long id;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
     private String title;
-    private String empId;  //Employee#name
+    private String empId;
     private String content;
     private Long viewCount;
     private LocalDateTime createdAt;
