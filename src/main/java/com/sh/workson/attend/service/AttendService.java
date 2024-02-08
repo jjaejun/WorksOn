@@ -4,7 +4,6 @@ import com.sh.workson.attend.entity.Attend;
 import com.sh.workson.attend.entity.AttendListDto;
 import com.sh.workson.attend.entity.State;
 import com.sh.workson.attend.repository.AttendRepository;
-import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -53,10 +51,9 @@ public class AttendService {
     }
 
     public Attend insertAttend(Attend attend) {
-        Long employeeId = 952L; // 변경 필요
 
         // 이미 출근 등록되어 있는지 확인
-        Attend attending = attendRepository.findByAttendId(employeeId);
+        Attend attending = attendRepository.findByAttendId(attend.getEmployee().getId());
         // 이미 출근 등록되어 있으면 예외 처리
         if (attending != null) {
             throw new RuntimeException("이미 출근이 등록되어 있습니다.");
@@ -74,16 +71,16 @@ public class AttendService {
             attend.setState(State.WORK);
         }
 
-        // 사용자 정보 설정 (ID가 952인 사용자)
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("해당 사용자를 찾을 수 없습니다."));
-        attend.setEmployee(employee);
-
         // 출근 정보 저장
         attendRepository.save(attend);
 
         return attend;
     }
 
+
+    public Attend findByOrderByStartAt(Long id) {
+        Attend attend = attendRepository.findByOrderByStartAt(id);
+        return attend;
+    }
 
 }

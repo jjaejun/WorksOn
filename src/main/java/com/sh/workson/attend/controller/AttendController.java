@@ -2,14 +2,20 @@ package com.sh.workson.attend.controller;
 
 import com.sh.workson.attend.entity.Attend;
 import com.sh.workson.attend.entity.AttendListDto;
+import com.sh.workson.attend.repository.AttendRepository;
 import com.sh.workson.attend.service.AttendService;
+import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.employee.entity.Employee;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +36,8 @@ public class AttendController {
 
     @Autowired
     private AttendService attendService;
+    @Autowired
+    private AttendRepository attendRepository;
 
     @GetMapping ("/attendList.do")
     public void attendList(@PageableDefault(value = 5, page = 0)Pageable pageable, Model model){
@@ -37,29 +45,29 @@ public class AttendController {
     Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
     model.addAttribute("attends",attendPage.getContent());
     model.addAttribute("totalCount", attendPage.getTotalElements());
+
+
+    Attend firstAttend = attendService.findByOrderByStartAt(id);
+        model.addAttribute("attend", firstAttend);
+        log.debug("attend = {}", firstAttend);
         log.debug("attends = {}", attendPage.getContent());
     }
 
     // 출근 버튼을 처리하는 메소드
     @PostMapping("/startWork.do")
-    public String startWork(
-            @Valid Attend attend,
-            BindingResult bindingResult,
+    public ResponseEntity<?> startWork(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
             RedirectAttributes redirectAttributes
     ) {
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> allErros = bindingResult.getAllErrors();
-            for (ObjectError error : allErros) {
-                log.error("{}", error);
-                String fieldName = error.getObjectName();
-                String message = error.getDefaultMessage();
-                throw new RuntimeException("출근시간 등록 오류:" + message);
-            }
-        }
-        attend.setId(attend.getId());
+        employeeDetails.getEmployee().getId(); // 사용자 아이디
+        log.debug("employeeId = {}", employeeDetails.getEmployee().getId());
+        Attend attend = Attend.builder()
+                .employee(employeeDetails.getEmployee())
+                .build();
+
         attendService.insertAttend(attend);
         log.debug("attends = {}", attend);
-        redirectAttributes.addFlashAttribute("msg", "출근 등록이 완료 되었습니다.");
-        return "redirect:/";
+
+        return ResponseEntity.ok("출근 등록이 완료 됐습니다.");
     }
 }

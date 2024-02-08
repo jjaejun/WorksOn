@@ -16,8 +16,6 @@ window.addEventListener('DOMContentLoaded', () =>{
     focusBar.classList.add(`inset-y-[${attendBtn.offsetTop}px]`);
 });
 
-// 출근하기 버튼 클릭 이벤트
-let isAttendRegistered = false;
 
 window.addEventListener('DOMContentLoaded', () => {
     const btnStartWork = document.getElementById("btn-startwork");
@@ -38,9 +36,11 @@ window.addEventListener('DOMContentLoaded', () => {
             data: {
                 id: 952
             },
-            success: function (data) {
+            success: function (response) {
+                alert(response);
                 // 출근 등록이 성공하면 상태를 변경
                 isAttendRegistered = true;
+
                 console.log('출근 등록 성공');
                 // 여기에서 추가적인 동작을 수행하거나 생략할 수 있습니다.
                 document.getElementById('work-state').textContent = '업무중';
