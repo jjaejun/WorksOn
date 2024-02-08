@@ -1,5 +1,8 @@
 package com.sh.workson.attachment.service;
 
+import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.entity.Attachment;
+import com.sh.workson.attachment.repository.AttachmentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,4 +14,14 @@ public class AttachmentService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AttachmentRepository attachmentRepository;
+
+    public void createAttachment(AttachmentCreateDto attachmentCreateDto) {
+        attachmentRepository.save(convertToAttachment(attachmentCreateDto));
+    }
+
+    private Attachment convertToAttachment(AttachmentCreateDto attachmentCreateDto) {
+        return modelMapper.map(attachmentCreateDto, Attachment.class);
+    }
 }

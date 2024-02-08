@@ -127,7 +127,10 @@ public class Employee {
      */
 
 
-
+    // 직원의 이름을 반환하는 메서드
+    public String getName() {
+        return this.name;
+    }
 
 
 
