@@ -1,6 +1,7 @@
 package com.sh.workson.board.repository;
 
 import com.sh.workson.board.entity.Board;
+import com.sh.workson.board.entity.Type;
 import com.sh.workson.employee.entity.Employee;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,12 +30,12 @@ class BoardRepositoryTest {
     @Test
     void test1() {
         // given
-        Employee employee = Employee.builder().id(51L).build();
+        Employee employee = Employee.builder().id(151L).build();
         Board board = Board.builder()
-                .title("가주아앙아아")
-                .type("자유게시판")
+                .title("제목")
+                .type(Type.notification)
                 .employee(employee)
-                .content("제발나와라~")
+                .content("내용")
                 .build();
 
         // when

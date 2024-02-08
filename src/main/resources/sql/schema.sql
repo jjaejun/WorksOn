@@ -183,7 +183,8 @@ create table board (
    updated_at timestamp default systimestamp,
    emp_id number, -- fk on delete set null일 경우, not null이면 안되서 고쳤습니다~
    constraint pk_board_id primary key (id),
-   constraint fk_board_emp_id foreign key (emp_id) references employee(id) on delete set null
+   constraint fk_board_emp_id foreign key (emp_id) references employee(id) on delete set null,
+   CONSTRAINT ck_board_type CHECK (type IN ('free', 'notification'))
 );
 create sequence seq_board_id start with 1 increment by 50;
 
