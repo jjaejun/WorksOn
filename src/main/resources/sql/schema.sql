@@ -372,7 +372,7 @@ create table approval (
     , emergency varchar2(10) default 'N'
     , status varchar2(20) default '대기' not null
     , constraints pk_approval_id primary key(id)
-    , constraints fk_employee_id foreign key(emp_id) references employee(id) on delete set null
+    , constraints fk_approval_employee_id foreign key(emp_id) references employee(id) on delete set null
     , constraints ck_approval_emergency check (emergency in ('Y', 'N'))
     , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
 );
@@ -388,7 +388,7 @@ create table approval_attachment (
     , type varchar2(30) not null
     , created_at timestamp default systimestamp
     , constraints pk_approval_attachment_id primary key(id)
-    , constraints fk_approval_id foreign key(approval_id) references approval(id) on delete set null
+    , constraints fk_approval_attachment_id foreign key(approval_id) references approval(id) on delete set null
 );
 create sequence seq_approval_attachment_id start with 1 increment by 50;
 
