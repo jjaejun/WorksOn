@@ -11,25 +11,27 @@ document.querySelector("#upFile").addEventListener('change', (e) => {
     }
 });
 
-document.updateProfile.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const frm = e.target;
+document.querySelector("#saveProfile").addEventListener('click', (e) => {
+    const input = document.querySelector("#upFile");
+    const frm = document.updateProfile;
+    console.log(frm);
+    const frmData = new FormData(frm);
 
-    console.log(`${contextPath}employee/updateProfile.do`);
-    console.log(frm.upFile);
+    if(input.value === '') return;
+
 
    $.ajax({
        url: `${contextPath}employee/updateProfile.do`,
        headers: {
          [csrfHeaderName]: csrfToken
        },
-       data: {
-           upFile : frm.upFile[0],
-       },
+       data: frmData,
+       processData: false,
+       contentType: false,
        method: 'post',
        success(response){
-           console.log(response);
-
+           alert(response);
+           input.value = '';
        }
    })
 });

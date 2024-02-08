@@ -39,20 +39,20 @@ public class AuthService implements UserDetailsService {
         return new EmployeeDetails(employee);
     }
 
-//    public void updateAuthentication(String username) {
-//        Employee newEmployee = employeeService.findByEmail(username);
-//        EmployeeDetails newEmployeeDetails = new EmployeeDetails(newEmployee);
-//        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
-//                newEmployeeDetails,
-//                newEmployeeDetails.getPassword(),
-//                newEmployeeDetails.getAuthorities()
-//        );
-//        SecurityContext securityContext = SecurityContextHolder.getContext();
-//        securityContext.setAuthentication(newAuthentication);
-//    }
+    public void updateAuthentication(String username) {
+        Employee newEmployee = employeeService.findByEmail(username);
+        EmployeeDetails newEmployeeDetails = new EmployeeDetails(newEmployee);
+        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+                newEmployeeDetails,
+                newEmployeeDetails.getPassword(),
+                newEmployeeDetails.getAuthorities()
+        );
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(newAuthentication);
+    }
 
-//    public void deleteAuthentication(String username) {
-//        Employee employee = employeeService.findByEmail(username);
-//
-//    }
+    public void deleteAuthentication(String username) {
+        Employee employee = employeeService.findByEmail(username);
+
+    }
 }
