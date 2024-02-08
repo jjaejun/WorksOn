@@ -122,3 +122,47 @@ INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE)
 VALUES (seq_project_employee_id.nextval, 351, 201, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 351, 351, 'READ');
+
+
+-- schedule_category
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Red', 'Meeting', 51);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Blue', 'Workshop', 101);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Green', 'Training', 201);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Yellow', 'Presentation', 251);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Purple', 'Project', 801);
+
+select * from schedule;
+
+
+--schedule
+insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
+(seq_schedule_id.nextval, 'Team Meeting', 'Discuss project updates', timestamp '2024-02-07 09:00:00', timestamp '2024-02-07 10:00:00', 51, 1);
+
+insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
+(seq_schedule_id.nextval, 'Training Session', 'New technology training', timestamp '2024-02-07 14:00:00', timestamp '2024-02-07 16:00:00', 101, 201);
+
+insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
+(seq_schedule_id.nextval, 'Project Kickoff', 'Start of a new project', timestamp '2024-02-08 10:00:00', timestamp '2024-02-08 13:00:00', 51, 1);
+
+insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
+(seq_schedule_id.nextval, 'Client Presentation', 'Presenting to a new client', timestamp '2024-02-09 15:00:00', timestamp '2024-02-09 16:00:00', 251, 151);
+
+insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
+(seq_schedule_id.nextval, 'Team Workshop', 'Brainstorming session', timestamp '2024-02-10 11:00:00', timestamp '2024-02-10 13:00:00', 801, 201);
+
+--schedule_join_member
+insert into schedule_join_member (id, schedule_id, emp_id) values 
+(seq_schedule_join_member.nextval, 501, 51);
+insert into schedule_join_member (id, schedule_id, emp_id) values 
+(seq_schedule_join_member.nextval, 501, 101);
+insert into schedule_join_member (id, schedule_id, emp_id) values 
+(seq_schedule_join_member.nextval, 501, 201);
+insert into schedule_join_member (id, schedule_id, emp_id) values 
+(seq_schedule_join_member.nextval, 151, 251);
+insert into schedule_join_member (id, schedule_id, emp_id) values 
+(seq_schedule_join_member.nextval, 151, 801);
