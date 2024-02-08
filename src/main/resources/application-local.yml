@@ -1,0 +1,9 @@
+# 사용자 정의 속성
+profile:
+  value : 'local'
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: finaltest
+    password: finaltest
+    driver-class-name: oracle.jdbc.OracleDriver

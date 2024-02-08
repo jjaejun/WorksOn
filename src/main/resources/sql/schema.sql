@@ -29,6 +29,8 @@
 -- drop sequence seq_project_comment_id;
 
 
+-- 민정
+
 -- 부서
 create table department (
         id number not null,
@@ -181,7 +183,8 @@ create table board (
    updated_at timestamp default systimestamp,
    emp_id number, -- fk on delete set null일 경우, not null이면 안되서 고쳤습니다~
    constraint pk_board_id primary key (id),
-   constraint fk_board_emp_id foreign key (emp_id) references employee(id) on delete set null
+   constraint fk_board_emp_id foreign key (emp_id) references employee(id) on delete set null,
+   CONSTRAINT ck_board_type CHECK (type IN ('free', 'notification'))
 );
 create sequence seq_board_id start with 1 increment by 50;
 
@@ -216,3 +219,251 @@ create table attachment (
 create sequence seq_attachment_id start with 1 increment by 50;
 
 
+-- 재준
+
+-- table drop
+-- drop table chat_read;
+-- drop table chat_log;
+-- drop table chat_emp;
+-- drop table chat_room;
+-- drop table tb_resource;
+-- drop table reservation;
+
+-- sequence drop
+-- drop sequence seq_chat_log_id;
+-- drop sequence seq_chat_room_id;
+-- drop sequence seq_tb_resource_id;
+-- drop sequence seq_reservation_id;
+
+-- 채팅방
+create table chat_room (
+    id number not null
+    , name varchar2(255) not null
+    , constraint pk_chat_room_id primary key(id)
+);
+create sequence seq_chat_room_id start with 1 increment by 50;
+
+-- 채팅 인원
+create table chat_emp (
+    chat_room_id number not null
+    , employee_id number not null
+    , constraint fk_chat_emp_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
+    , constraint fk_chat_emp_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+
+-- 채팅 내역
+create table chat_log(
+    id number not null
+    , content varchar2(900)
+    , created_at timestamp default systimestamp
+    , employee_id number not null
+    , chat_room_id number not null
+    , constraint pk_chat_log_id primary key(id)
+    , constraint fk_chat_log_employee_id foreign key(employee_id) references employee(id)
+    , constraint fk_chat_log_chat_room_id foreign key(chat_room_id) references chat_room(id) on delete cascade
+);
+create sequence seq_chat_log_id start with 1 increment by 50;
+
+-- 채팅 읽지않음 확인
+create table chat_read(
+    chat_log_id number not null
+    , employee_id number not null
+    , constraint fk_chat_read_chat_log_id foreign key(chat_log_id) references chat_log(id) on delete cascade
+    , constraint fk_chat_read_employee_id foreign key(employee_id) references employee(id) on delete cascade
+);
+
+-- 자원
+create table tb_resource(
+    id number not null
+    , name varchar2(255)
+    , location varchar2(900)
+    , info varchar2(900)
+    , type varchar2(10)
+    , constraint pk_tb_resource_id primary key(id)
+    , constraint uq_tb_resource_name unique(name)
+);
+create sequence seq_tb_resource_id start with 1 increment by 50;
+
+-- 예약
+create table reservation(
+    id number not null
+    , start_at timestamp not null
+    , end_at timestamp not null
+    , content varchar(900) not null
+    , count number not null
+    , created_at timestamp default systimestamp
+    , emp_id number not null
+    , tb_resource_id number not null
+    , constraint pk_reservation_id primary key(id)
+    , constraint fk_reservation_emp_id foreign key(emp_id) references employee(id) on delete cascade
+    , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
+);
+create sequence seq_reservation_id start with 1 increment by 50;
+
+-- 우진
+
+-- table drop
+
+-- drop table approval_leave;
+-- drop table approval_equipment;
+-- drop table approval_cooperation;
+-- drop table approval_attachment;
+-- drop table approval_line;
+-- drop table approval;
+
+-- sequence drop
+
+-- drop sequence seq_approval_form_id;
+-- drop sequence seq_approval_id;
+-- drop sequence seq_approval_attachment_id;
+-- drop sequence seq_approval_line_id;
+
+-- 결재 연차 테이블
+create table approval_leave (
+    id number not null
+    , name varchar2(20) default '연차 신청' not null
+    , title varchar2(100) not null
+    , start_date timestamp not null
+    , end_date timestamp not null
+    , leave_content varchar2(500) 
+    , created_at timestamp default systimestamp
+    , constraints pk_approval_leave_id primary key(id)
+);
+-- 결재 양식 관련 ex 연차/비품/협조 같은 시퀀스 사용예정 각 시퀀스 사용시 조인시 겹칠 우려 있어서 원하는 값이 조회 안될듯
+create sequence seq_approval_form_id start with 1 increment by 50; 
+
+-- 결재 비품신청 테이블
+create table approval_equipment (
+    id number not null
+    , name varchar2(20) default '비품 신청' not null
+    , title varchar2(100) not null
+    , content varchar2(2000)
+    , product_name varchar2(50) not null
+    , usage varchar2(100)
+    , price number not null
+    , count number not null
+    , equipment_date timestamp default systimestamp
+    , constraints pk_approval_equipment_id primary key(id)
+);
+
+
+-- 결재 협조 테이블
+create table approval_cooperation (
+    id number not null
+    , name varchar2(20) default '협조 신청' not null
+    , title varchar2(100) not null
+    , content varchar2(2000)
+    , cooperation_dept varchar2(50) not null
+    , start_date timestamp not null
+    , end_date timestamp not null
+    , people number not null
+    , created_at timestamp default systimestamp
+    , constraints pk_approval_cooperation_id primary key(id)
+);
+
+
+-- 결재 테이블 테이블
+create table approval (
+    id number not null
+    , emp_id number not null
+    , approval_type_id number
+    , approval_start_date timestamp default systimestamp
+    , approval_end_date timestamp
+    , emergency varchar2(10) default 'N'
+    , status varchar2(20) default '대기' not null
+    , constraints pk_approval_id primary key(id)
+    , constraints fk_employee_id foreign key(emp_id) references employee(id) on delete set null
+    , constraints ck_approval_emergency check (emergency in ('Y', 'N'))
+    , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
+);
+create sequence seq_approval_id start with 1 increment by 50;
+
+-- 전자결재 첨부파일 테이블
+create table approval_attachment (
+    id number not null
+    , approval_id number not null
+    , path varchar2(100) not null
+    , renamed_filename varchar2(200) not null
+    , original_filename varchar2(200) not null
+    , type varchar2(30) not null
+    , created_at timestamp default systimestamp
+    , constraints pk_approval_attachment_id primary key(id)
+    , constraints fk_approval_id foreign key(approval_id) references approval(id) on delete set null
+);
+create sequence seq_approval_attachment_id start with 1 increment by 50;
+
+
+-- 결재라인 테이블
+create table approval_line (
+    id number not null
+    , approval_id number not null
+    , approver_id number not null
+    , rejection varchar2(200)
+    , confirm_date timestamp default systimestamp
+    , status varchar2(20) default '진행'  not null
+    , constraints pk_approval_line_id primary key(id)
+    , constraints fk_approval_line_approval_id foreign key(approval_id) references approval(id) on delete set null
+    , constraints ck_approval_line_status check (status in ('대기', '진행중', '예정', '승인', '반려', '임시저장'))
+);
+create sequence seq_approval_line_id start with 1 increment by 50;
+
+-- 무진
+
+-- table drop
+
+-- sequence drop
+
+-- 준희
+-- 스케쥴 카테고리
+create table schedule_category(
+    id number not null,
+    color varchar2(100) not null,
+    name varchar2(40) not null,
+    emp_id number not null,
+    constraint pk_schedule_category_id primary key(id),
+    constraint fk_schedule_category_emp_id foreign key(emp_id) references employee(id) on delete cascade
+);
+create sequence seq_schedule_category_id start with 1 increment by 50;
+
+select * from employee;
+-- 스케쥴
+create table schedule (
+    id number not null,
+    title varchar2(100) not null,
+    content varchar2(2000),
+    start_time timestamp not null,
+    end_time timestamp not null,
+    emp_id number not null,
+    schedule_category_id number,
+    constraint pk_schedule_id primary key(id),
+    constraint fk_schedule_emp_id foreign key(emp_id) references employee(id) on delete cascade,
+    constraint fk_schedule_category_id foreign key(schedule_category_id) references schedule_category(id) on delete set null 
+);
+create sequence seq_schedule_id start with 1 increment by 50;
+
+
+-- 스케쥴 참여 인원
+create table schedule_join_member(
+    id number not null,
+    schedule_id number not null,
+    emp_id number,
+    constraint pk_schedule_join_member_id primary key(id),
+    constraint fk_schedule_id foreign key(schedule_id) references schedule(id) on delete set null
+);
+create sequence seq_schedule_join_member_id start with 1 increment by 50;
+
+-- table drop
+-- drop table schedule cascade constraints;
+-- drop table schedule_join_member cascade constraints;
+-- drop table schedule_category cascade constraints;
+
+-- sequence drop
+-- drop sequence seq_schedule_join_member_id;
+-- drop sequence seq_schedule_category_id;
+-- drop sequence seq_schedule_id;
+
+-- 민준
+
+-- table drop
+
+-- sequence drop

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>프로젝트 메인</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+    <table>
+        <tbody>
+            <tr th:each="project, status : ${projects}" th:data-project-id="${project.id}">
+                <td th:text="${project.title}"></td>
+                <td th:text="${project.createdAt}"></td>
+                <td th:text="${project.endAt}"></td>
+                <td th:text="${project.updatedAt}"></td>
+                <td th:text="${project.status}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script layout:fragment="script" th:src="@{/js/project/projectList.js}">
+</script>
+</html>

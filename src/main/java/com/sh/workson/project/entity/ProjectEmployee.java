@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectEmployee {
+public class ProjectEmployee{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_project_employee_id_generator")
     @SequenceGenerator(
@@ -26,12 +26,9 @@ public class ProjectEmployee {
     private Long id;
     @Column(nullable = false, name = "project_id")
     private Long projectId;
+    @Column(nullable = false, name = "emp_id")
+    private Long empId;
     @Column(nullable = false, name = "project_role")
     @Enumerated(EnumType.STRING)
     private ProjectRole role;
-
-    // 참조자 목록
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emp_id", unique = false)
-    private Employee employee;
 }

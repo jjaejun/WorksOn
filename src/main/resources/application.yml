@@ -4,7 +4,7 @@ server:
 spring:
   profiles:
     default: test
-#    active: test
+    active: local
   jpa:
     generate-ddl: true
     show-sql: true
@@ -20,7 +20,27 @@ spring:
       schema-locations: classpath:/sql/schema.sql
       data-locations: classpath:/sql/data.sql
       mode:
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: project1workson@gmail.com
+#    password: ebju hftn qukm rine
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
 logging:
   level:
     root: info
     com.sh.workson: debug
+cloud:
+  aws:
+    s3:
+      bucket: bucket-minjeong2024
+    credentials:
+      access-key: ${AWS_S3_ACCESS_KEY_ID}
+      secret-key: ${AWS_S3_SECRET_ACCESS_KEY}
+    region:
+      static: ap-northeast-2

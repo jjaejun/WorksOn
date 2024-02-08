@@ -40,6 +40,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/reservation/**").authenticated()
                     .requestMatchers("/chat/**").authenticated()
                     .requestMatchers("/attend/**").authenticated()
+                    .requestMatchers("/employee/**").authenticated()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     // 민정
 

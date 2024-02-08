@@ -1,5 +1,6 @@
 package com.sh.workson.project.entity;
 
+import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,13 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private Employee employee;
+
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    private List<ProjectEmployee> projectEmployees;
+    @Builder.Default
+    private List<ProjectEmployee> projectEmployees = new ArrayList<>();
 }

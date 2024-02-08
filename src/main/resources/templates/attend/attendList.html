@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>내 근태 현황</title>
+</head>
+<style layout:fragment="style"></style>
+
+<div layout:fragment="content">
+    <!DOCTYPE html>
+    <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .home-content {
+                display: flex;
+            }
+
+            #home-left {
+                width: 250px;
+                height: 300px;
+                padding-left: 20px;
+            }
+
+            #home-my-tbl {
+                width: 100%;
+                background-color: white;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            #clock {
+                font-size: 40px;
+                padding: 3px 0;
+                color: black;
+            }
+
+            .img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+            }
+
+            .btn-tr {
+                height: 50px;
+            }
+
+            .btn-tr button,
+            select {
+                border: 1px solid #00b6c2;
+                color: #00b6c2;
+                padding: 5px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .font-bold {
+                font-weight: bold;
+            }
+
+            .text-right {
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="home-content">
+        <!-- 본문 왼쪽 -->
+        <div id="home-left" class="div-padding div-margin">
+            <div style="height: 50px;"></div>
+            <table id="home-my-tbl">
+                <tbody>
+                <tr>
+                    <td id="year" colspan="2" class="font-14">현재 시간</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+<!--                        <img th:src="${!empty session.loginMember.attachment} ? ${pageContext.request.contextPath}/resources/upload/emp/${session.loginMember.attachment.renameFilename} : ${pageContext.request.contextPath}/resources/images/default.png" alt="프로필 이미지" class="img">-->
+                    </td>
+                </tr>
+                <tr>
+<!--                    <td colspan="2" th:text="${session.loginMember.name + ' ' + session.loginMember.jobTitle}"></td>-->
+                </tr>
+                <tr>
+<!--                    <td colspan="2" th:text="${session.loginMember.deptTitle}"></td>-->
+                </tr>
+                <tr>
+                    <td colspan="2" id="clock">현재 시각</td>
+                </tr>
+                <tr>
+                    <td class="font-14 font-bold">업무상태</td>
+                    <td class="text-right font-14 color-red font-bold" id="work-state" th:text="${attend.state.getDisplayName()}"></td>
+                </tr>
+                <tr>
+                    <td class="font-14 font-bold">출근시간</td>
+                    <td class="text-right font-14" id="startwork-time" th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
+                </tr>
+
+                <tr>
+                    <td class="font-14 font-bold">퇴근시간</td>
+                    <td class="text-right font-14" id="endwork-time">미등록</td>
+                </tr>
+                <tr class="btn-tr">
+                    <td><button class="font-bold" id="btn-startwork">출근하기</button></td>
+                    <input id="attend-startAt" th:value="${attend.startAt}" type="hidden">
+                    <script th:if="${attend.startAt != null}">
+                        const attend = document.querySelector("#attend-startAt");
+                        console.log(attend.value);
+                        const startDay = attend.value.split("T")[0];
+                        console.log(startDay);
+
+                        const currentDate = new Date();
+                        const year = currentDate.getFullYear();
+                        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                        const day = currentDate.getDate().toString().padStart(2, '0');
+                        const formattedDate = `${year}-${month}-${day}`;
+                        let isAttendRegistered = false;
+                        console.log(formattedDate);
+
+                        if (startDay === formattedDate){
+                            isAttendRegistered = true;
+                        } else{
+                            isAttendRegistered = false;
+                        }
+
+                    </script>
+                    <td class="text-right"><button class="font-bold" id="btn-endwork">퇴근하기</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>날짜</th>
+                <th>출근시간</th>
+                <th>퇴근시간</th>
+                <th>상태</th>
+                <th>정정사유</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="attend, status : ${attends}" th:data-attend-id="${attend.id}">
+            <td th:text="${#temporals.format(attend.startAt,'yyyy/MM/dd')}"></td>
+            <td th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></td>
+            <td th:text="${attend.state.getDisplayName()}"></td>
+            <td th:text="${attend.content}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+    </body>
+    </html>
+
+
+    <script layout:fragment="script" th:src="@{/js/attend/attendList.js}"></script>
+</html>

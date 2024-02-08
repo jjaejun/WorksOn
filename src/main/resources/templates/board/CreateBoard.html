@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>게시글 작성</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+    <div class="w-1/2 mx-auto text-center">
+        <form name="boardFrm" th:action="@{/board/createBoard.do}" method="post" enctype="multipart/form-data" class="mt-8">
+            <div class="relative mb-3">
+                <label for="type" class="text-sm text-gray-600">타입</label>
+                <select id="type" name="type" class="form-select block w-full mt-1">
+                    <option value="notification">공지사항</option>
+                    <option value="free">자유게시판</option>
+                </select>
+            </div>
+            <input type="text" class="form-input mb-3 block w-full" placeholder="제목" name="title" id="title" required>
+            <!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
+            <div class="relative mb-3">
+                <label for="upFile" class="text-sm text-gray-600">첨부파일</label>
+                <input type="file" class="sr-only" name="upFile" id="upFile" multiple>
+                <span class="inline-block w-64 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg cursor-pointer">
+                파일선택
+            </span>
+            </div>
+            <textarea class="form-textarea mb-3 block w-full" name="content" placeholder="내용" required></textarea>
+            <input type="submit"  class="btn btn-outline-success w-full" value="저장">
+        </form>
+    </div>
+</div>
+
+<script layout:fragment="script" th:src="@{/js/board/boardCreate.js}"></script>
+</html>

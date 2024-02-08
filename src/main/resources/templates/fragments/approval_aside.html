@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="aside" class="flex h-screen bg-gray-50">
+  <!-- Desktop sidebar -->
+  <aside id="sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
+    <div class="py-4 text-[#000000]">
+      <h1 class="mb-4 text-center text-xl font-bold hover:text-[#000000]">전자결재</h1>
+
+      <div class="px-6 mt-2">
+        <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
+          <span class="ml-2" aria-hidden="true">새 결재 진행</span>
+        </button>
+      </div>
+
+      <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
+        <span>전자 결재하기</span>
+        <hr class="mt-2">
+      </div>
+
+      <ul >
+        <span class="z-20 absolute transition-all h-[58px] left-0 w-2 bg-[#FFFFFF] rounded-tr-lg rounded-br-lg opacity-0" id="focus-bar" aria-hidden="true"></span>
+
+        <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/}'|" id="dashboardLi">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">결재 대기함</span>
+          </a>
+        </li>
+
+        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/schedule/calender.do}'|">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">결재 수신함</span>
+          </a>
+        </li>
+
+        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/chat}'|">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">결재 예정함</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
+        <span>전자 결재함</span>
+        <hr class="mt-2">
+      </div>
+        <ul>
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+              <span class="ml-4">임시 저장함</span>
+            </a>
+          </li>
+
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+              <span class="ml-4">연차 문서함</span>
+            </a>
+          </li>
+
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+              <span class="ml-4">기안 문서함</span>
+            </a>
+          </li>
+
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+              <span class="ml-4">협조 문서함</span>
+            </a>
+          </li>
+
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+              <span class="ml-4">수신 문서함</span>
+            </a>
+          </li>
+
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+              <span class="ml-4">발송 문서함</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+
+</html>

@@ -3,6 +3,7 @@ package com.sh.workson.employee.entity;
 import com.sh.workson.authority.entity.Authority;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.position.entity.Position;
+import com.sh.workson.project.entity.Project;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -74,10 +75,12 @@ public class Employee {
 
 
 
+
+
+
     /**
      * 재준
      */
-
 
 
 
@@ -124,7 +127,10 @@ public class Employee {
      */
 
 
-
+    // 직원의 이름을 반환하는 메서드
+    public String getName() {
+        return this.name;
+    }
 
 
 
