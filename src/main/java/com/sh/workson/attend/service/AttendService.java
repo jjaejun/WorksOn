@@ -83,4 +83,24 @@ public class AttendService {
         return attend;
     }
 
+//    public Attend updateAttend(Attend attend) {
+//        // 퇴근시간 확인
+//        LocalDateTime currentTime = LocalDateTime.now();
+//        LocalDateTime nineAm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 18, 0);
+//
+//        if (currentTime.isAfter(nineAm)) {
+//            // 18시 이후 퇴근
+//            attend.setState(State.QUIT);
+//        }
+//        // 출근 정보 저장
+//        attendRepository.save(attend);
+//        return attend;
+//    }
+
+
+    public void updateEndAt(Attend firstAttend) {
+        firstAttend.setEndAt(LocalDateTime.now());  // 퇴근 시간 설정
+        firstAttend.setState(State.QUIT);  // 상태를 퇴근으로 지정 (필요시)
+        attendRepository.save(firstAttend);
+    }
 }

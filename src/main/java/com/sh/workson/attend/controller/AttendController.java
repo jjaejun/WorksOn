@@ -39,15 +39,15 @@ public class AttendController {
     @Autowired
     private AttendRepository attendRepository;
 
-    @GetMapping ("/attendList.do")
-    public void attendList(@PageableDefault(value = 5, page = 0)Pageable pageable, Model model){
+    @GetMapping("/attendList.do")
+    public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model) {
         Long id = 952L;
-    Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
-    model.addAttribute("attends",attendPage.getContent());
-    model.addAttribute("totalCount", attendPage.getTotalElements());
+        Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
+        model.addAttribute("attends", attendPage.getContent());
+        model.addAttribute("totalCount", attendPage.getTotalElements());
 
 
-    Attend firstAttend = attendService.findByOrderByStartAt(id);
+        Attend firstAttend = attendService.findByOrderByStartAt(id);
         model.addAttribute("attend", firstAttend);
         log.debug("attend = {}", firstAttend);
         log.debug("attends = {}", attendPage.getContent());
@@ -69,5 +69,33 @@ public class AttendController {
         log.debug("attends = {}", attend);
 
         return ResponseEntity.ok("출근 등록이 완료 됐습니다.");
+    }
+
+    @PostMapping("/endWork.do")
+    public ResponseEntity<?> endWork(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            RedirectAttributes redirectAttributes
+    ) {
+        Long employeeId = employeeDetails.getEmployee().getId();
+        log.debug("employeeId = {}", employeeId);
+
+        // 최신 출근 정보 가져오기
+        Attend firstAttend = attendService.findByOrderByStartAt(employeeId);
+
+        if (firstAttend != null && firstAttend.getEndAt() == null) {
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // 6시 이후면 현재 시간을 퇴근 시간으로 업데이트
+            if (currentTime.getHour() >= 18) {
+                firstAttend.setEndAt(currentTime);
+            }
+
+            // 출근 정보 업데이트
+            attendService.updateEndAt(firstAttend);
+
+            return ResponseEntity.ok("퇴근이 등록되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("퇴근 등록에 실패했습니다. 출근 정보 없음");
+        }
     }
 }

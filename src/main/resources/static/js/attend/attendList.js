@@ -42,8 +42,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 isAttendRegistered = true;
 
                 console.log('출근 등록 성공');
-                // 여기에서 추가적인 동작을 수행하거나 생략할 수 있습니다.
-                document.getElementById('work-state').textContent = '업무중';
 
                 const currentTime = new Date();
                 const formattedTime = currentTime.toLocaleTimeString();
