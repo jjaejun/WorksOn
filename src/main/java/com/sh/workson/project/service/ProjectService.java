@@ -82,11 +82,19 @@ public class ProjectService {
         projectRepository.save(project);
 
         // attach의 projectId(게시판이라면 boardId) 셋팅 및 attachment 타입으로 변환
-        for (AttachmentCreateDto attach: projectCreateDto.getAttaches()) {
-            attach.setBoardId(project.getId());
-            Attachment attachment = modelMapper.map(attach, Attachment.class);
-            log.debug("attachment = {}", attachment);
-            attachmentRepository.save(attachment);
+        if(!projectCreateDto.getAttaches().isEmpty()) {
+            for (AttachmentCreateDto attach: projectCreateDto.getAttaches()) {
+                attach.setBoardId(project.getId());
+                Attachment attachment = modelMapper.map(attach, Attachment.class);
+                log.debug("attachment = {}", attachment);
+                attachmentRepository.save(attachment);
+            }
         }
+
+    }
+
+    public Page<ProjectListDto> findByOwnerId(Employee employee, Pageable pageable) {
+        Page<Project> projects = projectRepository.findByOwnerId(employee.getId(), pageable);
+        return projects.map(project -> convertToProjectDto(project));
     }
 }

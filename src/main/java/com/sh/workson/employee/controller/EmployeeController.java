@@ -4,11 +4,14 @@ import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.employee.dto.EmployeeSearchDto;
+import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -83,7 +86,9 @@ public class EmployeeController {
     public ResponseEntity<?> searchEmployee(
             @RequestParam(name = "name") String name
     ){
-        return employeeService.findByName(name);
+        List<EmployeeSearchDto> employees = employeeService.findByName(name);
+        log.debug("employees = {}", employees);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
 

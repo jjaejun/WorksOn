@@ -9,14 +9,15 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 public class ProjectListDto {
     private Long id;
     private String title;
-    private LocalDateTime createdAt;
-    private LocalDateTime endAt;
+    private LocalDate startAt;
+    private LocalDate endAt;
     private LocalDateTime updatedAt;
     private String status;
 

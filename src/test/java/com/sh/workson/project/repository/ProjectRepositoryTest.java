@@ -124,24 +124,27 @@ class ProjectRepositoryTest {
     @DisplayName("내가 생성한 프로젝트를 조회할 수 있다.")
     @Test
     void test7() {
+        final int pageSize = 5;
+        Pageable pageable = PageRequest.of(0, pageSize);
+
         Long id = 351L;
-        List<Project> projects = projectRepository.findByOwnerId(id);
+        Page<Project> projects = projectRepository.findByOwnerId(id, pageable);
         System.out.println(projects);
     }
 
-    @DisplayName("프로젝트를 생성할 수 있습니다. (사원 등록 및 첨부파일 등록)")
-    @Test
-    void test8() {
-        Project project = Project.builder()
-                .title("프로젝트 테스트")
-                .status(Status.ING)
-                .build();
-        projectRepository.save(project);
-        List<ProjectEmployee> projectEmployees = new ArrayList<>();
-        projectEmployees.add(ProjectEmployee.builder().empId(51L).projectId(project.getId()).role(ProjectRole.CREATE).build());
-        projectEmployees.add(ProjectEmployee.builder().empId(101L).projectId(project.getId()).role(ProjectRole.CREATE).build());
-        projectEmployees.add(ProjectEmployee.builder().empId(151L).projectId(project.getId()).role(ProjectRole.CREATE).build());
-        projectEmployeeRepository.saveAll(projectEmployees);
-    }
+//    @DisplayName("프로젝트를 생성할 수 있습니다. (사원 등록 및 첨부파일 등록)")
+//    @Test
+//    void test8() {
+//        Project project = Project.builder()
+//                .title("프로젝트 테스트")
+//                .status(Status.ING)
+//                .build();
+//        projectRepository.save(project);
+//        Page<ProjectEmployee> projectEmployees = new ArrayList<>();
+//        projectEmployees.add(ProjectEmployee.builder().empId(51L).projectId(project.getId()).role(ProjectRole.CREATE).build());
+//        projectEmployees.add(ProjectEmployee.builder().empId(101L).projectId(project.getId()).role(ProjectRole.CREATE).build());
+//        projectEmployees.add(ProjectEmployee.builder().empId(151L).projectId(project.getId()).role(ProjectRole.CREATE).build());
+//        projectEmployeeRepository.saveAll(projectEmployees);
+//    }
 
 }

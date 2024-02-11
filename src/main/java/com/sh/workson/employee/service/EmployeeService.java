@@ -2,6 +2,7 @@ package com.sh.workson.employee.service;
 
 import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.employee.dto.EmployeeSearchDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -42,8 +46,14 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public ResponseEntity<?> findByName(String name){
-        return employeeRepository.findByName(name);
+    public List<EmployeeSearchDto> findByName(String name){
+        List<Employee> employees = employeeRepository.findByName(name);
+        List<EmployeeSearchDto> employeeDtos = new ArrayList<>();
+        for(Employee e : employees){
+            employeeDtos.add(modelMapper.map(e, EmployeeSearchDto.class));
+        }
+
+        return employeeDtos;
     }
 
 

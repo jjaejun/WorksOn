@@ -63,25 +63,14 @@ public class ProjectController {
     ){
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), pageable);
-
-        List<ProjectListDto> projectsIng = new ArrayList<>();
-        List<ProjectListDto> projectsDone = new ArrayList<>();
-
-        // ing랑 done 구분하기
-        for (ProjectListDto project: projects) {
-            if(project.getStatus().equals(Status.DONE.toString())){
-                projectsDone.add(project);
-            }
-            else if(project.getStatus().equals(Status.ING.toString())){
-                projectsIng.add(project);
-            }
-        }
+        // 사원이 생성한 프로젝트 조회
+        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), pageable);
 
         log.debug("project = {}", projects.getContent());
-        model.addAttribute("projects", projects.getContent());
-        model.addAttribute("projectsIng", projectsIng);
-        model.addAttribute("projectsDone", projectsDone);
-        model.addAttribute("totalCount", projects.getTotalElements());
+        model.addAttribute("projectEmp", projects.getContent());
+        model.addAttribute("projectEmpTotalCount", projects.getTotalElements());
+        model.addAttribute("projectOwner", projects2.getContent());
+        model.addAttribute("projectOwnerTotalCount", projects2.getTotalElements());
     }
 
     @GetMapping("/createProject.do")
@@ -101,7 +90,7 @@ public class ProjectController {
         // 첨부파일 S3에 저장
         for(MultipartFile file : files) {
             log.debug("file = {}", file);
-            if(file.getSize() >= 0){
+            if(file.getSize() > 0){
                 AttachmentCreateDto attachmentCreateDto = s3FileService.upload(file, AttachType.PROJECT);
                 log.debug("attachmentCreateDto = {}", attachmentCreateDto);
                 projectCreateDto.addAttachmentCreateDto(attachmentCreateDto);
