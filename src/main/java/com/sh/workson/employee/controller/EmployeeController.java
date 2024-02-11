@@ -79,6 +79,13 @@ public class EmployeeController {
         return ResponseEntity.ok("프로필 사진이 변경되었습니다.");
     }
 
+    @GetMapping("/searchEmployee.do")
+    public ResponseEntity<?> searchEmployee(
+            @RequestParam(name = "name") String name
+    ){
+        return employeeService.findByName(name);
+    }
+
 
 
 

@@ -12,33 +12,3 @@ window.addEventListener('DOMContentLoaded', () => {
         colorChange(article);
     })
 });
-
-document.projectCreateFrm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const frm = e.target;
-    const frmData = new FormData(frm);
-
-    // 유효성 검사해야됨
-
-
-
-    $.ajax({
-        url: `${contextPath}project/createProject.do`,
-        headers: {
-            [csrfHeaderName] : csrfToken
-        },
-        data: frmData,
-        processData: false,
-        contentType: false,
-        method: 'post',
-        success(response) {
-            console.log(frmData);
-            console.log(response);
-            frm.reset();
-        }
-
-    })
-
-
-});

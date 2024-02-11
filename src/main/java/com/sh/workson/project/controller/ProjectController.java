@@ -84,6 +84,9 @@ public class ProjectController {
         model.addAttribute("totalCount", projects.getTotalElements());
     }
 
+    @GetMapping("/createProject.do")
+    public void createProject(){};
+
     @PostMapping("/createProject.do")
     public ResponseEntity<?> createProject(
             ProjectCreateDto projectCreateDto,
