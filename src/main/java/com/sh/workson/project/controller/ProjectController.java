@@ -77,7 +77,7 @@ public class ProjectController {
     public void createProject(){};
 
     @PostMapping("/createProject.do")
-    public ResponseEntity<?> createProject(
+    public String createProject(
             ProjectCreateDto projectCreateDto,
             BindingResult bindingResult,
             @RequestParam(name = "files") List<MultipartFile> files,
@@ -100,6 +100,6 @@ public class ProjectController {
         projectCreateDto.setEmployee(employeeDetails.getEmployee());
         projectService.createProject(projectCreateDto);
 
-        return null;
+        return "redirect:/project/projectList.do";
     }
 }

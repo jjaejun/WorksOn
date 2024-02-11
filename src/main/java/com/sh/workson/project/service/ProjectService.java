@@ -9,7 +9,10 @@ import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.project.dto.ProjectCreateDto;
 import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
+import com.sh.workson.project.entity.ProjectEmployee;
+import com.sh.workson.project.entity.ProjectRole;
 import com.sh.workson.project.entity.Status;
+import com.sh.workson.project.repository.ProjectEmployeeRepository;
 import com.sh.workson.project.repository.ProjectRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -35,6 +40,8 @@ public class ProjectService {
     private S3FileService s3FileService;
     @Autowired
     private AttachmentRepository attachmentRepository;
+    @Autowired
+    private ProjectEmployeeRepository projectEmployeeRepository;
 
     public Page<ProjectListDto> findAll(Pageable pageable) {
         Page<Project> projects = projectRepository.findAll(pageable);
@@ -72,14 +79,19 @@ public class ProjectService {
         log.debug("project = {}", project);
 
         // mapper가 처리하지 못하는 startAt, endAt, status, emplist 처리하기
-        // status
-        project.setStatus(Status.NOT_YET);
-        // startAt, endAt
-        project.setStartAt(LocalDate.parse(projectCreateDto.getStartAt()));
-        project.setEndAt(LocalDate.parse(projectCreateDto.getEndAt()));
-        // emplist 처리
-
+        // status, startAt, endAt -> 편의메소드로 처리
         projectRepository.save(project);
+        // emplist 처리
+        List<ProjectEmployee> createEmployees = new ArrayList<>();
+        for(Long empId :projectCreateDto.getCreateEmp()){
+            createEmployees.add(ProjectEmployee.builder().projectId(project.getId()).role(ProjectRole.CREATE).empId(empId).build());
+        }
+        projectEmployeeRepository.saveAll(createEmployees);
+        List<ProjectEmployee> readEmployees = new ArrayList<>();
+        for(Long empId :projectCreateDto.getReadEmp()){
+            readEmployees.add(ProjectEmployee.builder().projectId(project.getId()).role(ProjectRole.READ).empId(empId).build());
+        }
+        projectEmployeeRepository.saveAll(readEmployees);
 
         // attach의 projectId(게시판이라면 boardId) 셋팅 및 attachment 타입으로 변환
         if(!projectCreateDto.getAttaches().isEmpty()) {
@@ -90,7 +102,6 @@ public class ProjectService {
                 attachmentRepository.save(attachment);
             }
         }
-
     }
 
     public Page<ProjectListDto> findByOwnerId(Employee employee, Pageable pageable) {
