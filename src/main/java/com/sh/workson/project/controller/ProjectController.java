@@ -1,5 +1,7 @@
 package com.sh.workson.project.controller;
 
+import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.entity.AttachType;
 import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,18 +91,22 @@ public class ProjectController {
             @RequestParam(name = "files") List<MultipartFile> files,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             RedirectAttributes redirectAttributes
-    ){
+    ) throws IOException {
         log.debug("files = {}", files);
-        List<Attachment> attachments = new ArrayList<>();
+        log.debug("projectCreateDto = {}", projectCreateDto);
 
-//        // 첨부파일 S3에 저장
-//        for(MultipartFile file : files) {
-//            if(file.getSize() > 0){
-//                com.sh.app.attachment.dto.AttachmentCreateDto attachmentCreateDto = s3FileService.upload(file);
-//                log.debug("attachmentCreateDto = {}", attachmentCreateDto);
-//                boardCreateDto.addAttachmentCreateDto(attachmentCreateDto);
-//            }
-//        }
+        // 첨부파일 S3에 저장
+        for(MultipartFile file : files) {
+            log.debug("file = {}", file);
+            if(file.getSize() >= 0){
+                AttachmentCreateDto attachmentCreateDto = s3FileService.upload(file, AttachType.PROJECT);
+                log.debug("attachmentCreateDto = {}", attachmentCreateDto);
+                projectCreateDto.addAttachmentCreateDto(attachmentCreateDto);
+            }
+        }
+
+        projectCreateDto.setEmployee(employeeDetails.getEmployee());
+        projectService.createProject(projectCreateDto);
 
         return null;
     }

@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 document.projectCreateFrm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
     const frm = e.target;
     const frmData = new FormData(frm);
 
@@ -23,7 +25,7 @@ document.projectCreateFrm.addEventListener('submit', (e) => {
 
     $.ajax({
         url: `${contextPath}project/createProject.do`,
-        header: {
+        headers: {
             [csrfHeaderName] : csrfToken
         },
         data: frmData,
@@ -31,6 +33,7 @@ document.projectCreateFrm.addEventListener('submit', (e) => {
         contentType: false,
         method: 'post',
         success(response) {
+            console.log(frmData);
             console.log(response);
             frm.reset();
         }

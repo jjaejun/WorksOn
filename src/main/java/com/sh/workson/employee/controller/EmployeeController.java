@@ -65,7 +65,7 @@ public class EmployeeController {
         // 첨부파일 S3에 저장
         for(MultipartFile upFile : upFiles) {
             if(upFile.getSize() > 0){
-                profileAttachmentDto = s3FileService.upload(upFile);
+                profileAttachmentDto = s3FileService.uploadProfile(upFile);
                 log.debug("profileAttachmentDto = {}", profileAttachmentDto);
             }
         }
