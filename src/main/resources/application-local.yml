@@ -4,6 +4,6 @@ profile:
 spring:
   datasource:
     url: jdbc:oracle:thin:@localhost:1521:xe
-    username: finaltest
-    password: finaltest
+    username: final_test
+    password: final_test
     driver-class-name: oracle.jdbc.OracleDriver

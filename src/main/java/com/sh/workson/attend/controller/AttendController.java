@@ -39,15 +39,15 @@ public class AttendController {
     @Autowired
     private AttendRepository attendRepository;
 
-    @GetMapping ("/attendList.do")
-    public void attendList(@PageableDefault(value = 5, page = 0)Pageable pageable, Model model){
+    @GetMapping("/attendList.do")
+    public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model) {
         Long id = 952L;
-    Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
-    model.addAttribute("attends",attendPage.getContent());
-    model.addAttribute("totalCount", attendPage.getTotalElements());
+        Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
+        model.addAttribute("attends", attendPage.getContent());
+        model.addAttribute("totalCount", attendPage.getTotalElements());
 
 
-    Attend firstAttend = attendService.findByOrderByStartAt(id);
+        Attend firstAttend = attendService.findByOrderByStartAt(id);
         model.addAttribute("attend", firstAttend);
         log.debug("attend = {}", firstAttend);
         log.debug("attends = {}", attendPage.getContent());
@@ -69,5 +69,19 @@ public class AttendController {
         log.debug("attends = {}", attend);
 
         return ResponseEntity.ok("출근 등록이 완료 됐습니다.");
+    }
+
+    // 퇴근 버튼을 처리하는 메소드
+    @PostMapping("/endWork.do")
+    public ResponseEntity<?> endWork(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @AuthenticationPrincipal Attend attend,
+            RedirectAttributes redirectAttributes
+    ) {
+        Long id = employeeDetails.getEmployee().getId();
+        Attend attending = attendService.findAttendByEmployeeId(id);
+
+        attendService.updateEndAt(attending);
+        return ResponseEntity.ok("퇴근 등록이 완료되었습니다.");
     }
 }

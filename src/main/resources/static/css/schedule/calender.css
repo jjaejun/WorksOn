@@ -1,12 +1,19 @@
 #calendar{
-    /*height: 700px;*/
-    /*width: 700px;*/
+    height: 65%;
+    width: 80%;
     color: black;
-    /*margin: auto;*/
+    margin-left: auto;
 }
-
-.fc-button-bg-color{
-    color: cornflowerblue;
+#main_page{
+    display: flex;
+    flex-direction: row;
+    margin-left: -48px;
+}
+.fc-button-primary{
+    color : #3788d8;
+}
+fc-header-toolbar{
+    color : #3788d8;
 }
 
 :root{
@@ -40,15 +47,31 @@
 }
 
 
-#content{
-    display: flex;
-    flex-direction: row;
+/*#content{*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/
 
-}
 #v-line{
     margin: auto 10px;
-    border-left:  thick solid black;
-    height: 100%;
-    left: 15%;
+    border-left: 1px solid black;
+    height: 81%;
+    left: 28%;
     position: absolute;
+}
+
+#category{
+    margin-right: auto;
+}
+
+.calender-sidebar{
+
+}
+
+aside{
+    margin-top: -86px;
+}
+
+table, th, td {
+    text-align: center;
 }
