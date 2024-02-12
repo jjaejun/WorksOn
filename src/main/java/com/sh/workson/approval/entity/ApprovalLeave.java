@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class ApprovalLeave {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_approval_form_id_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_approval_form_id_generator")
     @SequenceGenerator(
             name = "seq_approval_form_id_generator",
             sequenceName = "seq_approval_form_id"
@@ -40,6 +40,7 @@ public class ApprovalLeave {
     private Timestamp createdAt;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
 //    private Approval approval;
 
 }

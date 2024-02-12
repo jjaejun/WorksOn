@@ -5,7 +5,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class ApprovalHomeLeaveDto {
+public class ApprovalHomeCooperationDto {
     // approval
     private Long id;
     private String emergency;
