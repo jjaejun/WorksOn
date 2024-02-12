@@ -5,6 +5,7 @@ import com.sh.workson.attend.entity.AttendListDto;
 import com.sh.workson.attend.entity.State;
 import com.sh.workson.attend.repository.AttendRepository;
 import com.sh.workson.employee.repository.EmployeeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Slf4j
 public class AttendService {
     @Autowired
     AttendRepository attendRepository;
@@ -83,24 +85,36 @@ public class AttendService {
         return attend;
     }
 
-//    public Attend updateAttend(Attend attend) {
-//        // 퇴근시간 확인
-//        LocalDateTime currentTime = LocalDateTime.now();
-//        LocalDateTime nineAm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 18, 0);
-//
-//        if (currentTime.isAfter(nineAm)) {
-//            // 18시 이후 퇴근
-//            attend.setState(State.QUIT);
-//        }
-//        // 출근 정보 저장
-//        attendRepository.save(attend);
-//        return attend;
-//    }
+    public Attend updateEndAt(Attend attending) {
+        // 출근 정보가 없는 경우 예외 처리
+        if (attending == null) {
+            throw new RuntimeException("출근 정보가 없습니다.");
+        }
 
+        // 퇴근시간 확인
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime sixPm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 18, 0);
 
-    public void updateEndAt(Attend firstAttend) {
-        firstAttend.setEndAt(LocalDateTime.now());  // 퇴근 시간 설정
-        firstAttend.setState(State.QUIT);  // 상태를 퇴근으로 지정 (필요시)
-        attendRepository.save(firstAttend);
+        if (currentTime.isAfter(sixPm)) {
+            // 18시 이후 퇴근이면 퇴근으로 처리
+            attending.setState(State.QUIT);
+
+            // endAt 컬럼을 현재 시간으로 업데이트
+            attending.setEndAt(currentTime);
+
+            // 출근 정보 업데이트 (endAt 컬럼만 업데이트)
+            attendRepository.saveAndFlush(attending);
+
+            return attending;
+        } else {
+            // 18시 이전 퇴근시 예외 처리
+            throw new RuntimeException("퇴근시간이 아닙니다.");
+        }
     }
+
+    public Attend findAttendByEmployeeId(Long id) {
+        return attendRepository.findAttendByEmployeeId(id);
+    }
+
+
 }

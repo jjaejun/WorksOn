@@ -71,31 +71,17 @@ public class AttendController {
         return ResponseEntity.ok("출근 등록이 완료 됐습니다.");
     }
 
+    // 퇴근 버튼을 처리하는 메소드
     @PostMapping("/endWork.do")
     public ResponseEntity<?> endWork(
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @AuthenticationPrincipal Attend attend,
             RedirectAttributes redirectAttributes
     ) {
-        Long employeeId = employeeDetails.getEmployee().getId();
-        log.debug("employeeId = {}", employeeId);
+        Long id = employeeDetails.getEmployee().getId();
+        Attend attending = attendService.findAttendByEmployeeId(id);
 
-        // 최신 출근 정보 가져오기
-        Attend firstAttend = attendService.findByOrderByStartAt(employeeId);
-
-        if (firstAttend != null && firstAttend.getEndAt() == null) {
-            LocalDateTime currentTime = LocalDateTime.now();
-
-            // 6시 이후면 현재 시간을 퇴근 시간으로 업데이트
-            if (currentTime.getHour() >= 18) {
-                firstAttend.setEndAt(currentTime);
-            }
-
-            // 출근 정보 업데이트
-            attendService.updateEndAt(firstAttend);
-
-            return ResponseEntity.ok("퇴근이 등록되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("퇴근 등록에 실패했습니다. 출근 정보 없음");
-        }
+        attendService.updateEndAt(attending);
+        return ResponseEntity.ok("퇴근 등록이 완료되었습니다.");
     }
 }
