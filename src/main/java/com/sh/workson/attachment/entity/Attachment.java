@@ -25,11 +25,12 @@ public class Attachment {
             allocationSize = 50
     )
     private Long id;
-    private String boardType;
 
     @Column(name = "board_id")
     private Long boardId;
-
+    @Column(name = "board_type")
+    @Enumerated(EnumType.STRING)
+    private AttachType type;
     private String originalFileName;
     private String key;
     private String url;

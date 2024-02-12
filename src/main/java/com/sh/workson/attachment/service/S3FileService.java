@@ -2,7 +2,9 @@ package com.sh.workson.attachment.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.sh.workson.attachment.dto.AttachmentCreateDto;
 import com.sh.workson.attachment.dto.ProfileAttachmentDto;
+import com.sh.workson.attachment.entity.AttachType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
@@ -23,7 +25,8 @@ public class S3FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public ProfileAttachmentDto upload(MultipartFile upFile) throws IOException {
+    // 프로필 사진 업로드용 메소드
+    public ProfileAttachmentDto uploadProfile(MultipartFile upFile) throws IOException {
         String key = UUID.randomUUID().toString();
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -36,6 +39,21 @@ public class S3FileService {
         String url = amazonS3Client.getUrl(bucket, key).toString();
 
         return new ProfileAttachmentDto(null, upFile.getOriginalFilename(), key, url);
+    }
+
+    public AttachmentCreateDto upload(MultipartFile upFile, AttachType attachType) throws IOException {
+        String key = UUID.randomUUID().toString();
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(upFile.getContentType());
+        objectMetadata.setContentLength(upFile.getSize());
+
+        // 업로드
+        amazonS3Client.putObject(bucket, key, upFile.getInputStream(), objectMetadata);
+        // url 조회
+        String url = amazonS3Client.getUrl(bucket, key).toString();
+
+        return new AttachmentCreateDto(null, attachType, upFile.getOriginalFilename(), key, url);
     }
 
     /**
