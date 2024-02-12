@@ -68,7 +68,7 @@ public class Approval {
 //    @JoinColumn(name = "approval_type_id")
 //    @Builder.Default
 //    private List<ApprovalEquipment> approvalEquipments = new ArrayList<>();
-//
+
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "approval_type_id")
 //    @Builder.Default

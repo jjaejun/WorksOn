@@ -2,7 +2,9 @@ package com.sh.workson.board.controller;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.board.dto.BoardCreateDto;
+import com.sh.workson.board.dto.BoardDetailDto;
 import com.sh.workson.board.dto.BoardListDto;
+import com.sh.workson.board.entity.Board;
 import com.sh.workson.board.entity.Type;
 import com.sh.workson.board.service.BoardService;
 import jakarta.validation.Valid;
@@ -15,10 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,7 +33,7 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/boardList.do")
-    public void boardList(@PageableDefault(size = 5, page = 0) Pageable pageable, Model model) {
+    public void boardList(@PageableDefault(size = 10, page = 0 ) Pageable pageable, Model model) {
         log.info("boardService = {}", boardService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -80,5 +79,16 @@ public class BoardController {
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다");
         return "redirect:/board/boardList.do";
     }
+
+    @GetMapping("/boardDetail.do")
+    public void boardDetail(@RequestParam("id") Long id , Model model){
+        BoardDetailDto boardDetailDto = boardService.findById(id);
+        model.addAttribute("board" , boardDetailDto);
+        log.debug("board = {}" , boardDetailDto);
+    }
+
+
+
+
 
 }

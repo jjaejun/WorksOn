@@ -6,7 +6,7 @@
   <!-- Desktop sidebar -->
   <aside id="sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
     <div class="py-4 text-[#000000]">
-      <h1 class="mb-4 text-center text-xl font-bold hover:text-[#000000]">전자결재</h1>
+      <h1 class="mb-4 text-center text-xl font-bold hover:text-[#000000]" th:onclick="|location.href='@{/approval/approvalHome.do}'|">전자결재</h1>
 
       <div class="px-6 mt-2">
         <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
@@ -22,19 +22,19 @@
       <ul >
         <span class="z-20 absolute transition-all h-[58px] left-0 w-2 bg-[#FFFFFF] rounded-tr-lg rounded-br-lg opacity-0" id="focus-bar" aria-hidden="true"></span>
 
-        <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/}'|" id="dashboardLi">
+        <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalWait.do}'|">
           <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
             <span class="ml-4">결재 대기함</span>
           </a>
         </li>
 
-        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/schedule/calender.do}'|">
+        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalReception.do}'|">
           <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
             <span class="ml-4">결재 수신함</span>
           </a>
         </li>
 
-        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/chat}'|">
+        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalExpected.do}'|">
           <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
             <span class="ml-4">결재 예정함</span>
           </a>
@@ -46,37 +46,37 @@
         <hr class="mt-2">
       </div>
         <ul>
-          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalTemporary.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
               <span class="ml-4">임시 저장함</span>
             </a>
           </li>
 
-          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalLeave.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
               <span class="ml-4">연차 문서함</span>
             </a>
           </li>
 
-          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalEquipment.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
-              <span class="ml-4">기안 문서함</span>
+              <span class="ml-4">비품 문서함</span>
             </a>
           </li>
 
-          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalCooperation.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
               <span class="ml-4">협조 문서함</span>
             </a>
           </li>
 
-          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalReceived.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
               <span class="ml-4">수신 문서함</span>
             </a>
           </li>
 
-          <li class="px-6 py-3 h-[58px] hover:bg-gray-200">
+          <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalSend.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
               <span class="ml-4">발송 문서함</span>
             </a>
