@@ -9,6 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    @Query("from Board b left join fetch b.employee m left join fetch b.attachments where (:type is null or b.type = :type) order by b.id desc")
+    @Query("from Board b left join fetch b.employee e left join fetch b.attachments where (:type is null or b.type = :type) order by b.id desc")
     Page<Board> findAllByType(@Param("type") Type type, Pageable pageable);
+
+
+
+    @Query("from Board b left join fetch  b.employee e left join fetch b.attachments order by b.id desc")
+    Page<Board> findAll(Pageable pageable);
+
+
 }
