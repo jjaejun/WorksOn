@@ -7,6 +7,7 @@ import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.employee.dto.EmployeeProjectOwnerDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.project.dto.ProjectCreateDto;
+import com.sh.workson.project.dto.ProjectDetailDto;
 import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
 import com.sh.workson.project.entity.ProjectEmployee;
@@ -60,6 +61,7 @@ public class ProjectService {
         EmployeeProjectOwnerDto employeeProjectOwnerDto = EmployeeProjectOwnerDto.builder()
                 .id(project.getEmployee().getId())
                 .name(project.getEmployee().getName())
+                .email(project.getEmployee().getEmail())
                 .deptName(project.getEmployee().getDepartment().getName())
                 .positionName(project.getEmployee().getPosition().getName())
                 .profileUrl(project.getEmployee().getProfileUrl())
@@ -80,6 +82,8 @@ public class ProjectService {
 
         // mapper가 처리하지 못하는 startAt, endAt, status, emplist 처리하기
         // status, startAt, endAt -> 편의메소드로 처리
+        project.setStatus(Status.valueOf(projectCreateDto.getStatus()));;
+
         projectRepository.save(project);
         // emplist 처리
         List<ProjectEmployee> createEmployees = new ArrayList<>();
@@ -107,5 +111,14 @@ public class ProjectService {
     public Page<ProjectListDto> findByOwnerId(Employee employee, Pageable pageable) {
         Page<Project> projects = projectRepository.findByOwnerId(employee.getId(), pageable);
         return projects.map(project -> convertToProjectDto(project));
+    }
+
+    public ProjectDetailDto findById(Long id) {
+        return projectRepository.findById(id)
+                .map((project -> convertToProjectDetailDto(project))).orElseThrow();
+    }
+
+    private ProjectDetailDto convertToProjectDetailDto(Project project) {
+        return modelMapper.map(project, ProjectDetailDto.class);
     }
 }

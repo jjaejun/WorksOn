@@ -31,7 +31,7 @@
                 <span class="mr-10 text-2xl font-bold">프로젝트 생성하기</span>
                 <span class="h-px flex-1 bg-gray-600"></span>
             </h1>
-                <div class="relative bg-white rounded-lg border border-gray-300 dark:bg-gray-700">
+                <div class="relative w-2/3 mt-10 bg-white rounded-lg border border-gray-300 dark:bg-gray-700">
                     <form class="p-4 md:p-5" name="projectCreateFrm" enctype="multipart/form-data" th:action="@{/project/createProject.do}" method="post">
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-2">
@@ -109,11 +109,16 @@
 
                             <div class="col-span-2">
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="files">파일 첨부</label>
-                                <div class="bg-white z-40 w-full rounded max-h-select overflow-y-auto">
-                                    <table id="fileArea">
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                                <div class="bg-gray-200 border mb-4 border-gray-300 z-40 w-full text-sm rounded max-h-[200px] overflow-y-auto">
+                                        <table id="fileArea" class="w-full whitespace-no-wrap">
+                                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                            <tr class="text-gray-700">
+                                                <td class="px-2 py-2">등록된 파일이 없습니다.</td>
+                                            </tr>
+                                            <!-- 반복되는 tr영역 -->
+                                            <!--tr 한줄 끝-->
+                                            </tbody>
+                                        </table>
                                 </div>
                                 <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                        type="file" name="files" multiple id="files">

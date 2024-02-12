@@ -6,6 +6,7 @@ import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.project.dto.ProjectCreateDto;
+import com.sh.workson.project.dto.ProjectDetailDto;
 import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
 import com.sh.workson.project.entity.Status;
@@ -101,5 +102,15 @@ public class ProjectController {
         projectService.createProject(projectCreateDto);
 
         return "redirect:/project/projectList.do";
+    }
+
+    @GetMapping("projectDetail.do")
+    public void projectDetail(
+            @RequestParam("id") Long id,
+            Model model
+    ){
+        ProjectDetailDto projectDetailDto = projectService.findById(id);
+        model.addAttribute("project", projectDetailDto);
+        log.debug("project = {}", projectDetailDto);
     }
 }

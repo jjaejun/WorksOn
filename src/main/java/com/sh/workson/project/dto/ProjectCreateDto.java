@@ -15,7 +15,7 @@ public class ProjectCreateDto {
     private String title;
     private LocalDate startAt;
     private LocalDate endAt;
-    private Status status;
+    private String status;
 
     // 사용자 정보
     private Employee Employee;
@@ -36,10 +36,10 @@ public class ProjectCreateDto {
 
     public void setStatus(String status){
         if(startAt.isBefore(LocalDate.now()) || startAt.equals(LocalDate.now())){
-            this.status = Status.ING;
+            this.status = "ING";
         }
         else if(startAt.isAfter(LocalDate.now())){
-            this.status = Status.NOT_YET;
+            this.status = "NOT_YET";
         }
     }
 

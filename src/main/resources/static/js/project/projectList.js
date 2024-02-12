@@ -12,3 +12,11 @@ window.addEventListener('DOMContentLoaded', () => {
         colorChange(article);
     })
 });
+
+document.querySelectorAll("article[data-project-id]").forEach((article) => {
+   article.addEventListener('click', (e) => {
+      const project = e.target;
+      const { projectId : id } = article.dataset;
+      location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+   });
+});
