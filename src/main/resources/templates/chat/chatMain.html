@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/default}">
 <head>
     <title>채팅 | 메인페이지</title>
@@ -36,5 +37,5 @@
     </table>
 </div>
 
-<script layout:fragment="script" th:src="@{/js/chat/chat.js}"></script>
+<script layout:fragment="script"></script>
 </html>

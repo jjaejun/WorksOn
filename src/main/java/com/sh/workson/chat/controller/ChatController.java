@@ -44,33 +44,23 @@ public class ChatController {
                 }
             });
         });
-        log.debug("myChatRooms = {}", myChatRooms);
+//        log.debug("myChatRooms = {}", myChatRooms);
         model.addAttribute("myChatRooms", myChatRooms);
     }
 
     @GetMapping("/chatRoom.do")
-    public void chatRoom(@AuthenticationPrincipal EmployeeDetails employeeDetails, Long id, Model model) {
-        Long id = employeeDetails.getEmployee().getId();
-        List<ChatRoom> chatRooms = chatService.findAll();
-
-        List<ChatRoom> myChatRooms = new ArrayList<>();
-        chatRooms.forEach(chatRoom -> {
-            chatRoom.getChatEmps().forEach(employee -> {
-                if (employee.getId().equals(id)) {
-                    myChatRooms.add(chatRoom);
-                }
-            });
-        });
-        log.debug("myChatRooms = {}", myChatRooms);
-        model.addAttribute("myChatRooms", myChatRooms);
+    public void chatRoom(@RequestParam("id") Long id , Model model) {
+//        log.debug("id = {}", id);
+        model.addAttribute("chatRoomId", id);
     }
 
 
     @MessageMapping("/chatRoom/{chatRoomId}")
     @SendTo("/sub/chatRoom/{chatRoomId}")
-    public ChatLogCreateDto subMessage(@DestinationVariable Long chatRoomId, ChatLogCreateDto chatLogCreateDto) {
+    public ChatLogCreateDto subMessage(@DestinationVariable String chatRoomId, ChatLogCreateDto chatLogCreateDto) {
 
         log.debug("chatLogCreateDto = {}", chatLogCreateDto);
+//        chatService.createChatLog(chatLogCreateDto);
         return chatLogCreateDto;
     }
 }
