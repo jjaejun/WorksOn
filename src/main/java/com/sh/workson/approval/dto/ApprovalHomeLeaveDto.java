@@ -10,16 +10,18 @@ public class ApprovalHomeLeaveDto {
     private Long id;
     private String emergency;
     private Timestamp approvalEndDate;
+    private String status;
 
     // approval Form
-    private String name;
-    private String title;
+    private String name; // Approval_form#name
+    private String title; // Approval_form#title
 
     // employee
     private String empId; // Employee#username이 들어올 예정
 
     // approval_attachment
     private int attachCount;
+    private Long viewCount;
 
 
 

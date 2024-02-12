@@ -13,29 +13,10 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 });
 
-document.projectCreateFrm.addEventListener('submit', (e) => {
-    const frm = e.target;
-    const frmData = new FormData(frm);
-
-    // 유효성 검사해야됨
-
-
-
-    $.ajax({
-        url: `${contextPath}project/createProject.do`,
-        header: {
-            [csrfHeaderName] : csrfToken
-        },
-        data: frmData,
-        processData: false,
-        contentType: false,
-        method: 'post',
-        success(response) {
-            console.log(response);
-            frm.reset();
-        }
-
-    })
-
-
+document.querySelectorAll("article[data-project-id]").forEach((article) => {
+   article.addEventListener('click', (e) => {
+      const project = e.target;
+      const { projectId : id } = article.dataset;
+      location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+   });
 });

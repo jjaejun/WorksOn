@@ -8,9 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "chat_room")
@@ -32,7 +30,7 @@ public class ChatRoom {
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
     @Builder.Default
-    private Set<Employee> chatEmps = new LinkedHashSet<>();
+    private List<Employee> chatEmps = new ArrayList<>();
 
     public void addChatEmps(Employee employee) {
         this.chatEmps.add(employee);

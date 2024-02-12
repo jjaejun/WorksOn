@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>채팅 | 메인페이지</title>
+</head>
+<style layout:fragment="style"></style>
+
+<div layout:fragment="content">
+    <table class="w-full">
+        <tr class="w-full">
+            <td rowspan="3" class="w-1/4">
+                <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                    <h5 class="px-6 py-3">채팅방</h5>
+                    <ul th:each="myChatRoom, status : ${myChatRooms}">
+                        <button type="button" th:text="${myChatRoom.name}" th:value="${myChatRoom.id}" th:onclick="|location.href='@{/chat/chatRoom.do}?id=${myChatRoom.id}'|" class="chatroom-btn text-blue-700 hover:border border-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"></button>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr class="w-full">
+            <td class="w-2/4">
+                <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+
+                </div>
+            </td>
+        </tr>
+        <tr class="w-full">
+            <td class="w-1/4">
+                <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script layout:fragment="script"></script>
+</html>
