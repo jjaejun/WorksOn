@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/approval_default}">
+<head>
+    <title>수신 문서함</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <p class="mb-4 text-gray-700">총 [[${totalCount}]]건의 게시물이 있습니다.</p>
+    <h1>수신문서함</h1>
+    <table id="tbl-board" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
+        <thead>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <th class="px-4 py-2">기안일</th>
+            <th class="px-4 py-2">결재양식</th>
+            <th class="px-4 py-2">제목</th>
+            <th class="px-4 py-2">긴급</th>
+            <th class="px-4 py-2">결재 요청자</th>
+            <th class="px-4 py-2">첨부</th>
+            <th class="px-4 py-2">결재상태</th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+        <tr th:each="approval, status : ${approvals}" th:data-approval-id="${approval.id}">
+            <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
+            <td class="border px-4 py-2" th:text="${approval.name}"></td>
+            <td class="border px-4 py-2" th:text="${approval.title}"></td>
+            <td class="border px-4 py-2" th:text="${approval.emergency}"></td>
+            <td class="border px-4 py-2" th:text="${approval.empId}"></td>
+            <td class="border px-4 py-2">
+                <img th:if="${approval.attachCount > 0}" th:src="@{/images/profile.png}" width="16px">
+            </td>
+            <td class="border px-4 py-2" th:text="${approval.status}"></td>
+            <td class="border px-4 py-2" th:text="${approval.viewCount}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--    <div id="pagebar" class="mt-4">-->
+    <!--        <nav aria-label="Page navigation example">-->
+    <!--            <ul class="pagination">-->
+    <!--                <li class="page-item">-->
+    <!--                    <a class="page-link" href="#" aria-label="Previous">-->
+    <!--                        <span aria-hidden="true">&laquo;</span>-->
+    <!--                    </a>-->
+    <!--                </li>-->
+    <!--                <li class="page-item active"><a class="page-link" href="#">1</a></li>-->
+    <!--                <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+    <!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+    <!--                <li class="page-item">-->
+    <!--                    <a class="page-link" href="#" aria-label="Next">-->
+    <!--                        <span aria-hidden="true">&raquo;</span>-->
+    <!--                    </a>-->
+    <!--                </li>-->
+    <!--            </ul>-->
+    <!--        </nav>-->
+    <!--    </div>-->
+</div>
+<script layout:fragment="script" th:src="@{/js/approval/approvalHome.js}">
+</script>
+</html>
