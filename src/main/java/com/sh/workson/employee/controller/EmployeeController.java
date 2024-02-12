@@ -4,11 +4,14 @@ import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.employee.dto.EmployeeSearchDto;
+import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,7 +68,7 @@ public class EmployeeController {
         // 첨부파일 S3에 저장
         for(MultipartFile upFile : upFiles) {
             if(upFile.getSize() > 0){
-                profileAttachmentDto = s3FileService.upload(upFile);
+                profileAttachmentDto = s3FileService.uploadProfile(upFile);
                 log.debug("profileAttachmentDto = {}", profileAttachmentDto);
             }
         }
@@ -77,6 +80,15 @@ public class EmployeeController {
         // 로그인된 사용자 업데이트
         authService.updateAuthentication(employeeDetails.getEmployee().getEmail());
         return ResponseEntity.ok("프로필 사진이 변경되었습니다.");
+    }
+
+    @GetMapping("/searchEmployee.do")
+    public ResponseEntity<?> searchEmployee(
+            @RequestParam(name = "name") String name
+    ){
+        List<EmployeeSearchDto> employees = employeeService.findByName(name);
+        log.debug("employees = {}", employees);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
 

@@ -165,6 +165,30 @@ insert into schedule_join_member (id, schedule_id, emp_id) values
 insert into schedule_join_member (id, schedule_id, emp_id) values 
 (seq_schedule_join_member_id.nextval, 151, 251);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
+<<<<<<< HEAD
 (seq_schedule_join_member_id.nextval, 151, 801);
 
 
+=======
+(seq_schedule_join_member.nextval, 151, 801);
+
+
+-- authority
+insert into authority values (seq_authority_id.nextval, 1, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 51, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 101, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 151, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 201, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 251, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 301, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 351, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 401, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 451, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 501, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 551, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 601, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 651, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 701, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 751, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 801, 'ROLE_EMP');
+>>>>>>> 47dcb5406ccb28fba8a68b14787e4210332c7ccc

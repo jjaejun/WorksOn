@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default}">
+<head>
+    <title>게시글 상세보기</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+    <div id="board-container" class="w-50 mx-auto text-center">
+        <input type="text" class="form-control mb-3"
+               placeholder="제목" name="title" id="title" th:value="${board.title}" required>
+        <input type="text" class="form-control mb-3"
+               name="name" th:value="${board.employee != null ? board.employee.name:'퇴사자'}" readonly required>
+        <button type="button"
+                class="btn btn-outline-success btn-block mb-3"
+                th:each="attach, status : ${board.attachments}"
+                th:text="|첨부파일${status.count} - ${attach.originalFilename}|"
+                th:onclick="|location.href ='@{/board/fileDownload.do}?id=${attach.id}';|">
+        </button>
+
+        <textarea class="form-control mb-3" name="content"
+                  placeholder="내용" th:text="${board.content}" required></textarea>
+        <input type="datetime-local" class="form-control" name="createdAt" th:value="${#temporals.format(board.createdAt,'yyyy-MM-dd HH:mm')}">
+    </div>
+</div>
+
+
+<script layout:fragment="script"></script>
+</html>
