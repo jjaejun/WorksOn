@@ -1,9 +1,12 @@
 package com.sh.workson.project.controller;
 
+import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.entity.AttachType;
 import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.project.dto.ProjectCreateDto;
+import com.sh.workson.project.dto.ProjectDetailDto;
 import com.sh.workson.project.dto.ProjectListDto;
 import com.sh.workson.project.entity.Project;
 import com.sh.workson.project.entity.Status;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,47 +64,53 @@ public class ProjectController {
     ){
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), pageable);
-
-        List<ProjectListDto> projectsIng = new ArrayList<>();
-        List<ProjectListDto> projectsDone = new ArrayList<>();
-
-        // ing랑 done 구분하기
-        for (ProjectListDto project: projects) {
-            if(project.getStatus().equals(Status.DONE.toString())){
-                projectsDone.add(project);
-            }
-            else if(project.getStatus().equals(Status.ING.toString())){
-                projectsIng.add(project);
-            }
-        }
+        // 사원이 생성한 프로젝트 조회
+        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), pageable);
 
         log.debug("project = {}", projects.getContent());
-        model.addAttribute("projects", projects.getContent());
-        model.addAttribute("projectsIng", projectsIng);
-        model.addAttribute("projectsDone", projectsDone);
-        model.addAttribute("totalCount", projects.getTotalElements());
+        model.addAttribute("projectEmp", projects.getContent());
+        model.addAttribute("projectEmpTotalCount", projects.getTotalElements());
+        model.addAttribute("projectOwner", projects2.getContent());
+        model.addAttribute("projectOwnerTotalCount", projects2.getTotalElements());
     }
 
+    @GetMapping("/createProject.do")
+    public void createProject(){};
+
     @PostMapping("/createProject.do")
-    public ResponseEntity<?> createProject(
+    public String createProject(
             ProjectCreateDto projectCreateDto,
             BindingResult bindingResult,
             @RequestParam(name = "files") List<MultipartFile> files,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             RedirectAttributes redirectAttributes
-    ){
+    ) throws IOException {
         log.debug("files = {}", files);
-        List<Attachment> attachments = new ArrayList<>();
+        log.debug("projectCreateDto = {}", projectCreateDto);
 
-//        // 첨부파일 S3에 저장
-//        for(MultipartFile file : files) {
-//            if(file.getSize() > 0){
-//                com.sh.app.attachment.dto.AttachmentCreateDto attachmentCreateDto = s3FileService.upload(file);
-//                log.debug("attachmentCreateDto = {}", attachmentCreateDto);
-//                boardCreateDto.addAttachmentCreateDto(attachmentCreateDto);
-//            }
-//        }
+        // 첨부파일 S3에 저장
+        for(MultipartFile file : files) {
+            log.debug("file = {}", file);
+            if(file.getSize() > 0){
+                AttachmentCreateDto attachmentCreateDto = s3FileService.upload(file, AttachType.PROJECT);
+                log.debug("attachmentCreateDto = {}", attachmentCreateDto);
+                projectCreateDto.addAttachmentCreateDto(attachmentCreateDto);
+            }
+        }
 
-        return null;
+        projectCreateDto.setEmployee(employeeDetails.getEmployee());
+        projectService.createProject(projectCreateDto);
+
+        return "redirect:/project/projectList.do";
+    }
+
+    @GetMapping("projectDetail.do")
+    public void projectDetail(
+            @RequestParam("id") Long id,
+            Model model
+    ){
+        ProjectDetailDto projectDetailDto = projectService.findById(id);
+        model.addAttribute("project", projectDetailDto);
+        log.debug("project = {}", projectDetailDto);
     }
 }

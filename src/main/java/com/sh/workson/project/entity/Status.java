@@ -1,5 +1,5 @@
 package com.sh.workson.project.entity;
 
 public enum Status {
-    ING, DONE;
+    NOT_YET, ING, DONE;
 }
