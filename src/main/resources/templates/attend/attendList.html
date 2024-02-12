@@ -76,7 +76,10 @@
             <table id="home-my-tbl">
                 <tbody>
                 <tr>
-                    <td id="year" colspan="2" class="font-14">현재 시간</td>
+                    <td id="year" colspan="2" class="font-14">clock</td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="clock" style="color:black;">clock</td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -90,11 +93,10 @@
 <!--                    <td colspan="2" th:text="${session.loginMember.deptTitle}"></td>-->
                 </tr>
                 <tr>
-                    <td colspan="2" id="clock">현재 시각</td>
-                </tr>
-                <tr>
                     <td class="font-14 font-bold">업무상태</td>
-                    <td class="text-right font-14 color-red font-bold" id="work-state" th:text="${attend.state.getDisplayName()}"></td>
+<!--                    <td class="text-right font-14 color-red font-bold" id="work-state" th:text="${attend.state.getDisplayName()}"></td>-->
+                    <td class="text-right font-14 color-red font-bold" id="work-state"
+                        th:text="${attend.state.getDisplayName() == 'late' || attend.state.getDisplayName() == 'work' ? '업무중' : (attend.state.getDisplayName() == 'quit' ? '퇴근' : '업무중')}"></td>
                 </tr>
                 <tr>
                     <td class="font-14 font-bold">출근시간</td>
@@ -103,7 +105,7 @@
 
                 <tr>
                     <td class="font-14 font-bold">퇴근시간</td>
-                    <td class="text-right font-14" id="endwork-time">미등록</td>
+                    <td class="text-right font-14" id="endwork-time" th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></td>
                 </tr>
                 <tr class="btn-tr">
                     <td><button class="font-bold" id="btn-startwork">출근하기</button></td>
