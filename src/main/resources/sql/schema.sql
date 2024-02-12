@@ -491,6 +491,7 @@ create table attend(
                        constraints pk_attend_id primary key(id),
                        constraints fk_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
+create sequence seq_attend_id start with 1 increment by 50;
 create table attend_request(
                                id number not null,
                                type varchar2(1000) not null,

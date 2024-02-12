@@ -38,23 +38,62 @@
             <div class="mt-32 w-full mx-16">
                 <div layout:fragment="content">
                     <div id="main_page">
-                            <li>
-                                <a>
-                                    <span class="ml-4">일정 만들기</span>
-                                </a>
-                            </li>
-                            <table style="margin-top: 15px" thead>
-                                    <tr>
-                                        <th>카테고리</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                        <div th:fragment="aside" class="flex h-screen bg-gray-50 flex-direction:">
+                            <!-- Desktop sidebar -->
+                            <aside id="calender-sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
+                                <div class="py-4 text-[#000000]">
+                                    <h1 class="mb-4 text-center text-xl bg-[#FFFFFF] font-bold hover:text-[#000000]">일정</h1>
 
+                                    <div class="px-6 mt-2">
+                                        <button th:onclick="|location.href='@{/schedule/createSchedule.do}'|" class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
+                                            <span class="ml-2" aria-hidden="true">새 일정 생성</span>
+                                        </button>
+                                    </div>
+                                    <div class="px-6 mt-2">
+                                        <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
+                                            <span class="ml-2" aria-hidden="true">카테고리 변경</span>
+                                        </button>
+                                    </div>
 
-                        </ul>
-                        <div id="v-line"></div>
+                                    <div class="text-xl p-2 py-4 text-center font-bold hover:text-[#000000]">
+                                    </div>
+                                    <div class="text-xl p-2 py-4 text-center font-bold hover:text-[#000000]">
+                                        <span>내 일정</span>
+                                        <hr class="mt-2">
+                                    </div>
+
+                                    <table class="ml-4">
+                                        <tbody class="items-center w-full text-sm font-semibold transition-colors duration-150 text-center">
+                                            <tr class="mr-2">
+                                                <td class="ml-2"><input type="checkbox"></td>
+                                                <td>카테고리1</td>
+                                                <td>
+                                                    <span class="inline-block h-4 w-4 rounded-full mt-2 ml-2 bg-[#3CFBFF]"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="text-xl p-2 py-4 text-center font-bold hover:text-[#000000]">
+                                        <span>팀원 일정</span>
+                                        <hr class="mt-2">
+                                    </div>
+                                    <table class="ml-4">
+                                        <tbody class="items-center w-full text-sm font-semibold transition-colors duration-150 text-center">
+                                        <tr class="mr-2">
+                                            <td class="ml-2"><input type="checkbox"></td>
+                                            <td>카테고리1</td>
+                                            <td>
+                                                <span class="inline-block h-4 w-4 rounded-full mt-2 ml-2 bg-[#3CFBFF]"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </aside>
+                    </div>
+                        <!--<div id="v-line"></div>-->
                         <div id='calendar'></div>
                     </div>
                 </div>

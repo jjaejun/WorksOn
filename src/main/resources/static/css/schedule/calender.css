@@ -5,8 +5,9 @@
     margin-left: auto;
 }
 #main_page{
-
-
+    display: flex;
+    flex-direction: row;
+    margin-left: -48px;
 }
 .fc-button-primary{
     color : #3788d8;
@@ -46,11 +47,11 @@ fc-header-toolbar{
 }
 
 
-#content{
-    display: flex;
-    flex-direction: row;
+/*#content{*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/
 
-}
 #v-line{
     margin: auto 10px;
     border-left: 1px solid black;
@@ -61,4 +62,16 @@ fc-header-toolbar{
 
 #category{
     margin-right: auto;
+}
+
+.calender-sidebar{
+
+}
+
+aside{
+    margin-top: -86px;
+}
+
+table, th, td {
+    text-align: center;
 }
