@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>프로젝트 메인</title>
+</head>
+<style layout:fragment="style">
+    .top-100 {top: 100%}
+    .bottom-100 {bottom: 100%}
+    .max-h-select {
+        max-height: 300px;
+    }
+</style>
+<div layout:fragment="content">
+    <div class="flex flex-wrap">
+        <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+             th:onclick="|location.href='@{/project/createProject.do}'|">
+            <button>
+                <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
+                <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
+            </button>
+        </div>
+
+
+
+    <div class="mx-auto w-4/5">
+        <div class="mx-auto w-full mb-10">
+            <h1 class="flex items-center">
+                <span class="mr-10 text-2xl font-bold">프로젝트 생성하기</span>
+                <span class="h-px flex-1 bg-gray-600"></span>
+            </h1>
+                <div class="relative w-2/3 mt-10 bg-white rounded-lg border border-gray-300 dark:bg-gray-700">
+                    <form class="p-4 md:p-5" name="projectCreateFrm" enctype="multipart/form-data" th:action="@{/project/createProject.do}" method="post">
+                        <div class="grid gap-4 mb-4 grid-cols-2">
+                            <div class="col-span-2">
+                                <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">프로젝트명</label>
+                                <input type="text" name="title" id="title"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                       placeholder="프로젝트명을 입력하세요" required>
+                            </div>
+                            <div class="col-span-2 flex justify-between">
+                                <div class="w-full mr-1">
+                                    <label for="startAt" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">시작일</label>
+                                    <input type="date" name="startAt" id="startAt"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                           required>
+                                </div>
+                                <div class="w-full ml-1">
+                                    <label for="endAt" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">종료일</label>
+                                    <input type="date" name="endAt" id="endAt"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-span-2 flex">
+                                <div class="w-full flex flex-col items-center mx-auto">
+                                    <div class="mb-2 w-full text-sm font-medium text-gray-900">참여사원</div>
+                                    <div class="w-full">
+                                        <div class="flex flex-col items-center relative">
+                                            <div class="w-full">
+                                                <div class="flex">
+                                                    <div id="createSelectArea" class="flex flex-auto flex-wrap">
+                                                        <!--선택된 요소 표현-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-full flex-1 my-2 p-1 flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg">
+                                                <input id="create-search-input" placeholder="사원이름을 검색하세요"
+                                                       class="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800">
+                                            </div>
+                                            <div id="create-search-list"
+                                                 class="absolute shadow top-100 bg-white z-40 w-full lef-0 rounded max-h-select overflow-y-auto">
+                                                <div class="flex flex-col w-full">
+                                                <!--검색결과-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-2 flex">
+                                <div class="w-full flex flex-col items-center mx-auto">
+                                    <div class="mb-2 w-full text-sm font-medium text-gray-900">참조사원</div>
+                                    <div class="w-full">
+                                        <div class="flex flex-col items-center relative">
+                                            <div class="w-full">
+                                                <div class="flex">
+                                                    <div id="readSelectArea" class="flex flex-auto flex-wrap">
+                                                        <!--선택된 요소 표현-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-full flex-1 my-2 p-1 flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg">
+                                                <input id="read-search-input" placeholder="사원이름을 검색하세요"
+                                                       class="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800">
+                                            </div>
+                                            <div id="read-search-list"
+                                                 class="absolute shadow top-100 bg-white z-40 w-full lef-0 rounded max-h-select overflow-y-auto">
+                                                <div class="flex flex-col w-full">
+                                                    <!--검색결과-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="files">파일 첨부</label>
+                                <div class="bg-gray-200 border mb-4 border-gray-300 z-40 w-full text-sm rounded max-h-[200px] overflow-y-auto">
+                                        <table id="fileArea" class="w-full whitespace-no-wrap">
+                                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                            <tr class="text-gray-700">
+                                                <td class="px-2 py-2">등록된 파일이 없습니다.</td>
+                                            </tr>
+                                            <!-- 반복되는 tr영역 -->
+                                            <!--tr 한줄 끝-->
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                       type="file" name="files" multiple id="files">
+
+                            </div>
+                        </div>
+                        <button type="submit" class="text-white mx-auto inline-flex items-center bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                            Create New Project
+                        </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script layout:fragment="script" th:src="@{/js/project/createProject.js}">
+</script>
+</html>

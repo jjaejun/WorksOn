@@ -57,12 +57,12 @@ public class Employee {
     private List<Authority> authorities;
 
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id", unique = false, nullable = true)
     private Position position;
 
     // 부서와 사원은 양방향 OneToMany ManyToOne으로 변경될 예정입니다..
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id", unique = false, nullable = true)
     private Department department;
 
