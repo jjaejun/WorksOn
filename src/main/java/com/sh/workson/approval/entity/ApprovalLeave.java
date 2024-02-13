@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -39,8 +41,8 @@ public class ApprovalLeave {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id")
-//    private Approval approval;
+
+
+
 
 }

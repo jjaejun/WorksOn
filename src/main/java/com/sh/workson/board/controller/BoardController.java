@@ -108,7 +108,7 @@ public class BoardController {
         BoardDetailDto boardDetailDto = boardService.findById(id);
         model.addAttribute("board" , boardDetailDto);
         log.debug("board = {}" , boardDetailDto);
-        
+
 
 
 
