@@ -336,12 +336,12 @@ create table approval_leave (
     , title varchar2(100) not null
     , start_date timestamp not null
     , end_date timestamp not null
-    , leave_content varchar2(500) 
+    , leave_content varchar2(500)
     , created_at timestamp default systimestamp
     , constraints pk_approval_leave_id primary key(id)
 );
 -- 결재 양식 관련 ex 연차/비품/협조 같은 시퀀스 사용예정 각 시퀀스 사용시 조인시 겹칠 우려 있어서 원하는 값이 조회 안될듯
-create sequence seq_approval_form_id start with 1 increment by 50; 
+create sequence seq_approval_form_id start with 1 increment by 50;
 
 -- 결재 비품신청 테이블
 create table approval_equipment (
@@ -373,17 +373,22 @@ create table approval_cooperation (
 );
 
 
--- 결재 테이블 테이블
+-- 결재 테이블
 create table approval (
-    id number not null
+      id number not null
     , emp_id number not null
-    , approval_type_id number
     , approval_start_date timestamp default systimestamp
     , approval_end_date timestamp
     , emergency varchar2(10) default 'N'
     , status varchar2(20) default '대기' not null
+    , approval_leave_id number
+    , approval_equipment_id number
+    , approval_cooperation_id number
     , constraints pk_approval_id primary key(id)
     , constraints fk_approval_employee_id foreign key(emp_id) references employee(id) on delete set null
+    , constraints fk_approval_approval_leave_id foreign key(approval_leave_id) references approval_leave(id) on delete set null
+    , constraints fk_approval_approval_equipment_id foreign key(approval_equipment_id) references approval_equipment(id) on delete set null
+    , constraints fk_approval_approval_cooperation_id foreign key(approval_cooperation_id) references approval_cooperation(id) on delete set null
     , constraints ck_approval_emergency check (emergency in ('Y', 'N'))
     , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
 );
@@ -391,7 +396,7 @@ create sequence seq_approval_id start with 1 increment by 50;
 
 -- 전자결재 첨부파일 테이블
 create table approval_attachment (
-    id number not null
+     id number not null
     , approval_id number not null
     , path varchar2(100) not null
     , renamed_filename varchar2(200) not null
@@ -399,14 +404,14 @@ create table approval_attachment (
     , type varchar2(30) not null
     , created_at timestamp default systimestamp
     , constraints pk_approval_attachment_id primary key(id)
-    , constraints fk_approval_attachment_id foreign key(approval_id) references approval(id) on delete set null
+    , constraints fk_approval_id foreign key(approval_id) references approval(id) on delete set null
 );
 create sequence seq_approval_attachment_id start with 1 increment by 50;
 
 
 -- 결재라인 테이블
 create table approval_line (
-    id number not null
+   id number not null
     , approval_id number not null
     , approver_id number not null
     , rejection varchar2(200)

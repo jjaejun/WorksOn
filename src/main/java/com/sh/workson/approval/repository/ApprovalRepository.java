@@ -31,15 +31,13 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         , le.title
     from
         employee e join approval a
-            on e.id = a.emp_id
-         join approval_form frm
-            on a.approval_form_id = frm.id  
+            on e.id = a.emp_id  
          join approval_leave le
-            on frm.approval_leave_id = le.id
+            on a.approval_leave_id = le.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
-        e.id = 251
+        e.id = 301
 """, nativeQuery = true)
     Page<Approval> findAllLeave(Pageable pageable);
 
@@ -51,14 +49,12 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     from
         employee e join approval a
             on e.id = a.emp_id
-         join approval_form frm
-            on a.approval_form_id = frm.id   
          join approval_equipment eq
-            on frm.approval_equipment_id = eq.id
+            on a.approval_equipment_id = eq.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
-        e.id = 251
+        e.id = 51
 """, nativeQuery = true)
     Page<Approval> findAllEquipment(Pageable pageable);
 
@@ -69,15 +65,13 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         , co.title
     from
         employee e join approval a
-            on e.id = a.emp_id
-         join approval_form frm
-            on a.approval_form_id = frm.id   
+            on e.id = a.emp_id   
          join approval_cooperation co
-            on frm.approval_cooperation_id = co.id
+            on a.approval_cooperation_id = co.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
-        e.id = 251
+        e.id = 1
 """, nativeQuery = true)
     Page<Approval> findAllCooperation(Pageable pageable);
 
