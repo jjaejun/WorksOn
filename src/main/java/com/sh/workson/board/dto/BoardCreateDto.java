@@ -21,11 +21,11 @@ public class BoardCreateDto {
     private Type type;
     @NotEmpty(message = "내용은 필수 입력 사항입니다.")
     private String content;
-    private List<AttachmentCreateDto> attachments = new ArrayList<>();
+    private List<AttachmentCreateDto> attaches = new ArrayList<>();
 
     private Employee employee;
     public void addAttachmentCreateDto(AttachmentCreateDto attachmentCreateDto){
-        this.attachments.add(attachmentCreateDto);
+        this.attaches.add(attachmentCreateDto);
     }
 
 }

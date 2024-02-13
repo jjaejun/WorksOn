@@ -3,11 +3,15 @@ package com.sh.workson.attachment.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.dto.AttachmentDetailDto;
 import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.attachment.entity.AttachType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,6 +60,7 @@ public class S3FileService {
         return new AttachmentCreateDto(null, attachType, upFile.getOriginalFilename(), key, url);
     }
 
+
     /**
      * Resource
      * - (5가지 특징 : IoC/DI, POJO, PSA, AOP)
@@ -73,12 +78,13 @@ public class S3FileService {
      * @param attachmentDetailDto
      * @return
      */
-//    public ResponseEntity<?> download(AttachmentDetailDto attachmentDetailDto) throws UnsupportedEncodingException {
-//        // http:// https:// 은 UrlResource구현 객체를 통해 자원을 획득
-//        Resource resource = resourceLoader.getResource(attachmentDetailDto.getUrl());
-//        return ResponseEntity
-//                .ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(attachmentDetailDto.getOriginalFilename(), "UTF-8"))
-//                .body(resource);
-//    }
+    public ResponseEntity<?> download(AttachmentDetailDto attachmentDetailDto) throws UnsupportedEncodingException {
+        // http:// https:// 은 UrlResource구현 객체를 통해 자원을 획득
+        Resource resource = resourceLoader.getResource(attachmentDetailDto.getUrl());
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(attachmentDetailDto.getOriginalFileName(), "UTF-8"))
+                .body(resource);
+    }
+
 }

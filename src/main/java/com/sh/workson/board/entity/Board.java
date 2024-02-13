@@ -36,8 +36,8 @@ public class Board {
     @JoinColumn(name = "emp_id")
     private Employee employee;
     private String content;
-    @Column(columnDefinition = "number") // 컬럼의 데이터 타입을 number로 지정
-    private Long viewCount;
+    @Column(columnDefinition = "number" ) // 컬럼의 데이터 타입을 number로 지정
+    private int viewCount;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @CreationTimestamp

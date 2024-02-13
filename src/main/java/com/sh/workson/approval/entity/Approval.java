@@ -28,8 +28,8 @@ public class Approval {
     )
     private Long id;
 
-    @Column(name = "approval_type_id")
-    private Long approvalTypeId;
+    @Column(name = "approval_form_id")
+    private Long approvalFormId;
 
     @CreationTimestamp
     @Column(name = "approval_start_date")

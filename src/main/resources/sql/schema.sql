@@ -180,7 +180,7 @@ create table board (
    type varchar2(30) not null,
    title varchar2(100) not null,
    content varchar2(4000) not null,
-   view_count number default 0,
+   view_count number  default 0,
    created_at timestamp default systimestamp,
    updated_at timestamp default systimestamp,
    emp_id number, -- fk on delete set null일 경우, not null이면 안되서 고쳤습니다~
