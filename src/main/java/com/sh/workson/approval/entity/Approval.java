@@ -57,17 +57,19 @@ public class Approval {
     @Builder.Default
     private List<ApprovalLine> approvalLines = new ArrayList<>();
 
-    // 브릿지 테이블이랑 연결
+    // approval_leave테이블이랑 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_leave_id") // approval_form. approval_leave_id 컬럼 참조
+    @JoinColumn(name = "approval_leave_id") // approval_leave 테이블의 외래키 컬럼명
     private ApprovalLeave approvalLeave;
 
+    // approval_equipment테이블이랑 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_equipment_id") // approval_form. approval_equipment_id 컬럼 참조
+    @JoinColumn(name = "approval_equipment_id") // approval_equipment 테이블의 외래키 컬럼명
     private ApprovalEquipment approvalEquipment;
 
+    // approval_cooperation테이블이랑 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_cooperation_id") // approval_form. approval_cooperation_id 컬럼 참조
+    @JoinColumn(name = "approval_cooperation_id") // approval_leave 테이블의 외래키 컬럼명
     private ApprovalCooperation approvalCooperation;
 
 

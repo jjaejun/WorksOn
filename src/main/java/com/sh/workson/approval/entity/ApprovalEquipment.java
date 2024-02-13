@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -46,6 +48,7 @@ public class ApprovalEquipment {
     @Column(nullable = false, name = "equipment_date")
     private Timestamp equipmentDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Approval approval;
+    @OneToMany(mappedBy = "approvalEquipment", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Approval> approvals = new ArrayList<>();
 }
