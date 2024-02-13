@@ -50,7 +50,7 @@ class ScheduleRepositoryTest {
                 .id(1L)
                 .color("blue")
                 .name("test일정")
-                .emp_id(employee)
+                .employee(employee)
                 .build();
         //when
         scheduleCategoryRepository.save(scheduleCategory);
@@ -75,7 +75,7 @@ class ScheduleRepositoryTest {
         ScheduleCategory scheduleCategory = scheduleCategoryRepository.findByNameAndEmpId(employee, name);
         //then
         assertThat(scheduleCategory).isNotNull();
-        assertThat(scheduleCategory.getEmp_id().getId()).isEqualTo(1L);
+        assertThat(scheduleCategory.getEmployee().getId()).isEqualTo(1L);
         assertThat(scheduleCategory.getName()).isNotNull();
         assertThat(scheduleCategory.getColor()).isNotNull();
     }
@@ -103,7 +103,7 @@ class ScheduleRepositoryTest {
         //given
         Employee employee = employeeRepository.findById(1L).orElse(null);
         ScheduleCategory scheduleCategory = ScheduleCategory.builder()
-                .emp_id(employee)
+                .employee(employee)
                 .name("테스트카테고리")
                 .color("red")
                 .build();
@@ -112,7 +112,7 @@ class ScheduleRepositoryTest {
                 .title("테스트 일정입니다")
                 .startTime(now)
                 .endTime(now.plusHours(2))
-                .emp_id(employee)
+                .employee(employee)
                 .scheduleCategory(scheduleCategory)
                 .content("schedule content 테스트")
                 .build();
@@ -122,7 +122,7 @@ class ScheduleRepositoryTest {
         assertThat(schedule).isNotNull();
         assertThat(schedule.getTitle()).isEqualTo("테스트 일정입니다");
         assertThat(schedule.getScheduleCategory()).isEqualTo(scheduleCategory);
-        assertThat(schedule.getEmp_id()).isEqualTo(employee);
+        assertThat(schedule.getEmployee()).isEqualTo(employee);
     }
 
     @DisplayName("일정 참여자 생성")
@@ -168,7 +168,7 @@ class ScheduleRepositoryTest {
         //given
         Employee employee = employeeRepository.findById(1L).orElse(null);
         //when
-        List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee);
+        List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee.getId());
 
         //then
         System.out.println(scheduleCategories);

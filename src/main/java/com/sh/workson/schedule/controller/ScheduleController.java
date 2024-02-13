@@ -4,6 +4,7 @@ import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.schedule.dto.CreateScheduleDto;
 import com.sh.workson.schedule.dto.ScheduleCategoryDto;
+import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.service.ScheduleCategoryService;
 import com.sh.workson.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
@@ -38,14 +39,22 @@ public class ScheduleController {
         log.debug("scheduleService = {}", scheduleService.getClass());
         log.debug("employee ={}", employeeDetails);
 
-        // List<ScheduleCategoryDto> scheduleCategoryDtos = scheduleCategoryService.findByEmpId(employeeDetails);
-        // log.debug("scheduleCategoryDtos = {}", scheduleCategoryDtos);
-        // model.addAttribute("scheduleCategories", scheduleCategoryDtos);
+        List<ScheduleCategoryDto> scheduleCategoryDtos = scheduleCategoryService.findByEmpId(employeeDetails);
+        log.debug("scheduleCategoryDtos = {}", scheduleCategoryDtos);
+        model.addAttribute("scheduleCategories", scheduleCategoryDtos);
     }
 
     @GetMapping("/createSchedule.do")
-    public void  createSchedule(){
-        log.info("scheduleService = {}", scheduleService.getClass());
+    public void  createSchedule(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model){
+        log.debug("scheduleService = {}", scheduleService.getClass());
+        log.debug("employee ={}", employeeDetails);
+
+        List<ScheduleCategoryDto> scheduleCategoryDtos = scheduleCategoryService.findByEmpId(employeeDetails);
+        log.debug("scheduleCategoryDtos = {}", scheduleCategoryDtos);
+        model.addAttribute("scheduleCategories", scheduleCategoryDtos);
+
 
     }
 

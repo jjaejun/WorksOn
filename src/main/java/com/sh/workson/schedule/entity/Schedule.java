@@ -39,7 +39,7 @@ public class Schedule {
     @OneToOne
     private ScheduleCategory scheduleCategory;
     @ManyToOne
-    @JoinColumn(name = "emp_id")
-    private Employee emp_id;
-
+    // @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="emp_id")
+    private Employee employee;
 }

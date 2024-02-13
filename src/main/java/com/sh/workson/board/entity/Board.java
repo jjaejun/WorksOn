@@ -26,7 +26,7 @@ public class Board {
             name = "seq_board_id_generator",
             sequenceName = "seq_board_id",
             initialValue = 1,
-            allocationSize = 50)
+            allocationSize = 1)
     private Long id;
     @Enumerated(EnumType.STRING)
     private Type type;

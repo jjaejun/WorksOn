@@ -42,8 +42,31 @@
                             <input type="text" class="form-control mb-3" placeholder="제목" name="title" id="title" required>
                             <div class="input-group mb-3" style="padding:0px;">
                             </div>
+                            <table id="category-list" class="table-header" style="margin: 0 auto" >
+                                <tbody>
+                                <tr th:each="category, status : ${scheduleCategories}" >
+                                    <td class="ml-2"><input type="checkbox"></td>
+                                    <td th:text="${category.name}"></td>
+                                    <td>
+                                        <span class="inline-block h-4 w-4 rounded-full mt-2 ml-2"
+                                              th:style="'background-color: ' + ${category.color}"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div style="margin-top: 10px; margin-bottom: 10px" >
+                                <label for="startTime">일정 시작시간</label>
+                                <input type="datetime-local" id="startTime">
+                            </div>
+                            <div style="margin-top: 10px; margin-bottom: 10px">
+                                <label for="endTime" th:style="ml-2">일정 종료시간</label>
+                                <input type="datetime-local" id="endTime">
+                            </div>
                             <textarea class="form-control mb-3" name="content" placeholder="내용" required></textarea>
-                            <input type="submit" class="btn btn-block btn-outline-success" value="저장">
+                            <button type="submit" class="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white">
+                                일정 저장
+                                <div class="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -51,6 +74,7 @@
         </section>
         <footer th:include="~{fragments/footer::footer}"></footer>
     </div>
-    <script layout:fragment="script"></script>
+    <script layout:fragment="script" th:src="@{/js/schedule/createSchedule.js}">
+    </script>
 </body>
 </html>

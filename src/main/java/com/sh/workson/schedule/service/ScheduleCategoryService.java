@@ -1,5 +1,6 @@
 package com.sh.workson.schedule.service;
 
+import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.schedule.dto.ScheduleCategoryDto;
 import com.sh.workson.schedule.entity.ScheduleCategory;
@@ -24,29 +25,10 @@ public class ScheduleCategoryService {
     @Autowired
     private ModelMapper modelMapper;
 
-    // public ScheduleCategoryDto findByEmpId(Employee employee) {
-    //     List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee);
-    //     // scheduleCategories.stream().map(())
-    //     // scheduleCategories.stream().map((scheduleCategory)->convertToScheduleCategoryDto(scheduleCategory));
-    //     List<ScheduleCategoryDto> scheduleCategoryDtos = scheduleCategories
-    //             .stream().map(this::convertToScheduleCategoryDto)
-    //             .collect(Collectors.toList());
-    //     log.debug("scheduleCategoryDtos = {}",scheduleCategoryDtos);
-    //     return null;
-    //
-    // }
-    //
-    // private ScheduleCategoryDto convertToScheduleCategoryDto(ScheduleCategory scheduleCategory){
-    //     ScheduleCategoryDto scheduleCategoryDto = modelMapper.map(scheduleCategory, ScheduleCategoryDto.class);
-    //     // scheduleCategoryDto.setEmployee(
-    //     //         Optional.ofNullable(scheduleCategory.getEmp_id())
-    //     //                 .map((employee) -> employee.getId())
-    //     //                 .orElse()
-    //     // );
-    //     return scheduleCategoryDto;
-    // }
-    public List<ScheduleCategoryDto> findByEmpId(Employee employee) {
-        List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee);
+    public List<ScheduleCategoryDto> findByEmpId(EmployeeDetails employeeDetails) {
+        Employee employee = employeeDetails.getEmployee();
+        Long id = employee.getId();
+        List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee.getId());
         List<ScheduleCategoryDto> scheduleCategoryDtos = scheduleCategories.stream()
                 .map(this::convertToScheduleCategoryDto)
                 .collect(Collectors.toList());
@@ -57,6 +39,4 @@ public class ScheduleCategoryService {
         ScheduleCategoryDto scheduleCategoryDto = modelMapper.map(scheduleCategory, ScheduleCategoryDto.class);
         return scheduleCategoryDto;
     }
-
-
 }

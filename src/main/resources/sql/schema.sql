@@ -198,6 +198,7 @@ select * from board;
 
 
 
+
 --댓글
 create table board_comment (
     id number not null,
@@ -215,6 +216,9 @@ create table board_comment (
     
 );
 create sequence seq_board_comment_id start with 1 increment by 50;
+
+
+
 
 --첨부파일
 create table attachment (
@@ -314,16 +318,16 @@ create sequence seq_reservation_id start with 1 increment by 50;
 -- 우진
 
 -- table drop
-
+--
 -- drop table approval_leave;
 -- drop table approval_equipment;
 -- drop table approval_cooperation;
 -- drop table approval_attachment;
 -- drop table approval_line;
 -- drop table approval;
-
--- sequence drop
-
+--
+---- sequence drop
+--
 -- drop sequence seq_approval_form_id;
 -- drop sequence seq_approval_id;
 -- drop sequence seq_approval_attachment_id;
