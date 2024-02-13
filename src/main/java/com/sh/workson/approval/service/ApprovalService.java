@@ -30,6 +30,7 @@ public class ApprovalService {
     public Page<ApprovalHomeLeaveDto> findAllLeave(Pageable pageable) {
         Page<Approval> approvalPage = approvalRepository.findAllLeave(pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeLeaveDto(approval));
+//        return approvalRepository.findAllLeave(pageable);
     }
 
 
@@ -46,50 +47,21 @@ public class ApprovalService {
 
 //        // name 부분
 //        approvalHomeDto.setName(
-//                Optional.ofNullable(approvalLeave.getApprovalLeaves())
-//                        .map(approvalLeave -> approvalLeave.get(0).getName())
+//                Optional.ofNullable(approval.getApprovalFormId())
+//                        .map(approvalLeaves -> approvalLeaves.getName())
 //                        .orElse(null)
 //        );
 //
-//        // title 부분
+//        // title 부분 수정
 //        approvalHomeDto.setTitle(
 //                Optional.ofNullable(approval.getApprovalLeaves())
-//                        .map(approvalLeave -> approvalLeave.get(0).getName())
+//                        .map(approvalLeave -> approvalLeave.get(0).getTitle())
 //                        .orElse(null)
 //        );
 
         return approvalHomeDto;
     }
 
-
-
-//    public ApprovalHomeLeaveDto convertToApprovalHomeDto(Long approvalTypeId) {
-//        Approval approval = approvalRepository.findById(approvalTypeId).orElse(null);
-//
-//        if (approval == null) {
-//            // 처리할 내용 추가
-//        }
-//
-//        ApprovalHomeLeaveDto approvalHomeDto = modelMapper.map(approval, ApprovalHomeLeaveDto.class);
-//
-//        // approval_id 부분
-//        approvalHomeDto.setEmpId(
-//                Optional.ofNullable(approval.getEmployee())
-//                        .map((employee) -> employee.getName())
-//                        .orElse(null)
-//        );
-//
-//        // approval_leave 정보 가져오기
-//        List<ApprovalLeave> approvalLeaves = approvalRepository.findApprovalLeavesByApprovalId(approvalTypeId);
-//        if (!approvalLeaves.isEmpty()) {
-//            ApprovalLeave firstApprovalLeave = approvalLeaves.get(0);
-//
-//            approvalHomeDto.setName(firstApprovalLeave.getName());
-//            approvalHomeDto.setTitle(firstApprovalLeave.getTitle());
-//        }
-//
-//        return approvalHomeDto;
-//    }
 
     public Page<ApprovalHomeEquipmentDto> findAllEquipment(Pageable pageable) {
         Page<Approval> approvalPage = approvalRepository.findAllEquipment(pageable);
@@ -126,4 +98,6 @@ public class ApprovalService {
 
         return approvalHomeDto;
     }
+
+
 }
