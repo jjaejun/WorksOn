@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -48,8 +50,9 @@ public class ApprovalCooperation {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Approval approval;
+    @OneToMany(mappedBy = "approvalCooperation", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Approval> approvals = new ArrayList<>();
 
 
 }

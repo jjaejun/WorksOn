@@ -45,19 +45,20 @@ public class ApprovalService {
                         .orElse(null)
         );
 
-//        // name 부분
-//        approvalHomeDto.setName(
-//                Optional.ofNullable(approval.getApprovalFormId())
-//                        .map(approvalLeaves -> approvalLeaves.getName())
-//                        .orElse(null)
-//        );
-//
-//        // title 부분 수정
-//        approvalHomeDto.setTitle(
-//                Optional.ofNullable(approval.getApprovalLeaves())
-//                        .map(approvalLeave -> approvalLeave.get(0).getTitle())
-//                        .orElse(null)
-//        );
+
+        // name 부분
+        approvalHomeDto.setName(
+                Optional.ofNullable(approval.getApprovalLeave())
+                        .map(approvalLeaves -> approvalLeaves.getName())
+                        .orElse(null)
+        );
+
+        // title 부분 수정
+        approvalHomeDto.setTitle(
+                Optional.ofNullable(approval.getApprovalLeave())
+                        .map(approvalLeave -> approvalLeave.getTitle())
+                        .orElse(null)
+        );
 
         return approvalHomeDto;
     }
@@ -78,6 +79,20 @@ public class ApprovalService {
                         .orElse(null)
         );
 
+        // name 부분
+        approvalHomeDto.setName(
+                Optional.ofNullable(approval.getApprovalEquipment())
+                        .map(approvalLeaves -> approvalLeaves.getName())
+                        .orElse(null)
+        );
+
+        // title 부분 수정
+        approvalHomeDto.setTitle(
+                Optional.ofNullable(approval.getApprovalEquipment())
+                        .map(approvalLeave -> approvalLeave.getTitle())
+                        .orElse(null)
+        );
+
         return approvalHomeDto;
     }
 
@@ -93,6 +108,20 @@ public class ApprovalService {
         approvalHomeDto.setEmpId(
                 Optional.ofNullable(approval.getEmployee())
                         .map((employee) -> employee.getName())
+                        .orElse(null)
+        );
+
+        // name 부분
+        approvalHomeDto.setName(
+                Optional.ofNullable(approval.getApprovalCooperation())
+                        .map(approvalLeaves -> approvalLeaves.getName())
+                        .orElse(null)
+        );
+
+        // title 부분 수정
+        approvalHomeDto.setTitle(
+                Optional.ofNullable(approval.getApprovalCooperation())
+                        .map(approvalLeave -> approvalLeave.getTitle())
                         .orElse(null)
         );
 

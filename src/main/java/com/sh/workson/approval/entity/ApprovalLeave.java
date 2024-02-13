@@ -5,7 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,7 +43,9 @@ public class ApprovalLeave {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-
+    @OneToMany(mappedBy = "approvalLeave", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Approval> approvals = new ArrayList<>();
 
 
 
