@@ -311,16 +311,16 @@ create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 우진
 
--- table drop
+-- 테이블 일괄 삭제 시
 
+-- drop table approval_line;
+-- drop table approval_attachment;
+-- drop table approval;
 -- drop table approval_leave;
 -- drop table approval_equipment;
 -- drop table approval_cooperation;
--- drop table approval_attachment;
--- drop table approval_line;
--- drop table approval;
 
--- sequence drop
+-- 시퀀스 일괄 삭제시
 
 -- drop sequence seq_approval_form_id;
 -- drop sequence seq_approval_id;
@@ -358,7 +358,7 @@ create table approval_equipment (
 
 -- 결재 협조 테이블
 create table approval_cooperation (
-    id number not null
+  id number not null
     , name varchar2(20) default '협조 신청' not null
     , title varchar2(100) not null
     , content varchar2(2000)
@@ -373,8 +373,9 @@ create table approval_cooperation (
 
 -- 결재 테이블
 create table approval (
-      id number not null
+  id number not null
     , emp_id number not null
+    , emp_receives_id number
     , approval_start_date timestamp default systimestamp
     , approval_end_date timestamp
     , emergency varchar2(10) default 'N'
@@ -384,6 +385,7 @@ create table approval (
     , approval_cooperation_id number
     , constraints pk_approval_id primary key(id)
     , constraints fk_approval_employee_id foreign key(emp_id) references employee(id) on delete set null
+    , constraints fk_approval_employee_receives_id foreign key(emp_receives_id) references employee(id) on delete set null
     , constraints fk_approval_approval_leave_id foreign key(approval_leave_id) references approval_leave(id) on delete set null
     , constraints fk_approval_approval_equipment_id foreign key(approval_equipment_id) references approval_equipment(id) on delete set null
     , constraints fk_approval_approval_cooperation_id foreign key(approval_cooperation_id) references approval_cooperation(id) on delete set null
