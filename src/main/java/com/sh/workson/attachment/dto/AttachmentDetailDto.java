@@ -1,5 +1,6 @@
 package com.sh.workson.attachment.dto;
 
+import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.Column;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,4 +16,6 @@ public class AttachmentDetailDto {
     private String key;
     private String url;
     private LocalDateTime createdAt;
+
+    private Employee employee;
 }

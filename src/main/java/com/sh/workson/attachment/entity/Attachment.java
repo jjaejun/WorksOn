@@ -1,5 +1,6 @@
 package com.sh.workson.attachment.entity;
 
+import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +37,9 @@ public class Attachment {
     private String url;
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_id")
+    private Employee employee;
 }
