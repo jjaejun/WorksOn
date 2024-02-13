@@ -126,16 +126,16 @@
                         <div class="absolute top-6 right-4 mt-0.5 text-xl font-medium text-gray-900" th:text="${project.status == 'ING' ? '진행중' : '완료'}"></div>
                         <div class="absolute top-6 left-4">
                             <div class="flex items-center no-underline hover:underline text-black">
+                                <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
+                                    <img width="50px" alt="사원 프로필 사진" class="block rounded-full" th:src="${(project.employee.profileUrl != null) ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                                </div>
                                 <div>
                                     <p th:text="|${project.employee.deptName}|"
-                                       class="ml-2 text-sm">
+                                       class="ml-2 text-sm text-blue-700 font-bold">
                                     </p>
                                     <p th:text="|${project.employee.name} ${project.employee.positionName}|"
                                        class="ml-2 text-sm">
                                     </p>
-                                </div>
-                                <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
-                                    <img width="50px" alt="사원 프로필 사진" class="block rounded-full" th:src="|${(project.employee.profileUrl != 'null') ? project.employee.profileUrl : 'C:/Workspaces/WorksOn/src/main/resources/static/image/employee/profile.png'}|">
                                 </div>
                             </div>
                         </div>
@@ -144,10 +144,11 @@
                             <h2 class="w-full pb-2 text-xl font-medium text-gray-900" th:text="${project.title}"></h2>
                             <div class="w-full flex flex-wrap gap-1">
                                 <span th:text="|${#temporals.format(project.startAt, 'yyyy/MM/dd')}|"
-                                class="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-xs text-purple-600">
+                                class="whitespace-nowrap rounded-full border border-gray-300 bg-gray-50 px-2.5 py-0.5 text-xs text-purple-600">
                                 </span>
+                                ~
                                 <span th:text="|${#temporals.format(project.endAt, 'yyyy/MM/dd')}|"
-                                      class="whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-xs text-red-600">
+                                      class="whitespace-nowrap rounded-full border border-gray-300 bg-gray-50 px-2.5 py-0.5 text-xs text-red-600">
                                 </span>
                             </div>
                         </div>
@@ -171,16 +172,16 @@
                             <div class="absolute top-6 right-4 mt-0.5 text-xl font-medium text-gray-900" th:text="${project.status == 'ING' ? '진행중' : '완료'}"></div>
                             <div class="absolute top-6 left-4">
                                 <div class="flex items-center no-underline hover:underline text-black">
+                                    <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
+                                        <img width="50px" alt="사원 프로필 사진" class="block rounded-full" th:src="${(project.employee.profileUrl != null) ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                                    </div>
                                     <div>
                                         <p th:text="|${project.employee.deptName}|"
-                                           class="ml-2 text-sm">
+                                           class="ml-2 text-sm text-blue-700 font-bold">
                                         </p>
                                         <p th:text="|${project.employee.name} ${project.employee.positionName}|"
                                            class="ml-2 text-sm">
                                         </p>
-                                    </div>
-                                    <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
-                                        <img width="50px" alt="사원 프로필 사진" class="block rounded-full" th:src="|${(project.employee.profileUrl != 'null') ? project.employee.profileUrl : 'C:/Workspaces/WorksOn/src/main/resources/static/image/employee/profile.png'}|">
                                     </div>
                                 </div>
                             </div>
@@ -189,11 +190,11 @@
                                 <h2 class="w-full pb-2 text-xl font-medium text-gray-900" th:text="${project.title}"></h2>
                                 <div class="w-full flex flex-wrap gap-1">
                                 <span th:text="|${#temporals.format(project.startAt, 'yyyy/MM/dd')}|"
-                                      class="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-xs text-purple-600">
+                                      class="whitespace-nowrap rounded-full border border-gray-300 bg-gray-50 px-2.5 py-0.5 text-xs text-purple-600">
                                 </span>
                                     ~
                                     <span th:text="|${#temporals.format(project.endAt, 'yyyy/MM/dd')}|"
-                                          class="whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-xs text-red-600">
+                                          class="whitespace-nowrap rounded-full border border-gray-300 bg-gray-50 px-2.5 py-0.5 text-xs text-red-600">
                                 </span>
                                 </div>
                             </div>

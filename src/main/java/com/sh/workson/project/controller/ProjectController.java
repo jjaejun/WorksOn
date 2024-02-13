@@ -104,7 +104,7 @@ public class ProjectController {
         return "redirect:/project/projectList.do";
     }
 
-    @GetMapping("projectDetail.do")
+    @GetMapping("/projectDetail.do")
     public void projectDetail(
             @RequestParam("id") Long id,
             Model model

@@ -8,6 +8,7 @@ import lombok.Data;
 public class EmployeeSearchDto {
     private Long id;
     private String name;
+    private String profileUrl;
     private Department department;
     private Position position;
 }
