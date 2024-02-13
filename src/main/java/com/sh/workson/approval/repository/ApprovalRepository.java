@@ -32,8 +32,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     from
         employee e join approval a
             on e.id = a.emp_id
+         join approval_form frm
+            on a.approval_form_id = frm.id  
          join approval_leave le
-            on a.approval_type_id = le.id
+            on frm.approval_leave_id = le.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
@@ -49,8 +51,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     from
         employee e join approval a
             on e.id = a.emp_id
+         join approval_form frm
+            on a.approval_form_id = frm.id   
          join approval_equipment eq
-            on a.approval_type_id = eq.id
+            on frm.approval_equipment_id = eq.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
@@ -66,8 +70,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     from
         employee e join approval a
             on e.id = a.emp_id
+         join approval_form frm
+            on a.approval_form_id = frm.id   
          join approval_cooperation co
-            on a.approval_type_id = co.id
+            on frm.approval_cooperation_id = co.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
@@ -83,6 +89,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
 //    WHERE a.id = 251
 //""", nativeQuery = true)
 //    List<ApprovalLeave> findApprovalLeavesByApprovalId(@Param("approvalId") Long approvalId);
+
+//    @Query("SELECT al FROM ApprovalLeave al WHERE al.id = :approvalTypeId")
+//    List<ApprovalLeave> findApprovalLeavesByApprovalId(@Param("approvalTypeId") Long approvalTypeId);
 
 
 }

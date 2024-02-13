@@ -10,7 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table
 @Entity
@@ -27,9 +29,6 @@ public class Approval {
             sequenceName = "seq_approval_id"
     )
     private Long id;
-
-    @Column(name = "approval_type_id")
-    private Long approvalTypeId;
 
     @CreationTimestamp
     @Column(name = "approval_start_date")
@@ -58,21 +57,20 @@ public class Approval {
     @Builder.Default
     private List<ApprovalLine> approvalLines = new ArrayList<>();
 
-    // fk제약 조건 없이 필드에 선언
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "approval_type_id")
-//    @Builder.Default
-//    private List<ApprovalCooperation> approvalCooperations = new ArrayList<>();
-//
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "approval_type_id")
-//    @Builder.Default
-//    private List<ApprovalEquipment> approvalEquipments = new ArrayList<>();
+    // 브릿지 테이블이랑 연결
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_leave_id") // approval_form. approval_leave_id 컬럼 참조
+    private ApprovalLeave approvalLeave;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "approval_type_id")
-//    @Builder.Default
-//    private List<ApprovalLeave> approvalLeaves = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_equipment_id") // approval_form. approval_equipment_id 컬럼 참조
+    private ApprovalEquipment approvalEquipment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_cooperation_id") // approval_form. approval_cooperation_id 컬럼 참조
+    private ApprovalCooperation approvalCooperation;
+
+
 
 
 
