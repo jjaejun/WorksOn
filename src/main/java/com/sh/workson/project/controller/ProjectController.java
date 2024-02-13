@@ -95,6 +95,7 @@ public class ProjectController {
             log.debug("file = {}", file);
             if(file.getSize() > 0){
                 AttachmentCreateDto attachmentCreateDto = s3FileService.upload(file, AttachType.PROJECT);
+                attachmentCreateDto.setEmployee(employeeDetails.getEmployee());
                 log.debug("attachmentCreateDto = {}", attachmentCreateDto);
                 projectCreateDto.addAttachmentCreateDto(attachmentCreateDto);
             }

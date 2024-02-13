@@ -12,11 +12,14 @@ document.querySelector("#employees-tab").addEventListener('click', (e) => {
             console.log(response);
             tbody.innerHTML = '';
 
-            response.forEach((emp) => {
+            response.forEach((emp, i) => {
                 const {employee, role} = emp;
 
                 tbody.innerHTML += `
                 <tr>
+                    <td class="px-4 py-3 text-sm">
+                        ${i + 1}
+                    </td>
                     <td class="px-4 py-3">
                         <div class="flex items-center text-sm">
                             <!-- Avatar with inset shadow -->
@@ -31,22 +34,24 @@ document.querySelector("#employees-tab").addEventListener('click', (e) => {
                             </div>
                             <div>
                                 <p class="font-semibold">${employee.name}</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">
-                                    10x Developer
-                                </p>
                             </div>
                         </div>
                     </td>
                     <td class="px-4 py-3 text-sm">
-                        $ 863.45
+                        ${employee.position.name}
                     </td>
                     <td class="px-4 py-3 text-sm">
-                        6/10/2020
+                        ${employee.department.name}
+                    </td>
+                    <td class="px-4 py-3 text-sm">
+                        ${employee.email}
                     </td>
                     <td class="px-4 py-3 text-xs">
-                    <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                      Approved
-                    </span>
+                        <span
+                                class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full"
+                        >
+                          ${role === 'CREATE' ? '편집가능' : '조회가능'}
+                        </span>
                     </td>
                 </tr>
                 `;

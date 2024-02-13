@@ -53,7 +53,7 @@ public class S3FileService {
         // url 조회
         String url = amazonS3Client.getUrl(bucket, key).toString();
 
-        return new AttachmentCreateDto(null, attachType, upFile.getOriginalFilename(), key, url);
+        return new AttachmentCreateDto(null, attachType, upFile.getOriginalFilename(), key, url, null);
     }
 
     /**
