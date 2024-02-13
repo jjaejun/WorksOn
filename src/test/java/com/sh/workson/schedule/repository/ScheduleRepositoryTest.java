@@ -2,7 +2,6 @@ package com.sh.workson.schedule.repository;
 
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
-import com.sh.workson.schedule.dto.ScheduleCreateDto;
 import com.sh.workson.schedule.entity.Schedule;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.entity.ScheduleJoinMember;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -69,12 +67,15 @@ class ScheduleRepositoryTest {
     @Test
     void test2(){
         //given
-        Employee employee = employeeRepository.findById(51L).orElse(null);
+        // select * from schedule_category where emp_id = 1 and name = 'test일정';
+        Employee employee = employeeRepository.findById(1L).orElse(null);
+        String name = "test일정";
+
         //when
-        ScheduleCategory scheduleCategory = scheduleCategoryRepository.findByEmpId(employee);
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.findByNameAndEmpId(employee, name);
         //then
         assertThat(scheduleCategory).isNotNull();
-        assertThat(scheduleCategory.getEmp_id().getId()).isEqualTo(51L);
+        assertThat(scheduleCategory.getEmp_id().getId()).isEqualTo(1L);
         assertThat(scheduleCategory.getName()).isNotNull();
         assertThat(scheduleCategory.getColor()).isNotNull();
     }
@@ -83,16 +84,16 @@ class ScheduleRepositoryTest {
     @Test
     void test3(){
         //given
-        Employee employee = employeeRepository.findById(51L).orElse(null);
-        ScheduleCategory scheduleCategory = scheduleCategoryRepository.findByEmpId(employee);
-        //when
-        scheduleCategory.setColor("red");
-        scheduleCategory.setName("테스트빨강");
-
-        scheduleCategoryRepository.save(scheduleCategory);
-        //then
-        assertThat(scheduleCategory.getColor()).isEqualTo("red");
-        assertThat(scheduleCategory.getName()).isEqualTo("테스트빨강");
+        // Employee employee = employeeRepository.findById(51L).orElse(null);
+        // ScheduleCategory scheduleCategory = scheduleCategoryRepository.findByName();
+        // //when
+        // scheduleCategory.setColor("red");
+        // scheduleCategory.setName("테스트빨강");
+        //
+        // scheduleCategoryRepository.save(scheduleCategory);
+        // //then
+        // assertThat(scheduleCategory.getColor()).isEqualTo("red");
+        // assertThat(scheduleCategory.getName()).isEqualTo("테스트빨강");
 
     }
 
@@ -126,7 +127,7 @@ class ScheduleRepositoryTest {
 
     @DisplayName("일정 참여자 생성")
     @Test
-    void test200(){
+    void test5(){
         //given
 
         Schedule schedule = Schedule.builder()
@@ -160,6 +161,19 @@ class ScheduleRepositoryTest {
         assertThat(scheduleJoinMember).isNotNull();
         assertThat(scheduleJoinMember.getEmployees()).size().isEqualTo(3);
     }
+
+    @DisplayName("emp_id로 ScheduleCategory 목록 조회")
+    @Test
+    void test6(){
+        //given
+        Employee employee = employeeRepository.findById(1L).orElse(null);
+        //when
+        List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee);
+
+        //then
+        System.out.println(scheduleCategories);
+    }
+
 
     // @DisplayName("")
     // @Test

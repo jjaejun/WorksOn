@@ -91,8 +91,8 @@ create sequence seq_authority_id start with 1 increment by 50;
 create table project (
     id number not null,
     title varchar2(2000) not null,
-    created_at timestamp,
-    end_at timestamp,
+    start_at date,
+    end_at date,
     updated_at timestamp,
     status varchar2(100),
     owner_id number,
@@ -101,6 +101,10 @@ create table project (
 );
 create sequence seq_project_id start with 1 increment by 50;
 
+
+
+
+select * from project;
 -- 프로젝트 참여사원
 create table project_employee (
     id number not null,
@@ -140,8 +144,8 @@ create table task (
     name varchar2(1000) not null,
     content varchar2(4000),
     priority number default 1,
-    start_at timestamp not null,
-    end_at timestamp,
+    start_at date not null,
+    end_at date,
     status varchar2(30),
     owner_id number,
     emp_id number,
@@ -152,6 +156,7 @@ create table task (
     constraint fk_task_project_id foreign key (project_id) references project(id) on delete cascade
 );
 create sequence seq_task_id start with 1 increment by 50;
+
 
 -- 프로젝트 이슈
 create table issue (
