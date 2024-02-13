@@ -185,3 +185,17 @@ insert into authority values (seq_authority_id.nextval, 651, 'ROLE_EMP');
 insert into authority values (seq_authority_id.nextval, 701, 'ROLE_EMP');
 insert into authority values (seq_authority_id.nextval, 751, 'ROLE_EMP');
 insert into authority values (seq_authority_id.nextval, 801, 'ROLE_EMP');
+
+-- 재준
+-- resource
+insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 A', '호산빌딩 2층', '테이블 7개/의자 14개/스크린 1개(47인치)/무선 마이크 2개', 'Room');
+insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 B', '호산빌딩 3층', '테이블 5개/의자 10개/스크린 1개(38인치)/무선 마이크 2개', 'Room');
+insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 C', '호산빌딩 4층', '테이블 10개/의자 20개/스크린 1개(60인치)/무선 마이크 2개', 'Room');
+
+insert into tb_resource values (seq_tb_resource_id.nextval, '맥북 에어', '인사과 이민정 사원에게 대여 가능', '13.3인치/CPU : M1/RAM : 8GB/SSD : 256GB', 'Notebook');
+insert into tb_resource values (seq_tb_resource_id.nextval, '갤럭시북4 프로', '인사과 이민정 사원에게 대여 가능', '16인치/CPU : Ultra7/RAM : 16GB/SSD : 512GB', 'Notebook');
+insert into tb_resource values (seq_tb_resource_id.nextval, '그램 2022', '인사과 이민정 사원에게 대여 가능', '15.6인치/CPU : i5-12세대/RAM : 16GB/SSD : 256GB', 'Notebook');
+
+insert into tb_resource values (seq_tb_resource_id.nextval, '아반떼', 'B2층 A-2', 'LPG/트렁크 공간 좁음', 'Car');
+insert into tb_resource values (seq_tb_resource_id.nextval, '소나타', 'B2층 A-1', '가솔린/범퍼 우측 찌그러짐, 조수석 문 긁힘', 'Car');
+insert into tb_resource values (seq_tb_resource_id.nextval, '그렌저', 'B2층 A-3', '가솔린/침수차량', 'Car');

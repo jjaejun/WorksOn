@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/reservation_default}">
+<head>
+    <title>예약 | 메인페이지</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <h1>전자 결재홈</h1>
+    <table id="tbl-approval-leave" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
+        <thead>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <th class="px-4 py-2">이름</th>
+            <th class="px-4 py-2">장소</th>
+            <th class="px-4 py-2">정보</th>
+            <th class="px-4 py-2">더보기</th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+<!--        <tr th:each="approval, status : ${approvalLeave}" th:data-approval-id="${approval.id}">-->
+<!--            <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>-->
+<!--            <td class="border px-4 py-2" th:text="${approval.name}"></td>-->
+<!--            <td class="border px-4 py-2" th:text="${approval.title}"></td>-->
+<!--            <td class="border px-4 py-2" th:text="${approval.emergency}"></td>-->
+<!--            <td class="border px-4 py-2" th:text="${approval.empId}"></td>-->
+<!--            <td class="border px-4 py-2">-->
+<!--                <img th:if="${approval.attachCount > 0}" th:src="@{/images/profile.png}" width="16px">-->
+<!--            </td>-->
+<!--            <td class="border px-4 py-2" th:text="${approval.status}"></td>-->
+<!--        </tr>-->
+        </tbody>
+    </table>
+
+</div>
+    <script layout:fragment="script">
+    </script>
+</html>
