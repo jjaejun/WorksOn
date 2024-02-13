@@ -170,4 +170,166 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         a.emp_receives_id = :id
 """, nativeQuery = true)
     Page<Approval> findReCooperation(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status in ('승인', '반려')
+""", nativeQuery = true)
+    Page<Approval> findCheckLeave(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status in ('승인', '반려')
+""", nativeQuery = true)
+    Page<Approval> findCheckEquipment(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status in ('승인', '반려')
+""", nativeQuery = true)
+    Page<Approval> findCheckCooperation(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status in ('진행중')
+""", nativeQuery = true)
+    Page<Approval> findProceedingLeave(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status in ('진행중')
+""", nativeQuery = true)
+    Page<Approval> findProceedingEquipment(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status in ('진행중')
+""", nativeQuery = true)
+    Page<Approval> findProceedingCooperation(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        a.emp_receives_id = :id
+        and a.status in ('대기', '진행중')
+""", nativeQuery = true)
+    Page<Approval> findReceiveLeave(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        a.emp_receives_id = :id
+        and a.status in ('대기', '진행중')
+""", nativeQuery = true)
+    Page<Approval> findReceiveEquipment(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        a.emp_receives_id = :id
+        and a.status in ('대기', '진행중')
+""", nativeQuery = true)
+    Page<Approval> findReceiveCooperation(Long id, Pageable pageable);
 }
