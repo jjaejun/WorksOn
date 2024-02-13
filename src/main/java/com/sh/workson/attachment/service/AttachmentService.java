@@ -40,7 +40,6 @@ public class AttachmentService {
         projectAttachmentDetailDto.setEmpDeptName(attachment.getEmployee().getDepartment().getName());
         projectAttachmentDetailDto.setEmpName(attachment.getEmployee().getName());
         projectAttachmentDetailDto.setEmpPositionName(attachment.getEmployee().getPosition().getName());
-        projectAttachmentDetailDto.setCreatedAt(attachment.getCreatedAt());
         return projectAttachmentDetailDto;
     }
 

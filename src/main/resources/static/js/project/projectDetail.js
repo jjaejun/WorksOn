@@ -1,7 +1,42 @@
+const formattedCreatedAt = (createdAt) => {
+    const date = new Date(createdAt);
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+}
+const findDot = (src) => {
+    return src.split(".").pop();
+}
+
+const applyFileImg = (ext, src) => {
+    const lowerExt = ext.toLowerCase();
+
+    let html = '';
+    switch (lowerExt) {
+        case "jpeg" : html = `<img class="object-cover w-full" src="${src}" alt="">`; break;
+        case "jpg" : html = `<img class="object-cover w-full" src="${src}" alt="">`; break;
+        case "png" : html = `<img class="object-cover w-full" src="${src}" alt="">`; break;
+        case "svg" : html = `<img class="object-cover w-full" src="${src}" alt="">`; break;
+        case "bmp" : html = `<img class="object-cover w-full" src="${src}" alt="">`; break;
+        case "txt" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-txt-file-format-5719989.png" alt="">`; break;
+        case "xlsx" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-xlsx-file-format-5720013.png" alt="">`; break;
+        case "rar" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-rar-file-format-5719948.png" alt="">`; break;
+        case "pptx" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-pptx-file-format-5719937.png" alt="">`; break;
+        case "iso" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-iso-file-format-5719803.png" alt="">`; break;
+        case "html" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-html-file-format-5719779.png" alt="">`; break;
+        case "docx" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-docx-file-format-5719745.png" alt="">`; break;
+        case "zip" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-zip-file-format-5721939.png" alt="">`; break;
+    }
+    console.log(lowerExt);
+    console.log(html);
+    return html;
+}
+
 document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
     const frm = document.attachUploadFrm;
     const ul = document.querySelector("#files ul");
     const lis = ul.querySelectorAll("li");
+    const tbody = document.querySelector("#fileArea tbody");
+
+
     console.log(lis.length)
 
     const frmData = new FormData(frm);
@@ -18,22 +53,24 @@ document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
         success(response) {
             console.log(response);
             frm.reset();
-            const close = document.querySelector("#closeBtn");
+            tbody.innerHTML = '';
 
+            const close = document.querySelector("#closeBtn");
+            const now = new Date();
             response.forEach((attach, i) => {
 
                 ul.insertAdjacentHTML("afterbegin", `
-                <li class="w-fit h-fit bg-gray-100 rounded-lg mb-2 mr-2 attaches"
+                <li class="w-fit h-fit bg-gray-100 hover:bg-blue-100 rounded-lg mb-2 mr-2 attaches cursor-pointer"
                     onclick="attachDownload(${lis.length + i});" data-attach-id="${attach.id}" data-attach-url="${attach.url}"
                     id="attach${lis.length + i}">
                     <div class="p-2 w-fit overflow-hidden">
-                        <h1 class="w-40 font-bold text-md m-1 ">${attach.originalFilename}</h1>
-                        <div class="w-40 m-1">
-                            <img th:src="@{/image/attachment/PDF_file_icon.svg}" alt="">
+                        <h1 class="w-40 font-bold text-md m-1 mb-2">${attach.originalFilename}</h1>
+                        <div class="w-40 m-1 flex items-center justify-center bg-white>
+                            ${applyFileImg(findDot(attach.originalFileName), attach.url)}
                         </div>
                         <div>
                             <p class="w-40 text-sm m-1">${attach.empName}</p>
-                            <p class="w-40 text-sm m-1">${attach.createdAt}</p>
+                            <p class="w-40 text-sm m-1">${formattedCreatedAt(now)}</p>
                         </div>
                     </div>
                 </li>`);
@@ -118,19 +155,18 @@ document.querySelector("#files-tab").addEventListener('click', (e) => {
 
            response.forEach((attach, i) => {
                const { id, originalFileName, employee, createdAt, url } = attach;
-
               ul.innerHTML += `
-                <li class="w-fit h-fit bg-gray-100 rounded-lg mb-2 mr-2 attaches"
+                <li class="w-fit h-fit bg-gray-100 rounded-lg hover:bg-blue-100 mb-2 mr-2 attaches cursor-pointer"
                     onclick="attachDownload(${i});" data-attach-id="${id}" data-attach-url="${url}"
                     id="attach${i}">
                     <div class="p-2 w-fit overflow-hidden">
-                        <h1 class="w-40 font-bold text-md m-1 ">${originalFileName}</h1>
-                        <div class="w-40 m-1">
-                            <img th:src="@{/image/attachment/PDF_file_icon.svg}" alt="">
+                        <h1 class="w-40 font-bold text-md m-1 mb-2">${originalFileName}</h1>
+                        <div class="w-40 h-40 m-1 flex items-center justify-center bg-white">
+                            ${applyFileImg(findDot(originalFileName), url)}
                         </div>
                         <div>
                             <p class="w-40 text-sm m-1">${employee.name}</p>
-                            <p class="w-40 text-sm m-1">${createdAt}</p>
+                            <p class="w-40 text-sm m-1">${formattedCreatedAt(createdAt)}</p>
                         </div>
                     </div>
                 </li>`;
