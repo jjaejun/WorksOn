@@ -9,8 +9,10 @@
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
 
+    <h1 class="mb-4">전자 결재홈</h1>
     <p class="mb-4 text-gray-700">총 [[${totalCount}]]건의 게시물이 있습니다.</p>
-    <h1>전자 결재홈</h1>
+
+    <h1>결재 요청 온 문서</h1>
     <table id="tbl-approval-leave" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
         <thead>
         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -37,7 +39,7 @@
         </tr>
         </tbody>
     </table>
-    <h1>전자 결재홈</h1>
+    <h1>결재 진행 문서</h1>
     <table id="tbl-approval-equipment" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
         <thead>
         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -64,8 +66,8 @@
         </tr>
         </tbody>
     </table>
-    <h1>전자 결재홈</h1>
-    <table id="tbl-board" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
+    <h1>결재 완료 문서</h1>
+    <table id="tbl-approval-cooperation" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
         <thead>
         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             <th class="px-4 py-2">기안일</th>
@@ -78,7 +80,7 @@
         </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
-        <tr th:each="approval, status : ${approvalEquipment}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalCooperation}" th:data-approval-id="${approval.id}">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
