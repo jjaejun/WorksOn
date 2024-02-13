@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
-        <tr th:each="approval, status : ${approvalReceiveLeave}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalReceiveLeave}" th:data-approval-leave-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -35,7 +35,7 @@
             </td>
             <td class="border px-4 py-2" th:text="${approval.status}"></td>
         </tr>
-        <tr th:each="approval, status : ${approvalReceiveEquipment}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalReceiveEquipment}" th:data-approval-equipment-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -45,7 +45,7 @@
             </td>
             <td class="border px-4 py-2" th:text="${approval.status}"></td>
         </tr>
-        <tr th:each="approval, status : ${approvalReceiveCooperation}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalReceiveCooperation}" th:data-approval-cooperation-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -71,7 +71,7 @@
         </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
-        <tr th:each="approval, status : ${approvalProceedingLeave}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalProceedingLeave}" th:data-approval-leave-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -81,7 +81,7 @@
             </td>
             <td class="border px-4 py-2" th:text="${approval.status}"></td>
         </tr>
-        <tr th:each="approval, status : ${approvalProceedingEquipment}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalProceedingEquipment}" th:data-approval-equipment-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -91,7 +91,7 @@
             </td>
             <td class="border px-4 py-2" th:text="${approval.status}"></td>
         </tr>
-        <tr th:each="approval, status : ${approvalProceedingCooperation}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalProceedingCooperation}" th:data-approval-cooperation-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -117,7 +117,7 @@
         </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
-        <tr th:each="approval, status : ${approvalCheckLeave}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalCheckLeave}" th:data-approval-leave-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -127,7 +127,7 @@
             </td>
             <td class="border px-4 py-2" th:text="${approval.status}"></td>
         </tr>
-        <tr th:each="approval, status : ${approvalCheckEquipment}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalCheckEquipment}" th:data-approval-equipment-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -137,7 +137,7 @@
             </td>
             <td class="border px-4 py-2" th:text="${approval.status}"></td>
         </tr>
-        <tr th:each="approval, status : ${approvalCheckCooperation}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalCheckCooperation}" th:data-approval-cooperation-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -152,6 +152,6 @@
 
 
 </div>
-    <script layout:fragment="script" th:src="@{/js/approval/approvalHome.js}">
+    <script layout:fragment="script" th:src="@{/js/approval/approvalList.js}">
     </script>
 </html>

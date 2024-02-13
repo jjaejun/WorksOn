@@ -5,6 +5,14 @@ window.addEventListener('DOMContentLoaded', () =>{
     });
 });
 
+// approval-nav-ul li 마우스 커서 포인트 추가 - 우진
+window.addEventListener('DOMContentLoaded', () =>{
+    const lis = document.querySelectorAll(".approval-nav-ul li");
+    lis.forEach((li, i) => {
+        li.classList.add("cursor-pointer")
+    });
+});
+
 window.addEventListener('DOMContentLoaded', () => {
     // const indexLi = document.querySelector("#indexLi");
     // const projectLi = document.querySelector("#projectLi");
