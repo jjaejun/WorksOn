@@ -41,7 +41,7 @@ public class AttendController {
 
     @GetMapping("/attendList.do")
     public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model) {
-        Long id = 952L;
+        Long id = 902L;
         Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
         model.addAttribute("attends", attendPage.getContent());
         model.addAttribute("totalCount", attendPage.getTotalElements());
@@ -82,6 +82,7 @@ public class AttendController {
         Attend attending = attendService.findAttendByEmployeeId(id);
 
         attendService.updateEndAt(attending);
+        log.debug("attending = {}", attending);
         return ResponseEntity.ok("퇴근 등록이 완료되었습니다.");
     }
 }

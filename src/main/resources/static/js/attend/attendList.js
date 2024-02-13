@@ -20,6 +20,7 @@ window.addEventListener('DOMContentLoaded', () =>{
 window.addEventListener('DOMContentLoaded', () => {
     const btnStartWork = document.getElementById("btn-startwork");
     const btnEndWork = document.getElementById("btn-endwork");
+    const workStateElement = document.getElementById("work-state");
 
     btnStartWork.addEventListener('click', function () {
         if (isAttendRegistered) {
@@ -35,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
             },
             url: `${contextPath}attend/startWork.do`,
             data: {
-                id: 952
+                id: 902
             },
             success: function (response) {
                 alert(response);
@@ -43,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 isAttendRegistered = true;
 
                 console.log('출근 등록 성공');
-
+                workStateElement.textContent = '업무중';
                 const currentTime = new Date();
                 const formattedTime = currentTime.toLocaleTimeString();
                 document.getElementById('startwork-time').textContent = formattedTime;
@@ -71,7 +72,7 @@ window.addEventListener('DOMContentLoaded', () => {
             },
             url: `${contextPath}attend/endWork.do`,
             data: {
-                id: 952
+                id: 902
             },
             success: function (response) {
                 alert(response);
@@ -79,7 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 isEndWorkRegistered = true;
 
                 console.log('퇴근 등록 성공');
-
+                workStateElement.textContent = '퇴근';
                 const currentTime = new Date();
                 const formattedTime = currentTime.toLocaleTimeString();
                 document.getElementById('endwork-time').textContent = formattedTime;

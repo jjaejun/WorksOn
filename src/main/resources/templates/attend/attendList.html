@@ -93,10 +93,12 @@
 <!--                    <td colspan="2" th:text="${session.loginMember.deptTitle}"></td>-->
                 </tr>
                 <tr>
-                    <td class="font-14 font-bold">업무상태</td>
-<!--                    <td class="text-right font-14 color-red font-bold" id="work-state" th:text="${attend.state.getDisplayName()}"></td>-->
+                    <td class="font-14 font-bold">업무상태
                     <td class="text-right font-14 color-red font-bold" id="work-state"
-                        th:text="${attend.state.getDisplayName() == 'late' || attend.state.getDisplayName() == 'work' ? '업무중' : (attend.state.getDisplayName() == 'quit' ? '퇴근' : '업무중')}"></td>
+                        th:text="${(attend.state == T(com.sh.workson.attend.entity.State).LATE || attend.state == T(com.sh.workson.attend.entity.State).WORK) ? '업무중' : (attend.state == T(com.sh.workson.attend.entity.State).QUIT ? '퇴근' : '')}"
+                    ></td>
+                    <!--                        th:text="${attend.state.getDisplayName()}"-->
+
                 </tr>
                 <tr>
                     <td class="font-14 font-bold">출근시간</td>
@@ -116,6 +118,10 @@
                         const startDay = attend.value.split("T")[0];
                         console.log(startDay);
 
+                        const workState = document.querySelector("#work-state");
+                        const start = document.querySelector("#startwork-time");
+                        const end = document.querySelector("#endwork-time");
+
                         const currentDate = new Date();
                         const year = currentDate.getFullYear();
                         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -127,11 +133,22 @@
                         if (startDay === formattedDate){
                             isAttendRegistered = true;
                         } else{
+                            workState.innerHTML = '';
+                            start.innerHTML = '';
+                            end.innerHTML = '';
                             isAttendRegistered = false;
                         }
 
+
+
                     </script>
                     <td class="text-right"><button class="font-bold" id="btn-endwork">퇴근하기</button></td>
+                    <script th:if="${attend.endAt != null}" defer="defer">
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const btnEndWork = document.getElementById('btn-endwork');
+                            btnEndWork.disabled = true;  // 퇴근 시간이 이미 등록되었으면 버튼 비활성화
+                        });
+                    </script>
                 </tr>
                 </tbody>
             </table>
@@ -152,9 +169,28 @@
             <td th:text="${#temporals.format(attend.startAt,'yyyy/MM/dd')}"></td>
             <td th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
             <td th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></td>
-            <td th:text="${attend.state.getDisplayName()}"></td>
-            <td th:text="${attend.content}"></td>
+            <td id="attendOnTime" th:text="${#temporals.format(attend.startAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <script th:inline="javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                    const stateElement = document.getElementById('attendOnTime');
+                    if (stateElement) {
+                        const startAtValue = stateElement.innerHTML; // 또는 innerHTML에 따라 적절히 선택
+                        const currentDate = new Date();
+                        const compareDate = new Date(startAtValue);
+                        let state;
 
+                        if (currentDate.getHours() >= 9 && currentDate > compareDate) {
+                            state = '지각';
+                        } else {
+                            state = '정상출근';
+                        }
+
+                        stateElement.innerText = state;
+                    }
+                });
+            </script>
+            <!--            <td th:text="${attend.state.getDisplayName()}"></td>-->
+            <td th:text="${attend.content}"></td>
         </tr>
         </tbody>
     </table>
