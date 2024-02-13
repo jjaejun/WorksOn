@@ -125,4 +125,8 @@ public class ProjectService {
     public List<ProjectEmployee> findAllProjectEmployeesByProjectID(Long projectId) {
         return projectEmployeeRepository.findAllProjectEmployeesByProjectID(projectId);
     }
+
+    public List<Attachment> findAllAttachmentByProjectId(Long id) {
+        return attachmentRepository.findAllAttachmentByProjectId(id);
+    }
 }

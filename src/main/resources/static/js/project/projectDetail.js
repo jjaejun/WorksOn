@@ -1,3 +1,144 @@
+document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
+    const frm = document.attachUploadFrm;
+    const ul = document.querySelector("#files ul");
+    const lis = ul.querySelectorAll("li");
+    console.log(lis.length)
+
+    const frmData = new FormData(frm);
+
+    $.ajax({
+        url: `${contextPath}project/uploadAttachment.do`,
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        data: frmData,
+        processData: false,
+        contentType: false,
+        method: 'post',
+        success(response) {
+            console.log(response);
+            frm.reset();
+            const close = document.querySelector("#closeBtn");
+
+            response.forEach((attach, i) => {
+
+                ul.insertAdjacentHTML("afterbegin", `
+                <li class="w-fit h-fit bg-gray-100 rounded-lg mb-2 mr-2 attaches"
+                    onclick="attachDownload(${lis.length + i});" data-attach-id="${attach.id}" data-attach-url="${attach.url}"
+                    id="attach${lis.length + i}">
+                    <div class="p-2 w-fit overflow-hidden">
+                        <h1 class="w-40 font-bold text-md m-1 ">${attach.originalFilename}</h1>
+                        <div class="w-40 m-1">
+                            <img th:src="@{/image/attachment/PDF_file_icon.svg}" alt="">
+                        </div>
+                        <div>
+                            <p class="w-40 text-sm m-1">${attach.empName}</p>
+                            <p class="w-40 text-sm m-1">${attach.createdAt}</p>
+                        </div>
+                    </div>
+                </li>`);
+            });
+
+            close.click();
+
+        }
+    });
+
+});
+
+document.querySelector("#upload").addEventListener('change', (e) => {
+    const input = e.target;
+    const tbody = document.querySelector("#fileArea tbody");
+
+    tbody.innerHTML = '';
+
+    console.dir(input);
+    const files = [...input.files];
+
+    if(files.length === 0){
+        tbody.innerHTML = '<tr class="text-gray-700">\n' +
+            '<td class="px-2 py-2">등록된 파일이 없습니다.</td>\n' +
+            '</tr>';
+    }
+    else {
+        files.forEach((file, i) => {
+            tbody.innerHTML += `
+       <tr id="file${i}" class="text-gray-700">
+           <td class="px-2 py-2">${file.name}</td>
+           <td class="px-2 py-2">
+               <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer hover:text-red-400 rounded-full w-4 h-4 ml-2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </td>
+       </tr>`;
+        });
+    }
+});
+
+
+const attachDownload = (i) => {
+    const attachment = document.getElementById(`attach${i}`);
+    const {attachId, attachUrl} = attachment.dataset;
+    console.log(attachId);
+
+    $.ajax({
+        url: `${contextPath}project/projectAttachDownload.do`,
+        data: {
+            id: attachId,
+            url: attachUrl
+        },
+        method: 'get',
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        success(response){
+            console.log(response);
+        },
+        error(e){
+            console.log(e);
+        }
+    })
+};
+document.querySelector("#files-tab").addEventListener('click', (e) => {
+   const { projectId } = e.target.dataset;
+   const ul = document.querySelector("#files ul");
+
+   $.ajax({
+       url: `${contextPath}project/projectAttachmentList.do`,
+       data: {
+           projectId: projectId
+       },
+       method: 'get',
+       success(response) {
+           console.log(response);
+           ul.innerHTML = '';
+
+           response.forEach((attach, i) => {
+               const { id, originalFileName, employee, createdAt, url } = attach;
+
+              ul.innerHTML += `
+                <li class="w-fit h-fit bg-gray-100 rounded-lg mb-2 mr-2 attaches"
+                    onclick="attachDownload(${i});" data-attach-id="${id}" data-attach-url="${url}"
+                    id="attach${i}">
+                    <div class="p-2 w-fit overflow-hidden">
+                        <h1 class="w-40 font-bold text-md m-1 ">${originalFileName}</h1>
+                        <div class="w-40 m-1">
+                            <img th:src="@{/image/attachment/PDF_file_icon.svg}" alt="">
+                        </div>
+                        <div>
+                            <p class="w-40 text-sm m-1">${employee.name}</p>
+                            <p class="w-40 text-sm m-1">${createdAt}</p>
+                        </div>
+                    </div>
+                </li>`;
+           });
+       }
+   })
+});
+
 document.querySelector("#employees-tab").addEventListener('click', (e) => {
     const {projectId} = e.target.dataset;
     const tbody = document.querySelector("#employees tbody");

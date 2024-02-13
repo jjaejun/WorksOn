@@ -30,6 +30,7 @@
                     </li>
                     <li class="me-2" role="presentation">
                         <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                th:data-project-id="${project.id}"
                                 id="files-tab" data-tabs-target="#files" type="button" role="tab" aria-controls="files" aria-selected="false">참고자료</button>
                     </li>
                 </ul>
@@ -117,51 +118,75 @@
                         </table>
                     </div>
                 </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="files" role="tabpanel" aria-labelledby="files-tab">
+                <div class="hidden p-4 rounded-lg dark:bg-gray-800" id="files" role="tabpanel" aria-labelledby="files-tab">
                     <div class="w-full whitespace-no-wrap">
                     <!-- 검색바 -->
                     </div>
 
+                    <div>
+                        <!-- Modal toggle -->
+                        <button data-modal-target="static-modal" id="closeBtn" data-modal-toggle="static-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            + 파일 업로드하기
+                        </button>
+
+                        <!-- Main modal -->
+                        <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                <!-- Modal content -->
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <!-- Modal header -->
+                                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                            업로드할 파일을 선택해주세요.
+                                        </h3>
+                                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="static-modal">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="p-4 md:p-5 space-y-4 flex items-center">
+                                        <table id="fileArea" class="w-full whitespace-no-wrap mr-2">
+                                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                            <tr class="text-gray-700">
+                                                <td class="px-2 py-2">등록된 파일이 없습니다.</td>
+                                            </tr>
+                                            <!-- 반복되는 tr영역 -->
+                                            <!--tr 한줄 끝-->
+                                            </tbody>
+                                        </table>
+                                        <form name="attachUploadFrm" enctype="multipart/form-data">
+                                            <input type="hidden" th:value="${project.id}" name="projectId">
+                                            <div class="rounded-md border border-indigo-500 bg-gray-50 hover:bg-white p-4 hover:shadow-md w-36 flex flex-col h-fit items-center">
+                                                <label for="upload" class="flex flex-col items-center gap-2 cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-white stroke-indigo-500" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    <span class="text-gray-600 font-medium text-center">Upload file</span>
+                                                </label>
+                                                <input id="upload" multiple name="files" type="file" class="hidden" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="flex justify-center items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                        <button id="attachUploadFrmBtn" th:data-project-id="${project.id}"
+                                                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                            Upload Files
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="w-full whitespace-no-wrap">
                     <!-- 갤러리 형태의 파일목록 -->
-                        <ul>
-                            <li>
-                                <div class="flex justify-center items-center">
-                                    <div><div
-                                            class="w-[230px] max-w-sm bg-sky-950 overflow-hidden shadow-xl shadow-sky-200/30 ring-1 ring-sky-200/10 transition-all duration-500 ease-in-out p-2 hover:scale-105 rounded-2xl">
-                                        <div
-                                                class="h-[150px] flex flex-col bg-gradient-to-bl from-cyan-400 via-cyan-600 to-cyan-500 relative rounded-2xl shadow-sky-950 before:content-[''] before:absolute before:bg-transparent before:h-4 before:w-4 before:shadow-[-5px_-7px_0_2px] before:rounded-tl-xl  before:left-0 before:top-8 before:shadow-sky-950">
-                                            <div
-                                                    class="h-[33px] w-[130px] bg-sky-950 relative -skew-x-[47deg] shadow-[-10px_-10px_0_0] rounded-br-xl shadow-sky-950  before:content-[''] before:absolute before:w-4 before:h-3 before:-right-[15px] before:bg-transperent before:shadow-[-5px_-5px_0_2px] before:rounded-tl-2xl before:top-0 before:shadow-sky-950">
+                        <ul class="text-gray-700 flex flex-wrap justify-start">
 
-                                            </div>
-                                        </div>
-                                        <div class="mt-4 px-1 py-2.5">
-                                            <h1 class="block text-lg font-semibold text-white text-center tracking-wide">
-                                                UNIVERSE OF UI
-                                            </h1>
-                                            <div class="flex justify-between mt-5">
-                                                <div
-                                                        class="flex-[30%] text-center text-sky-200 p-1 [&:nth-child(2)]:border-x-sky-700/70  [&:nth-child(2)]:border-l [&:nth-child(2)]:border-solid [&:nth-child(2)]:border-r">
-                                                    <span class="text-sm block">2626</span>
-                                                    <span class="text-xs">UI elements</span>
-                                                </div>
-                                                <div
-                                                        class="flex-[30%] text-center text-sky-200 p-1 [&:nth-child(2)]:border-x-sky-700/70 [&:nth-child(2)]:border-l [&:nth-child(2)]:border-solid [&:nth-child(2)]:border-r">
-                                                    <span class="text-sm block">100%</span><span class="text-xs">
-                                                    Free for use
-                                                </span>
-                                                </div>
-                                                <div
-                                                        class="flex-[30%] text-center text-sky-200 p-1 [&:nth-child(2)]:border-x-sky-700/70 [&:nth-child(2)]:border-l [&:nth-child(2)]:border-solid [&:nth-child(2)]:border-r">
-                                                    <span class="text-sm block">38,631</span>
-                                                    <span class="text-xs">Contributers</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div></div>
-                            </li>
                         </ul>
                     </div>
                 </div>
