@@ -88,12 +88,12 @@ public class ProjectService {
         // emplist 처리
         List<ProjectEmployee> createEmployees = new ArrayList<>();
         for(Long empId :projectCreateDto.getCreateEmp()){
-            createEmployees.add(ProjectEmployee.builder().projectId(project.getId()).role(ProjectRole.CREATE).empId(empId).build());
+            createEmployees.add(ProjectEmployee.builder().projectId(project.getId()).role(ProjectRole.CREATE).employee(Employee.builder().id(empId).build()).build());
         }
         projectEmployeeRepository.saveAll(createEmployees);
         List<ProjectEmployee> readEmployees = new ArrayList<>();
         for(Long empId :projectCreateDto.getReadEmp()){
-            readEmployees.add(ProjectEmployee.builder().projectId(project.getId()).role(ProjectRole.READ).empId(empId).build());
+            readEmployees.add(ProjectEmployee.builder().projectId(project.getId()).role(ProjectRole.READ).employee(Employee.builder().id(empId).build()).build());
         }
         projectEmployeeRepository.saveAll(readEmployees);
 
@@ -114,11 +114,15 @@ public class ProjectService {
     }
 
     public ProjectDetailDto findById(Long id) {
-        return projectRepository.findById(id)
-                .map((project -> convertToProjectDetailDto(project))).orElseThrow();
+        Project project = projectRepository.findById(id).orElseThrow();
+        return convertToProjectDetailDto(project);
     }
 
     private ProjectDetailDto convertToProjectDetailDto(Project project) {
         return modelMapper.map(project, ProjectDetailDto.class);
+    }
+
+    public List<ProjectEmployee> findAllProjectEmployeesByProjectID(Long projectId) {
+        return projectEmployeeRepository.findAllProjectEmployeesByProjectID(projectId);
     }
 }

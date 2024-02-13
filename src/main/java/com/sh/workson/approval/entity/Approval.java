@@ -49,6 +49,11 @@ public class Approval {
     @JoinColumn(name = "emp_id")
     private Employee employee;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_receives_id")
+    private Employee employeeRe;
+
+
     @OneToMany(mappedBy = "approval", fetch = FetchType.LAZY)
     @Builder.Default
     private List<ApprovalAttachment> approvalAttachments = new ArrayList<>();

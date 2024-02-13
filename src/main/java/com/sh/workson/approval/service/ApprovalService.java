@@ -27,8 +27,8 @@ public class ApprovalService {
     private ModelMapper modelMapper;
 
 
-    public Page<ApprovalHomeLeaveDto> findAllLeave(Pageable pageable) {
-        Page<Approval> approvalPage = approvalRepository.findAllLeave(pageable);
+    public Page<ApprovalHomeLeaveDto> findAllLeave(Long id,Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findAllLeave(id, pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeLeaveDto(approval));
 //        return approvalRepository.findAllLeave(pageable);
     }
@@ -64,8 +64,8 @@ public class ApprovalService {
     }
 
 
-    public Page<ApprovalHomeEquipmentDto> findAllEquipment(Pageable pageable) {
-        Page<Approval> approvalPage = approvalRepository.findAllEquipment(pageable);
+    public Page<ApprovalHomeEquipmentDto> findAllEquipment(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findAllEquipment(id, pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeEquipmentDto(approval));
     }
 
@@ -82,22 +82,22 @@ public class ApprovalService {
         // name 부분
         approvalHomeDto.setName(
                 Optional.ofNullable(approval.getApprovalEquipment())
-                        .map(approvalLeaves -> approvalLeaves.getName())
+                        .map(approvalEquipment -> approvalEquipment.getName())
                         .orElse(null)
         );
 
         // title 부분 수정
         approvalHomeDto.setTitle(
                 Optional.ofNullable(approval.getApprovalEquipment())
-                        .map(approvalLeave -> approvalLeave.getTitle())
+                        .map(approvalEquipment -> approvalEquipment.getTitle())
                         .orElse(null)
         );
 
         return approvalHomeDto;
     }
 
-    public Page<ApprovalHomeCooperationDto> findAllCooperation(Pageable pageable) {
-        Page<Approval> approvalPage = approvalRepository.findAllCooperation(pageable);
+    public Page<ApprovalHomeCooperationDto> findAllCooperation(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findAllCooperation(id, pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
     }
 
@@ -114,14 +114,14 @@ public class ApprovalService {
         // name 부분
         approvalHomeDto.setName(
                 Optional.ofNullable(approval.getApprovalCooperation())
-                        .map(approvalLeaves -> approvalLeaves.getName())
+                        .map(approvalCooperation -> approvalCooperation.getName())
                         .orElse(null)
         );
 
         // title 부분 수정
         approvalHomeDto.setTitle(
                 Optional.ofNullable(approval.getApprovalCooperation())
-                        .map(approvalLeave -> approvalLeave.getTitle())
+                        .map(approvalCooperation -> approvalCooperation.getTitle())
                         .orElse(null)
         );
 
@@ -129,4 +129,18 @@ public class ApprovalService {
     }
 
 
+    public Page<ApprovalHomeLeaveDto> findTemporaryLeave(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findTempoeraryLeave(id, pageable);
+        return approvalPage.map((approval) -> convertToApprovalHomeLeaveDto(approval));
+    }
+
+    public Page<ApprovalHomeEquipmentDto> findTemporaryEquipment(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findTemporaryEquipment(id, pageable);
+        return approvalPage.map((approval) -> convertToApprovalHomeEquipmentDto(approval));
+    }
+
+    public Page<ApprovalHomeCooperationDto> findTemporaryCooperation(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findTemporaryCooperation(id, pageable);
+        return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
+    }
 }
