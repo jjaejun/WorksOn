@@ -10,7 +10,7 @@
 <div layout:fragment="content">
 
     <h1 class="mb-4">전자 결재홈</h1>
-    <p class="mb-4 text-gray-700">총 [[${totalCount}]]건의 게시물이 있습니다.</p>
+    <p class="mb-4 text-gray-700">수정 예정</p>
 
     <h1>approval_leave테이블 조회 사용자 로그인 값이랑 일치하는</h1>
     <table id="tbl-approval-leave" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
@@ -20,7 +20,7 @@
             <th class="px-4 py-2">결재양식</th>
             <th class="px-4 py-2">제목</th>
             <th class="px-4 py-2">긴급</th>
-            <th class="px-4 py-2">결재 요청자</th>
+            <th class="px-4 py-2">결재 받은자</th>
             <th class="px-4 py-2">첨부</th>
             <th class="px-4 py-2">결재상태</th>
         </tr>
@@ -31,7 +31,7 @@
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
             <td class="border px-4 py-2" th:text="${approval.emergency}"></td>
-            <td class="border px-4 py-2" th:text="${approval.empId}"></td>
+            <td class="border px-4 py-2" th:text="${approval.empReId}"></td>
             <td class="border px-4 py-2">
                 <img th:if="${approval.attachCount > 0}" th:src="@{/images/profile.png}" width="16px">
             </td>
@@ -47,7 +47,7 @@
             <th class="px-4 py-2">결재양식</th>
             <th class="px-4 py-2">제목</th>
             <th class="px-4 py-2">긴급</th>
-            <th class="px-4 py-2">결재 요청자</th>
+            <th class="px-4 py-2">결재 받은자</th>
             <th class="px-4 py-2">첨부</th>
             <th class="px-4 py-2">결재상태</th>
         </tr>
@@ -58,7 +58,7 @@
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
             <td class="border px-4 py-2" th:text="${approval.emergency}"></td>
-            <td class="border px-4 py-2" th:text="${approval.empId}"></td>
+            <td class="border px-4 py-2" th:text="${approval.empReId}"></td>
             <td class="border px-4 py-2">
                 <img th:if="${approval.attachCount > 0}" th:src="@{/images/profile.png}" width="16px">
             </td>
@@ -74,7 +74,7 @@
             <th class="px-4 py-2">결재양식</th>
             <th class="px-4 py-2">제목</th>
             <th class="px-4 py-2">긴급</th>
-            <th class="px-4 py-2">결재 요청자</th>
+            <th class="px-4 py-2">결재 받은자</th>
             <th class="px-4 py-2">첨부</th>
             <th class="px-4 py-2">결재상태</th>
         </tr>
@@ -85,7 +85,7 @@
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
             <td class="border px-4 py-2" th:text="${approval.emergency}"></td>
-            <td class="border px-4 py-2" th:text="${approval.empId}"></td>
+            <td class="border px-4 py-2" th:text="${approval.empReId}"></td>
             <td class="border px-4 py-2">
                 <img th:if="${approval.attachCount > 0}" th:src="@{/images/profile.png}" width="16px">
             </td>

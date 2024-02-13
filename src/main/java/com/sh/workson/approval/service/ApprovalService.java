@@ -38,9 +38,16 @@ public class ApprovalService {
     private ApprovalHomeLeaveDto convertToApprovalHomeLeaveDto(Approval approval) {
         ApprovalHomeLeaveDto approvalHomeDto = modelMapper.map(approval, ApprovalHomeLeaveDto.class);
 
-        // approval_id 부분
+        // emp_id 부분
         approvalHomeDto.setEmpId(
                 Optional.ofNullable(approval.getEmployee())
+                        .map((employee) -> employee.getName())
+                        .orElse(null)
+        );
+
+        // emp_receives_id
+        approvalHomeDto.setEmpReId(
+                Optional.ofNullable(approval.getEmployeeRe())
                         .map((employee) -> employee.getName())
                         .orElse(null)
         );
@@ -79,6 +86,13 @@ public class ApprovalService {
                         .orElse(null)
         );
 
+        // emp_receives_id
+        approvalHomeDto.setEmpReId(
+                Optional.ofNullable(approval.getEmployeeRe())
+                        .map((employee) -> employee.getName())
+                        .orElse(null)
+        );
+
         // name 부분
         approvalHomeDto.setName(
                 Optional.ofNullable(approval.getApprovalEquipment())
@@ -107,6 +121,13 @@ public class ApprovalService {
         // approval_id 부분
         approvalHomeDto.setEmpId(
                 Optional.ofNullable(approval.getEmployee())
+                        .map((employee) -> employee.getName())
+                        .orElse(null)
+        );
+
+        // emp_receives_id
+        approvalHomeDto.setEmpReId(
+                Optional.ofNullable(approval.getEmployeeRe())
                         .map((employee) -> employee.getName())
                         .orElse(null)
         );
@@ -141,6 +162,21 @@ public class ApprovalService {
 
     public Page<ApprovalHomeCooperationDto> findTemporaryCooperation(Long id, Pageable pageable) {
         Page<Approval> approvalPage = approvalRepository.findTemporaryCooperation(id, pageable);
+        return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
+    }
+
+    public Page<ApprovalHomeLeaveDto> findReLeave(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findReLeave(id, pageable);
+        return approvalPage.map((approval) -> convertToApprovalHomeLeaveDto(approval));
+    }
+
+    public Page<ApprovalHomeEquipmentDto> findReEquipment(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findReEquipment(id, pageable);
+        return approvalPage.map((approval) -> convertToApprovalHomeEquipmentDto(approval));
+    }
+
+    public Page<ApprovalHomeCooperationDto> findReCooperation(Long id, Pageable pageable) {
+        Page<Approval> approvalPage = approvalRepository.findReCooperation(id, pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
     }
 }

@@ -28,7 +28,7 @@ public class ApprovalController {
      * 전자 결재 메인 화면 조회
      */
     @GetMapping("/approvalHome.do")
-    public void approvalHome(@PageableDefault(size = 5, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalHome(@PageableDefault(size = 4, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -137,13 +137,49 @@ public class ApprovalController {
         model.addAttribute("totalCount", approvalHomeCooperationDtoPage.getTotalElements());
     }
 
+    /**
+     * 수신 문서함
+     */
     @GetMapping("/approvalReceived.do")
-    public void approvalRecevied() {
+    public void approvalRecevied(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.info("approvalService = {}", approvalService.getClass());
 
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findReLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findReEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findReCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
+        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
+        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
+        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
+        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
     }
 
+    /**
+     * 발송 문서함
+     */
     @GetMapping("/approvalSend.do")
-    public void approvalSend() {
+    public void approvalSend(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.info("approvalService = {}", approvalService.getClass());
 
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findAllLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findAllEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findAllCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
+        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
+        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
+        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
+        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
     }
 }

@@ -119,4 +119,55 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         a.status = '임시저장'
 """, nativeQuery = true)
     Page<Approval> findTemporaryCooperation(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        a.emp_receives_id = :id
+""", nativeQuery = true)
+    Page<Approval> findReLeave(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        a.emp_receives_id = :id
+""", nativeQuery = true)
+    Page<Approval> findReEquipment(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        a.emp_receives_id = :id
+""", nativeQuery = true)
+    Page<Approval> findReCooperation(Long id, Pageable pageable);
 }
