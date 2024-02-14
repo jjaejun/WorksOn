@@ -6,7 +6,14 @@
 <head>
     <title>프로젝트 상세보기</title>
 </head>
-<style layout:fragment="style"></style>
+<style layout:fragment="style">
+    .is-dragging {
+        scale: 1.05;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+        background: rgba(50, 50, 50);
+        color: white;
+    }
+</style>
 <div layout:fragment="content">
     <div class="flex flex-wrap">
         <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
@@ -60,6 +67,42 @@
                             </div>
                         </th:block>
                     </div>
+                    <div class="board w-full h-screen overflow-scroll" >
+                        <!--칸반보드-->
+                        <div style="gap: 20px"
+                                class="lanes flex items-start justify-start overflow-scroll h-full px-[24px] py-[32px]">
+                            <div style="gap: 12px; min-height: 120px;"
+                                    class="swim-lane flex flex-col bg-blue-100 shadow-lg p-[12px] w-[225px] rounded-md">
+                                <h1 class="heading text-[22px] font-bold mb-[8px]">Todo</h1>
+
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task1 ==============</p>
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task2 ==============</p>
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task3 ==============</p>
+                            </div>
+                            <div style="gap: 12px; min-height: 120px;"
+                                    class="swim-lane flex flex-col bg-blue-100 shadow-lg p-[12px] w-[225px] rounded-md">
+                                <h1 class="heading text-[22px] font-bold mb-[8px]">Doing</h1>
+
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task1 ==============</p>
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task2 ==============</p>
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task3 ==============</p>
+                            </div>
+                            <div style="gap: 12px; min-height: 120px;"
+                                    class="swim-lane flex flex-col bg-blue-100 shadow-lg p-[12px] w-[225px] rounded-md">
+                                <h1 class="heading text-[22px] font-bold mb-[8px]">Done</h1>
+
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task1 ==============</p>
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task2 ==============</p>
+                                <p class="task bg-white shadow-sm p-[12px] cursor-move rounded-sm" draggable="true">task3 ==============</p>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
                 </div>
                 <div class="hidden p-4 rounded-lg" id="employees" role="tabpanel" aria-labelledby="employees-tab">
                     <div class="w-full whitespace-no-wrap">
@@ -199,6 +242,7 @@
 
     </div>
 </div>
+<script th:src="@{js/project/drag.js}"></script>
 <script layout:fragment="script" th:src="@{/js/project/projectDetail.js}">
 </script>
 </html>

@@ -6,6 +6,7 @@ import com.sh.workson.attachment.dto.ProjectAttachmentCreateDto;
 import com.sh.workson.attachment.dto.ProjectAttachmentDetailDto;
 import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.repository.AttachmentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class AttachmentService {
     @Autowired
     private ModelMapper modelMapper;
@@ -56,7 +58,20 @@ public class AttachmentService {
     }
 
     public ProjectAttachmentDetailDto createProjectAttachment(ProjectAttachmentCreateDto attachmentCreateDto) {
-        Attachment attachment =  attachmentRepository.save(modelMapper.map(attachmentCreateDto, Attachment.class));
+        Attachment attachment =  attachmentRepository.save(convertToProjectAttachment(attachmentCreateDto));
+        log.debug("attachId = {}", attachment.getId());
         return convertToProjectAttachmentDetailDto(attachment);
+    }
+
+    private Attachment convertToProjectAttachment(ProjectAttachmentCreateDto attachmentCreateDto) {
+        Attachment attachment = Attachment.builder()
+                .boardId(attachmentCreateDto.getBoardId())
+                .url(attachmentCreateDto.getUrl())
+                .key(attachmentCreateDto.getKey())
+                .originalFileName(attachmentCreateDto.getOriginalFilename())
+                .employee(attachmentCreateDto.getEmployee())
+                .type(attachmentCreateDto.getAttachType())
+                .build();
+        return attachment;
     }
 }

@@ -48,7 +48,7 @@ class ChatServiceTest {
         // given
         ChatLogCreateDto chatLogCreateDto = ChatLogCreateDto.builder()
                 .content("너무 어려워요")
-                .empId(1L)
+//                .empId(1L)
                 .chatRoomId(51L)
                 .build();
         System.out.println("chatLogCreateDto = " + chatLogCreateDto);
