@@ -18,4 +18,5 @@ public interface ScheduleCategoryRepository extends JpaRepository<ScheduleCatego
     ScheduleCategory findByNameAndEmpId(Employee employee, String name);
 
 
+
 }

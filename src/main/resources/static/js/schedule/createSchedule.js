@@ -15,6 +15,26 @@ startTime.value = formattedTime;
 endTime.value = formattedTime;
 
 /**
+ * 체크박스 1개만 선택하게 하기
+ */
+function checkOnlyOne(element){
+    const checkboxes = document.getElementsByName("scheduleCategoryId");
+    checkboxes.forEach((cb) => {
+        cb.checked = false;
+    })
+    element.checked = true;
+}
+
+
+/**
+ * 체크박스 값 넘기기
+ */
+// document.createScheduleFrm.onsubmit = (e) =>{
+//     const checkedValue = $("input[name=categoryId]:checked").val()
+//     console.log(checkedValue);
+//
+// }
+/**
  * 목록 중 하나 클릭 시 입력처리
  */
 const createClickDelete = (empId) => {

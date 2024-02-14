@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name="Schedule")
@@ -36,10 +37,8 @@ public class Schedule {
     @Column(nullable = false, name = "end_time")
     @Timestamp
     private LocalDateTime endTime;
-    @OneToOne
-    private ScheduleCategory scheduleCategory;
-    @ManyToOne
-    // @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="schedule_category_id")
+    private Long scheduleCategoryId;
     @JoinColumn(name="emp_id")
-    private Employee employee;
+    private Long empId;
 }
