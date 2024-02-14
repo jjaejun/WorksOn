@@ -53,15 +53,17 @@ document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
         method: 'post',
         success(response) {
             console.log(response);
-            frm.reset();
-            tbody.innerHTML = '';
-            const close = document.querySelector("#closeBtn");
-            const now = new Date();
 
-            response.forEach((attach, i) => {
-                const html = applyFileImg(findDot(attach.originalFilename), attach.url);
+            setTimeout(() => {
+                frm.reset();
+                tbody.innerHTML = '';
+                const close = document.querySelector("#closeBtn");
+                const now = new Date();
 
-                ul.insertAdjacentHTML("afterbegin", `
+                response.forEach((attach, i) => {
+                    const html = applyFileImg(findDot(attach.originalFilename), attach.url);
+
+                    ul.insertAdjacentHTML("afterbegin", `
                 <li class="w-fit h-fit bg-gray-100 hover:bg-blue-100 rounded-lg mb-2 mr-2 attaches cursor-pointer"
                     onclick="attachDownload(${lis.length + i});" data-attach-id="${attach.id}" data-attach-url="${attach.url}"
                     id="attach${lis.length + i}">
@@ -76,9 +78,12 @@ document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
                         </div>
                     </div>
                 </li>`);
-            });
+                });
 
-            close.click();
+                alert("파일 업로드가 완료되었습니다.");
+                close.click();
+
+            }, 5000);
 
         }
     });
