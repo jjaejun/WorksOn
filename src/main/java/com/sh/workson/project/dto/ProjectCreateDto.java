@@ -27,13 +27,6 @@ public class ProjectCreateDto {
     // 첨부파일 목록
     List<AttachmentCreateDto> attaches = new ArrayList<>();
 
-    public void setStartAt(String startAt) {
-        this.startAt = LocalDate.parse(startAt);
-    }
-    public void setEndAt(String endAt) {
-        this.endAt = LocalDate.parse(endAt);
-    }
-
     public void setStatus(String status){
         if(startAt.isBefore(LocalDate.now()) || startAt.equals(LocalDate.now())){
             this.status = "ING";

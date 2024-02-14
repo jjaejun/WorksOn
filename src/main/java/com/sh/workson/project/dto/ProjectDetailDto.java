@@ -16,7 +16,7 @@ public class ProjectDetailDto {
     private String title;
     private LocalDate startAt;
     private LocalDate endAt;
-    private Status status;
+    private String status;
     private EmployeeDetailDto employee;
 
 
