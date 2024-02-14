@@ -15,11 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(parentId)
             console.dir(e.target.dataset);
 
-            const csrfInput = document.createElement('input');
-            csrfInput.setAttribute('type', 'hidden');
-            csrfInput.setAttribute('name', '_csrf');
-            csrfInput.setAttribute('value', csrfToken);
-            console.log(csrfInput)
             // 대댓글 폼 생성
             const html = `
                 <tr>

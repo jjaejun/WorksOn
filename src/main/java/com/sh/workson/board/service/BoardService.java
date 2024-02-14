@@ -8,6 +8,7 @@ import com.sh.workson.board.dto.BoardCreateDto;
 import com.sh.workson.board.dto.BoardDetailDto;
 import com.sh.workson.board.dto.BoardListDto;
 import com.sh.workson.board.entity.Board;
+import com.sh.workson.board.entity.Type;
 import com.sh.workson.board.repository.BoardRepository;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ public class BoardService {
         Page<Board> boardPage = boardRepository.findAll(pageable);
         return boardPage.map((board) -> convertToBoardListDto(board));
     }
+
 
 
     private BoardListDto convertToBoardListDto(Board board) {
@@ -104,6 +106,8 @@ public class BoardService {
     }
 
 
-
-
+    public Page<BoardListDto> findByType(Type type, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findByType(type, pageable);
+        return boardPage.map((board) -> convertToBoardListDto(board));
+    }
 }

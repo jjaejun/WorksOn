@@ -56,18 +56,25 @@ public class BoardController {
     private BoardCommentService boardCommentService;
 
 
-
-
     @GetMapping("/boardList.do")
-    public void boardList(@PageableDefault(size = 10, page = 0 ) Pageable pageable, Model model) {
-        log.info("boardService = {}", boardService.getClass());
+    public void boardList(@RequestParam(name = "type", required = false) String type,
+                          @PageableDefault(size = 10, page = 0) Pageable pageable,
+                          Model model) {
+        log.info("Fetching board list. Type: {}", type);
 
-        log.debug("pageable = {}", pageable);
-        Page<BoardListDto> boardPage = boardService.findAll(pageable);
-        log.debug("boards = {}", boardPage.getContent());
+        Page<BoardListDto> boardPage;
+
+        if (type != null && type.equals("notification")) {
+            boardPage = boardService.findByType(Type.notification, pageable);
+        } else {
+            boardPage = boardService.findByType(Type.free, pageable);
+        }
+
+        log.debug("Boards: {}", boardPage.getContent());
 
         model.addAttribute("boards", boardPage.getContent());
         model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
+
     }
 
     @GetMapping("/createBoard.do")
@@ -118,29 +125,7 @@ public class BoardController {
         // 조회수 증가
         boardService.updateView(id);
     }
-    @PostMapping("/boardcommentcreate.do")
-    public String insertBoardComment(
-            @RequestParam("id") Long id,
-            @RequestParam("comment") String comment,
-            @RequestParam("parentId") Long parentId,
-            Authentication authentication) {
-        EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
-        Long employeeId = employeeDetails.getEmployee().getId();
 
-        log.debug("id = {}" , id);
-        log.debug("comment = {}" , comment);
-        log.debug("parentId = {}" , parentId);
-
-        BoardCommentDto boardCommentDto = new BoardCommentDto();
-        boardCommentDto.setContent(comment);
-//        boardCommentDto.setParentComment(BoardComment.builder().build());
-        log.debug("board = {}" , boardCommentDto);
-
-        boardCommentService.insertComment(boardCommentDto, id, employeeId);
-        log.debug("board = {}" , boardCommentDto);
-
-        return "redirect:/board/boardDetail.do?id=" + id;
-    }
 
     @PostMapping("/boardDetail.do")
     public String insertComment(
@@ -157,7 +142,7 @@ public class BoardController {
 
         BoardCommentDto boardCommentDto = new BoardCommentDto();
         boardCommentDto.setContent(comment);
-//        boardCommentDto.setParentComment(BoardComment.builder().build());
+        boardCommentDto.setParentComment(BoardComment.builder().build());
         log.debug("board = {}" , boardCommentDto);
 
         boardCommentService.insertComment(boardCommentDto, id, employeeId);
