@@ -60,4 +60,9 @@ public class ChatService {
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         return chatRooms;
     }
+
+    public List<ChatLog> findLogByRoomId(Long id) {
+        List<ChatLog> chatLogs = chatLogRepository.findLogByRoomId(id);
+        return chatLogs;
+    }
 }

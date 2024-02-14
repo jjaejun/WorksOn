@@ -187,6 +187,12 @@ insert into authority values (seq_authority_id.nextval, 751, 'ROLE_EMP');
 insert into authority values (seq_authority_id.nextval, 801, 'ROLE_EMP');
 
 -- 재준
+-- chat_log
+insert into chat_log values (seq_chat_log_id.nextval, '잘되나요?', default, 902, 2152);
+insert into chat_log values (seq_chat_log_id.nextval, '잘됩니다', default, 852, 2152);
+insert into chat_log values (seq_chat_log_id.nextval, '아마..?', default, 852, 2152);
+insert into chat_log values (seq_chat_log_id.nextval, '제발~~~~~~~', default, 902, 2152);
+
 -- resource
 insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 A', '호산빌딩 2층', '테이블 7개/의자 14개/스크린 1개(47인치)/무선 마이크 2개', 'Room');
 insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 B', '호산빌딩 3층', '테이블 5개/의자 10개/스크린 1개(38인치)/무선 마이크 2개', 'Room');
