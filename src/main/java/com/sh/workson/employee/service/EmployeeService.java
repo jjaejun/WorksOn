@@ -56,12 +56,12 @@ public class EmployeeService {
         return employeeDtos;
     }
 
-
-
     /**
      * 재준
      */
-
+    public String findNameByEmpId(Long employeeId) {
+        return employeeRepository.findNameByEmpId(employeeId);
+    }
 
 
 

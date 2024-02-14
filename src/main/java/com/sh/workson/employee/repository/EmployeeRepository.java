@@ -27,13 +27,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByName(String name);
 
 
-
-
-
     /**
      * 재준
      */
-
+    @Query("select name from Employee where id = :employeeId ")
+    String findNameByEmpId(Long employeeId);
 
 
 
