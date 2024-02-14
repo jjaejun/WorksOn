@@ -4,6 +4,8 @@ import com.sh.workson.authority.entity.Authority;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.position.entity.Position;
 import com.sh.workson.project.entity.Project;
+import com.sh.workson.schedule.entity.Schedule;
+import com.sh.workson.schedule.entity.ScheduleCategory;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -113,7 +115,6 @@ public class Employee {
     /**
      * 준희
      */
-
 
 
 
