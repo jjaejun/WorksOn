@@ -13,17 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ApprovalRepository extends JpaRepository<Approval, Long> {
-    //        a.approval_start_date
-//        , a.approval_end_date
-//        , a.approval_type_id
-//        , a.emp_id
-    //        , eq.name
-//        , eq.title
-//        , a.emergency
-//        , at.id
-//        , a.status
-//    , eq.*
-//            , at.*
+
     @Query(value = """
     select
         a. *
@@ -31,17 +21,15 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         , le.title
     from
         employee e join approval a
-            on e.id = a.emp_id
-         join approval_form frm
-            on a.approval_form_id = frm.id  
+            on e.id = a.emp_id  
          join approval_leave le
-            on frm.approval_leave_id = le.id
+            on a.approval_leave_id = le.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
-        e.id = 251
+        e.id = :id
 """, nativeQuery = true)
-    Page<Approval> findAllLeave(Pageable pageable);
+    Page<Approval> findAllLeave(Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -51,16 +39,14 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     from
         employee e join approval a
             on e.id = a.emp_id
-         join approval_form frm
-            on a.approval_form_id = frm.id   
          join approval_equipment eq
-            on frm.approval_equipment_id = eq.id
+            on a.approval_equipment_id = eq.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
-        e.id = 251
+        e.id = :id
 """, nativeQuery = true)
-    Page<Approval> findAllEquipment(Pageable pageable);
+    Page<Approval> findAllEquipment(Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -69,29 +55,68 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         , co.title
     from
         employee e join approval a
-            on e.id = a.emp_id
-         join approval_form frm
-            on a.approval_form_id = frm.id   
+            on e.id = a.emp_id   
          join approval_cooperation co
-            on frm.approval_cooperation_id = co.id
+            on a.approval_cooperation_id = co.id
         left join approval_attachment at
             on a.id = at.approval_id
     where
-        e.id = 251
+        e.id = :id
 """, nativeQuery = true)
-    Page<Approval> findAllCooperation(Pageable pageable);
+    Page<Approval> findAllCooperation(Long id, Pageable pageable);
 
 
-//    @Query(value = """
-//    SELECT al.name, al.title
-//    FROM approval_leave al join approval a
-//        on al.id = a.approval_type_id
-//    WHERE a.id = 251
-//""", nativeQuery = true)
-//    List<ApprovalLeave> findApprovalLeavesByApprovalId(@Param("approvalId") Long approvalId);
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status = '임시저장'
+""", nativeQuery = true)
+    Page<Approval> findTempoeraryLeave(Long id, Pageable pageable);
 
-//    @Query("SELECT al FROM ApprovalLeave al WHERE al.id = :approvalTypeId")
-//    List<ApprovalLeave> findApprovalLeavesByApprovalId(@Param("approvalTypeId") Long approvalTypeId);
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status = '임시저장'
+""", nativeQuery = true)
+    Page<Approval> findTemporaryEquipment(Long id, Pageable pageable);
 
-
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status = '임시저장'
+""", nativeQuery = true)
+    Page<Approval> findTemporaryCooperation(Long id, Pageable pageable);
 }
