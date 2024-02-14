@@ -30,6 +30,7 @@ const applyFileImg = (ext, src) => {
     return html;
 }
 
+
 document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
     const frm = document.attachUploadFrm;
     const ul = document.querySelector("#files ul");
@@ -54,10 +55,11 @@ document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
             console.log(response);
             frm.reset();
             tbody.innerHTML = '';
-
             const close = document.querySelector("#closeBtn");
             const now = new Date();
+
             response.forEach((attach, i) => {
+                const html = applyFileImg(findDot(attach.originalFilename), attach.url);
 
                 ul.insertAdjacentHTML("afterbegin", `
                 <li class="w-fit h-fit bg-gray-100 hover:bg-blue-100 rounded-lg mb-2 mr-2 attaches cursor-pointer"
@@ -66,7 +68,7 @@ document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
                     <div class="p-2 w-fit overflow-hidden">
                         <h1 class="w-40 font-bold text-md m-1 mb-2">${attach.originalFilename}</h1>
                         <div class="w-40 m-1 flex items-center justify-center bg-white>
-                            ${applyFileImg(findDot(attach.originalFileName), attach.url)}
+                            ${html}
                         </div>
                         <div>
                             <p class="w-40 text-sm m-1">${attach.empName}</p>
