@@ -10,7 +10,12 @@ import java.util.List;
 
 @Repository
 public interface BoardCommentRepository extends JpaRepository<BoardComment, Long> {
+
+
     List<BoardComment> findByBoardId(Long boardId);
+
+
+
 }
 
 

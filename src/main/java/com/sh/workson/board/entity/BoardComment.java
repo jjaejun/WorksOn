@@ -2,7 +2,10 @@ package com.sh.workson.board.entity;
 
 import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,6 +14,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "board_comment")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BoardComment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_board_comment_id_generator")

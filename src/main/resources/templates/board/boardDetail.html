@@ -22,54 +22,60 @@
         <input type="datetime-local" class="form-control" name="createdAt" th:value="${#temporals.format(board.createdAt,'yyyy-MM-dd HH:mm')}">
         <br>
         <!-- 댓글 폼 시작 -->
-        <form th:action="@{/board/boardDetail.do(id=${board.id})}" method="post">
-
-            <div class="flex justify-end">
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
-                focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto
-                 px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">등록</button>
+        <div class="flex items-start gap-2.5">
+            <img class="w-8 h-8 rounded-full" src="/image/employee/profile.png" alt="">
+            <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                <form th:action="@{/board/boardDetail.do}" method="post" class="w-full">
+                    <div class="flex items-center space-x-2 rtl:space-x-reverse mb-2">
+                        <input type="hidden" name="commentLevel" value="1" />
+                        <textarea class="flex-grow form-control rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" name="comment" placeholder="댓글을 입력하세요" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary self-end">댓글 등록</button>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="hidden" name="commentLevel" value="1" /> <!-- 댓글 레벨, 기본값은 1 -->
-                <textarea class="form-control" name="comment" placeholder="댓글을 입력하세요" required></textarea>
-            </div>
-        </form>
+        </div>
         <!-- 댓글 폼 끝 -->
 
         <!-- 댓글 테이블 -->
         <table class="table table-striped mt-4">
             <tbody>
-            <!-- 댓글 리스트를 반복하여 출력 -->
-            <tr th:each="comment , status : ${commentList}">
-                <td th:text="${comment.content}"></td>
-                <td th:text="${comment.id}"></td>
-                <td th:text="${#temporals.format(comment.createdAt,'yyyy-MM-dd HH:mm')}"></td>
-            </tr>
+<!--                <div th:if="${comment.commentLevel == 1}">-->
+                <!-- 댓글 리스트를 반복하여 출력 -->
+                    <tr th:each="comment , status : ${commentList}">
+                        <td th:text="${comment}"></td>
+
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${comment.id}"></td>
+                        <td th:text="${#temporals.format(comment.createdAt,'yyyy-MM-dd HH:mm')}"></td>
+                        <td class="px-4 py-4">
+                            <button type="button" th:data-parent-id="${comment.id}" th:data-board-id="${board.id}"
+                                    class="btn-reply w-14 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+                                답글
+                            </button>
+                        </td>
+                    </tr>
+<!--                </div>-->
             </tbody>
         </table>
+
         <!-- 댓글 테이블 끝 -->
-
-        <!-- 대댓글 폼 시작 -->
-        <form th:action="@{/board/boardDetail.do(id=${board.id})}" method="post">
-            <input type="hidden" name="parentId" th:value="${parentCommentId}" /> <!-- 부모 댓글의 ID -->
-            <input type="hidden" name="commentLevel" value="2" /> <!-- 대댓글 레벨, 기본값은 2 -->
-
-            <div class="form-group ml-8"> <!-- 들여쓰기 -->
-                <textarea class="form-control" name="comment" placeholder="대댓글을 입력하세요" required></textarea>
-            </div>
-
-            <div class="flex justify-end ml-8"> <!-- 들여쓰기 -->
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
-        focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto
-         px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">등록</button>
-            </div>
-        </form>
+        <!-- 대댓글 폼 -->
+                <form name="boardCommentCreateFrm" th:action="@{/board/boardcommentcreate.do}" method="post">
+                    <input type="hidden" name="boardId">
+                    <input type="hidden" name="commentLevel" value="2">
+                    <input type="hidden" name="parentCommentId">
+                    <textarea id="content" name="content" rows="1" required
+                              class="resize-none block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                              placeholder="답글을 작성하세요..."></textarea>
+                </form>
         <!-- 대댓글 폼 끝 -->
+
 
 
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 </div>
 
-<script layout:fragment="script"></script>
+<script layout:fragment="script" th:src="@{/js/board/boardDetail.js}"></script>
 </html>
+빠뀐 html
