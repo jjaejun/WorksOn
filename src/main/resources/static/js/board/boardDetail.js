@@ -8,6 +8,35 @@
 // //     });
 // // });
 
+const frmEvent = () => {document.boardCommentCreateFrm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const frm = e.target;
+    const boardId = frm.querySelector("input[name=boardId]");
+    const commentLevel = frm.querySelector("input[name=commentLevel]");
+    const parentCommentId = frm.querySelector("input[name=parentCommentId]");
+    const content = frm.querySelector("#content");
+    console.dir(content);
+
+    $.ajax({
+        url: `${contextPath}comment/CreateComment.do`,
+        method: 'post',
+        headers: {
+            [csrfHeaderName] : csrfToken
+        },
+        data: {
+            boardId : boardId.value,
+            commentLevel : commentLevel.value,
+            parentCommentId : parentCommentId.value,
+            content : content.value
+        },
+        success(response){
+            console.log(response);
+        }
+    })
+
+
+})}
+
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll(".btn-reply").forEach((button) => {
         button.addEventListener('click', (e) => {
@@ -15,16 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(parentId)
             console.dir(e.target.dataset);
 
-            const csrfInput = document.createElement('input');
-            csrfInput.setAttribute('type', 'hidden');
-            csrfInput.setAttribute('name', '_csrf');
-            csrfInput.setAttribute('value', csrfToken);
-            console.log(csrfInput)
             // 대댓글 폼 생성
             const html = `
-                <tr>
+                <tr class="secondLevelComment">
                     <td colspan="4">
-                        <form> 
+                        <form name="boardCommentCreateFrm"> 
                             <input type="hidden" name="boardId" value="${boardId}">
                             <input type="hidden" name="commentLevel" value="2">
                             <input type="hidden" name="parentCommentId" value="${parentId}">
@@ -39,8 +63,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         </form>
                     </td>
                 </tr>`;
-            const tr = e.target.parentElement.parentElement;
+
+            const tr = e.target.parentElement.parentElement
+            console.log(tr);
             tr.insertAdjacentHTML('afterend', html);
+            // frmEvent();
+            frmEvent();
         });
     });
 });
