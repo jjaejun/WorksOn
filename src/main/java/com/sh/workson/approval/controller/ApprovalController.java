@@ -26,40 +26,115 @@ public class ApprovalController {
 
     /**
      * 전자 결재 메인 화면 조회
+     *
      */
     @GetMapping("/approvalHome.do")
-    public void approvalHome(@PageableDefault(size = 5, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalHome(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.info("approvalService = {}", approvalService.getClass());
+
+        // 결재 완료 문서 (승인 혹은 반려)
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeCheckLeave = approvalService.findCheckLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeCheckEquipment = approvalService.findCheckEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeCheckCooperation = approvalService.findCheckCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalCheckLeave = {}", approvalHomeCheckLeave.getContent());
+        log.debug("approvalCheckEquipment = {}", approvalHomeCheckEquipment.getContent());
+        log.debug("approvalCheckCooperation = {}", approvalHomeCheckCooperation.getContent());
+
+        model.addAttribute("approvalCheckLeave", approvalHomeCheckLeave.getContent());
+        model.addAttribute("approvalCheckEquipment", approvalHomeCheckEquipment.getContent());
+        model.addAttribute("approvalCheckCooperation", approvalHomeCheckCooperation.getContent());
+
+        // 결재 진행 문서
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeProceedingLeave = approvalService.findProceedingLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeProceedingEquipment = approvalService.findProceedingEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeProceedingCooperation = approvalService.findProceedingCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalProceedingLeave = {}", approvalHomeProceedingLeave.getContent());
+        log.debug("approvalProceedingEquipment = {}", approvalHomeProceedingEquipment.getContent());
+        log.debug("approvalProceedingCooperation = {}", approvalHomeProceedingCooperation.getContent());
+
+        model.addAttribute("approvalProceedingLeave", approvalHomeProceedingLeave.getContent());
+        model.addAttribute("approvalProceedingEquipment", approvalHomeProceedingEquipment.getContent());
+        model.addAttribute("approvalProceedingCooperation", approvalHomeProceedingCooperation.getContent());
+
+        // 결재 요청온 문서
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeReceiveLeave = approvalService.findReceiveLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeReceiveEquipment = approvalService.findReceiveEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeReceiveCooperation = approvalService.findReceiveCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalReceiveLeave = {}", approvalHomeReceiveLeave.getContent());
+        log.debug("approvalReceiveEquipment = {}", approvalHomeReceiveEquipment.getContent());
+        log.debug("approvalReceiveCooperation = {}", approvalHomeReceiveCooperation.getContent());
+
+        model.addAttribute("approvalReceiveLeave", approvalHomeReceiveLeave.getContent());
+        model.addAttribute("approvalReceiveEquipment", approvalHomeReceiveEquipment.getContent());
+        model.addAttribute("approvalReceiveCooperation", approvalHomeReceiveCooperation.getContent());
+
+
+    }
+
+    /**
+     * 결재 대기 함
+     */
+    @GetMapping("/approvalWait.do")
+    public void approvalWait(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findAllLeave(employeeDetails.getEmployee().getId(),pageable);
-        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findAllEquipment(employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findAllCooperation(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeLeaveDto> approvalWaitLeave = approvalService.findWaitLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalWaitEquipment = approvalService.findWaitEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalWaitCooperation = approvalService.findWaitCooperation(employeeDetails.getEmployee().getId(), pageable);
 
-        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
-        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
-        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+        log.debug("approvalWaitLeave = {}", approvalWaitLeave.getContent());
+        log.debug("approvalWaitEquipment = {}", approvalWaitEquipment.getContent());
+        log.debug("approvalWaitCooperation = {}", approvalWaitCooperation.getContent());
 
-        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
-        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
-        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
-
-        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
+        model.addAttribute("approvalWaitLeave", approvalWaitLeave.getContent());
+        model.addAttribute("approvalWaitEquipment", approvalWaitEquipment.getContent());
+        model.addAttribute("approvalWaitCooperation", approvalWaitCooperation.getContent());
 
     }
 
-    @GetMapping("/approvalWait.do")
-    public void approvalWait() {
-
-    }
-
+    // 결재 수신 문서함 같은 부서의 사람들의 결재 내용을 참조
     @GetMapping("/approvalReception.do")
-    public void approvalReception() {
+    public void approvalReception(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeReceptionLeave = approvalService.findReceptionLeave(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeReceptionEquipment = approvalService.findReceptionEquipment(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeReceptionCooperation = approvalService.findReceptionCooperation(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId(), pageable);
 
+        log.debug("approvalReceptionLeave = {}", approvalHomeReceptionLeave.getContent());
+        log.debug("approvalReceptionEquipment = {}", approvalHomeReceptionEquipment.getContent());
+        log.debug("approvalReceptionCooperation = {}", approvalHomeReceptionCooperation.getContent());
+
+        model.addAttribute("approvalReceptionLeave", approvalHomeReceptionLeave.getContent());
+        model.addAttribute("approvalReceptionEquipment", approvalHomeReceptionEquipment.getContent());
+        model.addAttribute("approvalReceptionCooperation", approvalHomeReceptionCooperation.getContent());
     }
 
+    /**
+     * 결재 예정함
+     */
     @GetMapping("/approvalExpected.do")
-    public void approvalExpected() {
+    public void approvalExpected(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.info("approvalService = {}", approvalService.getClass());
+
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalExceptedLeave = approvalService.findExceptedLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalExceptedEquipment = approvalService.findExceptedEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalExceptedCooperation = approvalService.findExceptedCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalExceptedLeave = {}", approvalExceptedLeave.getContent());
+        log.debug("approvalExceptedEquipment = {}", approvalExceptedEquipment.getContent());
+        log.debug("approvalExceptedCooperation = {}", approvalExceptedCooperation.getContent());
+
+        model.addAttribute("approvalExceptedLeave", approvalExceptedLeave.getContent());
+        model.addAttribute("approvalExceptedEquipment", approvalExceptedEquipment.getContent());
+        model.addAttribute("approvalExceptedCooperation", approvalExceptedCooperation.getContent());
 
     }
 
@@ -137,13 +212,73 @@ public class ApprovalController {
         model.addAttribute("totalCount", approvalHomeCooperationDtoPage.getTotalElements());
     }
 
+    /**
+     * 수신 문서함
+     */
     @GetMapping("/approvalReceived.do")
-    public void approvalRecevied() {
+    public void approvalRecevied(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.info("approvalService = {}", approvalService.getClass());
+
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findReLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findReEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findReCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
+        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
+        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
+        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
+        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
+    }
+
+    /**
+     * 발송 문서함
+     */
+    @GetMapping("/approvalSend.do")
+    public void approvalSend(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        log.info("approvalService = {}", approvalService.getClass());
+
+        log.debug("pageable = {}", pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findAllLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findAllEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findAllCooperation(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
+        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
+        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
+        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
+        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
+    }
+
+    /**
+     * 연차 상세 페이지 조회
+     */
+    @GetMapping("/approvalDetailLeave.do")
+    public void approvalDetailLeave() {
 
     }
 
-    @GetMapping("/approvalSend.do")
-    public void approvalSend() {
+    /**
+     * 비품 상세 페이지 조회
+     */
+    @GetMapping("/approvalDetailEquipment.do")
+    public void approvalDetailEquipment(){
+
+    }
+
+    /**
+     * 협조 상세 페이지 조회
+     */
+    @GetMapping("/approvalDetailCooperation.do")
+    public void approvalDetailCooperation() {
 
     }
 }

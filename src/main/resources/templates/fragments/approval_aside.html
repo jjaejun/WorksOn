@@ -19,7 +19,7 @@
         <hr class="mt-2">
       </div>
 
-      <ul >
+      <ul class="approval-nav-ul">
         <span class="z-20 absolute transition-all h-[58px] left-0 w-2 bg-[#FFFFFF] rounded-tr-lg rounded-br-lg opacity-0" id="focus-bar" aria-hidden="true"></span>
 
         <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalWait.do}'|">
@@ -45,7 +45,7 @@
         <span>전자 결재함</span>
         <hr class="mt-2">
       </div>
-        <ul>
+        <ul class="approval-nav-ul">
           <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/approval/approvalTemporary.do}'|">
             <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
               <span class="ml-4">임시 저장함</span>

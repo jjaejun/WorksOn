@@ -82,7 +82,7 @@ public class ProjectService {
 
         // mapper가 처리하지 못하는 startAt, endAt, status, emplist 처리하기
         // status, startAt, endAt -> 편의메소드로 처리
-        project.setStatus(Status.valueOf(projectCreateDto.getStatus()));;
+        project.setStatus(Status.NOT_YET);
 
         projectRepository.save(project);
         // emplist 처리
@@ -124,5 +124,9 @@ public class ProjectService {
 
     public List<ProjectEmployee> findAllProjectEmployeesByProjectID(Long projectId) {
         return projectEmployeeRepository.findAllProjectEmployeesByProjectID(projectId);
+    }
+
+    public List<Attachment> findAllAttachmentByProjectId(Long id) {
+        return attachmentRepository.findAllAttachmentByProjectId(id);
     }
 }

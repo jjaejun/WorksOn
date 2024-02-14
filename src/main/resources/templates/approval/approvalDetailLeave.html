@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/approval_default}">
+<head>
+    <title>결재 연차 상세 페이지</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <div class="container mx-auto p-4 bg-white border mt-8 mb-8">
+        <h1 class="text-3xl text-center mb-4">연차 신청서</h1>
+        <div class="flex">
+            <table class="w-20% mb-6">
+                <tr class="border">
+                    <th class="border p-2">기안자</th>
+                    <td><input type="text" class="w-20% p-2 border " value="오우진" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">소속</th>
+                    <td><input type="text" class="w-20% p-2 border " value="esc" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">기안일</th>
+                    <td><input type="text" class="w-20% p-2 border " value="2024-02-26(화)" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">문서번호</th>
+                    <td><input type="text" class="w-20% p-2 border " value="1" readonly></td>
+                </tr>
+            </table>
+            <table class="mb-6 ml-auto mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀장" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="이민정" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+            <table class="mb-6 mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="천무진" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+            <table class="mb-6">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="한준희" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+
+        <table class="w-full mb-6">
+            <tr class="border">
+                <th class="border p-2 w-32">휴가 종류</th>
+                <td>
+                    <!-- Dropdown 버튼 -->
+                    <div class="relative inline-block text-left">
+                        <button id="dropdownButton" type="button" class="border-2 border-blue-700 px-4 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                            연차
+                        </button>
+
+                        <!-- Dropdown 메뉴 -->
+                        <div class="absolute mt-1 w-16 bg-white border rounded-md shadow-lg hidden">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 text-xs">연차</a>
+                                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 text-xs">반차</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">기간 및 일시</th>
+                <td>달력2024-02-06 ~ 달력2024-02-06 사용일수: 1</td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">반차 여부</th>
+                <td><input type="checkbox" class="w-12 p-2 border">반차여부(체크시 기간 및 일시가 같은 날일때 0.5로 바뀜)</td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">연차 일수</th>
+                <td>
+                    잔여연차 : <input type="text" class="w-24 p-2 border text-right" value="15" readonly>
+                    신청연차 : <input type="text" class="w-24 p-2 border text-right" value="1" readonly>
+                </td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">휴가 사유</th>
+                <td><input type="text" class="w-full p-2 border" value="여기는 에디터 안씁니다."></td>
+            </tr>
+        </table>
+
+        <h2 class="p-2 w-32">파일 첨부</h2>
+        <div class="border-dotted">
+            <input type="file" class="custom-file-input mb-3" name="upFile" id="upFile" multiple placeholder="이곳에 파일을 드래그 하세요. 또는 파일선택">
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재요청</button>
+    </div>
+</div>
+    <script>
+        function execCmd(command) {
+            document.execCommand(command, false, null);
+        }
+    </script>
+    <!-- Modify the JavaScript code -->
+    <script>
+        document.addEventListener('click', function (event) {
+            var dropdownButton = document.getElementById('dropdownButton');
+            var dropdownMenu = dropdownButton.nextElementSibling;
+
+            if (!dropdownButton.contains(event.target)) {
+                // Clicked outside the dropdownButton, hide the dropdown menu
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Dropdown button click event to toggle the dropdown menu
+        document.getElementById('dropdownButton').addEventListener('click', function () {
+            var dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Menu item click event to update the button text and hide the dropdown menu
+        var menuItems = document.querySelectorAll('.relative .absolute a');
+        menuItems.forEach(function (menuItem) {
+            menuItem.addEventListener('click', function () {
+                var selectedValue = this.textContent.trim();
+                document.getElementById('dropdownButton').textContent = selectedValue;
+                this.closest('.absolute').classList.add('hidden');
+            });
+        });
+    </script>
+</html>

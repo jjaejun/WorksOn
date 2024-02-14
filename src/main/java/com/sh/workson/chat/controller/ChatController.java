@@ -2,6 +2,7 @@ package com.sh.workson.chat.controller;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.chat.dto.ChatLogCreateDto;
+import com.sh.workson.chat.entity.ChatLog;
 import com.sh.workson.chat.entity.ChatRoom;
 import com.sh.workson.chat.service.ChatService;
 import com.sh.workson.employee.entity.Employee;
@@ -49,9 +50,11 @@ public class ChatController {
     }
 
     @GetMapping("/chatRoom.do")
-    public void chatRoom(@RequestParam("id") Long id , Model model) {
+    public void chatRoom(@RequestParam("id") Long id, Model model) {
 //        log.debug("id = {}", id);
-        model.addAttribute("chatRoomId", id);
+        List<ChatLog> chatRooms = chatService.findLogByRoomId(id);
+        log.debug("chatRooms = {}", chatRooms);
+        model.addAttribute("chatRooms", chatRooms);
     }
 
 
@@ -60,7 +63,7 @@ public class ChatController {
     public ChatLogCreateDto subMessage(@DestinationVariable String chatRoomId, ChatLogCreateDto chatLogCreateDto) {
 
         log.debug("chatLogCreateDto = {}", chatLogCreateDto);
-//        chatService.createChatLog(chatLogCreateDto);
+        chatService.createChatLog(chatLogCreateDto);
         return chatLogCreateDto;
     }
 }

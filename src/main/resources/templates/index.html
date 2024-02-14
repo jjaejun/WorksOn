@@ -15,7 +15,7 @@
                     <div class="m-2 align-top text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
                         <h4 class="my-4">2023년 01월 26일(금)</h4>
                         <div th:id="img-wrap" class="my-2 rounded-full w-2/4 overflow-hidden bg-blue-50 mx-auto">
-                            <img th:src="${#authentication.principal.employee.profileUrl}" alt="" id="profile-preview">
+                            <img class="object-cover" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
                         </div>
                         <p class="my-4" th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></p>
                         <h1 class="my-4 text-4xl font-bold">시계 위치</h1>

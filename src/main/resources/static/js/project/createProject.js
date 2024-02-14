@@ -110,16 +110,25 @@ document.querySelector("#read-search-input").addEventListener('keyup', (e) => {
                 searchList.innerHTML = '';
 
                 response.forEach((e) => {
-                    const {id, name, department: {name : deptName}, position: {name: positionName}} = e;
+                    const {id, name, department: {name : deptName}, position: {name: positionName}, profileUrl} = e;
 
                     searchList.innerHTML += `
                 <div class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-blue-100 text-sm" onclick="javascript:readClickEvent();">
                     <div class="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-blue-100">
                         <div data-emp-id="${id}" data-emp-name="${name}" data-emp-position="${positionName}"
                         class="searchResult w-full items-center flex">
-                            <span class="mx-2">${name}</span>
-                            <span class="mx-2">${positionName}</span>
-                            <span class="mx-2">${deptName}</span>
+                           <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
+                                <img width="50px" alt="사원 프로필 사진" class="block rounded-full" 
+                                src="${profileUrl != null ? profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                            </div>
+                            <div>
+                                <p class="ml-2 text-sm text-blue-700 font-bold">
+                                     ${deptName}
+                                </p>
+                                <p class="ml-2 text-sm">
+                                    ${name} ${positionName}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -193,16 +202,25 @@ document.querySelector("#create-search-input").addEventListener('keyup', (e) => 
                 searchList.innerHTML = '';
 
                 response.forEach((e) => {
-                    const {id, name, department: {name : deptName}, position: {name: positionName}} = e;
+                    const {id, name, department: {name : deptName}, position: {name: positionName}, profileUrl} = e;
 
                     searchList.innerHTML += `
                 <div class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-blue-100 text-sm" onclick="javascript:createClickEvent();">
                     <div class="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-blue-100">
                         <div data-emp-id="${id}" data-emp-name="${name}" data-emp-position="${positionName}"
                         class="searchResult w-full items-center flex">
-                            <span class="mx-2">${name}</span>
-                            <span class="mx-2">${positionName}</span>
-                            <span class="mx-2">${deptName}</span>
+                            <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
+                                <img width="50px" alt="사원 프로필 사진" class="block rounded-full" 
+                                src="${profileUrl != null ? profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                            </div>
+                            <div>
+                                <p class="ml-2 text-sm text-blue-700 font-bold">
+                                     ${deptName}
+                                </p>
+                                <p class="ml-2 text-sm">
+                                    ${name} ${positionName}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
