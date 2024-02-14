@@ -60,6 +60,7 @@ public class S3FileService {
         return new AttachmentCreateDto(null, attachType, upFile.getOriginalFilename(), key, url, null);
     }
 
+
     public ProjectAttachmentCreateDto uploadProjectAttach(MultipartFile upFile, AttachType attachType) throws IOException {
         String key = UUID.randomUUID().toString();
 
@@ -74,6 +75,7 @@ public class S3FileService {
 
         return new ProjectAttachmentCreateDto(0L, attachType, upFile.getOriginalFilename(), key, url, null, null);
     }
+
     /**
      * Resource
      * - (5가지 특징 : IoC/DI, POJO, PSA, AOP)
@@ -91,6 +93,17 @@ public class S3FileService {
      * @param attachmentDetailDto
      * @return
      */
+
+    public ResponseEntity<?> download(AttachmentDetailDto attachmentDetailDto) throws UnsupportedEncodingException {
+        // http:// https:// 은 UrlResource구현 객체를 통해 자원을 획득
+        Resource resource = resourceLoader.getResource(attachmentDetailDto.getUrl());
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(attachmentDetailDto.getOriginalFileName(), "UTF-8"))
+                .body(resource);
+    }
+
+
     public ResponseEntity<?> download(ProjectAttachmentDetailDto attachmentDetailDto) throws UnsupportedEncodingException {
         // http:// https:// 은 UrlResource구현 객체를 통해 자원을 획득
         Resource resource = resourceLoader.getResource(attachmentDetailDto.getUrl());
@@ -102,4 +115,5 @@ public class S3FileService {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(attachmentDetailDto.getOriginalFilename(), "UTF-8"))
                 .body(resource);
     }
+
 }

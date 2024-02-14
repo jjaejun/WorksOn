@@ -1,5 +1,8 @@
 package com.sh.workson.board.service;
 
+import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.entity.Attachment;
+import com.sh.workson.attachment.repository.AttachmentRepository;
 import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.board.dto.BoardCreateDto;
 import com.sh.workson.board.dto.BoardDetailDto;
@@ -30,11 +33,14 @@ public class BoardService {
     private AttachmentService attachmentService;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private AttachmentRepository attachmentRepository;
 
     public Page<BoardListDto> findAll(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAll(pageable);
         return boardPage.map((board) -> convertToBoardListDto(board));
     }
+
 
     private BoardListDto convertToBoardListDto(Board board) {
         BoardListDto boardListDto = modelMapper.map(board, BoardListDto.class);
@@ -53,10 +59,19 @@ public class BoardService {
         Board board = boardRepository.save(convertToBoard(boardCreateDto));
 
         log.debug("board = {}", board);
-        boardCreateDto.getAttachments().forEach((attachmentCreateDto -> {
-            attachmentCreateDto.setBoardId(board.getId());
-            attachmentService.createAttachment(attachmentCreateDto);
-        }));
+//        boardCreateDto.getAttachments().forEach((attachmentCreateDto -> {
+//            attachmentCreateDto.setBoardId(board.getId());
+//            attachmentService.createAttachment(attachmentCreateDto);
+//        }));
+        if(!boardCreateDto.getAttaches().isEmpty()) {
+            for (AttachmentCreateDto attach: boardCreateDto.getAttaches()) {
+                attach.setBoardId(board.getId());
+                Attachment attachment = modelMapper.map(attach, Attachment.class);
+                log.debug("attachment = {}", attachment);
+                attachmentRepository.save(attachment);
+            }
+        }
+
     }
 
     private Board convertToBoard(BoardCreateDto boardCreateDto) {
@@ -81,6 +96,14 @@ public class BoardService {
         BoardDetailDto boardDetailDto = modelMapper.map(board, BoardDetailDto.class);
         return boardDetailDto;
     }
+
+
+    @Transactional
+    public int updateView(Long id) {
+        return boardRepository.updateView(id);
+    }
+
+
 
 
 }

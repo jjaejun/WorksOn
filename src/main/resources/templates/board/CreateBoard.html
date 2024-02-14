@@ -20,11 +20,8 @@
             <input type="text" class="form-input mb-3 block w-full" placeholder="제목" name="title" id="title" required>
             <!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
             <div class="relative mb-3">
-                <label for="upFile" class="text-sm text-gray-600">첨부파일</label>
-                <input type="file" class="sr-only" name="upFile" id="upFile" multiple>
-                <span class="inline-block w-64 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg cursor-pointer">
-                파일선택
-            </span>
+                <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                       type="file" name="files" multiple id="files">
             </div>
             <textarea class="form-textarea mb-3 block w-full" name="content" placeholder="내용" required></textarea>
             <input type="submit"  class="btn btn-outline-success w-full" value="저장">
