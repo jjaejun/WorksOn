@@ -1,4 +1,6 @@
+
 document.querySelectorAll("tr[data-board-id]").forEach((tr) =>{
+    tr.style.cursor = "pointer";
     tr.addEventListener('click',(e) =>{
         const td =e.target;
         const tr = td.parentElement;
@@ -6,7 +8,6 @@ document.querySelectorAll("tr[data-board-id]").forEach((tr) =>{
         location.href = `${contextPath}board/boardDetail.do?id=${boardId}`;
     });
 });
-
 
 
 // document.getElementById("previousPage").addEventListener("click", function(event) {

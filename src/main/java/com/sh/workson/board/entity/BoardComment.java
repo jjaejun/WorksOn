@@ -24,8 +24,6 @@ public class BoardComment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
-
-    @Column(nullable = false, length = 4000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -7,12 +7,19 @@ import com.sh.workson.attachment.repository.AttachmentRepository;
 import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.board.dto.BoardCommentDto;
 import com.sh.workson.board.dto.BoardCreateDto;
 import com.sh.workson.board.dto.BoardDetailDto;
 import com.sh.workson.board.dto.BoardListDto;
 import com.sh.workson.board.entity.Board;
+import com.sh.workson.board.entity.BoardComment;
 import com.sh.workson.board.entity.Type;
+import com.sh.workson.board.service.BoardCommentService;
 import com.sh.workson.board.service.BoardService;
+import com.sh.workson.employee.entity.Employee;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +27,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,8 +52,10 @@ public class BoardController {
     private S3FileService s3FileService;
     @Autowired
     private AttachmentService attachmentService;
-//    @Autowired
-//    private NotificationService notificationService;
+    @Autowired
+    private BoardCommentService boardCommentService;
+
+
 
     @GetMapping("/boardList.do")
     public void boardList(@PageableDefault(size = 10, page = 0 ) Pageable pageable, Model model) {
@@ -53,10 +64,6 @@ public class BoardController {
         log.debug("pageable = {}", pageable);
         Page<BoardListDto> boardPage = boardService.findAll(pageable);
         log.debug("boards = {}", boardPage.getContent());
-
-//        for (BoardListDto board : boardPage.getContent()) {
-//            boardService.updateView(board.getId());
-//        }
 
         model.addAttribute("boards", boardPage.getContent());
         model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
@@ -78,7 +85,6 @@ public class BoardController {
             throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
 
-
         // 첨부파일 S3에 저장
         for(MultipartFile file : files) {
             log.debug("file = {}", file);
@@ -90,11 +96,8 @@ public class BoardController {
         }
 
         // DB에 저장(게시글, 첨부파일)
-
         boardCreateDto.setEmployee(employeeDetails.getEmployee());
         boardService.createBoard(boardCreateDto);
-
-
 
         //리다이렉트후에 사용자 피드백
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다");
@@ -103,21 +106,40 @@ public class BoardController {
 
     @GetMapping("/boardDetail.do")
     public void boardDetail(@RequestParam("id") Long id , Model model){
-//        boardService.updateView(id);
 
         BoardDetailDto boardDetailDto = boardService.findById(id);
-        model.addAttribute("board" , boardDetailDto);
-        log.debug("board = {}" , boardDetailDto);
+        List<BoardCommentDto> commentList = boardCommentService.findByBoardId(id);
+        model.addAttribute("board", boardDetailDto);
+        model.addAttribute("commentList", commentList);
+        log.debug("board = {}", boardDetailDto);
+        log.debug("commentList = {}", commentList);
 
-
-
-
+        // 조회수 증가
+        boardService.updateView(id);
     }
+
+    @PostMapping("/boardDetail.do")
+    public String insertComment(@RequestParam("id") Long id, @RequestParam("comment") String comment,
+                                Authentication authentication) {
+        EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
+        Long employeeId = employeeDetails.getEmployee().getId();
+
+
+        BoardCommentDto boardCommentDto = new BoardCommentDto();
+        boardCommentDto.setContent(comment);
+        log.debug("board = {}" , boardCommentDto);
+
+        boardCommentService.insertComment(boardCommentDto, id, employeeId);
+        log.debug("board = {}" , boardCommentDto);
+
+        return "redirect:/board/boardDetail.do?id=" + id;
+    }
+
+
     @GetMapping("/fileDownload.do")
     public ResponseEntity<?> fileDownload(@RequestParam("id") Long id)
             throws UnsupportedEncodingException {
-        // 알림 업무로직
-//        notificationService.notifyFileDownload(id);
+
         // 파일다운로드 업무로직
         AttachmentDetailDto attachmentDetailDto = attachmentService.findById(id);
         return s3FileService.download(attachmentDetailDto);

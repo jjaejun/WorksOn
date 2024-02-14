@@ -41,6 +41,7 @@ public class BoardService {
         return boardPage.map((board) -> convertToBoardListDto(board));
     }
 
+
     private BoardListDto convertToBoardListDto(Board board) {
         BoardListDto boardListDto = modelMapper.map(board, BoardListDto.class);
         boardListDto.setEmpId(
@@ -96,8 +97,13 @@ public class BoardService {
         return boardDetailDto;
     }
 
+
     @Transactional
     public int updateView(Long id) {
         return boardRepository.updateView(id);
     }
+
+
+
+
 }

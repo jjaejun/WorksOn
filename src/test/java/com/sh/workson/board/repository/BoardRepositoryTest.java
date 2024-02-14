@@ -36,6 +36,7 @@ class BoardRepositoryTest {
                 .type(Type.notification)
                 .employee(employee)
                 .content("내용")
+                .viewCount(0)
                 .build();
 
         // when
@@ -62,6 +63,10 @@ class BoardRepositoryTest {
         assertThat(pageResult.getNumber()).isEqualTo(pageNumber);
         assertThat(pageResult.getNumberOfElements()).isLessThanOrEqualTo(pageSize);
     }
+
+
+
+
 
 
 
