@@ -37,8 +37,10 @@ public class Schedule {
     @Column(nullable = false, name = "end_time")
     @Timestamp
     private LocalDateTime endTime;
+    @OneToOne
     @JoinColumn(name="schedule_category_id")
-    private Long scheduleCategoryId;
+    private ScheduleCategory scheduleCategory;
+    @ManyToOne
     @JoinColumn(name="emp_id")
-    private Long empId;
+    private Employee employee;
 }

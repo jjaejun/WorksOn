@@ -1,5 +1,6 @@
 package com.sh.workson.schedule.service;
 
+import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import com.sh.workson.schedule.dto.CreateScheduleDto;
 import com.sh.workson.schedule.entity.Schedule;
@@ -32,6 +33,13 @@ public class ScheduleService {
     }
 
     private Schedule convertToSchedule(CreateScheduleDto createScheduleDto){
-        return modelMapper.map(createScheduleDto, Schedule.class);
+        Schedule schedule = modelMapper.map(createScheduleDto, Schedule.class);
+        schedule.setEmployee(Employee.builder()
+                    .id(createScheduleDto.getEmpId())
+                    .build());
+        schedule.setScheduleCategory(ScheduleCategory.builder()
+                    .id(createScheduleDto.getScheduleCategoryId())
+                    .build());
+        return schedule;
     }
 }
