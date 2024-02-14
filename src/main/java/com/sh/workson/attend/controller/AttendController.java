@@ -1,8 +1,8 @@
 package com.sh.workson.attend.controller;
 
-import com.sh.workson.attend.entity.Attend;
-import com.sh.workson.attend.entity.AttendListDto;
+import com.sh.workson.attend.entity.*;
 import com.sh.workson.attend.repository.AttendRepository;
+import com.sh.workson.attend.repository.AttendRequestRepository;
 import com.sh.workson.attend.service.AttendService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
@@ -20,10 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -38,10 +35,13 @@ public class AttendController {
     private AttendService attendService;
     @Autowired
     private AttendRepository attendRepository;
+    @Autowired
+    private AttendRequestRepository attendRequestRepository;
 
     @GetMapping("/attendList.do")
-    public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model) {
-        Long id = 952L;
+    public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model,
+                           @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        Long id = employeeDetails.getEmployee().getId();
         Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
         model.addAttribute("attends", attendPage.getContent());
         model.addAttribute("totalCount", attendPage.getTotalElements());
@@ -82,6 +82,29 @@ public class AttendController {
         Attend attending = attendService.findAttendByEmployeeId(id);
 
         attendService.updateEndAt(attending);
+        log.debug("attending = {}", attending);
         return ResponseEntity.ok("퇴근 등록이 완료되었습니다.");
+
+    }
+
+    @PostMapping("/request.do")
+    public ResponseEntity<?> request(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam("content") String content,
+            @RequestParam("attendId") Long attendId,
+            RedirectAttributes redirectAttributes
+    ){
+        AttendRequest attendRequest = AttendRequest.builder()
+                .attend(Attend.builder()
+                        .id(attendId)
+                        .build())
+                .content(content)
+                .type(Type.WORK)
+                .checkAr(CheckAr.N)
+                .build();
+        attendRequestRepository.save(attendRequest);
+        log.debug("attendRequest = {}", attendRequest);
+        return ResponseEntity.ok("정정 요청이 완료되었습니다");
+
     }
 }

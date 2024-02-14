@@ -27,17 +27,10 @@ public class ChatLog {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name = "employee_id")
-    private Long empId;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
     @Column(name = "chat_room_id")
     private Long chatRoomId;
-
-    @OneToOne
-    @JoinTable(
-            name = "chat_read",
-            joinColumns = @JoinColumn(name = "chat_log_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
-    private Employee employee;
 }
 

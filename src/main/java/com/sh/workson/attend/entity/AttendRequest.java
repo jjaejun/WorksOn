@@ -21,9 +21,15 @@ public class AttendRequest {
     )
     private Long id;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(1000) DEFAULT 'WORK'")
     private Type type;
     private String content;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(1000) DEFAULT 'N'")
     private CheckAr checkAr;
+
+    @ManyToOne
+    @JoinColumn(name = "attend_id")
+    private Attend attend;
 
 }

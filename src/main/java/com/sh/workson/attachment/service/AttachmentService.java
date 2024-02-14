@@ -1,6 +1,7 @@
 package com.sh.workson.attachment.service;
 
 import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.dto.AttachmentDetailDto;
 import com.sh.workson.attachment.dto.ProjectAttachmentCreateDto;
 import com.sh.workson.attachment.dto.ProjectAttachmentDetailDto;
 import com.sh.workson.attachment.entity.Attachment;
@@ -29,7 +30,18 @@ public class AttachmentService {
         return modelMapper.map(attachmentCreateDto, Attachment.class);
     }
 
-    public ProjectAttachmentDetailDto findById(Long id) {
+
+    public AttachmentDetailDto findById(Long id) {
+        return attachmentRepository.findById(id)
+                .map((this::convertToAttachmentDetailDto))
+                .orElseThrow();
+    }
+
+    private AttachmentDetailDto convertToAttachmentDetailDto(Attachment attachment) {
+        return modelMapper.map(attachment, AttachmentDetailDto.class);
+    }
+
+    public ProjectAttachmentDetailDto findByProjectId(Long id) {
         return attachmentRepository.findById(id)
                 .map(this::convertToProjectAttachmentDetailDto)
                 .orElseThrow();

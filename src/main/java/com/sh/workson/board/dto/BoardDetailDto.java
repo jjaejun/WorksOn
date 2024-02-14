@@ -26,5 +26,9 @@ public class BoardDetailDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<AttachmentDetailDto> attachments = new ArrayList<>();
+    private List<CommentDetailDto> comments = new ArrayList<>(); // comments 속성 추가
+//    private List<CommentDto> commentList;
+
+
 
 }

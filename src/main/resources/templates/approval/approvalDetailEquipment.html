@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/approval_default}">
+<head>
+    <title>결재 비품 상세 페이지</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <div class="container mx-auto p-4 bg-white border mt-8 mb-8">
+        <h1 class="text-3xl text-center mb-4">비품 신청서</h1>
+        <div class="flex">
+            <table class="w-20% mb-6">
+                <tr class="border">
+                    <th class="border p-2">기안자</th>
+                    <td><input type="text" class="w-20% p-2 border " value="오우진" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">소속</th>
+                    <td><input type="text" class="w-20% p-2 border " value="esc" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">기안일</th>
+                    <td><input type="text" class="w-20% p-2 border " value="2024-02-26(화)" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">문서번호</th>
+                    <td><input type="text" class="w-20% p-2 border " value="1" readonly></td>
+                </tr>
+            </table>
+            <table class="mb-6 ml-auto mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="총무과" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="성민준" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+
+        <table class="w-full mb-6 flex">
+            <tr class="border">
+                <th class="border p-2 w-32">제목</th>
+                <td colspan="6"><input type="text" class="w-full p-2 border " placeholder="제목"></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">내용</th>
+                <td colspan="6"><input type="text" class="w-full p-2 border " placeholder="내용"></td>
+            </tr>
+            <tr>
+            <tr>
+                <th class="border px-4 py-2">품명</th>
+                <th class="border px-4 py-2">수량</th>
+                <th class="border px-4 py-2">단가</th>
+                <th class="border px-4 py-2">금액</th>
+                <th class="border px-4 py-2">용도</th>
+            </tr>
+            </tr>
+            <tr>
+                <td><input type="text" class="border px-4 py-2 w-full" value="품명1"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="5"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="10,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="50,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="용도1"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="border px-4 py-2 w-full" value="품명2"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="4"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="10,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="40,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="용도2"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="border px-4 py-2 w-full" value="품명3"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="3"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="10,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="30,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="용도3"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="border px-4 py-2 w-full" value="품명4"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="2"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="10,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="20,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="용도4"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="border px-4 py-2 w-full" value="품명5"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="1"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="10,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="10,000원"></td>
+                <td><input type="text" class="border px-4 py-2 w-full" value="용도5"></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">합계</th>
+                <td colspan="6"><input type="text" class="w-full p-2 border ml-auto" placeholder="합계금액"></td>
+            </tr>
+        </table>
+
+        <h2 class="p-2 w-32">파일 첨부</h2>
+        <div class="border-dotted">
+            <input type="file" class="custom-file-input mb-3" name="upFile" id="upFile" multiple placeholder="이곳에 파일을 드래그 하세요. 또는 파일선택">
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재 재출</button>
+    </div>
+</div>
+
+    <script>
+        function execCmd(command) {
+            document.execCommand(command, false, null);
+        }
+    </script>
+</html>

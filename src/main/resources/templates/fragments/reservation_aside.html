@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/reservation_default}">
+<div th:fragment="aside" class="flex h-screen bg-gray-50">
+  <!-- Desktop sidebar -->
+  <aside id="sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
+    <div class="py-4 text-[#000000]">
+      <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
+        <span>예약하기</span>
+        <hr class="mt-2">
+      </div>
+        <ul class="flex flex-wrap -mb-px">
+          <li class="me-2">
+            <a th:href="|location.href='@{/reservation/reservationRoom.do}'|" class="px-6 py-3 h-[58px] border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Profile</a>
+          </li>
+          <li class="me-2">
+            <a th:href="|location.href='@{/reservation/reservationCar.do}'|" class="px-6 py-3 h-[58px] text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500" aria-current="page">Dashboard</a>
+          </li>
+          <li class="me-2">
+            <a th:href="|location.href='@{/reservation/reservationNotebook.do}'|" class="px-6 py-3 h-[58px] border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Settings</a>
+          </li>
+        </ul>
+    </div>
+  </aside>
+</div>
+
+</html>
