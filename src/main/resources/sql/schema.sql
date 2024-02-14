@@ -219,11 +219,14 @@ create table attachment (
     original_file_name varchar(255) not null,
     key varchar2(1000) not null, 
     url varchar(1000) not null,
+    emp_id number,
     created_at timestamp default systimestamp,
-    constraint pk_attachment_id primary key (id)
+    constraints pk_attachment_id primary key (id),
+    constraints fk_attachment_emp_id foreign key (emp_id) references employee(id) on delete set null
 );
 create sequence seq_attachment_id start with 1 increment by 50;
 
+select * from attachment;
 
 -- 재준
 
