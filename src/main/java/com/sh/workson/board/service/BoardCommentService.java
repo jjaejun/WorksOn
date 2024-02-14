@@ -1,4 +1,5 @@
 package com.sh.workson.board.service;
+import com.sh.workson.board.dto.BoardCommentCreateDto;
 import com.sh.workson.board.dto.BoardCommentDto;
 import com.sh.workson.board.entity.Board;
 import com.sh.workson.board.entity.BoardComment;
@@ -64,6 +65,17 @@ public class BoardCommentService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public void createComment(BoardCommentCreateDto commentCreateDto) {
+        BoardComment comment = BoardComment.builder()
+                .commentLevel(commentCreateDto.getCommentLevel())
+                .parentComment(BoardComment.builder().id(commentCreateDto.getParentId()).build())
+                .content(commentCreateDto.getComment())
+                .board(Board.builder().id(commentCreateDto.getBoardId()).build())
+                .employee(Employee.builder().id(commentCreateDto.getEmpId()).build())
+                .build();
+        boardCommentRepository.save(comment);
     }
 }
 
