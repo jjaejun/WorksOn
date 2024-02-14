@@ -20,6 +20,7 @@ public class EmployeeDetailDto {
     private Long id;
     private String name;
     private String email;
+    private String profileUrl;
     private Position position;
     private Department department;
 }
