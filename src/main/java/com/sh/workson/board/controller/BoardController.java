@@ -131,14 +131,14 @@ public class BoardController {
     public String insertComment(
             @RequestParam("id") Long id,
             @RequestParam("comment") String comment,
-            @RequestParam("parentId") Long parentId,
-                                Authentication authentication) {
+//            @RequestParam("parentId") Long parentId,
+            Authentication authentication) {
         EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
         Long employeeId = employeeDetails.getEmployee().getId();
 
         log.debug("id = {}" , id);
         log.debug("comment = {}" , comment);
-        log.debug("parentId = {}" , parentId);
+//        log.debug("parentId = {}" , parentId);
 
         BoardCommentDto boardCommentDto = new BoardCommentDto();
         boardCommentDto.setContent(comment);
