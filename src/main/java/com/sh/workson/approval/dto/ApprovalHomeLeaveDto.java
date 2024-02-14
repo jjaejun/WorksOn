@@ -18,6 +18,10 @@ public class ApprovalHomeLeaveDto {
 
     // employee
     private String empId; // Employee#username이 들어올 예정
+    private String empReId;
+
+    // department
+    private String deptId;
 
     // approval_attachment
     private int attachCount;

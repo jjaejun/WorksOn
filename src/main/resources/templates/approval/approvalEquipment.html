@@ -23,7 +23,7 @@
         </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
-        <tr th:each="approval, status : ${approvalEquipment}" th:data-approval-id="${approval.id}">
+        <tr th:each="approval, status : ${approvalEquipment}" th:data-approval-equipment-id="${approval.id}" class="approval-tr hover:bg-gray-100">
             <td class="border px-4 py-2" th:text="${approval.approvalEndDate}"></td>
             <td class="border px-4 py-2" th:text="${approval.name}"></td>
             <td class="border px-4 py-2" th:text="${approval.title}"></td>
@@ -56,6 +56,6 @@
     <!--        </nav>-->
     <!--    </div>-->
 </div>
-<script layout:fragment="script" th:src="@{/js/approval/approvalHome.js}">
+<script layout:fragment="script" th:src="@{/js/approval/approvalList.js}">
 </script>
 </html>
