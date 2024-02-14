@@ -63,7 +63,7 @@ public class AttendService {
 
         // 출근시간 확인
         LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime nineAm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 8, 0);
+        LocalDateTime nineAm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 9, 0);
 
         if (currentTime.isAfter(nineAm)) {
             // 9시 이후 출근이면 지각
@@ -93,7 +93,7 @@ public class AttendService {
 
         // 퇴근시간 확인
         LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime sixPm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 10, 0);
+        LocalDateTime sixPm = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 18, 0);
 
         if (currentTime.isAfter(sixPm)) {
             // 18시 이후 퇴근이면 퇴근으로 처리

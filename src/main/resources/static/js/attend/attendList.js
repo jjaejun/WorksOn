@@ -27,7 +27,8 @@ window.addEventListener('DOMContentLoaded', () => {
             alert('이미 출근이 등록되어 있습니다.');
             return;
         }
-
+        const {empId} =  btnStartWork.dataset;
+        console.log(empId);
         // AJAX를 사용하여 출근 등록 요청
         $.ajax({
             type: 'POST',
@@ -36,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
             },
             url: `${contextPath}attend/startWork.do`,
             data: {
-                id: 902
+
             },
             success: function (response) {
                 alert(response);
@@ -64,6 +65,8 @@ window.addEventListener('DOMContentLoaded', () => {
             alert('이미 퇴근이 등록되어 있습니다.');
             return;
         }
+        const {empId} =  btnStartWork.dataset;
+        console.log(empId);
         // AJAX를 사용하여 퇴근 등록 요청
         $.ajax({
             type: 'POST',
@@ -72,7 +75,7 @@ window.addEventListener('DOMContentLoaded', () => {
             },
             url: `${contextPath}attend/endWork.do`,
             data: {
-                id: 902
+
             },
             success: function (response) {
                 alert(response);
@@ -86,9 +89,14 @@ window.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('endwork-time').textContent = formattedTime;
 
             },
-            error: function (error) {
-                // 오류가 발생하면 오류 메시지 출력 또는 다른 처리 수행
-                console.error('에러 발생:', error.responseText);
+            error: function (xhr, status, error) {
+                const errorMessage = JSON.parse(xhr.responseText).message;
+                if (errorMessage === "퇴근시간이 아닙니다.") {
+                    alert(errorMessage); // 예외 메시지를 팝업으로 표시
+                } else {
+                    // 그 외의 오류 처리
+                    console.error('서버 오류:', errorMessage);
+                }
             }
         });
     });
@@ -118,4 +126,38 @@ function clock() {
 clock();
 setInterval(clock, 1000); // 1초마다 실행
 // 근태관리 실시간 시간 보여주기 end
+
+
+document.getElementById("btnRequest").addEventListener('click', function() {
+    // 폼 데이터 수집
+    const formData = new FormData(document.forms["contentFrm"]);
+
+    // AJAX 요청
+    $.ajax({
+        type: "POST",
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        url: `${contextPath}attend/request.do`,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            // 서버 응답 성공 시 처리
+            if (data.success) {
+                alert("정정 요청에 성공했습니다.");
+                // 추가 동작 수행
+            } else {
+                console.log(data);
+                alert("정정 요청에 실패했습니다. 다시 시도해주세요.");
+            }
+        },
+        error: function (error) {
+            // Ajax 요청 에러 처리
+            console.error("Error submitting form: ", error);
+            alert("서버와의 통신 중 오류가 발생했습니다.");
+        }
+    });
+});
+
 
