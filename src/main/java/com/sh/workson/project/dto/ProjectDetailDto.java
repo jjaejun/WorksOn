@@ -4,6 +4,7 @@ import com.sh.workson.employee.dto.EmployeeDetailDto;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
 import com.sh.workson.project.entity.ProjectEmployee;
 import com.sh.workson.project.entity.Status;
+import com.sh.workson.project.entity.Task;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ public class ProjectDetailDto {
     private LocalDate endAt;
     private String status;
     private EmployeeDetailDto employee;
-
+    private List<Task> tasks = new ArrayList<>();
 
 //    private List<EmployeeDetailDto> projectEmployees = new ArrayList<>();
 
