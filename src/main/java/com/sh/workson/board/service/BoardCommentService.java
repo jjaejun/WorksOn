@@ -49,13 +49,18 @@ public class BoardCommentService {
 
     public List<BoardCommentDto> findByBoardId(Long id) {
         List<BoardComment> comments = boardCommentRepository.findByBoardId(id);
+        for (BoardComment c: comments){
+            log.debug("boardComent = {}", c);
+        }
+
         return comments.stream()
                 .map(comment -> {
                     BoardCommentDto dto = new BoardCommentDto();
-                    dto.setEmployeeId(comment.getId());
+                    dto.setEmployeeId(comment.getEmployee().getId());
                     dto.setContent(comment.getContent());
-                    dto.setId(comment.getEmployee().getName());
+                    dto.setId(comment.getId());
                     dto.setCreatedAt(comment.getCreatedAt());
+                    dto.setParentComment(comment.getParentComment());
                     return dto;
                 })
                 .collect(Collectors.toList());
