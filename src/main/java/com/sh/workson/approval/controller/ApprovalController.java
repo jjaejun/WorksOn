@@ -1,8 +1,6 @@
 package com.sh.workson.approval.controller;
 
-import com.sh.workson.approval.dto.ApprovalHomeCooperationDto;
-import com.sh.workson.approval.dto.ApprovalHomeEquipmentDto;
-import com.sh.workson.approval.dto.ApprovalHomeLeaveDto;
+import com.sh.workson.approval.dto.*;
 import com.sh.workson.approval.service.ApprovalService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
@@ -262,15 +261,36 @@ public class ApprovalController {
      * 연차 상세 페이지 조회
      */
     @GetMapping("/approvalDetailLeave.do")
-    public void approvalDetailLeave() {
-
+    public void approvalDetailLeave(@RequestParam("id") Long id, Model model) {
+        IApprovalLeave iApprovalLeave = approvalService.findLeaveDetailById(id);
+        model.addAttribute("id", iApprovalLeave.getId());
+        model.addAttribute("approvalEndDate", iApprovalLeave.getApprovalEndDate());
+        model.addAttribute("endDate", iApprovalLeave.getEndDate());
+        model.addAttribute("startDate", iApprovalLeave.getStartDate());
+        model.addAttribute("empId", iApprovalLeave.getEmpId());
+        model.addAttribute("deptId", iApprovalLeave.getDeptId());
+        model.addAttribute("leaveContent", iApprovalLeave.getLeaveContent());
+        model.addAttribute("leId", iApprovalLeave.getLeId());
     }
 
     /**
      * 비품 상세 페이지 조회
      */
     @GetMapping("/approvalDetailEquipment.do")
-    public void approvalDetailEquipment(){
+    public void approvalDetailEquipment(@RequestParam("id") Long id, Model model){
+        IApprovalEquipment iApprovalEquipment = approvalService.findEquipmentDetailById(id);
+        model.addAttribute("id",iApprovalEquipment.getId());
+        model.addAttribute("approvalEndDate",iApprovalEquipment.getApprovalEndDate());
+        model.addAttribute("empId",iApprovalEquipment.getEmpId());
+        model.addAttribute("deptId",iApprovalEquipment.getDeptId());
+        model.addAttribute("eqId",iApprovalEquipment.getEqId());
+        model.addAttribute("title",iApprovalEquipment.getTitle());
+        model.addAttribute("content",iApprovalEquipment.getContent());
+        model.addAttribute("productName",iApprovalEquipment.getProductName());
+        model.addAttribute("price",iApprovalEquipment.getPrice());
+        model.addAttribute("count",iApprovalEquipment.getCount());
+        model.addAttribute("totalPrice",iApprovalEquipment.getTotalPrice());
+        model.addAttribute("usage",iApprovalEquipment.getUsage());
 
     }
 
@@ -278,7 +298,17 @@ public class ApprovalController {
      * 협조 상세 페이지 조회
      */
     @GetMapping("/approvalDetailCooperation.do")
-    public void approvalDetailCooperation() {
-
+    public void approvalDetailCooperation(@RequestParam("id") Long id, Model model) {
+        IApprovalCooperation iApprovalCooperation = approvalService.findCooperationDetailById(id);
+        model.addAttribute("id",iApprovalCooperation.getId());
+        model.addAttribute("approvalEndDate",iApprovalCooperation.getApprovalEndDate());
+        model.addAttribute("empId",iApprovalCooperation.getEmpId());
+        model.addAttribute("deptId",iApprovalCooperation.getDeptId());
+        model.addAttribute("coId", iApprovalCooperation.getCoId());
+        model.addAttribute("cooperationDept", iApprovalCooperation.getCooperationDept());
+        model.addAttribute("title", iApprovalCooperation.getTitle());
+        model.addAttribute("content", iApprovalCooperation.getContent());
+        model.addAttribute("startDate", iApprovalCooperation.getStartDate());
+        model.addAttribute("endDate", iApprovalCooperation.getEndDate());
     }
 }
