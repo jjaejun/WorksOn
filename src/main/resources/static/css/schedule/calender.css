@@ -75,3 +75,9 @@ aside{
 table, th, td {
     text-align: center;
 }
+
+#my-category-list td,
+#calender-sidebar table td {
+    text-align: center;
+    vertical-align: middle;
+}
