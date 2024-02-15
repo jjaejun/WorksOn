@@ -271,6 +271,9 @@ public class ApprovalController {
         model.addAttribute("deptId", iApprovalLeave.getDeptId());
         model.addAttribute("leaveContent", iApprovalLeave.getLeaveContent());
         model.addAttribute("leId", iApprovalLeave.getLeId());
+        model.addAttribute("leaveType", iApprovalLeave.getLeaveType());
+        model.addAttribute("annul", iApprovalLeave.getAnnul());
+        model.addAttribute("leaveCount", iApprovalLeave.getLeaveCount());
     }
 
     /**

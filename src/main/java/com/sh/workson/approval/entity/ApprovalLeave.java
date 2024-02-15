@@ -41,6 +41,15 @@ public class ApprovalLeave {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @Column(name = "leave_type")
+    private String leaveType;
+
+    @Column(name = "annul")
+    private String annul;
+
+    @Column(name = "leave_count")
+    private Long leaveCount;
+
     @OneToMany(mappedBy = "approvalLeave", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Approval> approvals = new ArrayList<>();

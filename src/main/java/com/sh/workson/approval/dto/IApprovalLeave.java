@@ -13,5 +13,9 @@ public interface IApprovalLeave {
     Timestamp getEndDate(); // approval_leave# 연차 종료일
     String getLeaveContent(); // approval_leave# 연차 내용
 
+    String getLeaveType(); // approval_leave# 연차 종류
+    String getAnnul(); // approval_leave# 연차 반차 여부 y, n y = 연차, n = 반차
+    Long getLeaveCount();
+
 
 }

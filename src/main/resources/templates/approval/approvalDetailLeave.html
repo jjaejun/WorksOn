@@ -78,20 +78,7 @@
             <tr class="border">
                 <th class="border p-2 w-32">휴가 종류</th>
                 <td>
-                    <!-- Dropdown 버튼 -->
-                    <div class="relative inline-block text-left">
-                        <button id="dropdownButton" type="button" class="border-2 border-blue-700 px-4 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300">
-                            연차
-                        </button>
-
-                        <!-- Dropdown 메뉴 -->
-                        <div class="absolute mt-1 w-16 bg-white border rounded-md shadow-lg hidden">
-                            <div class="py-1">
-                                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 text-xs">연차</a>
-                                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 text-xs">반차</a>
-                            </div>
-                        </div>
-                    </div>
+                    <input type="text" class="w-20% p-2 border " th:value="${leaveType}" readonly>
                 </td>
             </tr>
             <tr class="border">
@@ -100,12 +87,12 @@
             </tr>
             <tr class="border">
                 <th class="border p-2 w-32">반차 여부</th>
-                <td><input type="checkbox" class="w-12 p-2 border">반차여부(체크시 기간 및 일시가 같은 날일때 0.5로 바뀜)</td>
+                <td ><input type="text" class="w-12 p-2 border" th:if="${annul}">반차여부(체크시 기간 및 일시가 같은 날일때 0.5로 바뀜)</td>
             </tr>
             <tr class="border">
                 <th class="border p-2 w-32">연차 일수</th>
                 <td>
-                    신청연차 : <input type="text" class="w-24 p-2 border text-right" value="1" readonly>
+                    신청연차 : <input type="text" class="w-24 p-2 border text-right" th:value="${leaveCount}" readonly>
                 </td>
             </tr>
             <tr class="border">
