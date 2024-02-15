@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -173,20 +174,20 @@ public class ApprovalService {
     }
 
 
-    public Page<ApprovalHomeLeaveDto> findTemporaryLeave(Long id, Pageable pageable) {
-        Page<Approval> approvalPage = approvalRepository.findTempoeraryLeave(id, pageable);
-        return approvalPage.map((approval) -> convertToApprovalHomeLeaveDto(approval));
-    }
-
-    public Page<ApprovalHomeEquipmentDto> findTemporaryEquipment(Long id, Pageable pageable) {
-        Page<Approval> approvalPage = approvalRepository.findTemporaryEquipment(id, pageable);
-        return approvalPage.map((approval) -> convertToApprovalHomeEquipmentDto(approval));
-    }
-
-    public Page<ApprovalHomeCooperationDto> findTemporaryCooperation(Long id, Pageable pageable) {
-        Page<Approval> approvalPage = approvalRepository.findTemporaryCooperation(id, pageable);
-        return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
-    }
+//    public Page<ApprovalHomeLeaveDto> findTemporaryLeave(Long id, Pageable pageable) {
+//        Page<Approval> approvalPage = approvalRepository.findTempoeraryLeave(id, pageable);
+//        return approvalPage.map((approval) -> convertToApprovalHomeLeaveDto(approval));
+//    }
+//
+//    public Page<ApprovalHomeEquipmentDto> findTemporaryEquipment(Long id, Pageable pageable) {
+//        Page<Approval> approvalPage = approvalRepository.findTemporaryEquipment(id, pageable);
+//        return approvalPage.map((approval) -> convertToApprovalHomeEquipmentDto(approval));
+//    }
+//
+//    public Page<ApprovalHomeCooperationDto> findTemporaryCooperation(Long id, Pageable pageable) {
+//        Page<Approval> approvalPage = approvalRepository.findTemporaryCooperation(id, pageable);
+//        return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
+//    }
 
     public Page<ApprovalHomeLeaveDto> findReLeave(Long id, Pageable pageable) {
         Page<Approval> approvalPage = approvalRepository.findReLeave(id, pageable);
@@ -306,5 +307,40 @@ public class ApprovalService {
     public IApprovalCooperation findCooperationDetailById(Long id) {
         IApprovalCooperation iApprovalCooperation = approvalRepository.findCooperationDetailById(id);
         return iApprovalCooperation;
+    }
+
+
+//     임시 저장함 list 테스트
+    public List<ApprovalHomeLeaveDto> findTemporaryLeave(Long id) {
+        List<Approval> approvals = approvalRepository.findTempoeraryLeave(id);
+        List<ApprovalHomeLeaveDto> approvalHomeLeaveDtos = new ArrayList<>();
+
+        for (Approval a: approvals) {
+            approvalHomeLeaveDtos.add(convertToApprovalHomeLeaveDto(a));
+        }
+
+        return approvalHomeLeaveDtos;
+    }
+
+    public List<ApprovalHomeEquipmentDto> findTemporaryEquipment(Long id) {
+        List<Approval> approvals = approvalRepository.findTemporaryEquipment(id);
+        List<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtos = new ArrayList<>();
+
+        for (Approval a: approvals) {
+            approvalHomeEquipmentDtos.add(convertToApprovalHomeEquipmentDto(a));
+        }
+
+        return approvalHomeEquipmentDtos;
+    }
+
+    public List<ApprovalHomeCooperationDto> findTemporaryCooperation(Long id) {
+        List<Approval> approvals = approvalRepository.findTemporaryCooperation(id);
+        List<ApprovalHomeCooperationDto> approvalHomeCooperationDtos = new ArrayList<>();
+
+        for (Approval a: approvals) {
+            approvalHomeCooperationDtos.add(convertToApprovalHomeCooperationDto(a));
+        }
+
+        return approvalHomeCooperationDtos;
     }
 }
