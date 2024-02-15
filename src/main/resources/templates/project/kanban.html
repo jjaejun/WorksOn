@@ -3,19 +3,21 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" >
 <div th:fragment="kanban">
     <div class="w-full h-full bg-white space-x-7 mt-3 flex">
-        <div id="dp1" class="drop flex-1 bg-yellow-100 rounded-lg p-4 space-y-2">
+        <div id="dp1"
+             class="drop flex-1 bg-yellow-100 rounded-lg p-4 space-y-2">
             <h1 class="font-semibold text-md">To do</h1>
-            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
-                <ul>
-                    <li>업무명</li>
-                    <li>담당자</li>
-                    <li>중요도</li>
-                </ul>
-            </div>
-            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item2</div>
-            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item3</div>
-            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item4</div>
-            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item5</div>
+            <th:block th:each="task, status : ${taskTodos}">
+                <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
+                    <ul>
+                        <li th:text="${task.name}"></li>
+                        <li th:text="|${task.empName}${task.positionName}|"></li>
+                        <li th:text="${task.priority}"></li>
+                        <li th:text="${task.status}"></li>
+                    </ul>
+                </div>
+            </th:block>
+
+<!--            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item2</div>-->
         </div>
         <div id="dp2" class="drop flex-1 bg-blue-100 rounded-lg p-4 space-y-2">
             <h1 class="font-semibold text-md">In progress</h1>

@@ -8,16 +8,16 @@ import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
-import com.sh.workson.project.dto.ProjectCreateDto;
-import com.sh.workson.project.dto.ProjectDetailDto;
-import com.sh.workson.project.dto.ProjectListDto;
+import com.sh.workson.project.dto.*;
 import com.sh.workson.project.entity.ProjectEmployee;
+import com.sh.workson.project.entity.Task;
 import com.sh.workson.project.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +34,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +123,26 @@ public class ProjectController {
     ){
         ProjectDetailDto projectDetailDto = projectService.findById(id);
         model.addAttribute("project", projectDetailDto);
+
+        List<TaskListDto> todos = new ArrayList<>();
+        List<TaskListDto> progresses = new ArrayList<>();
+        List<TaskListDto> dones = new ArrayList<>();
+        // task 분류하기
+        if(!projectDetailDto.getTasks().isEmpty()){
+            for(TaskListDto task: projectDetailDto.getTasks()){
+                switch (task.getStatus()){
+                    case "TODO" : todos.add(task); break;
+                    case "INPROGRESS" : progresses.add(task); break;
+                    case "DONE" : dones.add(task); break;
+                    default: throw new RuntimeException("[task 조회 오류 : 존재하지 않는 status]");
+                }
+            }
+        }
+
+        model.addAttribute("taskTodos", todos);
+        model.addAttribute("TaskProgresses", progresses);
+        model.addAttribute("taskDone", dones);
+
         log.debug("project = {}", projectDetailDto);
     }
 
@@ -177,5 +202,21 @@ public class ProjectController {
         return new ResponseEntity<>(attachments, HttpStatus.OK);
     }
 
+    @GetMapping("/dateTest.do")
+    public void dateTest(){};
 
+    @GetMapping("/searchDateTest.do")
+    public void dateTest(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate
+    ){
+        log.debug("startDate = {}", startDate);
+        log.debug("endDate = {}", endDate);
+
+        LocalDateTime startAt = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(startDate)), ZoneId.systemDefault());
+        LocalDateTime endAt = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(endDate)), ZoneId.systemDefault());
+
+        log.debug("T startDate = {}", startAt); // T startDate = 2024-02-07T00:00
+        log.debug("T endDate = {}", endAt); // T endDate = 2024-02-10T00:00
+    };
 }

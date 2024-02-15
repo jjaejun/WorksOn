@@ -19,7 +19,7 @@ public class ProjectDetailDto {
     private LocalDate endAt;
     private String status;
     private EmployeeDetailDto employee;
-    private List<Task> tasks = new ArrayList<>();
+    private List<TaskListDto> tasks = new ArrayList<>();
 
 //    private List<EmployeeDetailDto> projectEmployees = new ArrayList<>();
 

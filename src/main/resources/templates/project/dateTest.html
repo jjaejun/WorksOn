@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>제목</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+    <div class="w-2/3 p-2 table-container">
+        <h1 class="text-3xl font-bold mb-4">내 근태 현황</h1>
+        <div date-rangepicker class="flex items-center mb-20">
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                    </svg>
+                </div>
+                <input name="start" id="start-input" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+            </div>
+            <span class="mx-4 text-gray-500">to</span>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                    </svg>
+                </div>
+                <input name="end" id="end-input" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+            </div>
+            <button id="submitBtn" class="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md">Submit</button>
+        </div>
+</div>
+<script>
+    const startDateInput = document.getElementById('start-input');
+    const endDateInput = document.getElementById('end-input');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // 이벤트 리스너 추가
+    startDateInput.addEventListener('input', handleDateChange);
+    endDateInput.addEventListener('input', handleDateChange);
+
+    // 날짜가 변경되었을 때 실행되는 함수
+    function handleDateChange() {
+        // 선택된 시작 날짜와 종료 날짜 출력
+        console.log(`선택된 시작 날짜: ${startDateInput.value}, 종료 날짜: ${endDateInput.value}`);
+    }
+
+    submitBtn.addEventListener('click', function() {
+        console.log(`선택한 날짜 범위: ${startDateInput.value} 부터 ${endDateInput.value}`);
+
+        console.dir(startDateInput);
+        console.dir(endDateInput);
+        // 1707318000000
+        // 1708095600000
+        // const startDateValue = startDateInput.value;
+        // const endDateValue = endDateInput.value;
+
+        const startDate = startDateInput.datepicker.dates[0];
+        const endDate = endDateInput.datepicker.dates[0];
+
+        console.log(startDate," ~ " ,endDate)
+
+        $.ajax({
+            type: "GET",
+            headers: {
+                [csrfHeaderName]: csrfToken
+            },
+            url: `${contextPath}project/searchDateTest.do`,
+            data: {
+                startDate : startDate, // millis
+                endDate : endDate
+            },
+            success: function (response){
+                console.log(response)
+            }
+        })
+    });
+
+</script>
+</html>

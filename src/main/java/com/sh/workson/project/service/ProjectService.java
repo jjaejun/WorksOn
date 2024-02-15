@@ -9,10 +9,8 @@ import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.project.dto.ProjectCreateDto;
 import com.sh.workson.project.dto.ProjectDetailDto;
 import com.sh.workson.project.dto.ProjectListDto;
-import com.sh.workson.project.entity.Project;
-import com.sh.workson.project.entity.ProjectEmployee;
-import com.sh.workson.project.entity.ProjectRole;
-import com.sh.workson.project.entity.Status;
+import com.sh.workson.project.dto.TaskListDto;
+import com.sh.workson.project.entity.*;
 import com.sh.workson.project.repository.ProjectEmployeeRepository;
 import com.sh.workson.project.repository.ProjectRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -115,11 +113,22 @@ public class ProjectService {
 
     public ProjectDetailDto findById(Long id) {
         Project project = projectRepository.findById(id).orElseThrow();
+
         return convertToProjectDetailDto(project);
     }
 
     private ProjectDetailDto convertToProjectDetailDto(Project project) {
-        return modelMapper.map(project, ProjectDetailDto.class);
+        ProjectDetailDto projectDetailDto = modelMapper.map(project, ProjectDetailDto.class);
+
+        if(!project.getTasks().isEmpty()){
+            List<TaskListDto> taskListDtos = new ArrayList<>();
+            for(Task task : project.getTasks()){
+                taskListDtos.add(covertToTaskListDto(task));
+            }
+            projectDetailDto.setTasks(taskListDtos);
+        }
+
+        return projectDetailDto;
     }
 
     public List<ProjectEmployee> findAllProjectEmployeesByProjectID(Long projectId) {
@@ -128,5 +137,18 @@ public class ProjectService {
 
     public List<Attachment> findAllAttachmentByProjectId(Long id) {
         return attachmentRepository.findAllAttachmentByProjectId(id);
+    }
+
+    public TaskListDto covertToTaskListDto(Task task){
+        return TaskListDto.builder()
+                .id(task.getId())
+                .name(task.getName())
+                .priority(task.getPriority())
+                .status(task.getStatus().toString())
+                .empId(task.getEmployee().getId())
+                .empName(task.getEmployee().getName())
+                .empProfileUrl(task.getEmployee().getProfileUrl())
+                .positionName(task.getEmployee().getPosition().getName())
+                .build();
     }
 }
