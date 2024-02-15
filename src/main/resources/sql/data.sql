@@ -135,6 +135,12 @@ insert into schedule_category (id, color, name, emp_id) values
 (seq_schedule_category_id.nextval, 'Yellow', 'Presentation', 251);
 insert into schedule_category (id, color, name, emp_id) values 
 (seq_schedule_category_id.nextval, 'Purple', 'Project', 801);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Red', 'Meeting', 902);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'blue', 'test1', 902);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'green', 'tes2', 902);
 
 
 

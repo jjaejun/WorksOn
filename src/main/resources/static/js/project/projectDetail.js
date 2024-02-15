@@ -25,18 +25,21 @@ const applyFileImg = (ext, src) => {
         case "docx" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-docx-file-format-5719745.png" alt="">`; break;
         case "zip" : html = `<img class="object-cover w-2/3" src="https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/free-icon-zip-file-format-5721939.png" alt="">`; break;
     }
-    console.log(lowerExt);
-    console.log(html);
     return html;
 }
 
 
+
+
+
 document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
     const frm = document.attachUploadFrm;
+    const input = frm.querySelector("#upload");
     const ul = document.querySelector("#files ul");
     const lis = ul.querySelectorAll("li");
     const tbody = document.querySelector("#fileArea tbody");
 
+    console.log(input.files);
 
     console.log(lis.length)
 
@@ -53,32 +56,40 @@ document.getElementById("attachUploadFrmBtn").addEventListener('click', (e) => {
         method: 'post',
         success(response) {
             console.log(response);
-            frm.reset();
-            tbody.innerHTML = '';
-            const close = document.querySelector("#closeBtn");
+
+            let html = '';
             const now = new Date();
-
             response.forEach((attach, i) => {
-                const html = applyFileImg(findDot(attach.originalFilename), attach.url);
+                const preview = applyFileImg(findDot(attach.originalFilename), attach.url);
 
-                ul.insertAdjacentHTML("afterbegin", `
+                html += `
                 <li class="w-fit h-fit bg-gray-100 hover:bg-blue-100 rounded-lg mb-2 mr-2 attaches cursor-pointer"
-                    onclick="attachDownload(${lis.length + i});" data-attach-id="${attach.id}" data-attach-url="${attach.url}"
+                    onclick="attachDownload(${lis.length + i});" data-attach-id="${attach.id}" data-attach-url="${attach.url}" data-file-name="${attach.originalFilename}"
                     id="attach${lis.length + i}">
                     <div class="p-2 w-fit overflow-hidden">
-                        <h1 class="w-40 font-bold text-md m-1 mb-2">${attach.originalFilename}</h1>
-                        <div class="w-40 m-1 flex items-center justify-center bg-white>
-                            ${html}
+                        <h1 class="w-40 h-8 font-bold text-md m-1 mb-2 overflow-hidden">${attach.originalFilename}</h1>
+                        <div class="w-40 h-40 m-1 flex items-center justify-center bg-white overflow-hidden">
+                            ${preview}
                         </div>
                         <div>
                             <p class="w-40 text-sm m-1">${attach.empName}</p>
                             <p class="w-40 text-sm m-1">${formattedCreatedAt(now)}</p>
                         </div>
                     </div>
-                </li>`);
+                </li>`;
             });
 
-            close.click();
+            setTimeout(() => {
+                frm.reset();
+                tbody.innerHTML = '';
+                const close = document.querySelector("#closeBtn");
+
+                ul.insertAdjacentHTML("afterbegin", html);
+
+                alert("파일 업로드가 완료되었습니다.");
+                close.click();
+
+            }, 1000);
 
         }
     });
@@ -120,26 +131,23 @@ document.querySelector("#upload").addEventListener('change', (e) => {
 
 const attachDownload = (i) => {
     const attachment = document.getElementById(`attach${i}`);
-    const {attachId, attachUrl} = attachment.dataset;
-    console.log(attachId);
+    const {attachId, attachUrl, originalFileName} = attachment.dataset;
+    console.dir(attachment);
 
-    $.ajax({
-        url: `${contextPath}project/projectAttachDownload.do`,
-        data: {
-            id: attachId,
-            url: attachUrl
-        },
-        method: 'get',
-        headers: {
-            [csrfHeaderName]: csrfToken
-        },
-        success(response){
-            console.log(response);
-        },
-        error(e){
-            console.log(e);
-        }
-    })
+    // 파일을 다운로드할 URL
+    let fileUrl = attachUrl;
+
+    // 동적으로 <a> 태그 생성
+    let downloadLink = document.createElement('a');
+    downloadLink.href = fileUrl;
+    downloadLink.download = originalFileName; // 다운로드되는 파일의 이름
+
+    // downloadLink를 클릭하여 파일 다운로드
+    window.open(fileUrl, '_blank');
+    // document.body.appendChild(downloadLink);
+    // downloadLink.click();
+    // document.body.removeChild(downloadLink);
+
 };
 document.querySelector("#files-tab").addEventListener('click', (e) => {
    const { projectId } = e.target.dataset;
@@ -159,11 +167,11 @@ document.querySelector("#files-tab").addEventListener('click', (e) => {
                const { id, originalFileName, employee, createdAt, url } = attach;
               ul.innerHTML += `
                 <li class="w-fit h-fit bg-gray-100 rounded-lg hover:bg-blue-100 mb-2 mr-2 attaches cursor-pointer"
-                    onclick="attachDownload(${i});" data-attach-id="${id}" data-attach-url="${url}"
+                    onclick="attachDownload(${i});" data-attach-id="${id}" data-attach-url="${url}" data-file-name="${originalFileName}"
                     id="attach${i}">
                     <div class="p-2 w-fit overflow-hidden">
-                        <h1 class="w-40 font-bold text-md m-1 mb-2">${originalFileName}</h1>
-                        <div class="w-40 h-40 m-1 flex items-center justify-center bg-white">
+                        <h1 class="w-40 h-8 font-bold text-md m-1 mb-2 overflow-hidden">${originalFileName}</h1>
+                        <div class="w-40 h-40 m-1 flex items-center justify-center bg-white overflow-hidden">
                             ${applyFileImg(findDot(originalFileName), url)}
                         </div>
                         <div>

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +27,7 @@ class ChatServiceTest {
     @Test
     void test1() {
         // given
-        List<Long> longs = new ArrayList<>();
+        Set<Long> longs = new LinkedHashSet<>();
         longs.add(852L);
         longs.add(952L);
 
@@ -48,7 +50,7 @@ class ChatServiceTest {
         // given
         ChatLogCreateDto chatLogCreateDto = ChatLogCreateDto.builder()
                 .content("너무 어려워요")
-                .empId(1L)
+                .employeeId(1L)
                 .chatRoomId(51L)
                 .build();
         System.out.println("chatLogCreateDto = " + chatLogCreateDto);
