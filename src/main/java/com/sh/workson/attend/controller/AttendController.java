@@ -40,7 +40,10 @@ public class AttendController {
 
     @GetMapping("/attendList.do")
     public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model,
-                           @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+                           @AuthenticationPrincipal EmployeeDetails employeeDetails,
+                           @RequestParam("startDate") String startDate,
+                           @RequestParam("endDate") String endDate) {
+
         Long id = employeeDetails.getEmployee().getId();
         Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
         model.addAttribute("attends", attendPage.getContent());
@@ -107,4 +110,11 @@ public class AttendController {
         return ResponseEntity.ok("정정 요청이 완료되었습니다");
 
     }
+
+//    @PostMapping("/date.do")
+//    public void attendList(@AuthenticationPrincipal EmployeeDetails employeeDetails,
+//                           @RequestParam("startDate") LocalDateTime startDate,
+//                           @RequestParam("endDate") LocalDateTime endDate){
+//
+//    }
 }

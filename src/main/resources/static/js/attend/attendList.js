@@ -131,7 +131,7 @@ setInterval(clock, 1000); // 1초마다 실행
 document.getElementById("btnRequest").addEventListener('click', function() {
     // 폼 데이터 수집
     const formData = new FormData(document.forms["contentFrm"]);
-
+    let isAttendRequest = true;
     // AJAX 요청
     $.ajax({
         type: "POST",
@@ -142,22 +142,48 @@ document.getElementById("btnRequest").addEventListener('click', function() {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (data) {
-            // 서버 응답 성공 시 처리
-            if (data.success) {
-                alert("정정 요청에 성공했습니다.");
-                // 추가 동작 수행
-            } else {
-                console.log(data);
-                alert("정정 요청에 실패했습니다. 다시 시도해주세요.");
-            }
-        },
-        error: function (error) {
-            // Ajax 요청 에러 처리
-            console.error("Error submitting form: ", error);
-            alert("서버와의 통신 중 오류가 발생했습니다.");
+        success: function (data){
+            alert("정정 요청이 완료되었습니다.");
         }
     });
 });
+
+// DOM 요소 가져오기
+const startDateInput = document.getElementById('start-input');
+const endDateInput = document.getElementById('end-input');
+const submitBtn = document.getElementById('submitBtn');
+
+// 이벤트 리스너 추가
+startDateInput.addEventListener('input', handleDateChange);
+endDateInput.addEventListener('input', handleDateChange);
+
+// 날짜가 변경되었을 때 실행되는 함수
+function handleDateChange() {
+    // 선택된 시작 날짜와 종료 날짜 출력
+    console.log(`선택된 시작 날짜: ${startDateInput.value}, 종료 날짜: ${endDateInput.value}`);
+}
+
+// Submit 버튼 클릭 시 시작 날짜부터 종료 날짜까지 출력
+submitBtn.addEventListener('click', function() {
+    console.log(`선택한 날짜 범위: ${startDateInput.value} 부터 ${endDateInput.value}`);
+
+
+    $.ajax({
+        type: "GET",
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        url: `${contextPath}attend/attendList.do`,
+        data: {
+            startDate : startDateInput.value,
+            endDate : endDateInput.value
+        },
+        success: function (response){
+            console.log(response)
+        }
+    })
+});
+
+
 
 
