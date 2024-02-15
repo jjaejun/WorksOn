@@ -15,7 +15,7 @@ public interface IApprovalLeave {
 
     String getLeaveType(); // approval_leave# 연차 종류
     String getAnnul(); // approval_leave# 연차 반차 여부 y, n y = 연차, n = 반차
-    Long getLeaveCount();
+    Double getLeaveCount();
 
 
 }
