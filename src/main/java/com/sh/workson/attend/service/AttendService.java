@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AttendService {
     @Autowired
-    AttendRepository attendRepository;
+    private AttendRepository attendRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
