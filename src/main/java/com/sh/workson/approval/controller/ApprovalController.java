@@ -90,60 +90,148 @@ public class ApprovalController {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalWaitLeave = approvalService.findWaitLeave(employeeDetails.getEmployee().getId(),pageable);
-        Page<ApprovalHomeEquipmentDto> approvalWaitEquipment = approvalService.findWaitEquipment(employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeCooperationDto> approvalWaitCooperation = approvalService.findWaitCooperation(employeeDetails.getEmployee().getId(), pageable);
+        List<ApprovalHomeLeaveDto> approvalWaitLeave = approvalService.findWaitLeave(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeEquipmentDto> approvalWaitEquipment = approvalService.findWaitEquipment(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeCooperationDto> approvalWaitCooperation = approvalService.findWaitCooperation(employeeDetails.getEmployee().getId());
 
-        log.debug("approvalWaitLeave = {}", approvalWaitLeave.getContent());
-        log.debug("approvalWaitEquipment = {}", approvalWaitEquipment.getContent());
-        log.debug("approvalWaitCooperation = {}", approvalWaitCooperation.getContent());
+        List<Object> waitList = new ArrayList<>();
+        waitList.addAll(approvalWaitLeave);
+        waitList.addAll(approvalWaitEquipment);
+        waitList.addAll(approvalWaitCooperation);
 
-        model.addAttribute("approvalWaitLeave", approvalWaitLeave.getContent());
-        model.addAttribute("approvalWaitEquipment", approvalWaitEquipment.getContent());
-        model.addAttribute("approvalWaitCooperation", approvalWaitCooperation.getContent());
+        Collections.sort(waitList, Comparator.comparingInt(o -> {
+            if (o instanceof ApprovalHomeLeaveDto) {
+                return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+            } else if (o instanceof ApprovalHomeEquipmentDto) {
+                return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+            } else if (o instanceof ApprovalHomeCooperationDto) {
+                return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+            }
+            return 0;
+        }));
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), waitList.size());
+
+        if (start > end) {
+            start = end;
+        }
+
+        log.debug("start = {}", (int) pageable.getOffset());
+        log.debug("end = {}", Math.min((start + pageable.getPageSize()), waitList.size()));
+
+        List<Object> pageContent = waitList.subList(start, end);
+
+        Page<Object> page = new PageImpl<>(pageContent, pageable, waitList.size());
+
+
+        // 모델에 추가
+        model.addAttribute("waitList", page.getContent());
+        model.addAttribute("size", page.getSize());
+        model.addAttribute("number", page.getNumber());
+        model.addAttribute("totalpages", page.getTotalPages());
 
     }
 
-    // 결재 수신 문서함 같은 부서의 사람들의 결재 내용을 참조
+    /**
+     * 결재 수신 문서함
+     * - 같은 부서의 사람들의 결재 내용을 참조
+     */
     @GetMapping("/approvalReception.do")
     public void approvalReception(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalHomeReceptionLeave = approvalService.findReceptionLeave(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeEquipmentDto> approvalHomeReceptionEquipment = approvalService.findReceptionEquipment(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeCooperationDto> approvalHomeReceptionCooperation = approvalService.findReceptionCooperation(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId(), pageable);
+        List<ApprovalHomeLeaveDto> approvalHomeReceptionLeave = approvalService.findReceptionLeave(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId());
+        List<ApprovalHomeEquipmentDto> approvalHomeReceptionEquipment = approvalService.findReceptionEquipment(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId());
+        List<ApprovalHomeCooperationDto> approvalHomeReceptionCooperation = approvalService.findReceptionCooperation(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId());
 
-        log.debug("approvalReceptionLeave = {}", approvalHomeReceptionLeave.getContent());
-        log.debug("approvalReceptionEquipment = {}", approvalHomeReceptionEquipment.getContent());
-        log.debug("approvalReceptionCooperation = {}", approvalHomeReceptionCooperation.getContent());
+        List<Object> receList = new ArrayList<>();
+        receList.addAll(approvalHomeReceptionLeave);
+        receList.addAll(approvalHomeReceptionEquipment);
+        receList.addAll(approvalHomeReceptionCooperation);
 
-        model.addAttribute("approvalReceptionLeave", approvalHomeReceptionLeave.getContent());
-        model.addAttribute("approvalReceptionEquipment", approvalHomeReceptionEquipment.getContent());
-        model.addAttribute("approvalReceptionCooperation", approvalHomeReceptionCooperation.getContent());
+        Collections.sort(receList, Comparator.comparingInt(o -> {
+            if (o instanceof ApprovalHomeLeaveDto) {
+                return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+            } else if (o instanceof ApprovalHomeEquipmentDto) {
+                return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+            } else if (o instanceof ApprovalHomeCooperationDto) {
+                return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+            }
+            return 0;
+        }));
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), receList.size());
+
+        if (start > end) {
+            start = end;
+        }
+
+        log.debug("start = {}", (int) pageable.getOffset());
+        log.debug("end = {}", Math.min((start + pageable.getPageSize()), receList.size()));
+
+        List<Object> pageContent = receList.subList(start, end);
+
+        Page<Object> page = new PageImpl<>(pageContent, pageable, receList.size());
+
+
+        // 모델에 추가
+        model.addAttribute("receList", page.getContent());
+        model.addAttribute("size", page.getSize());
+        model.addAttribute("number", page.getNumber());
+        model.addAttribute("totalpages", page.getTotalPages());
+
     }
 
     /**
      * 결재 예정함
      */
     @GetMapping("/approvalExpected.do")
-    public void approvalExpected(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalExpected(@PageableDefault(size = 1, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalExceptedLeave = approvalService.findExceptedLeave(employeeDetails.getEmployee().getId(),pageable);
-        Page<ApprovalHomeEquipmentDto> approvalExceptedEquipment = approvalService.findExceptedEquipment(employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeCooperationDto> approvalExceptedCooperation = approvalService.findExceptedCooperation(employeeDetails.getEmployee().getId(), pageable);
+        List<ApprovalHomeLeaveDto> approvalExceptedLeave = approvalService.findExceptedLeave(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeEquipmentDto> approvalExceptedEquipment = approvalService.findExceptedEquipment(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeCooperationDto> approvalExceptedCooperation = approvalService.findExceptedCooperation(employeeDetails.getEmployee().getId());
 
-        log.debug("approvalExceptedLeave = {}", approvalExceptedLeave.getContent());
-        log.debug("approvalExceptedEquipment = {}", approvalExceptedEquipment.getContent());
-        log.debug("approvalExceptedCooperation = {}", approvalExceptedCooperation.getContent());
-        log.debug("pageable = {}", approvalExceptedLeave.getPageable());
+        List<Object> exList = new ArrayList<>();
+        exList.addAll(approvalExceptedLeave);
+        exList.addAll(approvalExceptedEquipment);
+        exList.addAll(approvalExceptedCooperation);
 
-        model.addAttribute("approvalExceptedLeave", approvalExceptedLeave.getContent());
-        model.addAttribute("approvalExceptedEquipment", approvalExceptedEquipment.getContent());
-        model.addAttribute("approvalExceptedCooperation", approvalExceptedCooperation.getContent());
-        model.addAttribute("LeavePagebar", approvalExceptedLeave.getPageable());
-        model.addAttribute("EquipmentPagebar", approvalExceptedLeave.getPageable());
-        model.addAttribute("CooperationPagebar", approvalExceptedLeave.getPageable());
+        Collections.sort(exList, Comparator.comparingInt(o -> {
+            if (o instanceof ApprovalHomeLeaveDto) {
+                return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+            } else if (o instanceof ApprovalHomeEquipmentDto) {
+                return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+            } else if (o instanceof ApprovalHomeCooperationDto) {
+                return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+            }
+            return 0;
+        }));
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), exList.size());
+
+        if (start > end) {
+            start = end;
+        }
+
+        log.debug("start = {}", (int) pageable.getOffset());
+        log.debug("end = {}", Math.min((start + pageable.getPageSize()), exList.size()));
+
+        List<Object> pageContent = exList.subList(start, end);
+
+        Page<Object> page = new PageImpl<>(pageContent, pageable, exList.size());
+
+
+        // 모델에 추가
+        model.addAttribute("exList", page.getContent());
+        model.addAttribute("size", page.getSize());
+        model.addAttribute("number", page.getNumber());
+        model.addAttribute("totalpages", page.getTotalPages());
+
 
     }
 
@@ -155,22 +243,11 @@ public class ApprovalController {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-//        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findTemporaryLeave(employeeDetails.getEmployee().getId(),pageable);
-//        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findTemporaryEquipment(employeeDetails.getEmployee().getId(), pageable);
-//        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findTemporaryCooperation(employeeDetails.getEmployee().getId(), pageable);
 
-//        int totalCount = (int) (approvalHomeEquipmentDtoPage.getTotalElements() + approvalHomeCooperationDtoPage.getTotalElements() + approvalHomeLeaveDtoPage.getTotalElements());
-
-//        log.info("approvalService = {}", approvalService.getClass());
-//
-//        log.debug("pageable = {}", pageable);
         List<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findTemporaryLeave(employeeDetails.getEmployee().getId());
         List<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findTemporaryEquipment(employeeDetails.getEmployee().getId());
         List<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findTemporaryCooperation(employeeDetails.getEmployee().getId());
-//
-//        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage);
-//        log.debug("approvalLeave = {}", approvalHomeEquipmentDtoPage);
-//        log.debug("approvalLeave = {}", approvalHomeCooperationDtoPage);
+
 
         List<Object> temporaryList = new ArrayList<>();
         temporaryList.addAll(approvalHomeLeaveDtoPage);
@@ -202,7 +279,6 @@ public class ApprovalController {
 
         Page<Object> page = new PageImpl<>(pageContent, pageable, temporaryList.size());
 
-//        Page<Object> page = new PageImpl<>(temporaryList.subList(start, end), pageable, temporaryList.size());
 
         // 모델에 추가
         model.addAttribute("temporaryList", page.getContent());
@@ -217,23 +293,6 @@ public class ApprovalController {
         log.debug("temporaryList.size() = {}", temporaryList.size());
         log.debug("start = {}", pageable.getOffset());
 
-//        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
-//        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
-//        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
-
-//        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
-//        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
-//        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
-//
-//        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements() + approvalHomeEquipmentDtoPage.getTotalElements() + approvalHomeCooperationDtoPage.getTotalElements());
-//        model.addAttribute("size", approvalHomeLeaveDtoPage.getSize() + approvalHomeEquipmentDtoPage.getSize() + approvalHomeCooperationDtoPage.getSize());
-//        model.addAttribute("number", approvalHomeLeaveDtoPage.getNumber() + approvalHomeEquipmentDtoPage.getNumber() + approvalHomeCooperationDtoPage.getNumber());
-//        model.addAttribute("totalpages", (approvalHomeLeaveDtoPage.getTotalPages() + approvalHomeEquipmentDtoPage.getTotalPages() + approvalHomeCooperationDtoPage.getTotalPages()) / 3);
-//
-//        log.debug("totalCount = {}", approvalHomeLeaveDtoPage.getTotalElements() + approvalHomeEquipmentDtoPage.getTotalElements() + approvalHomeCooperationDtoPage.getTotalElements());
-//        log.debug("size = {}", approvalHomeLeaveDtoPage.getSize() + approvalHomeEquipmentDtoPage.getSize() + approvalHomeCooperationDtoPage.getSize());
-//        log.debug("number = {}",approvalHomeLeaveDtoPage.getNumber() + approvalHomeEquipmentDtoPage.getNumber() + approvalHomeCooperationDtoPage.getNumber());
-//        log.debug("totalpages = {}", approvalHomeLeaveDtoPage.getTotalPages() + approvalHomeEquipmentDtoPage.getTotalPages() + approvalHomeCooperationDtoPage.getTotalPages());
     }
 
     /**
@@ -244,7 +303,7 @@ public class ApprovalController {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findAllLeave(employeeDetails.getEmployee().getId(),pageable);
+        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findLeave(employeeDetails.getEmployee().getId(),pageable);
 
         log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
 
@@ -271,7 +330,7 @@ public class ApprovalController {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findAllEquipment(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findEquipment(employeeDetails.getEmployee().getId(), pageable);
 
         log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
 
@@ -292,7 +351,7 @@ public class ApprovalController {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findAllCooperation(employeeDetails.getEmployee().getId(), pageable);
+        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findCooperation(employeeDetails.getEmployee().getId(), pageable);
 
         log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
 
@@ -314,49 +373,102 @@ public class ApprovalController {
      * 수신 문서함
      */
     @GetMapping("/approvalReceived.do")
-    public void approvalRecevied(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalRecevied(@PageableDefault(size = 5, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findReLeave(employeeDetails.getEmployee().getId(),pageable);
-        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findReEquipment(employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findReCooperation(employeeDetails.getEmployee().getId(), pageable);
+        List<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findReLeave(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findReEquipment(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findReCooperation(employeeDetails.getEmployee().getId());
 
-        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
-        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
-        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+        List<Object> ReList = new ArrayList<>();
+        ReList.addAll(approvalHomeLeaveDtoPage);
+        ReList.addAll(approvalHomeEquipmentDtoPage);
+        ReList.addAll(approvalHomeCooperationDtoPage);
 
-        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
-        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
-        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+        Collections.sort(ReList, Comparator.comparingInt(o -> {
+            if (o instanceof ApprovalHomeLeaveDto) {
+                return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+            } else if (o instanceof ApprovalHomeEquipmentDto) {
+                return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+            } else if (o instanceof ApprovalHomeCooperationDto) {
+                return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+            }
+            return 0;
+        }));
 
-        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), ReList.size());
+
+        if (start > end) {
+            start = end;
+        }
+
+        log.debug("start = {}", (int) pageable.getOffset());
+        log.debug("end = {}", Math.min((start + pageable.getPageSize()), ReList.size()));
+
+        List<Object> pageContent = ReList.subList(start, end);
+
+        Page<Object> page = new PageImpl<>(pageContent, pageable, ReList.size());
+
+
+        // 모델에 추가
+        model.addAttribute("reList", page.getContent());
+        model.addAttribute("size", page.getSize());
+        model.addAttribute("number", page.getNumber());
+        model.addAttribute("totalpages", page.getTotalPages());
     }
 
     /**
      * 발송 문서함
      */
     @GetMapping("/approvalSend.do")
-    public void approvalSend(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalSend(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
-        Page<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findAllLeave(employeeDetails.getEmployee().getId(),pageable);
-        Page<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findAllEquipment(employeeDetails.getEmployee().getId(), pageable);
-        Page<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findAllCooperation(employeeDetails.getEmployee().getId(), pageable);
+        List<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findAllLeave(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findAllEquipment(employeeDetails.getEmployee().getId());
+        List<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findAllCooperation(employeeDetails.getEmployee().getId());
 
-        log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
-        log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
-        log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
-        log.debug("pagebar = {}", approvalHomeCooperationDtoPage.getPageable() );
+        List<Object> SendList = new ArrayList<>();
+        SendList.addAll(approvalHomeLeaveDtoPage);
+        SendList.addAll(approvalHomeEquipmentDtoPage);
+        SendList.addAll(approvalHomeCooperationDtoPage);
 
-        model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
-        model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
-        model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+        Collections.sort(SendList, Comparator.comparingInt(o -> {
+            if (o instanceof ApprovalHomeLeaveDto) {
+                return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+            } else if (o instanceof ApprovalHomeEquipmentDto) {
+                return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+            } else if (o instanceof ApprovalHomeCooperationDto) {
+                return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+            }
+            return 0;
+        }));
 
-        model.addAttribute("pagebar", approvalHomeCooperationDtoPage.getPageable());
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), SendList.size());
 
-        model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
+        if (start > end) {
+            start = end;
+        }
+
+        log.debug("start = {}", (int) pageable.getOffset());
+        log.debug("end = {}", Math.min((start + pageable.getPageSize()), SendList.size()));
+
+        List<Object> pageContent = SendList.subList(start, end);
+
+        Page<Object> page = new PageImpl<>(pageContent, pageable, SendList.size());
+
+
+        // 모델에 추가
+        model.addAttribute("sendList", page.getContent());
+        model.addAttribute("size", page.getSize());
+        model.addAttribute("number", page.getNumber());
+        model.addAttribute("totalpages", page.getTotalPages());
+
+
     }
 
     /**

@@ -99,4 +99,57 @@ function changePage4(pageNumber) {
     window.location.href = url;
 }
 
+// 수신 문서함
+function changePage5(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalReceived.do?continue&page=' + pageNumber + '&size=' + size;
 
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 발신 문서함
+function changePage6(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalSend.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 대기 문서함
+function changePage7(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalWait.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 결재 수신함
+function changePage8(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalReception.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 결재 예정함
+function changePage9(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalExpected.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
