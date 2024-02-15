@@ -10,6 +10,7 @@ import com.sh.workson.board.dto.BoardListDto;
 import com.sh.workson.board.entity.Board;
 import com.sh.workson.board.entity.Type;
 import com.sh.workson.board.repository.BoardRepository;
+import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -68,6 +69,7 @@ public class BoardService {
         if(!boardCreateDto.getAttaches().isEmpty()) {
             for (AttachmentCreateDto attach: boardCreateDto.getAttaches()) {
                 attach.setBoardId(board.getId());
+                attach.setEmployee(board.getEmployee());
                 Attachment attachment = modelMapper.map(attach, Attachment.class);
                 log.debug("attachment = {}", attachment);
                 attachmentRepository.save(attachment);
@@ -84,18 +86,30 @@ public class BoardService {
 //                .build();
 //        board.setEmployee(employeeRepository.findById(boardCreateDto.getEmpId()).orElseThrow());
         return modelMapper.map(boardCreateDto, Board.class);
-
     }
 
     public BoardDetailDto findById(Long id) {
-        return boardRepository.findById(id)
-                .map((board) -> convertToBoardDetailDto(board))
-                .orElseThrow(); // NoSuchElementException 던짐    }
+        Board board = boardRepository.findById(id).orElseThrow();
+        System.out.println(board);
+        return convertToBoardDetailDto(board);
+//                .map((board) -> convertToBoardDetailDto(board))
+//                .orElseThrow(); // NoSuchElementException 던짐    }
     }
 
 
     private BoardDetailDto convertToBoardDetailDto(Board board) {
-        BoardDetailDto boardDetailDto = modelMapper.map(board, BoardDetailDto.class);
+        BoardDetailDto boardDetailDto = BoardDetailDto.builder()
+                .id(board.getId())
+                .type(board.getType())
+                .title(board.getTitle())
+                .employee(board.getEmployee())
+                .content(board.getContent())
+                .viewCount(board.getViewCount())
+                .createdAt(board.getCreatedAt())
+                .updatedAt(board.getUpdatedAt())
+                .attachments(board.getAttachments())
+                .build();
+
         return boardDetailDto;
     }
 

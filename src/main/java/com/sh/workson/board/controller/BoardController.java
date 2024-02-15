@@ -75,6 +75,7 @@ public class BoardController {
         model.addAttribute("boards", boardPage.getContent());
         model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
 
+
     }
 
     @GetMapping("/createBoard.do")

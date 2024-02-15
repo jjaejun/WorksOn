@@ -5,6 +5,7 @@ import com.sh.workson.board.dto.BoardCommentCreateDto;
 import com.sh.workson.board.service.BoardCommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,8 +34,7 @@ public class BoardCommentController {
 
         boardCommentService.createComment(commentCreateDto);
 
-
-        return null;
+        return new ResponseEntity<>("대댓글이 등록되었습니다.", HttpStatus.OK);
     }
 
 
