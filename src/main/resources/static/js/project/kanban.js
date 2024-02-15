@@ -1,35 +1,27 @@
 const dragEvent = () => {
    let dragTemp;
-   $('.drag').on('dragstart',function(e){
-      dragTemp = e.target;
-      console.log('dragStart',dragTemp);
-   })
 
-// 드래그하려고 클릭한 객체
-   $('.drop').on('dragover', function(e){
-      e.preventDefault();
-   })
+   document.querySelectorAll('.drag').forEach(item => {
+      item.addEventListener('dragstart', function(e) {
+         dragTemp = e.target;
+         console.log('dragStart', dragTemp);
 
-// drop이 일어날때 ajax 요청을 보내도록 하자
-   $('#dp1').on('drop',function(e){
-      this.appendChild( dragTemp )
-      console.log('dp1 drop', e.target, this.innerHTML);
-   })
+         // 데이터 셋팅하기 -> task의 id
+         e.dataTransfer.setData("text", e.target.dataset.id);
+      });
+   });
 
-   $('#dp2').on('drop',function(e){
-      this.appendChild( dragTemp )
-      $('#dp2').children('.drag').each(function() {
-         console.log('dp2 drop', e.target, this.innerText);
-      })
-   })
+   document.querySelectorAll('.drop').forEach(dropZone => {
+      dropZone.addEventListener('dragover', function(e) {
+         e.preventDefault();
+      });
 
-   $('#dp3').on('drop',function(e){
-      this.appendChild( dragTemp )
-      $('#dp3').children('.drag').each(function() {
-         console.log(this.innerText);
-         console.log('dp3 drop', e.target, this.innerText);
-      })
-   })
+      dropZone.addEventListener('drop', function(e) {
+         e.preventDefault();
+         this.appendChild(dragTemp);
+         console.dir(e);
+      });
+   });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -96,7 +88,7 @@ document.taskCreateFrm.addEventListener('submit', (e) => {
             }
 
             const drag = `
-            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
+            <div draggable="true" data-id="${response.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
                     <ul>
                         <li class="flex justify-between">
                             <div class="font-semibold">${name.value}</div>

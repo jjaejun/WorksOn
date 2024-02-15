@@ -149,9 +149,18 @@ public class ProjectService {
                 .positionName(task.getEmployee().getPosition().getName())
                 .build();
     }
-
-    public Task createTask(TaskCreateDto taskCreateDto) {
-        return taskRepository.save(convertToTask(taskCreateDto));
+    public TaskListDto afterInsertCovertToTaskListDto(Task task){
+        return TaskListDto.builder()
+                .id(task.getId())
+                .name(task.getName())
+                .priority(task.getPriority())
+                .status(task.getStatus().toString())
+                .empId(task.getEmployee().getId())
+                .build();
+    }
+    public TaskListDto createTask(TaskCreateDto taskCreateDto) {
+        Task task = taskRepository.save(convertToTask(taskCreateDto));
+        return afterInsertCovertToTaskListDto(task);
     }
 
     private Task convertToTask(TaskCreateDto taskCreateDto) {

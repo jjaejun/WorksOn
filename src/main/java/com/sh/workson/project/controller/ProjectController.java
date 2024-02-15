@@ -226,7 +226,7 @@ public class ProjectController {
     ){
         log.debug("taskCreateDto = {}", taskCreateDto);
         taskCreateDto.setTaskOwnerId(employeeDetails.getEmployee().getId());
-        Task task = projectService.createTask(taskCreateDto);
+        TaskListDto task = projectService.createTask(taskCreateDto);
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
