@@ -66,4 +66,8 @@ public class ChatService {
         List<ChatLog> chatLogs = chatLogRepository.findLogByRoomId(id);
         return chatLogs;
     }
+
+    public void deleteChatRoom(Long id) {
+        chatRoomRepository.deleteById(id);
+    }
 }
