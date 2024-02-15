@@ -57,6 +57,7 @@ public class BoardController {
 
 
 
+
     @GetMapping("/boardList.do")
     public void boardList(@PageableDefault(size = 10, page = 0 ) Pageable pageable, Model model) {
         log.info("boardService = {}", boardService.getClass());
@@ -117,16 +118,46 @@ public class BoardController {
         // 조회수 증가
         boardService.updateView(id);
     }
-
-    @PostMapping("/boardDetail.do")
-    public String insertComment(@RequestParam("id") Long id, @RequestParam("comment") String comment,
-                                Authentication authentication) {
+    @PostMapping("/boardcommentcreate.do")
+    public String insertBoardComment(
+            @RequestParam("id") Long id,
+            @RequestParam("comment") String comment,
+            @RequestParam("parentId") Long parentId,
+            Authentication authentication) {
         EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
         Long employeeId = employeeDetails.getEmployee().getId();
 
+        log.debug("id = {}" , id);
+        log.debug("comment = {}" , comment);
+        log.debug("parentId = {}" , parentId);
 
         BoardCommentDto boardCommentDto = new BoardCommentDto();
         boardCommentDto.setContent(comment);
+//        boardCommentDto.setParentComment(BoardComment.builder().build());
+        log.debug("board = {}" , boardCommentDto);
+
+        boardCommentService.insertComment(boardCommentDto, id, employeeId);
+        log.debug("board = {}" , boardCommentDto);
+
+        return "redirect:/board/boardDetail.do?id=" + id;
+    }
+
+    @PostMapping("/boardDetail.do")
+    public String insertComment(
+            @RequestParam("id") Long id,
+            @RequestParam("comment") String comment,
+//            @RequestParam("parentId") Long parentId,
+            Authentication authentication) {
+        EmployeeDetails employeeDetails = (EmployeeDetails) authentication.getPrincipal();
+        Long employeeId = employeeDetails.getEmployee().getId();
+
+        log.debug("id = {}" , id);
+        log.debug("comment = {}" , comment);
+//        log.debug("parentId = {}" , parentId);
+
+        BoardCommentDto boardCommentDto = new BoardCommentDto();
+        boardCommentDto.setContent(comment);
+//        boardCommentDto.setParentComment(BoardComment.builder().build());
         log.debug("board = {}" , boardCommentDto);
 
         boardCommentService.insertComment(boardCommentDto, id, employeeId);

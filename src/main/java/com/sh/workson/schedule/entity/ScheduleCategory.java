@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -26,7 +27,8 @@ public class ScheduleCategory {
     private Long id;
     private String name;
     private String color;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    // @JoinColumn(name="id", insertable = false, updatable = false)
     @JoinColumn(name="emp_id")
-    private Employee emp_id;
+    private Employee employee;
 }
