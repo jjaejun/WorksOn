@@ -1,8 +1,6 @@
 package com.sh.workson.approval.service;
 
-import com.sh.workson.approval.dto.ApprovalHomeCooperationDto;
-import com.sh.workson.approval.dto.ApprovalHomeEquipmentDto;
-import com.sh.workson.approval.dto.ApprovalHomeLeaveDto;
+import com.sh.workson.approval.dto.*;
 import com.sh.workson.approval.entity.Approval;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.department.entity.Department;
@@ -293,5 +291,20 @@ public class ApprovalService {
     public Page<ApprovalHomeCooperationDto> findExceptedCooperation(Long id, Pageable pageable) {
         Page<Approval> approvalPage = approvalRepository.findExceptedCooperation(id, pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
+    }
+
+    public IApprovalLeave findLeaveDetailById(Long id) {
+        IApprovalLeave iApprovalLeave = approvalRepository.findLeaveDetailById(id);
+        return iApprovalLeave;
+    }
+
+    public IApprovalEquipment findEquipmentDetailById(Long id) {
+        IApprovalEquipment iApprovalEquipment = approvalRepository.findEquipmentDetailById(id);
+        return iApprovalEquipment;
+    }
+
+    public IApprovalCooperation findCooperationDetailById(Long id) {
+        IApprovalCooperation iApprovalCooperation = approvalRepository.findCooperationDetailById(id);
+        return iApprovalCooperation;
     }
 }

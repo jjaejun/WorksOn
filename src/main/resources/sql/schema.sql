@@ -323,12 +323,12 @@ create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 테이블 일괄 삭제 시
 
--- drop table approval_line;
--- drop table approval_attachment;
--- drop table approval;
--- drop table approval_leave;
--- drop table approval_equipment;
--- drop table approval_cooperation;
+--drop table approval_line;
+--drop table approval_attachment;
+--drop table approval;
+--drop table approval_leave;
+--drop table approval_equipment;
+--drop table approval_cooperation;
 
 -- 시퀀스 일괄 삭제시
 
@@ -350,6 +350,15 @@ create table approval_leave (
 );
 -- 결재 양식 관련 ex 연차/비품/협조 같은 시퀀스 사용예정 각 시퀀스 사용시 조인시 겹칠 우려 있어서 원하는 값이 조회 안될듯
 create sequence seq_approval_form_id start with 1 increment by 50;
+
+-- 결재 연차 테이블에 컬럼 추가
+alter table approval_leave add leave_type varchar2(30); -- 결재 종류
+alter table approval_leave add annul varchar2(10); -- 반차 여부
+alter table approval_leave add constraints ck_approval_leave_annul check (annul in ('y', 'n'));
+delete from approval_leave;
+ALTER TABLE approval_leave MODIFY leave_count FLOAT(53); -- 연차 일수
+update approval_leave set leave_count = 1.0 where id = 11101;
+select * from approval_leave;
 
 -- 결재 비품신청 테이블
 create table approval_equipment (
@@ -406,7 +415,7 @@ create sequence seq_approval_id start with 1 increment by 50;
 
 -- 전자결재 첨부파일 테이블
 create table approval_attachment (
-     id number not null
+    id number not null
     , approval_id number not null
     , path varchar2(100) not null
     , renamed_filename varchar2(200) not null
@@ -418,6 +427,9 @@ create table approval_attachment (
 );
 create sequence seq_approval_attachment_id start with 1 increment by 50;
 
+-- 전자 결재 첨부파일 컬럼 추가
+alter table approval_attachment add key varchar2(2000);
+alter table approval_attachment add url varchar2(2000);
 
 -- 결재라인 테이블
 create table approval_line (

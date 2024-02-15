@@ -6,9 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table
@@ -42,6 +40,15 @@ public class ApprovalLeave {
     @CreationTimestamp
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    @Column(name = "leave_type")
+    private String leaveType;
+
+    @Column(name = "annul")
+    private String annul;
+
+    @Column(name = "leave_count")
+    private Double leaveCount;
 
     @OneToMany(mappedBy = "approvalLeave", fetch = FetchType.LAZY)
     @Builder.Default
