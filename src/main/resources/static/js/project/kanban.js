@@ -30,10 +30,10 @@ const dragEvent = () => {
 
       dropZone.addEventListener('drop', function(e) {
          e.preventDefault();
-         this.appendChild(dragTemp);
-         console.dir(e);
-         
-         
+
+         const lastChild = this.lastElementChild;
+         lastChild.before(dragTemp);
+
          // ajax update 처리하기
          console.log(e.dataTransfer.getData("text"));
          console.log(e.target.dataset.zone);
@@ -141,10 +141,12 @@ document.taskCreateFrm.addEventListener('submit', (e) => {
             `;
 
             const lastChild = area.lastElementChild;
-            lastChild.insertAdjacentHTML('afterend', drag);
-
-            // 모달창 닫기
+            lastChild.insertAdjacentHTML('beforebegin', drag);
+            
+            // 폼 리셋
+            document.querySelector("#createSelectArea").innerHTML = '';
             frm.reset();
+            // 모달창 닫기
             document.querySelector("#closeModal").click();
             dragEvent();
 
@@ -198,7 +200,7 @@ window.addEventListener('DOMContentLoaded', () => {
          switch (status) {
             case "To do": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-yellow-300 mr-2"></span>${status}</div>`; break;
             case "In progress": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-blue-300 mr-2"></span>${status}</div>`; break;
-            case "Done": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-pink-300 mr-2"></span>${status}</div>`; break;
+            case "Done": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-rose-300 mr-2"></span>${status}</div>`; break;
          }
 
          console.log(statusInput.value);
