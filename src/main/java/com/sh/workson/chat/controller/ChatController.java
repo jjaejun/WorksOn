@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class ChatController {
 
     @GetMapping("/chatRoom.do")
     public void chatRoom(@RequestParam("id") Long id, Model model) {
-//        log.debug("id = {}", id);
+        log.debug("id = {}", id);
         List<ChatLog> chatRooms = chatService.findLogByRoomId(id);
         log.debug("chatRooms = {}", chatRooms);
         model.addAttribute("chatRoomId", id);
@@ -86,12 +87,24 @@ public class ChatController {
     public void createChatRoom() {}
 
     @PostMapping("/createChatRoom.do")
-    public String createChatRoom(ChatRoomCreateDto chatRoomCreateDto, BindingResult bindingResult) {
+    public String createChatRoom(ChatRoomCreateDto chatRoomCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
         log.debug("chatRoomCreateDto = {}", chatRoomCreateDto);
         chatService.createChatRoom(chatRoomCreateDto);
+        redirectAttributes.addFlashAttribute("채팅방 생성 완료!!😎");
+        return "redirect:chatMain.do";
+    }
+
+    @PostMapping("/deleteChatRoom.do")
+    public String deleteChatRoom(@RequestParam("id") Long id, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        log.debug("chatRoomId = {}", id);
+        chatService.deleteChatRoom(id);
+        redirectAttributes.addFlashAttribute("채팅방 나가기 완료!!😎");
         return "redirect:chatMain.do";
     }
 }
