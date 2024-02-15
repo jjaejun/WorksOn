@@ -31,3 +31,28 @@ window.addEventListener('DOMContentLoaded', () =>{
         li.classList.add("cursor-pointer")
     });
 });
+
+// $(document).ready(function () {
+//     $('.pagination a.page-link').on('click', function (e) {
+//         e.preventDefault();
+//
+//         var page = $(this).text();
+//         var url = `${contextPath}approval/approvalCooperation.do?page=` + page;
+//
+//         $.ajax({
+//             type: 'GET',
+//             url: url,
+//             success: function (data) {
+//                 // 페이지 내용 업데이트
+//                 $('#content').html(data);
+//
+//                 // 선택된 페이지 표시 업데이트 (이 부분은 적절히 수정해야 할 수 있습니다)
+//                 $('.pagination li').removeClass('active');
+//                 $(e.target).parent().addClass('active');
+//             },
+//             error: function (error) {
+//                 console.error('Error fetching page: ' + page, error);
+//             }
+//         });
+//     });
+// });

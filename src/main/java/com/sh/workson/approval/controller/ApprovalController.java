@@ -249,10 +249,13 @@ public class ApprovalController {
         log.debug("approvalLeave = {}", approvalHomeLeaveDtoPage.getContent());
         log.debug("approvalEquipment = {}", approvalHomeEquipmentDtoPage.getContent());
         log.debug("approvalCooperation = {}", approvalHomeCooperationDtoPage.getContent());
+        log.debug("pagebar = {}", approvalHomeCooperationDtoPage.getPageable() );
 
         model.addAttribute("approvalLeave", approvalHomeLeaveDtoPage.getContent());
         model.addAttribute("approvalEquipment", approvalHomeEquipmentDtoPage.getContent());
         model.addAttribute("approvalCooperation", approvalHomeCooperationDtoPage.getContent());
+
+        model.addAttribute("pagebar", approvalHomeCooperationDtoPage.getPageable());
 
         model.addAttribute("totalCount", approvalHomeLeaveDtoPage.getTotalElements());
     }

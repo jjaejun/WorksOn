@@ -48,7 +48,7 @@ public class ApprovalLeave {
     private String annul;
 
     @Column(name = "leave_count")
-    private Long leaveCount;
+    private Double leaveCount;
 
     @OneToMany(mappedBy = "approvalLeave", fetch = FetchType.LAZY)
     @Builder.Default
