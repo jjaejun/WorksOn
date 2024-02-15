@@ -183,4 +183,10 @@ public class ProjectService {
         task.setStatus(status);
         return task;
     }
+
+    public void updateTask(TaskUpdateDto taskUpdateDto) {
+        Task task = taskRepository.findById(taskUpdateDto.getId()).orElseThrow();
+        task.setStatus(TaskStatus.valueOf(taskUpdateDto.getStatus()));
+        taskRepository.save(task);
+    }
 }

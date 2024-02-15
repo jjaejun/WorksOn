@@ -6,8 +6,20 @@ const dragEvent = () => {
          dragTemp = e.target;
          console.log('dragStart', dragTemp);
 
+         // 드래그 시작시 디자인 변경
+         dragTemp.classList.remove("bg-white");
+         dragTemp.classList.add("bg-gray-100");
+
          // 데이터 셋팅하기 -> task의 id
          e.dataTransfer.setData("text", e.target.dataset.id);
+         console.log(e.dataTransfer.getData("text"));
+      });
+
+      item.addEventListener('dragend', function(e) {
+         dragTemp = e.target;
+         // 드래그 종료시 디자인 변경
+         dragTemp.classList.add("bg-white");
+         dragTemp.classList.remove("bg-gray-100");
       });
    });
 
@@ -20,6 +32,28 @@ const dragEvent = () => {
          e.preventDefault();
          this.appendChild(dragTemp);
          console.dir(e);
+         
+         
+         // ajax update 처리하기
+         console.log(e.dataTransfer.getData("text"));
+         console.log(e.target.dataset.zone);
+
+         $.ajax({
+            url: `${contextPath}project/updateTask.do`,
+            data: {
+               id : e.dataTransfer.getData("text"),
+               status: e.target.dataset.zone
+            },
+            headers: {
+               [csrfHeaderName] : csrfToken
+            },
+            method: 'post',
+            success(response) {
+               console.log(response);
+            }
+         })
+
+
       });
    });
 }

@@ -230,4 +230,14 @@ public class ProjectController {
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
+
+    @PostMapping("/updateTask.do")
+    public ResponseEntity<?> updateTask(
+            TaskUpdateDto taskUpdateDto
+    ){
+        log.debug("taskUpdateDto = {}", taskUpdateDto);
+        projectService.updateTask(taskUpdateDto);
+
+        return null;
+    }
 }
