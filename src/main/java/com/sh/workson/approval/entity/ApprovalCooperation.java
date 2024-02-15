@@ -50,9 +50,9 @@ public class ApprovalCooperation {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "approvalCooperation", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Approval> approvals = new ArrayList<>();
+//    @OneToMany(mappedBy = "approvalCooperation", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private List<Approval> approvals = new ArrayList<>();
 
 
 }

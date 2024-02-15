@@ -10,9 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Table
 @Entity
@@ -74,11 +72,8 @@ public class Approval {
 
     // approval_cooperation테이블이랑 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_cooperation_id") // approval_leave 테이블의 외래키 컬럼명
+    @JoinColumn(name = "approval_cooperation_id") // approval_cooperation 테이블의 외래키 컬럼명
     private ApprovalCooperation approvalCooperation;
-
-
-
 
 
 }
