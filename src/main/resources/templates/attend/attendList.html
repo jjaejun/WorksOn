@@ -49,6 +49,9 @@
         width: 35%; /* 원하는 크기로 조절하세요. */
     }
 
+    #color{
+        color: orangered;
+    }
 </style>
 
 <div layout:fragment="content">
@@ -69,7 +72,7 @@
                         <div class="w-full text-center my-2 bg-gray-50 p-5 mb-8"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
                             <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
                                 <h1 class="w-1/3" id="work-state">업무 상태</h1>
-                                <h1 class="w-full" th:text="${(attend.state == T(com.sh.workson.attend.entity.State).LATE || attend.state == T(com.sh.workson.attend.entity.State).WORK) ? '업무중' : (attend.state == T(com.sh.workson.attend.entity.State).QUIT ? '퇴근' : '')}"></h1>
+                                <h1 class="w-full" id="color" th:text="${(attend.state == T(com.sh.workson.attend.entity.State).LATE || attend.state == T(com.sh.workson.attend.entity.State).WORK) ? '업무중' : (attend.state == T(com.sh.workson.attend.entity.State).QUIT ? '퇴근' : '')}"></h1>
                             </div>
                             <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
                                 <h1 class="w-1/3">출근시간</h1>
@@ -155,7 +158,7 @@
                     </div>
 
 
-                    <table class="full">
+                    <table id="searchDate" class="full">
                         <thead>
                             <tr>
                                 <th id="date-column">날짜</th>
@@ -253,6 +256,62 @@
                             </div>
                         </div>
                     </table>
+                    <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                        <span class="flex mt-2 justify-center">
+                            <nav aria-label="Table navigation">
+                                <ul class="inline-flex items-center">
+                                    <!-- 이전 버튼 -->
+                                    <li>
+                                        <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-blue"
+                                                aria-label="Previous"
+                                                th:attr="onclick='changePage1(\'' + (${number} - 1) + '\', \'' + ${size} + '\')'"
+                                                th:if="${number > 0}">
+                                            <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd"
+                                                        fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+
+                <!-- 페이지 번호 반복문 -->
+                        <th:block th:each="pageNumber : ${#numbers.sequence(0, totalpages - 1)}">
+                            <li>
+                                <button th:if="${pageNumber == number}"
+                                        class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
+                                    <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
+                                    <span th:text="${pageNumber + 1}"></span>
+                                </button>
+                                <button th:unless="${pageNumber == number}"
+                                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue"
+                                        th:attr="onclick='changePage1(\'' + ${pageNumber} + '\', \'' + ${size} + '\')'">
+                                    <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
+                                    <span th:text="${pageNumber + 1}"></span>
+                                </button>
+                            </li>
+                        </th:block>
+
+                                <!-- 다음 버튼 -->
+                                <li>
+                                    <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue"
+                                            aria-label="Next"
+                                            th:attr="onclick='changePage1(\'' + (${number} + 1) + '\', \'' + ${size} + '\')'"
+                                            th:if="${number < totalpages - 1}">
+                                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                            <path
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd"
+                                                    fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+                    </div>
                 </div>
         </div>
       </div>

@@ -117,4 +117,8 @@ public class AttendService {
     }
 
 
+    public Page<AttendListDto> findBetweenSearchDate(Pageable pageable, Long id, LocalDateTime startTime, LocalDateTime endTime) {
+        Page<Attend> attendPage = attendRepository.findBetweenSearchDate(pageable, id, startTime, endTime);
+        return attendPage.map((attend) -> convertToAttendListDto(attend));
+    }
 }

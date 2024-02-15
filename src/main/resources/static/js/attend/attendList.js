@@ -164,26 +164,81 @@ function handleDateChange() {
 }
 
 // Submit 버튼 클릭 시 시작 날짜부터 종료 날짜까지 출력
-submitBtn.addEventListener('click', function() {
-    console.log(`선택한 날짜 범위: ${startDateInput.value} 부터 ${endDateInput.value}`);
+document.querySelector("#submitBtn").addEventListener('click', (e) => {
 
+    console.log(`선택한 날짜 범위: ${startDateInput.value} 부터 ${endDateInput.value}`);
+    // const startDateValue = startDateInput.value;
+    // const endDateValue = endDateInput.value;
+
+    const startDate = startDateInput.datepicker.dates[0];
+    const endDate = endDateInput.datepicker.dates[0];
+    const tbody = document.querySelector("#searchDate tbody");
+    console.log(startDate," ~ " ,endDate)
 
     $.ajax({
         type: "GET",
         headers: {
             [csrfHeaderName]: csrfToken
         },
-        url: `${contextPath}attend/attendList.do`,
+        url: `${contextPath}attend/attendListSearchDate.do`,
         data: {
-            startDate : startDateInput.value,
-            endDate : endDateInput.value
+            startDate : startDate, // millis
+            endDate : endDate
         },
-        success: function (response){
+        success(response){
             console.log(response)
+            tbody.innerHTML = '';
+            response.content.forEach((att) => {
+                const {content, employeeId, endAt, id, startAt, state} = att;
+
+                tbody.innerHTML += `
+                <tr>
+                                <td>${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}</td>
+                                <td>${new Date(startAt).toLocaleTimeString()}</td>
+                                <td>${endAt ? new Date(endAt).toLocaleTimeString() : ''}</td>
+                            <td>
+                                <button id="attendOnTime"
+                                        data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                                        class="times block text-black focus:ring-4 rounded-xl focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        type="button">
+                                        ${new Date(startAt).toLocaleString()}
+                                </button>
+                            </td>
+                            <td>${att.content}</td>
+                        </tr>
+                `;
+                const stateElements = document.querySelectorAll('.times');
+                stateElements.forEach((stateElement) => {
+                    if (stateElement) {
+                        const startAtValue = stateElement.innerHTML;
+                        const currentDate = new Date();
+                        const compareDate = new Date(startAtValue);
+                        let state;
+                        if (currentDate.getHours() >= 9) {
+                            state = '지각';
+                            stateElement.classList.add('bg-red-300');
+                        } else {
+                            state = '정상출근';
+                            stateElement.classList.add('bg-green-500');
+                        }
+
+                        stateElement.innerText = state;
+                    }
+                });
+            });
+
+        },
+        error(e){
+            console.log(e);
         }
     })
 });
 
+function changePage1(pageNumber) {
+    let size = 10;
+    // 페이지 URL 생성
+    let url = '/WorksOn/attend/attendList.do?continue&page=' + pageNumber + '&size=' + size;
 
-
-
+    // 페이지 이동
+    window.location.href = url;
+}
