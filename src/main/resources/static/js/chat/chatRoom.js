@@ -9,7 +9,7 @@ document.querySelector('#chatInput').addEventListener('keypress', (e) => {
             chatRoomId : `${chatRoomId}`,
         };
         console.log(msg);
-
+        e.target.value = '';
         stompClient.send(`/pub/chatRoom/${chatRoomId}`, {}, JSON.stringify(msg));
     }
 });
@@ -26,5 +26,8 @@ document.querySelector('#chatBtn').addEventListener('click', (e) => {
     };
     console.log(msg);
 
+    document.querySelector('#chatInput').value = '';
+
     stompClient.send(`/pub/chatRoom/${chatRoomId}`, {}, JSON.stringify(msg));
 });
+
