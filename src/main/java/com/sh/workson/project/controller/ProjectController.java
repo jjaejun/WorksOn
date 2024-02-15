@@ -140,7 +140,7 @@ public class ProjectController {
         }
 
         model.addAttribute("taskTodos", todos);
-        model.addAttribute("TaskProgresses", progresses);
+        model.addAttribute("taskProgresses", progresses);
         model.addAttribute("taskDone", dones);
 
         log.debug("project = {}", projectDetailDto);
@@ -152,7 +152,6 @@ public class ProjectController {
             @RequestParam("projectId") Long id
     ){
         List<ProjectEmployee> employees = projectService.findAllProjectEmployeesByProjectID(id);
-
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
@@ -219,4 +218,16 @@ public class ProjectController {
         log.debug("T startDate = {}", startAt); // T startDate = 2024-02-07T00:00
         log.debug("T endDate = {}", endAt); // T endDate = 2024-02-10T00:00
     };
+
+    @PostMapping("/createTask.do")
+    public ResponseEntity<?> createTask(
+        TaskCreateDto taskCreateDto,
+        @AuthenticationPrincipal EmployeeDetails employeeDetails
+    ){
+        log.debug("taskCreateDto = {}", taskCreateDto);
+        taskCreateDto.setTaskOwnerId(employeeDetails.getEmployee().getId());
+        Task task = projectService.createTask(taskCreateDto);
+
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
 }

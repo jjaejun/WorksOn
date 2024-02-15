@@ -31,8 +31,8 @@ public class Task {
     private String name;
     private String content;
     private int priority;
-    private LocalDateTime startAt;
-    private LocalDateTime endAt;
+    private LocalDate startAt;
+    private LocalDate endAt;
     @Column
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
@@ -43,4 +43,7 @@ public class Task {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_id")
     private Employee employee;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 }

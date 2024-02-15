@@ -6,13 +6,11 @@ import com.sh.workson.attachment.repository.AttachmentRepository;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.employee.dto.EmployeeProjectOwnerDto;
 import com.sh.workson.employee.entity.Employee;
-import com.sh.workson.project.dto.ProjectCreateDto;
-import com.sh.workson.project.dto.ProjectDetailDto;
-import com.sh.workson.project.dto.ProjectListDto;
-import com.sh.workson.project.dto.TaskListDto;
+import com.sh.workson.project.dto.*;
 import com.sh.workson.project.entity.*;
 import com.sh.workson.project.repository.ProjectEmployeeRepository;
 import com.sh.workson.project.repository.ProjectRepository;
+import com.sh.workson.project.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +37,8 @@ public class ProjectService {
     private AttachmentRepository attachmentRepository;
     @Autowired
     private ProjectEmployeeRepository projectEmployeeRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     public Page<ProjectListDto> findAll(Pageable pageable) {
         Page<Project> projects = projectRepository.findAll(pageable);
@@ -150,5 +148,30 @@ public class ProjectService {
                 .empProfileUrl(task.getEmployee().getProfileUrl())
                 .positionName(task.getEmployee().getPosition().getName())
                 .build();
+    }
+
+    public Task createTask(TaskCreateDto taskCreateDto) {
+        return taskRepository.save(convertToTask(taskCreateDto));
+    }
+
+    private Task convertToTask(TaskCreateDto taskCreateDto) {
+        Task task = Task.builder()
+                .name(taskCreateDto.getName())
+                .content(taskCreateDto.getContent())
+                .priority(taskCreateDto.getPriority())
+                .startAt(taskCreateDto.getStartAt())
+                .endAt(taskCreateDto.getEndAt())
+                .build();
+        task.setOwner(Employee.builder().id(taskCreateDto.getTaskOwnerId()).build());
+        task.setEmployee(Employee.builder().id(taskCreateDto.getTaskEmpId()).build());
+        task.setProject(Project.builder().id(taskCreateDto.getProjectId()).build());
+        TaskStatus status = null;
+        switch (taskCreateDto.getStatus()){
+            case "To do": status = TaskStatus.TODO ; break;
+            case "In progress": status = TaskStatus.INPROGRESS ; break;
+            case "Done": status = TaskStatus.DONE ; break;
+        }
+        task.setStatus(status);
+        return task;
     }
 }
