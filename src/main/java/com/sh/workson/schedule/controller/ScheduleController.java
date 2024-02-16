@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -52,8 +53,10 @@ public class ScheduleController {
         log.debug("scheduleListDtos = {}", scheduleListDtos);
         return new ResponseEntity<>(scheduleListDtos, HttpStatus.OK);
         }
-        else
-            return null;
+        else{
+            List<ScheduleListDto> scheduleListDtos = new ArrayList<>();
+            return new ResponseEntity<>(scheduleListDtos, HttpStatus.OK);
+        }
     }
 
 
