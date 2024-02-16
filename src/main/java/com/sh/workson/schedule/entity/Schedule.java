@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name="Schedule")
@@ -37,9 +38,9 @@ public class Schedule {
     @Timestamp
     private LocalDateTime endTime;
     @OneToOne
+    @JoinColumn(name="schedule_category_id")
     private ScheduleCategory scheduleCategory;
     @ManyToOne
-    @JoinColumn(name = "emp_id")
-    private Employee emp_id;
-
+    @JoinColumn(name="emp_id")
+    private Employee employee;
 }

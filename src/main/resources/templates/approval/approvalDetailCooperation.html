@@ -15,19 +15,19 @@
             <table class="w-20% mb-6">
                 <tr class="border">
                     <th class="border p-2">기안자</th>
-                    <td><input type="text" class="w-20% p-2 border " value="오우진" readonly></td>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${empId}" readonly></td>
                 </tr>
                 <tr class="border">
-                    <th class="border p-2">소속</th>
-                    <td><input type="text" class="w-20% p-2 border " value="esc" readonly></td>
+                    <th class="border p-2">부서</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${deptId}" readonly></td>
                 </tr>
                 <tr class="border">
                     <th class="border p-2">기안일</th>
-                    <td><input type="text" class="w-20% p-2 border " value="2024-02-26(화)" readonly></td>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${approvalEndDate}" readonly></td>
                 </tr>
                 <tr class="border">
                     <th class="border p-2">문서번호</th>
-                    <td><input type="text" class="w-20% p-2 border " value="1" readonly></td>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${coId}" readonly></td>
                 </tr>
             </table>
             <table class="mb-6 ml-auto mr-1">
@@ -77,24 +77,28 @@
         <table class="w-full mb-6">
             <tr class="border">
                 <th class="border p-2 w-32">수신처</th>
-                <td><input type="text" class="w-full p-2 border " placeholder="수신처"></td>
+                <td><input type="text" class="w-full p-2 border " th:value="${cooperationDept}"></td>
             </tr>
             <tr class="border">
                 <th class="border p-2 w-32">제목</th>
-                <td><input type="text" class="w-full p-2 border " placeholder="제목"></td>
+                <td><input type="text" class="w-full p-2 border " th:value="${title}"></td>
             </tr>
             <tr class="border">
                 <th class="border p-2 w-32">내용</th>
-                <td><input type="text" class="w-full p-2 border " placeholder="내용"></td>
+                <td><input type="text" class="w-full p-2 border " th:value="${content}"></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">기간 및 일시</th>
+                <td><input type="text" class="w-15% p-2 border " th:value="${startDate}" readonly>&nbsp ~ &nbsp<input type="text" class="w-20% p-2 border " th:value="${endDate}" readonly></td>
             </tr>
         </table>
 
-        <h2 class="p-2 w-32">파일 첨부</h2>
-        <div class="border-dotted">
-            <input type="file" class="custom-file-input mb-3" name="upFile" id="upFile" multiple placeholder="이곳에 파일을 드래그 하세요. 또는 파일선택">
-        </div>
+<!--        <h2 class="p-2 w-32">파일 첨부</h2>-->
+<!--        <div class="border-dotted">-->
+<!--            <input type="file" class="custom-file-input mb-3" name="upFile" id="upFile" multiple placeholder="이곳에 파일을 드래그 하세요. 또는 파일선택">-->
+<!--        </div>-->
 
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재요청</button>
+<!--        <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재요청</button>-->
     </div>
 </div>
 

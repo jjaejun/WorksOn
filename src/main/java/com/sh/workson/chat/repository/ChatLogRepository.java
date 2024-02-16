@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ChatLogRepository extends JpaRepository<ChatLog, Long> {
 
-    @Query("from ChatLog where chatRoomId = :id")
+    @Query("from ChatLog where chatRoomId = :id order by createdAt")
     List<ChatLog> findLogByRoomId(Long id);
 }

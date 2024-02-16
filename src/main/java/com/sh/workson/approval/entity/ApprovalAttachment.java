@@ -42,6 +42,12 @@ public class ApprovalAttachment {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @Column(name = "key")
+    private String key;
+
+    @Column(name = "url")
+    private String url;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_id")
     private Approval approval;

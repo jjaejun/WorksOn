@@ -47,4 +47,6 @@ public interface AttendRepository extends JpaRepository<Attend, Long> {
         """, nativeQuery = true)
         Attend findAttendByEmployeeId(@Param("id")Long id);
 
+        @Query("from Attend a join fetch a.employee where a.employee.id = :id and a.startAt between :startTime and :endTime order by a.startAt desc")
+        Page<Attend> findBetweenSearchDate(Pageable pageable, @Param("id") Long id, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 }

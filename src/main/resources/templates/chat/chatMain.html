@@ -9,6 +9,13 @@
 <style layout:fragment="style"></style>
 
 <div layout:fragment="content">
+    <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+         th:onclick="|location.href='@{/chat/createChatRoom.do}'|">
+        <button>
+            <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
+            <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">채팅방 생성</span>
+        </button>
+    </div>
     <table class="w-full">
         <tr class="w-full">
             <td rowspan="3" class="w-1/4">

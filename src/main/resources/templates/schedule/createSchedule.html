@@ -30,27 +30,85 @@
 </head>
 <body>
     <div id="container">
-        <header th:include="~{fragments/header::header}"></header>
-        <section id="content" class="flex">
-            <div th:include="~{fragments/aside::aside}"></div>
-            <div class="mt-32 w-full mx-12">
-                <div layout:fragment="content">
-                    <div id="board-container" class="w-50 mx-auto text-center">
-                        <form name="boardFrm"
-                              th:action="@{/board/createBoard.do}"
-                              method="post">
-                            <input type="text" class="form-control mb-3" placeholder="제목" name="title" id="title" required>
-                            <div class="input-group mb-3" style="padding:0px;">
-                            </div>
-                            <textarea class="form-control mb-3" name="content" placeholder="내용" required></textarea>
-                            <input type="submit" class="btn btn-block btn-outline-success" value="저장">
-                        </form>
+        <div>
+            <header th:include="~{fragments/header::header}"></header>
+            <section id="content" class="flex">
+                <div th:include="~{fragments/aside::aside}"></div>
+                <div class="mt-32 w-full mx-12">
+                    <div layout:fragment="content">
+                        <div id="board-container" class="w-50 mx-auto text-center">
+                            <form name="createScheduleFrm"
+                                  th:action="@{/schedule/createSchedule.do}"
+                                  method="post">
+                                <input type="text" class="form-control mb-3" placeholder="제목" name="title" id="title" required>
+                                <div class="input-group mb-3" style="padding:0px;">
+                                </div>
+                                <table id="category-list" class="table-header" style="margin: 0 auto">
+                                    <tbody>
+                                    <tr th:each="category, status : ${scheduleCategories}">
+                                        <td class="ml-2">
+                                            <input type="checkbox" name="scheduleCategoryId" th:id="${'checkbox' + category.id}" th:value="${category.id}"
+                                            onclick="checkOnlyOne(this)">
+                                        </td>
+                                        <td th:text="${category.name}"></td>
+                                        <td>
+                                            <span class="inline-block h-4 w-4 rounded-full mt-2 ml-2"
+                                                  th:style="'background-color: ' + ${category.color}"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+                                <div style="margin-top: 10px; margin-bottom: 10px" >
+                                    <label for="startTime">일정 시작시간</label>
+                                    <input type="datetime-local" id="startTime" name="startTime">
+                                </div>
+                                <div style="margin-top: 10px; margin-bottom: 10px">
+                                    <label for="endTime" th:style="ml-2">일정 종료시간</label>
+                                    <input type="datetime-local" id="endTime" name="endTime">
+                                </div>
+                                <br>
+                                <div class="col-span-2 flex">
+                                    <div class="w-full flex flex-col items-center mx-auto">
+                                        <div class="mb-2 w-full text-sm font-medium text-gray-900">참여사원</div>
+                                        <div class="w-full">
+                                            <div class="flex flex-col items-center relative">
+                                                <div class="w-full">
+                                                    <div class="flex">
+                                                        <div id="createSelectArea" class="flex flex-auto flex-wrap">
+                                                            <!--선택된 요소 표현-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="w-full flex-1 my-2 p-1 flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg">
+                                                    <input id="create-search-input" placeholder="사원이름을 검색하세요"
+                                                           class="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800">
+                                                </div>
+                                                <div id="create-search-list"
+                                                     class="absolute shadow top-100 bg-white z-40 w-full lef-0 rounded max-h-select overflow-y-auto">
+                                                    <div class="flex flex-col w-full">
+                                                        <!--검색결과-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <textarea class="form-control mb-3" style="margin-top: 30px" name="content" placeholder="내용"></textarea>
+                                <button type="submit" class="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white">
+                                    일정 저장
+                                    <div class="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <footer th:include="~{fragments/footer::footer}"></footer>
+            </section>
+            <footer th:include="~{fragments/footer::footer}"></footer>
+        </div>
     </div>
-    <script layout:fragment="script"></script>
+    <script layout:fragment="script" th:src="@{/js/schedule/createSchedule.js}">
+    </script>
 </body>
 </html>
