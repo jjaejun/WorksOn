@@ -40,9 +40,10 @@
         <!-- 댓글 테이블 -->
         <table class="table table-striped mt-4">
             <tbody>
-<!--                <div th:if="${comment.commentLevel == 1}">-->
                 <!-- 댓글 리스트를 반복하여 출력 -->
-                    <tr th:each="comment , status : ${commentList}">
+
+                <tr th:each="comment , status : ${commentList}">
+                    <th:block th:if="${comment.parentComment == null}">
                         <td th:text="${comment.content}"></td>
                         <td th:text="${comment.id}"></td>
                         <td th:text="${#temporals.format(comment.createdAt,'yyyy-MM-dd HH:mm')}"></td>
@@ -52,8 +53,8 @@
                                 답글
                             </button>
                         </td>
-                    </tr>
-<!--                </div>-->
+                    </th:block>
+                </tr>
             </tbody>
         </table>
 
