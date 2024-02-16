@@ -139,7 +139,9 @@ document.querySelector("#read-search-input").addEventListener('keyup', (e) => {
     }
 });
 
-
+/**
+ * 입력된 사용자 삭제 
+ */
 const createClickDelete = (empId) => {
     console.log(empId);
     const selected = document.getElementById(`create${empId}`);
@@ -223,8 +225,7 @@ document.querySelector("#create-search-input").addEventListener('keyup', (e) => 
                             </div>
                         </div>
                     </div>
-                </div>
-               `;
+                </div>`;
                 });
             }
         })

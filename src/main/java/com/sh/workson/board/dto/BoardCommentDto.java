@@ -2,6 +2,7 @@ package com.sh.workson.board.dto;
 
 import com.sh.workson.board.entity.Board;
 import com.sh.workson.board.entity.BoardComment;
+import com.sh.workson.employee.entity.Employee;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class BoardCommentDto {
     private int commentLevel = 1;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long employeeId; // employeeId 추가
+    private Employee employee; // employeeId 추가
 
 
 }

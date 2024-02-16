@@ -2,6 +2,9 @@ package com.sh.workson.employee.service;
 
 import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.authority.entity.Authority;
+import com.sh.workson.authority.entity.RoleAuth;
+import com.sh.workson.authority.service.AuthorityService;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
@@ -20,6 +23,8 @@ import java.util.List;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    AuthorityService authorityService;
 
 
     public Employee findByEmail(String email) {
@@ -55,6 +60,7 @@ public class EmployeeService {
 
         return employeeDtos;
     }
+
 
     /**
      * 재준
@@ -108,7 +114,15 @@ public class EmployeeService {
      */
 
 
-
+    public Employee employeeCreate(Employee employee) {
+        employeeRepository.save(employee);
+        Authority authority = Authority.builder()
+                .empId(employee.getId())  // authority id
+                .name(RoleAuth.ROLE_EMP)
+                .build();
+        authorityService.createAuthority(authority);
+        return employee;
+    }
 
 
 

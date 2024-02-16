@@ -16,23 +16,34 @@ stompClient.connect({}, () => {
         // console.log(createdAt);
 
         const box = document.querySelector("#parent");
-        console.log(box.lastElementChild);
+        // console.log(box.lastElementChild);
         if (employeeId != empId) {
-            box.lastElementChild.innerHTML += `<div class="flex items-center space-x-2 rtl:space-x-reverse">
+            box.lastElementChild.innerHTML += `
+                <div class="mr-auto ml-8 min-w-[320px]">
+                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${name}</span>
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${createdAt}</span>
                 </div>
                 <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-r-xl rounded-bl-xl dark:bg-gray-700">
                     <p class="text-sm font-normal text-gray-900 dark:text-white">${content}</p>
-                </div>`;
-        } else if (employeeId == empId) {
-            box.lastElementChild.innerHTML += `<div class="flex items-center space-x-2 rtl:space-x-reverse">
-                    <span class="text-sm font-semibold text-gray-900 dark:text-white">${name}</span>
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${createdAt}</span>
                 </div>
-                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-blue-600 rounded-l-xl rounded-br-xl dark:bg-gray-700">
-                    <p class="text-sm font-normal text-white dark:text-white">${content}</p>
+                </div>
+                `;
+        } else if (employeeId == empId) {
+            box.lastElementChild.innerHTML += `
+                <div class="ml-auto mr-8 min-w-[320px]">
+                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">${name}</span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${createdAt}</span>
+                    </div>
+                    <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-blue-600 rounded-l-xl rounded-br-xl dark:bg-gray-700">
+                        <p class="text-sm font-normal text-white dark:text-white">${content}</p>
+                    </div>
                 </div>`;
+
+            const room = document.querySelector("#parent");
+            console.dir(room);
+            room.scrollTop = room.scrollHeight;
         }
     });
 });

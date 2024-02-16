@@ -22,7 +22,7 @@
 
 <div layout:fragment="content">
     <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
-         th:onclick="|location.href=@{/chat/deleteChatRoom.do?id=${chatRoomId}}|">
+         th:onclick="|location.href=@{/chat/deleteChatRoom.do}?id=${chatRoomId}|">
         <button>
             <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-red-500"></span>
             <span class="relative text-md font-medium text-red-600 transition-colors group-hover:text-white">채팅방 나가기</span>
@@ -32,8 +32,8 @@
         <div th:text="|환영합니다!|"></div>
         <!--        <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image">-->
 <!--        <th:block th:if="${chatRooms != null}">-->
-            <div th:each="chatRoom, status : ${chatRooms}" class="flex flex-col gap-1 w-full max-w-[320px]">
-                <div th:if="${#authentication.principal.employee.id != chatRoom.employee.id}">
+            <div th:each="chatRoom, status : ${chatRooms}" class="flex flex-col gap-1 w-full">
+                <div th:if="${#authentication.principal.employee.id != chatRoom.employee.id}" class="mr-auto ml-8 min-w-[320px]">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span th:text="${chatRoom.employee.name}"
                           class="text-sm font-semibold text-gray-900 dark:text-white"></span>
@@ -44,7 +44,7 @@
                         <p th:text="${chatRoom.content}" class="text-sm font-normal text-gray-900 dark:text-white"></p>
                     </div>
                 </div>
-                <div th:if="${#authentication.principal.employee.id == chatRoom.employee.id}">
+                <div th:if="${#authentication.principal.employee.id == chatRoom.employee.id}" class="ml-auto mr-8 min-w-[320px]">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span th:text="${chatRoom.employee.name}"
                           class="text-sm font-semibold text-gray-900 dark:text-white"></span>

@@ -16,6 +16,5 @@ public class AttachmentDetailDto {
     private String key;
     private String url;
     private LocalDateTime createdAt;
-
     private Employee employee;
 }

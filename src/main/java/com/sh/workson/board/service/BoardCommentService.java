@@ -57,10 +57,11 @@ public class BoardCommentService {
         return comments.stream()
                 .map(comment -> {
                     BoardCommentDto dto = new BoardCommentDto();
-                    dto.setEmployeeId(comment.getEmployee().getId());
+                    dto.setEmployee(comment.getEmployee());
                     dto.setContent(comment.getContent());
                     dto.setId(comment.getId());
                     dto.setCreatedAt(comment.getCreatedAt());
+                    dto.setCommentLevel(comment.getCommentLevel());
                     dto.setParentComment(comment.getParentComment());
                     return dto;
                 })

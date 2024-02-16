@@ -1,5 +1,6 @@
 package com.sh.workson.reservation.entity;
 
+import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,13 +25,14 @@ public class Reservation {
     private LocalDateTime startAt;
     @Column(name = "end_at")
     private LocalDateTime endAt;
-    private String Content;
-    private Integer Count;
+    private String content;
+    private Integer count;
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @Column(name = "emp_id")
-    private Long empId;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
     @Column(name = "tb_resource_id")
     private Long resourceId;
 }

@@ -1,14 +1,10 @@
 package com.sh.workson.schedule.dto;
 
-import com.sh.workson.employee.entity.Employee;
-import com.sh.workson.schedule.entity.ScheduleCategory;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class CreateScheduleDto {

@@ -316,6 +316,7 @@ create table reservation(
     , constraint fk_reservation_emp_id foreign key(emp_id) references employee(id) on delete cascade
     , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
 );
+alter table reservation rename column emp_id to employee_id;
 create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 우진
@@ -478,7 +479,7 @@ create table schedule (
 );
 create sequence seq_schedule_id start with 1 increment by 50;
 
-
+select * from schedule;
 -- 스케쥴 참여 인원
 create table schedule_join_member(
     id number not null,
