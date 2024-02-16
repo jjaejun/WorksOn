@@ -134,5 +134,8 @@ public class EmployeeService {
     }
 
 
+    public Employee checkEmailDuplicate(String email) {
+        return employeeRepository.checkEmailDuplicate(email);
+    }
 
 }

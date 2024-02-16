@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -87,24 +89,24 @@ public class ChatController {
     public void createChatRoom() {}
 
     @PostMapping("/createChatRoom.do")
-    public String createChatRoom(ChatRoomCreateDto chatRoomCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createChatRoom(@AuthenticationPrincipal EmployeeDetails employeeDetails, ChatRoomCreateDto chatRoomCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
+        Set<Long> containMeEmpIds = chatRoomCreateDto.getEmpIds();
+        containMeEmpIds.add(employeeDetails.getEmployee().getId());
+        chatRoomCreateDto.setEmpIds(containMeEmpIds);
         log.debug("chatRoomCreateDto = {}", chatRoomCreateDto);
         chatService.createChatRoom(chatRoomCreateDto);
-        redirectAttributes.addFlashAttribute("채팅방 생성 완료!!😎");
+        redirectAttributes.addFlashAttribute("msg", "채팅방 생성 완료!!😎");
         return "redirect:chatMain.do";
     }
 
     @PostMapping("/deleteChatRoom.do")
-    public String deleteChatRoom(@RequestParam("id") Long id, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public String deleteChatRoom(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
         log.debug("chatRoomId = {}", id);
         chatService.deleteChatRoom(id);
-        redirectAttributes.addFlashAttribute("채팅방 나가기 완료!!😎");
+        redirectAttributes.addFlashAttribute("msg", "채팅방 나가기 완료!!😎");
         return "redirect:chatMain.do";
     }
 }

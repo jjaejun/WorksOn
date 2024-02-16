@@ -2,6 +2,7 @@ const dragEvent = () => {
    let dragTemp;
 
    document.querySelectorAll('.drag').forEach(item => {
+      // dargstart 이벤트
       item.addEventListener('dragstart', function(e) {
          dragTemp = e.target;
          console.log('dragStart', dragTemp);
@@ -20,6 +21,19 @@ const dragEvent = () => {
          // 드래그 종료시 디자인 변경
          dragTemp.classList.add("bg-white");
          dragTemp.classList.remove("bg-gray-100");
+      });
+
+
+      // click 이벤트
+      item.addEventListener('click', (e) => {
+         e.stopPropagation();
+         console.log(e);
+
+         const task = e.target;
+         const {id} = task.dataset;
+         const projectId = document.querySelector("#projectId");
+
+         location.href = `${contextPath}project/taskDetail.do?id=${id}&projectId=${projectId.value}`;
       });
    });
 
@@ -238,6 +252,9 @@ const createClickDelete = (empId) => {
 const createClickEvent = () => {
    document.querySelectorAll(".searchResult").forEach((emp) => {
       emp.addEventListener('click', (e) => {
+         e.stopPropagation();
+
+
          const selectArea = document.querySelector("#createSelectArea");
          // 선택된 사원있으면 삭제 처리
          if(selectArea.innerHTML !== ''){

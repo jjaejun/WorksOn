@@ -22,9 +22,9 @@
             </div>
 
             <th:block th:each="task, status : ${taskTodos}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul class="flex flex-col">
-                        <li class="flex justify-between">
+                        <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
                             <div class="flex">
                                 <div class="flex items-center" th:each="index : ${#numbers.sequence(1, task.priority)}">
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li th:text="|${task.empName}${task.positionName}|"></li>
+                        <li th:text="|${task.empName}${task.positionName}|" th:data-id="${task.id}" ></li>
                     </ul>
                 </div>
             </th:block>
@@ -73,9 +73,9 @@
 
 
             <th:block th:each="task, status : ${taskProgresses}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul>
-                        <li class="flex justify-between">
+                        <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
                             <div class="flex">
                                 <div class="flex items-center" th:each="index : ${#numbers.sequence(1, task.priority)}">
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li th:text="|${task.empName}${task.positionName}|"></li>
+                        <li th:text="|${task.empName}${task.positionName}|" th:data-id="${task.id}"></li>
                     </ul>
                 </div>
             </th:block>
@@ -122,9 +122,9 @@
 
 
             <th:block th:each="task, status : ${taskDone}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul>
-                        <li class="flex justify-between">
+                        <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
                             <div class="flex">
                                 <div class="flex items-center" th:each="index : ${#numbers.sequence(0, task.priority - 1)}">
@@ -139,7 +139,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li th:text="|${task.empName}${task.positionName}|"></li>
+                        <li th:text="|${task.empName}${task.positionName}|" th:data-id="${task.id}"></li>
                     </ul>
                 </div>
             </th:block>

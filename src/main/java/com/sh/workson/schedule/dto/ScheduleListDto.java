@@ -12,5 +12,6 @@ public class ScheduleListDto {
     private LocalDateTime endTime;
     private Long scheduleCategoryId;
     private Long empId;
+    private String color;
 
 }

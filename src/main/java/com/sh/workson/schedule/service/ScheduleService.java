@@ -62,6 +62,7 @@ public class ScheduleService {
     private ScheduleListDto convertToScheduleListDto(Schedule schedule){
         ScheduleListDto scheduleListDto = modelMapper.map(schedule, ScheduleListDto.class);
         scheduleListDto.setEmpId(schedule.getEmployee().getId());
+        scheduleListDto.setColor(schedule.getScheduleCategory().getColor());
         return scheduleListDto;
     }
 }

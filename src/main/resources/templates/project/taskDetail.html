@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>업무 상세보기</title>
+</head>
+<style layout:fragment="style" th:src="@{/css/project/projectDetail.css}">
+</style>
+<div layout:fragment="content">
+    <div class="flex flex-wrap">
+        <input type="hidden" id="projectId" th:value="${project.id}">
+        <div class="flex flex-col">
+            <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+                 th:onclick="|location.href='@{/project/createProject.do}'|">
+                <button>
+                    <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
+                    <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
+                </button>
+            </div>
+            <aside class="mt-10 w-fit" id="sidebarProject">
+                <div class="text-lg p-2 py-4 font-bold hover:text-[#000000]">
+                    <span class="border-b border-gray-300 pb-2 pr-8">내 프로젝트</span>
+                </div>
+                <ul class="approval-nav-ul" th:each="project, status : ${projectOwner}">
+                    <li class="articleLi font-normal hover:bg-gray-100 py-1 rounded-lg cursor-pointer"
+                        th:data-project-id="${project.id}">
+                        <a class="inline-flex items-center text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+                            <span class="ml-4" th:text="${project.title}"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!--내 프로젝트 목록 페이지바-->
+                <div>
+                    <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                        <span class="flex mt-2 justify-center">
+                            <nav aria-label="Table navigation">
+                                <ul class="inline-flex items-center">
+                                    <!-- 이전 버튼 -->
+                                    <li>
+                                        <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                                th:if="${!(projectOwnerNumber > 0)}" readonly>
+                                            <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd"
+                                                        fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                        <button class="ownerPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                                aria-label="Previous"
+                                                th:data-page-number="${projectOwnerNumber - 1}"
+                                                th:if="${projectOwnerNumber > 0}">
+                                            <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" th:data-page-number="${projectOwnerNumber - 1}">
+                                                <path th:data-page-number="${projectOwnerNumber - 1}"
+                                                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                      clip-rule="evenodd"
+                                                      fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+
+                                    <th:block th:each="pageNumber : ${#numbers.sequence(0, projectOwnerTotalpages - 1)}">
+                                        <input type="hidden" th:value="${pageNumber}"
+                                               th:if="${pageNumber == projectOwnerNumber}"
+                                               id="selectBtnOwnerPage">
+                                    </th:block>
+                                    <!-- 다음 버튼 -->
+                                    <li>
+                                        <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                                th:if="${!(projectOwnerNumber < projectOwnerTotalpages - 1)}" readonly>
+                                            <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                            <path
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd"
+                                                    fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                        <button class="ownerPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                                aria-label="Next"
+                                                th:data-page-number="${projectOwnerNumber + 1}"
+                                                th:if="${projectOwnerNumber < projectOwnerTotalpages - 1}">
+                                            <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" th:data-page-number="${projectOwnerNumber + 1}">
+                                                <path th:data-page-number="${projectOwnerNumber + 1}"
+                                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                      clip-rule="evenodd"
+                                                      fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="text-lg p-2 py-4 font-bold hover:text-[#000000]">
+                    <span class="border-b border-gray-300 pb-2 pr-8">참여중인 프로젝트</span>
+                </div>
+                <ul class="approval-nav-ul" th:each="project, status : ${projectEmp}">
+                    <li class="articleLi font-normal hover:bg-gray-100 py-1 rounded-lg cursor-pointer"
+                        th:data-project-id="${project.id}">
+                        <a class="inline-flex items-center text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+                            <span class="ml-4" th:text="${project.title}"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div id="page-bar-container-2" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                    <span class="flex mt-2 justify-center">
+                        <nav aria-label="Table navigation">
+                            <ul class="inline-flex items-center">
+                                <!-- 이전 버튼 -->
+                                <li>
+                                    <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                            th:if="${!(projectEmpNumber > 0)}" readonly>
+                                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                            <path
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                    <button class="empPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                            aria-label="Previous"
+                                            th:data-page-number="${projectEmpNumber - 1}"
+                                            th:if="${projectEmpNumber > 0}">
+                                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" th:data-page-number="${projectEmpNumber - 1}">
+                                            <path th:data-page-number="${projectEmpNumber - 1}"
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <!-- 페이지 번호 반복문 -->
+                                <th:block th:each="pageNumber : ${#numbers.sequence(0, projectEmpTotalpages - 1)}">
+                                    <input type="hidden" th:value="${pageNumber}"
+                                           th:if="${pageNumber == projectEmpNumber}"
+                                           id="selectBtnEmpPage">
+                                </th:block>
+
+                                <!-- 다음 버튼 -->
+                                <li>
+                                    <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                            th:if="${!(projectEmpNumber < projectEmpTotalpages - 1)}" readonly>
+                                            <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                            <path
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                    <button class="empPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                            aria-label="Next"
+                                            th:data-page-number="${projectEmpNumber + 1}"
+                                            th:if="${projectEmpNumber < projectEmpTotalpages - 1}">
+                                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" th:data-page-number="${projectEmpNumber + 1}">
+                                            <path th:data-page-number="${projectEmpNumber + 1}"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+                </div>
+            </aside>
+        </div>
+
+
+
+
+    </div>
+</div>
+<script layout:fragment="script" th:src="@{/js/project/taskDetail.js}">
+</script>
+</html>
