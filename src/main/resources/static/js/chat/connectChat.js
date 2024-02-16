@@ -16,7 +16,7 @@ stompClient.connect({}, () => {
         // console.log(createdAt);
 
         const box = document.querySelector("#parent");
-        console.log(box.lastElementChild);
+        // console.log(box.lastElementChild);
         if (employeeId != empId) {
             box.lastElementChild.innerHTML += `<div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${name}</span>
