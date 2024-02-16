@@ -1,7 +1,9 @@
 package com.sh.workson.reservation.controller;
 
+import com.sh.workson.attend.entity.AttendListDto;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
+import com.sh.workson.reservation.dto.ReservationListDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.service.ReservationService;
 import com.sh.workson.resource.entity.Resource;
@@ -10,6 +12,10 @@ import com.sh.workson.resource.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -87,5 +96,32 @@ public class ReservationContoller {
         reservationService.deleteById(reservationId);
         redirectAttributes.addFlashAttribute("msg", "예약이 취소되었습니다.");
         return "redirect:reservationMyList.do";
+    }
+
+    @GetMapping("/reservationListSearchDate.do")
+    public ResponseEntity<?> attendListSearchDate(
+            Model model,
+            @RequestParam("resourceId") Long resourceId,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @PageableDefault(value = 5, page = 0) Pageable pageable
+    ){
+        log.debug("resourceId = {}", resourceId);
+        log.debug("startDate = {}", startDate);
+        log.debug("endDate = {}", endDate);
+        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(startDate)), ZoneId.systemDefault());
+        LocalDateTime endTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(endDate)), ZoneId.systemDefault());
+
+//        LocalDateTime startTime = LocalDateTime.parse(startDate.replace("T", "") + " 00:00", DateTimeFormatter.ofPattern("yy/MM/dd HH:mm"));
+//        LocalDateTime endTime = LocalDateTime.parse(endDate.replace("T", "") + " 23:59", DateTimeFormatter.ofPattern("yy/MM/dd HH:mm"));
+
+        // endTime에 1일을 더함
+        endTime = endTime.plusDays(1);
+
+        log.debug("T startTime = {}", startTime); // T startDate = 24/02/07 00:00
+        log.debug("T endTime = {}", endTime); // T endDate = 24/02/10 23:59
+
+        Page<ReservationListDto> reservationPage = reservationService.findBetweenSearchDate(pageable, resourceId, startTime, endTime);
+        return ResponseEntity.ok(reservationPage);
     }
 }
