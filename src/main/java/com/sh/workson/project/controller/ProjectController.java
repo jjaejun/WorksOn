@@ -14,7 +14,9 @@ import com.sh.workson.project.entity.Task;
 import com.sh.workson.project.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,7 +60,7 @@ public class ProjectController {
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
-            @PageableDefault(size = 5, page = 0)Pageable pageable,
+            @PageableDefault(size = 8, page = 0)Pageable pageable,
             Model model
     ){
         Page<ProjectListDto> projects = projectService.findAll(pageable);
@@ -69,20 +71,32 @@ public class ProjectController {
 
     @GetMapping("/projectList.do")
     public void projectList(
-            @PageableDefault(size = 5, page = 0)Pageable pageable,
+            @RequestParam(name = "page1",defaultValue = "0") int page1,
+            @RequestParam(name = "size1", defaultValue = "8") int size1,
+            @RequestParam(name = "page2", defaultValue = "0") int page2,
+            @RequestParam(name = "size2", defaultValue = "8") int size2,
             Model model,
             @AuthenticationPrincipal EmployeeDetails employeeDetails
     ){
         // 사원이 참여중인 프로젝트만 조회
-        Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), pageable);
+        Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
         // 사원이 생성한 프로젝트 조회
-        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), pageable);
+        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), PageRequest.of(page1, size1));
 
-        log.debug("project = {}", projects.getContent());
         model.addAttribute("projectEmp", projects.getContent());
         model.addAttribute("projectEmpTotalCount", projects.getTotalElements());
+        model.addAttribute("projectEmpSize", projects.getSize());
+        model.addAttribute("projectEmpNumber", projects.getNumber());
+        model.addAttribute("projectEmpTotalpages", projects.getTotalPages());
+
+
+        log.debug("project = {}", projects.getContent());
+
         model.addAttribute("projectOwner", projects2.getContent());
         model.addAttribute("projectOwnerTotalCount", projects2.getTotalElements());
+        model.addAttribute("projectOwnerSize", projects2.getSize());
+        model.addAttribute("projectOwnerNumber", projects2.getNumber());
+        model.addAttribute("projectOwnerTotalpages", projects2.getTotalPages());
     }
 
     @GetMapping("/createProject.do")
@@ -119,7 +133,12 @@ public class ProjectController {
     @GetMapping("/projectDetail.do")
     public void projectDetail(
             @RequestParam("id") Long id,
-            Model model
+            Model model,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam(name = "page1",defaultValue = "0") int page1,
+            @RequestParam(name = "size1", defaultValue = "5") int size1,
+            @RequestParam(name = "page2", defaultValue = "0") int page2,
+            @RequestParam(name = "size2", defaultValue = "5") int size2
     ){
         ProjectDetailDto projectDetailDto = projectService.findById(id);
         model.addAttribute("project", projectDetailDto);
@@ -138,6 +157,25 @@ public class ProjectController {
                 }
             }
         }
+
+        // 사원이 참여중인 프로젝트만 조회
+        Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
+        // 사원이 생성한 프로젝트 조회
+        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), PageRequest.of(page1, size1));
+
+        model.addAttribute("projectEmp", projects.getContent());
+        model.addAttribute("projectEmpTotalCount", projects.getTotalElements());
+        model.addAttribute("projectEmpSize", projects.getSize());
+        model.addAttribute("projectEmpNumber", projects.getNumber());
+        model.addAttribute("projectEmpTotalpages", projects.getTotalPages());
+
+        log.debug("project = {}", projects.getContent());
+        model.addAttribute("projectOwner", projects2.getContent());
+        model.addAttribute("projectOwnerTotalCount", projects2.getTotalElements());
+        model.addAttribute("projectOwnerSize", projects2.getSize());
+        model.addAttribute("projectOwnerNumber", projects2.getNumber());
+        model.addAttribute("projectOwnerTotalpages", projects2.getTotalPages());
+
 
         model.addAttribute("taskTodos", todos);
         model.addAttribute("taskProgresses", progresses);
@@ -239,5 +277,40 @@ public class ProjectController {
         projectService.updateTask(taskUpdateDto);
 
         return null;
+    }
+
+    @GetMapping("/taskDetail.do")
+    public void taskDetail(
+            @RequestParam("id") Long id,
+            @RequestParam("projectId") Long projectId,
+            Model model,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam(name = "page1",defaultValue = "0") int page1,
+            @RequestParam(name = "size1", defaultValue = "5") int size1,
+            @RequestParam(name = "page2", defaultValue = "0") int page2,
+            @RequestParam(name = "size2", defaultValue = "5") int size2
+    ){
+
+        ProjectDetailDto projectDetailDto = projectService.findById(projectId);
+        model.addAttribute("project", projectDetailDto);
+
+        // 사원이 참여중인 프로젝트만 조회
+        Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
+        // 사원이 생성한 프로젝트 조회
+        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), PageRequest.of(page1, size1));
+
+        model.addAttribute("projectEmp", projects.getContent());
+        model.addAttribute("projectEmpTotalCount", projects.getTotalElements());
+        model.addAttribute("projectEmpSize", projects.getSize());
+        model.addAttribute("projectEmpNumber", projects.getNumber());
+        model.addAttribute("projectEmpTotalpages", projects.getTotalPages());
+
+        log.debug("project = {}", projects.getContent());
+        model.addAttribute("projectOwner", projects2.getContent());
+        model.addAttribute("projectOwnerTotalCount", projects2.getTotalElements());
+        model.addAttribute("projectOwnerSize", projects2.getSize());
+        model.addAttribute("projectOwnerNumber", projects2.getNumber());
+        model.addAttribute("projectOwnerTotalpages", projects2.getTotalPages());
+
     }
 }
