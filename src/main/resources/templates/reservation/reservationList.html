@@ -4,7 +4,7 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/reservation_default}">
 <head>
-    <title>예약 | 메인페이지</title>
+    <title>예약 | 예약 내역</title>
 </head>
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
@@ -13,10 +13,11 @@
     <table id="tbl-approval-leave" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
         <thead>
         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-            <th class="px-4 py-2">이름</th>
-            <th class="px-4 py-2">장소</th>
-            <th class="px-4 py-2">정보</th>
-            <th class="px-4 py-2">더보기</th>
+            <th class="px-4 py-2">예약자명</th>
+            <th class="px-4 py-2">인원수</th>
+            <th class="px-4 py-2">시작 시간</th>
+            <th class="px-4 py-2">종료 시간</th>
+            <th class="px-4 py-2">예약 사유</th>
         </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
@@ -32,7 +33,7 @@
         <button th:data-modal-target="reservationModal" th:data-modal-toggle="reservationModal"
                 class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 type="button">
-            Toggle modal
+            예약
         </button>
     </table>
 
@@ -136,5 +137,5 @@
 </div>
 
 
-<script layout:fragment="script"></script>
+<script layout:fragment="script" th:src=""></script>
 </html>

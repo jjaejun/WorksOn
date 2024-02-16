@@ -1,5 +1,6 @@
 package com.sh.workson.reservation.controller;
 
+import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.service.ReservationService;
@@ -9,8 +10,10 @@ import com.sh.workson.resource.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,10 +64,28 @@ public class ReservationContoller {
     }
 
     @PostMapping("/createReservation.do")
-    public String createReservation(ReservationCreateDto reservationCreateDto, RedirectAttributes redirectAttributes) {
+    public String createReservation(ReservationCreateDto reservationCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         log.debug("reservationCreateDto = {}", reservationCreateDto);
         reservationService.createReservation(reservationCreateDto);
-        redirectAttributes.addFlashAttribute("예약 신청이 완료되었습니다.😎");
-        return "redirect:reservationList.do";
+        redirectAttributes.addFlashAttribute("msg", "예약 신청이 완료되었습니다.😎");
+        return "redirect:reservationMyList.do";
+    }
+
+    @GetMapping("/reservationMyList.do")
+    public void reservationMyDetail(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId());
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+
+    @PostMapping("/deleteReservation.do")
+    public String deleteReservation(@RequestParam("reservationId") Long reservationId, RedirectAttributes redirectAttributes) {
+        log.debug("reservationId = {}", reservationId);
+        reservationService.deleteById(reservationId);
+        redirectAttributes.addFlashAttribute("msg", "예약이 취소되었습니다.");
+        return "redirect:reservationMyList.do";
     }
 }
