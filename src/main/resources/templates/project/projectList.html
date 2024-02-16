@@ -9,14 +9,13 @@
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
     <div class="flex flex-wrap">
-        <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+        <div class="w-fit h-fit mr-5 group relative inline-block overflow-hidden border border-indigo-600 px-5 py-2 focus:outline-none focus:ring"
              th:onclick="|location.href='@{/project/createProject.do}'|">
             <button>
                 <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
-                <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
+                <span class="relative w-full text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
             </button>
         </div>
-
 <!--        <div class="w-fit mr-10">-->
 <!--            <div class="group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring" href="#">-->
 <!--                <button data-modal-target="crud-modal" data-modal-toggle="crud-modal">-->
@@ -106,7 +105,7 @@
 <!--            </div>-->
 <!--        </div>-->
 
-        <div class="mx-auto w-4/5">
+        <div class="mx-auto w-5/6">
         <div class="mx-auto w-full mb-10">
             <h1 class="flex items-center">
                 <span class="mr-10 text-2xl font-bold">내 프로젝트</span>
@@ -118,7 +117,7 @@
                 <div th:each="project, status : ${projectOwner}"
                      class="m-2 w-1/5 h-64 hover:animate-background rounded-xl bg-gradient-to-r from-blue-100 via-blue-300 to-blue-600 p-0.5 shadow-xl transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]">
                     <!-- Article -->
-                    <article class="relative h-full rounded-[10px] p-4 !pt-20 sm:p-6" th:data-project-id="${project.id}">
+                    <article class="relative h-full rounded-[10px] p-4 !pt-20 sm:p-6 cursor-pointer" th:data-project-id="${project.id}">
                         <th:block th:if="${project.status == 'ING'}">
                             <div class="absolute top-6 right-4 mt-0.5 font-sm">
                                 <span class="inline-flex items-center bg-blue-600 rounded-full px-2 text-sm text-white py-1 font-medium">
@@ -184,7 +183,7 @@
                     <div th:each="project, status : ${projectEmp}"
                          class="m-2 w-1/5 h-64 hover:animate-background rounded-xl bg-gradient-to-r from-blue-100 via-blue-300 to-blue-600 p-0.5 shadow-xl transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]">
                         <!-- Article -->
-                        <article class="relative h-full rounded-[10px] p-4 !pt-20 sm:p-6" th:data-project-id="${project.id}">
+                        <article class="relative h-full rounded-[10px] p-4 !pt-20 sm:p-6 cursor-pointer" th:data-project-id="${project.id}">
                             <th:block th:if="${project.status == 'ING'}">
                                 <div class="absolute top-6 right-4 mt-0.5 font-sm">
                                 <span class="inline-flex items-center bg-blue-600 rounded-full px-2 text-sm text-white py-1 font-medium">

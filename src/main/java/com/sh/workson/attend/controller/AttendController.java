@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -39,13 +43,18 @@ public class AttendController {
     private AttendRequestRepository attendRequestRepository;
 
     @GetMapping("/attendList.do")
-    public void attendList(@PageableDefault(value = 5, page = 0) Pageable pageable, Model model,
-                           @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void attendList(
+                           @PageableDefault(value = 10, page = 0) Pageable pageable, Model model,
+                           @AuthenticationPrincipal EmployeeDetails employeeDetails
+                           ) {
+
         Long id = employeeDetails.getEmployee().getId();
         Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
         model.addAttribute("attends", attendPage.getContent());
         model.addAttribute("totalCount", attendPage.getTotalElements());
-
+        model.addAttribute("size", attendPage.getSize());
+        model.addAttribute("number", attendPage.getNumber());
+        model.addAttribute("totalpages", attendPage.getTotalPages());
 
         Attend firstAttend = attendService.findByOrderByStartAt(id);
         model.addAttribute("attend", firstAttend);
@@ -106,5 +115,32 @@ public class AttendController {
         log.debug("attendRequest = {}", attendRequest);
         return ResponseEntity.ok("정정 요청이 완료되었습니다");
 
+    }
+
+    @GetMapping("/attendListSearchDate.do")
+    public ResponseEntity<?> attendListSearchDate(
+            Model model,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @PageableDefault(value = 5, page = 0) Pageable pageable,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails
+    ){
+        log.debug("startDate = {}", startDate);
+        log.debug("endDate = {}", endDate);
+        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(startDate)), ZoneId.systemDefault());
+        LocalDateTime endTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(endDate)), ZoneId.systemDefault());
+
+//        LocalDateTime startTime = LocalDateTime.parse(startDate.replace("T", "") + " 00:00", DateTimeFormatter.ofPattern("yy/MM/dd HH:mm"));
+//        LocalDateTime endTime = LocalDateTime.parse(endDate.replace("T", "") + " 23:59", DateTimeFormatter.ofPattern("yy/MM/dd HH:mm"));
+
+        // endTime에 1일을 더함
+        endTime = endTime.plusDays(1);
+
+        log.debug("T startTime = {}", startTime); // T startDate = 24/02/07 00:00
+        log.debug("T endTime = {}", endTime); // T endDate = 24/02/10 23:59
+
+        Long id = employeeDetails.getEmployee().getId();
+        Page<AttendListDto> attendPage = attendService.findBetweenSearchDate(pageable, id, startTime, endTime);
+        return ResponseEntity.ok(attendPage);
     }
 }

@@ -211,3 +211,48 @@ insert into tb_resource values (seq_tb_resource_id.nextval, '그램 2022', '인�
 insert into tb_resource values (seq_tb_resource_id.nextval, '아반떼', 'B2층 A-2', 'LPG/트렁크 공간 좁음', 'Car');
 insert into tb_resource values (seq_tb_resource_id.nextval, '소나타', 'B2층 A-1', '가솔린/범퍼 우측 찌그러짐, 조수석 문 긁힘', 'Car');
 insert into tb_resource values (seq_tb_resource_id.nextval, '그렌저', 'B2층 A-3', '가솔린/침수차량', 'Car');
+
+
+-- 민정
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 1', 'Sample content for Task 1', 1, TIMESTAMP '2024-02-14 08:00:00', TIMESTAMP '2024-02-14 16:00:00', 'INPROGRESS', 551, 151, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 2', 'Sample content for Task 2', 2, TIMESTAMP '2024-02-15 09:00:00', TIMESTAMP '2024-02-15 17:00:00', 'TODO', 201, 351, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 3', 'Sample content for Task 3', 3, TIMESTAMP '2024-02-16 10:00:00', TIMESTAMP '2024-02-16 18:00:00', 'DONE', 902, 401, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 4', 'Sample content for Task 4', 4, TIMESTAMP '2024-02-17 11:00:00', TIMESTAMP '2024-02-17 19:00:00', 'INPROGRESS', 101, 801, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 5', 'Sample content for Task 5', 2, TIMESTAMP '2024-02-18 12:00:00', TIMESTAMP '2024-02-18 20:00:00', 'TODO', 902, 651, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 6', 'Sample content for Task 6', 1, TIMESTAMP '2024-02-14 08:00:00', TIMESTAMP '2024-02-14 16:00:00', 'INPROGRESS', 551, 151, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 7', 'Sample content for Task 7', 2, TIMESTAMP '2024-02-15 09:00:00', TIMESTAMP '2024-02-15 17:00:00', 'TODO', 201, 351, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 8', 'Sample content for Task 8', 3, TIMESTAMP '2024-02-16 10:00:00', TIMESTAMP '2024-02-16 18:00:00', 'DONE', 902, 401, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 9', 'Sample content for Task 9', 4, TIMESTAMP '2024-02-17 11:00:00', TIMESTAMP '2024-02-17 19:00:00', 'INPROGRESS', 101, 902, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 10', 'Sample content for Task 10', 2, TIMESTAMP '2024-02-18 12:00:00', TIMESTAMP '2024-02-18 20:00:00', 'TODO', 101, 902, 5952);
+
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 1', 'Sample content for Issue 1', 2, 'OPEN', 651, 551, 5952, 1);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 2', 'Sample content for Issue 2', 2, 'CLOSED', 451, 551, 5952, 51);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 3', 'Sample content for Issue 3', 4, 'INPROGRESS', 351, 401, 5952, 101);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 4', 'Sample content for Issue 4', 1, 'OPEN', 251, 401, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 5', 'Sample content for Issue 5', 2, 'CLOSED', 201, 201, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 6', 'Sample content for Issue 6', 3, 'INPROGRESS', 101, 201, 5952, 151);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 7', 'Sample content for Issue 7', 1, 'OPEN', 201, 151, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 8', 'Sample content for Issue 8', 4, 'CLOSED', 51, 351, 5952, 401);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 9', 'Sample content for Issue 9', 3, 'INPROGRESS', 401, 651, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 10', 'Sample content for Issue 10', 1, 'OPEN', 101, 451, 5952, null);
+

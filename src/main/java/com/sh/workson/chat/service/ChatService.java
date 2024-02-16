@@ -7,6 +7,7 @@ import com.sh.workson.chat.entity.ChatRoom;
 import com.sh.workson.chat.repository.ChatLogRepository;
 import com.sh.workson.chat.repository.ChatRoomRepository;
 import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.employee.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -64,5 +65,9 @@ public class ChatService {
     public List<ChatLog> findLogByRoomId(Long id) {
         List<ChatLog> chatLogs = chatLogRepository.findLogByRoomId(id);
         return chatLogs;
+    }
+
+    public void deleteChatRoom(Long id) {
+        chatRoomRepository.deleteById(id);
     }
 }

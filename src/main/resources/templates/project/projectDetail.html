@@ -6,9 +6,11 @@
 <head>
     <title>프로젝트 상세보기</title>
 </head>
-<style layout:fragment="style"></style>
+<style layout:fragment="style" th:src="@{/css/project/projectDetail.css}">
+</style>
 <div layout:fragment="content">
     <div class="flex flex-wrap">
+        <input type="hidden" id="projectId" th:value="${project.id}">
         <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
              th:onclick="|location.href='@{/project/createProject.do}'|">
             <button>
@@ -16,7 +18,7 @@
                 <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
             </button>
         </div>
-        <div class="mx-auto w-4/5">
+        <div class="mx-auto w-5/6">
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
                     <li class="me-2" role="presentation">
@@ -36,7 +38,7 @@
                 </ul>
             </div>
             <div id="default-tab-content">
-                <div class="hidden p-4 rounded-lg bg-gray-50" id="project" role="tabpanel" aria-labelledby="project-tab">
+                <div class="hidden p-4 rounded-lg" id="project" role="tabpanel" aria-labelledby="project-tab">
                     <div class="text-2xl text-gray-700 flex items-center">
                         <div class="font-bold" th:text="${project.title}"></div>
                         <th:block th:if="${project.status == 'ING'}">
@@ -60,6 +62,8 @@
                             </div>
                         </th:block>
                     </div>
+                    <div th:include="~{project/kanban::kanban}"></div>
+
                 </div>
                 <div class="hidden p-4 rounded-lg" id="employees" role="tabpanel" aria-labelledby="employees-tab">
                     <div class="w-full whitespace-no-wrap">
@@ -199,6 +203,7 @@
 
     </div>
 </div>
+<script th:src="@{js/project/kanban.js}"></script>
 <script layout:fragment="script" th:src="@{/js/project/projectDetail.js}">
 </script>
 </html>

@@ -131,7 +131,7 @@ setInterval(clock, 1000); // 1초마다 실행
 document.getElementById("btnRequest").addEventListener('click', function() {
     // 폼 데이터 수집
     const formData = new FormData(document.forms["contentFrm"]);
-
+    let isAttendRequest = true;
     // AJAX 요청
     $.ajax({
         type: "POST",
@@ -142,22 +142,103 @@ document.getElementById("btnRequest").addEventListener('click', function() {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (data) {
-            // 서버 응답 성공 시 처리
-            if (data.success) {
-                alert("정정 요청에 성공했습니다.");
-                // 추가 동작 수행
-            } else {
-                console.log(data);
-                alert("정정 요청에 실패했습니다. 다시 시도해주세요.");
-            }
-        },
-        error: function (error) {
-            // Ajax 요청 에러 처리
-            console.error("Error submitting form: ", error);
-            alert("서버와의 통신 중 오류가 발생했습니다.");
+        success: function (data){
+            alert("정정 요청이 완료되었습니다.");
         }
     });
 });
 
+// DOM 요소 가져오기
+const startDateInput = document.getElementById('start-input');
+const endDateInput = document.getElementById('end-input');
+const submitBtn = document.getElementById('submitBtn');
 
+// 이벤트 리스너 추가
+startDateInput.addEventListener('input', handleDateChange);
+endDateInput.addEventListener('input', handleDateChange);
+
+// 날짜가 변경되었을 때 실행되는 함수
+function handleDateChange() {
+    // 선택된 시작 날짜와 종료 날짜 출력
+    console.log(`선택된 시작 날짜: ${startDateInput.value}, 종료 날짜: ${endDateInput.value}`);
+}
+
+// Submit 버튼 클릭 시 시작 날짜부터 종료 날짜까지 출력
+document.querySelector("#submitBtn").addEventListener('click', (e) => {
+
+    console.log(`선택한 날짜 범위: ${startDateInput.value} 부터 ${endDateInput.value}`);
+    // const startDateValue = startDateInput.value;
+    // const endDateValue = endDateInput.value;
+
+    const startDate = startDateInput.datepicker.dates[0];
+    const endDate = endDateInput.datepicker.dates[0];
+    const tbody = document.querySelector("#searchDate tbody");
+    console.log(startDate," ~ " ,endDate)
+
+    $.ajax({
+        type: "GET",
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        url: `${contextPath}attend/attendListSearchDate.do`,
+        data: {
+            startDate : startDate, // millis
+            endDate : endDate
+        },
+        success(response){
+            console.log(response)
+            tbody.innerHTML = '';
+            response.content.forEach((att) => {
+                const {content, employeeId, endAt, id, startAt, state} = att;
+
+                tbody.innerHTML += `
+                <tr>
+                                <td>${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}</td>
+                                <td>${new Date(startAt).toLocaleTimeString()}</td>
+                                <td>${endAt ? new Date(endAt).toLocaleTimeString() : ''}</td>
+                            <td>
+                                <button id="attendOnTime"
+                                        data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                                        class="times block text-black focus:ring-4 rounded-xl focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        type="button">
+                                        ${new Date(startAt).toLocaleString()}
+                                </button>
+                            </td>
+                            <td>${att.content}</td>
+                        </tr>
+                `;
+                const stateElements = document.querySelectorAll('.times');
+                stateElements.forEach((stateElement) => {
+                    if (stateElement) {
+                        const startAtValue = stateElement.innerHTML;
+                        const currentDate = new Date();
+                        const compareDate = new Date(startAtValue);
+                        let state;
+                        if (currentDate.getHours() >= 9) {
+                            state = '지각';
+                            stateElement.classList.add('bg-red-300');
+                        } else {
+                            state = '정상출근';
+                            stateElement.classList.add('bg-green-500');
+                        }
+
+                        stateElement.innerText = state;
+                    }
+                });
+            });
+
+        },
+        error(e){
+            console.log(e);
+        }
+    })
+});
+
+function changePage1(pageNumber) {
+    let size = 10;
+    // 페이지 URL 생성
+    let url = '/WorksOn/attend/attendList.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
