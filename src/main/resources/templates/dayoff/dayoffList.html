@@ -39,7 +39,7 @@
             <div class="col-span-3 md:col-span-1 flex items-center">
                 <img class= "object-cover w-20 h-20 rounded-full" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
                 <div class="ml-4">
-                    <h1 class="text-2xl font-bold">이재명 회장</h1>
+                    <h1 class="text-2xl font-bold " th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></h1>
                 </div>
             </div>
             <div class="col-span-3 md:col-span-1 flex items-center flex-col">
@@ -47,7 +47,7 @@
                     <p class="text-gray-600 flex-grow text-2xl">총 연차</p>
                 </div>
                 <div class="mt-2">
-                     <span class="font-bold text-gray-800 text-xl">15</span>
+                     <span class="font-bold text-gray-800 text-xl" th:text="|${#authentication.principal.employee.rest}|"></span>
                 </div>
             </div>
             <div class="col-span-3 md:col-span-1 flex items-center flex-col">
@@ -98,13 +98,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>이재용</td>
-                <td>인사팀</td>
-                <td>연차</td>
-                <td>2023-01-29 ~ 2023-01-29</td>
-                <td>1</td>
-                <td>개인사유</td>
+            <tr th:each="dayoff, status : ${dayoffs}" th:data-dayoff-id="${dayoff.id}">
+                <td th:text="|${#authentication.principal.employee.name}|"></td>
+                <td th:text="${#authentication.principal.employee.department.name}"></td>
+                <td th:text="${dayoff.type}"></td>
+                <td th:text="|${#temporals.format(dayoff.startAt, 'yyyy/MM/dd')} ~ ${#temporals.format(dayoff.endAt, 'yyyy/MM/dd')}|"></td>
+                <td th:text="${dayoff.count}"></td>
+                <td th:text="${dayoff.content}"></td>
             </tr>
             </tbody>
         </table>
