@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
@@ -14,43 +13,37 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table
 @Entity
-@Data
-@NoArgsConstructor
+@Table
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Project {
+@Data
+public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_project_id_generator")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_task_id_generator")
     @SequenceGenerator(
-            name = "seq_project_id_generator",
-            sequenceName = "seq_project_id"
+            name = "seq_task_id_generator",
+            sequenceName = "seq_task_id"
     )
     private Long id;
     @Column(nullable = false)
-    private String title;
+    private String name;
+    private String content;
+    private int priority;
     private LocalDate startAt;
     private LocalDate endAt;
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
     @Column
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private TaskStatus status;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
+    private Employee owner;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_id")
     private Employee employee;
-
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    @Builder.Default
-    private List<ProjectEmployee> projectEmployees = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    @Builder.Default
-    private List<Task> tasks = new ArrayList<>();
-
+    private Project project;
 }
