@@ -31,7 +31,7 @@ public class Reservation {
     @CreationTimestamp
     private LocalDateTime createdAt;
     @ManyToOne
-    @JoinColumn(name = "emp_id")
+    @JoinColumn(name = "employee_id")
     private Employee employee;
     @Column(name = "tb_resource_id")
     private Long resourceId;
