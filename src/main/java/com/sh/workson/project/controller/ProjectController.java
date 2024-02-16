@@ -58,7 +58,7 @@ public class ProjectController {
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
-            @PageableDefault(size = 5, page = 0)Pageable pageable,
+            @PageableDefault(size = 8, page = 0)Pageable pageable,
             Model model
     ){
         Page<ProjectListDto> projects = projectService.findAll(pageable);
@@ -69,7 +69,7 @@ public class ProjectController {
 
     @GetMapping("/projectList.do")
     public void projectList(
-            @PageableDefault(size = 5, page = 0)Pageable pageable,
+            @PageableDefault(size = 8, page = 0)Pageable pageable,
             Model model,
             @AuthenticationPrincipal EmployeeDetails employeeDetails
     ){
@@ -119,7 +119,9 @@ public class ProjectController {
     @GetMapping("/projectDetail.do")
     public void projectDetail(
             @RequestParam("id") Long id,
-            Model model
+            Model model,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @PageableDefault(size = 5, page = 0) Pageable pageable
     ){
         ProjectDetailDto projectDetailDto = projectService.findById(id);
         model.addAttribute("project", projectDetailDto);
@@ -139,6 +141,16 @@ public class ProjectController {
             }
         }
 
+        // 사원이 참여중인 프로젝트만 조회
+        Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), pageable);
+        // 사원이 생성한 프로젝트 조회
+        Page<ProjectListDto> projects2 = projectService.findByOwnerId(employeeDetails.getEmployee(), pageable);
+
+        log.debug("project = {}", projects.getContent());
+        model.addAttribute("projectEmp", projects.getContent());
+        model.addAttribute("projectEmpTotalCount", projects.getTotalElements());
+        model.addAttribute("projectOwner", projects2.getContent());
+        model.addAttribute("projectOwnerTotalCount", projects2.getTotalElements());
         model.addAttribute("taskTodos", todos);
         model.addAttribute("taskProgresses", progresses);
         model.addAttribute("taskDone", dones);

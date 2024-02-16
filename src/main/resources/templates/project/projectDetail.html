@@ -11,13 +11,40 @@
 <div layout:fragment="content">
     <div class="flex flex-wrap">
         <input type="hidden" id="projectId" th:value="${project.id}">
-        <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
-             th:onclick="|location.href='@{/project/createProject.do}'|">
-            <button>
-                <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
-                <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
-            </button>
+        <div class="flex flex-col">
+            <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+                 th:onclick="|location.href='@{/project/createProject.do}'|">
+                <button>
+                    <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
+                    <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
+                </button>
+            </div>
+            <aside class="mt-10 w-fit">
+                <div class="text-lg p-2 py-4 font-bold hover:text-[#000000]">
+                    <span class="border-b border-gray-300 pb-2 pr-8">내 프로젝트</span>
+                </div>
+                <ul class="approval-nav-ul" th:each="project, status : ${projectOwner}">
+                    <li class="articleLi font-normal hover:bg-gray-100 py-1 rounded-lg"
+                        th:data-project-id="${project.id}">
+                        <a class="inline-flex items-center text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+                            <span class="ml-4" th:text="${project.title}"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="text-lg p-2 py-4 font-bold hover:text-[#000000]">
+                    <span class="border-b border-gray-300 pb-2 pr-8">참여중인 프로젝트</span>
+                </div>
+                <ul class="approval-nav-ul" th:each="project, status : ${projectEmp}">
+                    <li class="articleLi font-normal hover:bg-gray-100 py-1 rounded-lg"
+                        th:data-project-id="${project.id}">
+                        <a class="inline-flex items-center text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+                            <span class="ml-4" th:text="${project.title}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
         </div>
+
         <div class="mx-auto w-5/6">
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
@@ -68,28 +95,6 @@
                 <div class="hidden p-4 rounded-lg" id="employees" role="tabpanel" aria-labelledby="employees-tab">
                     <div class="w-full whitespace-no-wrap">
                         <div class="w-full max-w-sm bg-white mx-auto border border-gray-200 rounded-lg shadow">
-<!--                            <div class="flex justify-end px-4 pt-4">-->
-<!--                                <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">-->
-<!--                                    <span class="sr-only">Open dropdown</span>-->
-<!--                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">-->
-<!--                                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>-->
-<!--                                    </svg>-->
-<!--                                </button>-->
-<!--                                &lt;!&ndash; Dropdown menu &ndash;&gt;-->
-<!--                                <div id="dropdown" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">-->
-<!--                                    <ul class="py-2" aria-labelledby="dropdownButton">-->
-<!--                                        <li>-->
-<!--                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export Data</a>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="flex h-fit my-4 flex-col items-center">
                                 <h1 class="text-xl mb-3 text-blue-700 font-bold mx-4">프로젝트 관리자</h1>
                                 <img class="w-24 h-24 mb-3 rounded-full shadow-lg"

@@ -20,3 +20,13 @@ document.querySelectorAll("article[data-project-id]").forEach((article) => {
       location.href = `${contextPath}project/projectDetail.do?id=${id}`;
    });
 });
+document.querySelectorAll(".articleLi").forEach((article) => {
+    article.addEventListener('click', (e) => {
+        const project = e.target;
+        const { projectId : id } = article.dataset;
+        location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+    });
+
+    console.log(window.location);
+});
+

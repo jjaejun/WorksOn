@@ -1,3 +1,22 @@
+document.querySelectorAll(".articleLi").forEach((article) => {
+    article.addEventListener('click', (e) => {
+        const project = e.target;
+        const { projectId : id } = article.dataset;
+        location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+    });
+
+    // console.log(window.location);
+    const url = window.location.search;
+    if(url === `?id=${article.dataset.projectId}` || url === `?id=${article.dataset.projectId}&continue`){
+        article.classList.add("bg-gray-100");
+    }
+    else {
+        article.classList.remove("bg-gray-100");
+    }
+});
+
+
+
 const formattedCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -186,6 +205,9 @@ document.querySelector("#files-tab").addEventListener('click', (e) => {
 });
 
 document.querySelector("#employees-tab").addEventListener('click', (e) => {
+    console.log(e.target);
+
+
     const {projectId} = e.target.dataset;
     const tbody = document.querySelector("#employees tbody");
 
