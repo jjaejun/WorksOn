@@ -6,6 +6,8 @@
 <head>
     <link rel="stylesheet" th:href="@{/css/schedule/calender.css}" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
     <!--
         th:block 렌더링되는 태그없이 그룹핑 수행
         th:insert fragment 태그 포함, 자식태그 가져옴
@@ -43,14 +45,13 @@
                             <aside id="calender-sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
                                 <div class="py-4 text-[#000000]">
                                     <h1 class="mb-4 text-center text-xl bg-[#FFFFFF] font-bold hover:text-[#000000]">일정</h1>
-
                                     <div class="px-6 mt-2">
                                         <button th:onclick="|location.href='@{/schedule/createSchedule.do}'|" class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
                                             <span class="ml-2" aria-hidden="true">새 일정 생성</span>
                                         </button>
                                     </div>
                                     <div class="px-6 mt-2">
-                                        <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
+                                        <button th:onclick="|location.href='@{/schedule/categoryList.do}'|" class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
                                             <span class="ml-2" aria-hidden="true">카테고리 변경</span>
                                         </button>
                                     </div>
@@ -64,19 +65,29 @@
 
                                     <table id="my-category-list" class="table-header ml-4" style="margin: 0 auto">
                                         <tbody class="items-center w-full text-sm font-semibold transition-colors duration-150 text-center">
+                                        <!--<tr>-->
+                                        <!--    <td>-->
+                                        <!--        <input type="checkbox" name="mainCheckbox" onclick="checkAllMyCategories(this)">-->
+                                        <!--    </td>-->
+                                        <!--    <td>모든 일정 보기</td>-->
+                                        <!--</tr>-->
                                         <tr th:each="category, status : ${myScheduleCategories}">
-                                            <td class="ml-2">
+                                            <td class="mr-2">
                                                 <input type="checkbox" name="myScheduleCategoryId" th:id="${'checkbox' + category.id}" th:value="${category.id}">
                                             </td>
-                                            <td th:text="${category.name}"></td>
+                                            <td th:text="${category.name}" class="ml-2"></td>
                                             <td>
                                             <span class="inline-block h-4 w-4 rounded-full mt-2 ml-2"
                                                   th:style="'background-color: ' + ${category.color}"></span>
                                             </td>
+                                            <td>
+                                                <img th:src="@{/image/schedule/edit_button.png}" name="updateScheduleCategory" class="mt-1 ml-3" width="20px"
+                                                     th:id="${'update' + category.id}" th:value="${category.id}"
+                                                     th:onclick="openModal(${category.id})">
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
-
                                     <div class="text-xl p-2 py-4 text-center font-bold hover:text-[#000000]">
                                         <span>팀원 일정</span>
                                         <hr class="mt-2">
@@ -92,16 +103,20 @@
                                         </tr>
                                         </tbody>
                                     </table>
-
                                 </div>
                             </aside>
-                    </div>
-                        <!--<div id="v-line"></div>-->
+                        </div>
                         <div id='calendar'></div>
                     </div>
                 </div>
             </div>
-
+            <div id="myModal" class="modal">
+                <span onclick="closeModal()" style="cursor: pointer; float: right;">&times;</span>
+                <h2>모달 내용</h2>
+                <!-- 모달 내용을 추가하세요 -->
+            </div>
+            <!-- 오버레이 배경 -->
+            <div id="overlay" class="overlay"></div>
         </section>
         <footer th:include="~{fragments/footer::footer}"></footer>
     </div>

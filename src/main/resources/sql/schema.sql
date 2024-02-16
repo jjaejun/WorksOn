@@ -323,12 +323,12 @@ create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 테이블 일괄 삭제 시
 
---drop table approval_line;
---drop table approval_attachment;
---drop table approval;
---drop table approval_leave;
---drop table approval_equipment;
---drop table approval_cooperation;
+drop table approval_line;
+drop table approval_attachment;
+drop table approval;
+drop table approval_leave;
+drop table approval_equipment;
+drop table approval_cooperation;
 
 -- 시퀀스 일괄 삭제시
 
@@ -356,6 +356,7 @@ alter table approval_leave add leave_type varchar2(30); -- 결재 종류
 alter table approval_leave add annul varchar2(10); -- 반차 여부
 alter table approval_leave add constraints ck_approval_leave_annul check (annul in ('y', 'n'));
 delete from approval_leave;
+alter table approval_leave add leave_count varchar2(30); -- 결재 종류
 ALTER TABLE approval_leave MODIFY leave_count FLOAT(53); -- 연차 일수
 update approval_leave set leave_count = 1.0 where id = 11101;
 select * from approval_leave;
