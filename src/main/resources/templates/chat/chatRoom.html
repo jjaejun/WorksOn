@@ -32,8 +32,8 @@
         <div th:text="|환영합니다!|"></div>
         <!--        <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image">-->
 <!--        <th:block th:if="${chatRooms != null}">-->
-            <div th:each="chatRoom, status : ${chatRooms}" class="flex flex-col gap-1 w-full max-w-[320px]">
-                <div th:if="${#authentication.principal.employee.id != chatRoom.employee.id}">
+            <div th:each="chatRoom, status : ${chatRooms}" class="flex flex-col gap-1 w-full">
+                <div th:if="${#authentication.principal.employee.id != chatRoom.employee.id}" class="mr-auto ml-8 min-w-[320px]">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span th:text="${chatRoom.employee.name}"
                           class="text-sm font-semibold text-gray-900 dark:text-white"></span>
@@ -44,7 +44,7 @@
                         <p th:text="${chatRoom.content}" class="text-sm font-normal text-gray-900 dark:text-white"></p>
                     </div>
                 </div>
-                <div th:if="${#authentication.principal.employee.id == chatRoom.employee.id}">
+                <div th:if="${#authentication.principal.employee.id == chatRoom.employee.id}" class="ml-auto mr-8 min-w-[320px]">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span th:text="${chatRoom.employee.name}"
                           class="text-sm font-semibold text-gray-900 dark:text-white"></span>

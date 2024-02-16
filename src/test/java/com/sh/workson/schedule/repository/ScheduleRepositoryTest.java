@@ -113,7 +113,7 @@ class ScheduleRepositoryTest {
                 .startTime(now)
                 .endTime(now.plusHours(2))
                 .employee(employee)
-                .scheduleCategoryId(scheduleCategory.getId())
+                .scheduleCategory(scheduleCategory)
                 .content("schedule content 테스트")
                 .build();
         //when
@@ -121,7 +121,7 @@ class ScheduleRepositoryTest {
         //then
         assertThat(schedule).isNotNull();
         assertThat(schedule.getTitle()).isEqualTo("테스트 일정입니다");
-        assertThat(schedule.getScheduleCategoryId()).isEqualTo(scheduleCategory.getId());
+        assertThat(schedule.getScheduleCategory()).isEqualTo(scheduleCategory);
         assertThat(schedule.getEmployee()).isEqualTo(employee);
     }
 
