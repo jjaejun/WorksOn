@@ -36,7 +36,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findAllLeave(Long id, Pageable pageable);
+    List<Approval> findAllLeave(Long id);
 
     @Query(value = """
     select
@@ -55,7 +55,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findAllEquipment(Long id, Pageable pageable);
+    List<Approval> findAllEquipment(Long id);
 
     @Query(value = """
     select
@@ -74,68 +74,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findAllCooperation(Long id, Pageable pageable);
+    List<Approval> findAllCooperation(Long id);
 
-
-    @Query(value = """
-    select
-        a. *
-        , le.name
-        , le.title
-    from
-        employee e join approval a
-            on e.id = a.emp_id   
-         join approval_leave le
-            on a.approval_leave_id = le.id
-        left join approval_attachment at
-            on a.id = at.approval_id
-    where
-        e.id = :id and
-        a.status = '임시저장'
-    order by
-        a.id desc
-""", nativeQuery = true)
-    Page<Approval> findTempoeraryLeave(Long id, Pageable pageable);
-
-    @Query(value = """
-    select
-        a. *
-        , eq.name
-        , eq.title
-    from
-        employee e join approval a
-            on e.id = a.emp_id   
-         join approval_equipment eq
-            on a.approval_equipment_id = eq.id
-        left join approval_attachment at
-            on a.id = at.approval_id
-    where
-        e.id = :id and
-        a.status = '임시저장'
-    order by
-        a.id desc
-""", nativeQuery = true)
-    Page<Approval> findTemporaryEquipment(Long id, Pageable pageable);
-
-    @Query(value = """
-    select
-        a. *
-        , co.name
-        , co.title
-    from
-        employee e join approval a
-            on e.id = a.emp_id   
-         join approval_cooperation co
-            on a.approval_cooperation_id = co.id
-        left join approval_attachment at
-            on a.id = at.approval_id
-    where
-        e.id = :id and
-        a.status = '임시저장'
-    order by
-        a.id desc
-""", nativeQuery = true)
-    Page<Approval> findTemporaryCooperation(Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -155,7 +95,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReLeave(Long id, Pageable pageable);
+    List<Approval> findReLeave(Long id);
 
     @Query(value = """
     select
@@ -175,7 +115,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReEquipment(Long id, Pageable pageable);
+    List<Approval> findReEquipment(Long id);
 
     @Query(value = """
     select
@@ -195,7 +135,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReCooperation(Long id, Pageable pageable);
+    List<Approval> findReCooperation(Long id);
 
     @Query(value = """
     select
@@ -399,7 +339,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReceptionLeave(Long deptId, Long id, Pageable pageable);
+    List<Approval> findReceptionLeave(Long deptId, Long id);
 
     @Query(value = """
     select
@@ -423,7 +363,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReceptionEquipment(Long deptId, Long id, Pageable pageable);
+    List<Approval> findReceptionEquipment(Long deptId, Long id);
 
     @Query(value = """
     select
@@ -447,7 +387,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReceptionCooperation(Long deptId, Long id, Pageable pageable);
+    List<Approval> findReceptionCooperation(Long deptId, Long id);
 
     @Query(value = """
     select
@@ -467,7 +407,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findWaitLeave(Long id, Pageable pageable);
+    List<Approval> findWaitLeave(Long id);
 
     @Query(value = """
     select
@@ -487,7 +427,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findWaitEquipment(Long id, Pageable pageable);
+    List<Approval> findWaitEquipment(Long id);
 
     @Query(value = """
     select
@@ -507,7 +447,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findWaitCooperation(Long id, Pageable pageable);
+    List<Approval> findWaitCooperation(Long id);
 
     @Query(value = """
     select
@@ -527,7 +467,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findExceptedLeave(Long id, Pageable pageable);
+    List<Approval> findExceptedLeave(Long id);
 
     @Query(value = """
     select
@@ -547,7 +487,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findExceptedEquipment(Long id, Pageable pageable);
+    List<Approval> findExceptedEquipment(Long id);
 
     @Query(value = """
     select
@@ -567,7 +507,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findExceptedCooperation(Long id, Pageable pageable);
+    List<Approval> findExceptedCooperation(Long id);
 
 
     @Query(value = """
@@ -662,4 +602,122 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         a.id desc
 """, nativeQuery = true)
     IApprovalCooperation findCooperationDetailById(Long id);
+
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status = '임시저장'
+    order by
+        a.id desc
+""", nativeQuery = true)
+    List<Approval> findTempoeraryLeave(Long id);
+
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status = '임시저장'
+    order by
+        a.id desc
+""", nativeQuery = true)
+    List<Approval> findTemporaryEquipment(Long id);
+
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id and
+        a.status = '임시저장'
+    order by
+        a.id desc
+""", nativeQuery = true)
+    List<Approval> findTemporaryCooperation(Long id);
+
+    @Query(value = """
+    select
+        a. *
+        , le.name
+        , le.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id  
+         join approval_leave le
+            on a.approval_leave_id = le.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id
+    order by
+        a.id desc
+""", nativeQuery = true)
+    Page<Approval> findLeave(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , eq.name
+        , eq.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id
+         join approval_equipment eq
+            on a.approval_equipment_id = eq.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id
+    order by
+        a.id desc
+""", nativeQuery = true)
+    Page<Approval> findEquipment(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        a. *
+        , co.name
+        , co.title
+    from
+        employee e join approval a
+            on e.id = a.emp_id   
+         join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_attachment at
+            on a.id = at.approval_id
+    where
+        e.id = :id
+    order by
+        a.id desc
+""", nativeQuery = true)
+    Page<Approval> findCooperation(Long id, Pageable pageable);
 }
+
