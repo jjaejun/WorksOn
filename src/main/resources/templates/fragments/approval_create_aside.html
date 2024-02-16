@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="aside" class="flex h-screen bg-gray-50">
+    <!-- Desktop sidebar -->
+    <aside id="sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
+        <div class="py-4 text-[#000000]">
+            <h1 class="mb-4 text-center text-xl font-bold hover:text-[#000000]" th:onclick="|location.href='@{/approval/approvalHome.do}'|">전자결재</h1>
+
+            <div class="px-6 mt-2">
+                <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-300 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+                        th:onclick="|location.href='@{/approval/createApproval.do}'|">
+                    <span class="ml-2" aria-hidden="true">새 결재 진행</span>
+                </button>
+            </div>
+            <br><br>
+
+            <div>
+                <span class="text-xl p-2 py-4 font-bold hover:text-[#000000]">결재 양식 선택</span>
+                <hr class="mt-2">
+                <div class="p-4">
+                    <div class="mb-2"><input type="radio" id="create-form-leave-input" th:name="approval-form" >
+                        <label for="create-form-leave-input" class="ml-2">결재 연차 양식</label>
+                    </div>
+                    <div class="mb-2"><input type="radio" id="create-form-equipment-input" th:name="approval-form">
+                        <label for="create-form-equipment-input" class="ml-2">결재 비품 양식</label>
+                    </div>
+                    <div><input type="radio" id="create-form-cooperation-input" th:name="approval-form">
+                        <label for="create-form-cooperation-input" class="ml-2">결재 협조 양식</label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
+                <span>결재자들 선택</span>
+                <hr class="mt-2">
+<!--                <div class="mt-2">-->
+<!--                    <th:block th:each="emp : ${employees}">-->
+<!--                        <label class="inline-flex items-center">-->
+<!--                            <input type="checkbox" th:name="'emp'" th:value="${emp.id}" class="form-checkbox h-3 w-3 ml-2 text-blue-600">-->
+<!--                            <div class="ml-2 text-gray-700" th:text="${emp.empName}">이름</div>-->
+<!--                        </label>-->
+<!--                        <br>-->
+<!--                    </th:block>-->
+<!--                </div>-->
+                <th:block th:each="dept, deptIndex : ${departments}">
+                    <button id="dropdownHelperRadioButton-${deptIndex}" data-dropdown-toggle="dropdownHelperRadio-${deptIndex}" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" th:text="${dept.name + ' 부서'}">
+                        부서 <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownHelperRadio-${deptIndex}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 6119.5px, 0px);">
+                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHelperRadioButton-${deptIndex}">
+
+                            <th:block th:each="emp : ${employees}" th:if="${emp.deptName == dept.name}">
+                                <li>
+                                    <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <div class="flex items-center h-5">
+                                            <input id="helper-radio-${emp.id}" name="helper-radio" th:value="${emp.id}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        </div>
+                                        <div class="ms-2 text-sm">
+                                            <label for="helper-radio-${emp.id}" class="font-medium text-gray-900 dark:text-gray-300">
+                                                <div class="ml-2 text-gray-700" th:text="${emp.empName}">이름</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </th:block>
+            </div>
+
+        </div>
+    </aside>
+</div>
+
+</html>

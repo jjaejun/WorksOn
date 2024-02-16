@@ -3,6 +3,11 @@ package com.sh.workson.approval.controller;
 import com.sh.workson.approval.dto.*;
 import com.sh.workson.approval.service.ApprovalService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.department.entity.Department;
+import com.sh.workson.department.service.DepartmentService;
+import com.sh.workson.employee.dto.IApprover;
+import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.employee.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +33,12 @@ public class ApprovalController {
 
     @Autowired
     private ApprovalService approvalService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     /**
      * 전자 결재 메인 화면 조회
@@ -527,5 +538,16 @@ public class ApprovalController {
         model.addAttribute("content", iApprovalCooperation.getContent());
         model.addAttribute("startDate", iApprovalCooperation.getStartDate());
         model.addAttribute("endDate", iApprovalCooperation.getEndDate());
+    }
+
+    /**
+     * 새 결재 진행 회원 정보 가져오기
+     */
+    @GetMapping("/createApproval.do")
+    public void createApproval(Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        List<IApprover> employees = employeeService.findApprover(employeeDetails.getEmployee().getId());
+        model.addAttribute("employees", employees);
+        List<Department> departments = departmentService.findAll();
+        model.addAttribute("departments", departments);
     }
 }
