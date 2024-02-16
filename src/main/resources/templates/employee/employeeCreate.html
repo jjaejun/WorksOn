@@ -3,20 +3,21 @@
       xmlns="http://www.w3.org/1999/html" layout:decorate="~{layout/default}">
 <head>
     <title>회원 등록</title>
+    <style layout:fragment="style">
+        /* 여기에 추가적인 CSS 스타일링이 필요하다면 작성하세요 */
+    </style>
 </head>
-<style layout:fragment="style">
-    /* 스타일 정의 */
-</style>
-
+<body>
 <div layout:fragment="content">
     <div class="w-full bg-gray-50 p-10 grid gap-6 mb-8 md:grid-cols-1 xl:grid-cols-1">
         <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">사원 등록</h1>
-        <div class="flex flex-wrap justify-center items-center p-10 bg-white rounded-lg shadow-xs hover:shadow-lg transition-all">
+        <div class="flex flex-wrap justify-center items-center p-10 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all">
             <div class="w-full max-w-2xl">
                 <form name="employeeCreateFrm" method="post" th:action="@{/employee/employeeCreate.do}" enctype="multipart/form-data" class="p-4">
+                    <!-- 각 입력 필드에 Tailwind CSS 스타일 적용 -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">사원이름</label>
-                        <input type="text" name="name" id="name" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm">
+                        <input type="text" name="name" id="name" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                     </div>
 
                     <div class="mb-4">
@@ -45,7 +46,7 @@
                         <div class="mt-1">
                             <th:block th:each="dept : ${departments}">
                                 <label class="inline-flex items-center">
-                                    <input type="checkbox" th:name="'dept'" th:value="${dept.id}" class="form-checkbox h-5 w-5 text-blue-600">
+                                    <input  type="checkbox" onclick="checkOnlyOne(this)" th:name="'dept'" th:value="${dept.id}" class="form-checkbox h-5 w-5 text-blue-600">
                                     <span class="ml-2 text-gray-700" th:text="${dept.name}">부서명</span>
                                 </label>
                             </th:block>
@@ -58,7 +59,7 @@
                         <div class="mt-1">
                             <th:block th:each="position : ${positions}">
                                 <label class="inline-flex items-center">
-                                    <input type="checkbox" th:name="'position'" th:value="${position.id}" class="form-checkbox h-5 w-5 text-blue-600">
+                                    <input type="checkbox" onclick="checkOnlyOne1(this)"  th:name="'position'" th:value="${position.id}" class="form-checkbox h-5 w-5 text-blue-600">
                                     <span class="ml-2 text-gray-700" th:text="${position.name}">직급명</span>
                                 </label>
                             </th:block>
@@ -73,7 +74,7 @@
 
                     <!-- 저장 버튼 -->
                     <div class="flex justify-center mt-6">
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none">등록</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none transition duration-150 ease-in-out transform hover:-translate-y-1">등록</button>
                     </div>
                 </form>
             </div>
@@ -82,4 +83,5 @@
 </div>
 
 <script layout:fragment="script" th:src="@{/js/employee/employeeCreate.js}"></script>
+</body>
 </html>

@@ -1,3 +1,24 @@
+/**
+ * 체크박스 1개만 선택하게 하기
+ */
+function checkOnlyOne(element){
+    const checkboxes = document.getElementsByName("dept");
+    checkboxes.forEach((cb) => {
+        cb.checked = false;
+    })
+    element.checked = true;
+}
+function checkOnlyOne1(element){
+    const checkboxes = document.getElementsByName("position");
+    checkboxes.forEach((cb) => {
+        cb.checked = false;
+    })
+    element.checked = true;
+}
+
+
+
+
 document.employeeCreateFrm.onsubmit = (e) =>{
     const frm = e.target;
     const email = frm.email;
