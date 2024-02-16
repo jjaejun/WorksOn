@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/employee")
@@ -199,7 +200,20 @@ public class EmployeeController {
     }
 
 
+    @PostMapping("/checkEmailDuplicate.do")
+    public  ResponseEntity<?> checkEmailDuplicate(@RequestParam("email") String email){
 
+        log.debug("email = {}" , email);
+
+        log.debug("email = {}" , employeeService.checkEmailDuplicate(email));
+
+        Map<String, Object> resultMap = Map.of(
+                "available",
+                employeeService.checkEmailDuplicate(email) == null
+        );
+        return ResponseEntity.ok(resultMap);
+
+    }
 
 
 
