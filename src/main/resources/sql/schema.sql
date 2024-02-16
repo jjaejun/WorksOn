@@ -478,7 +478,7 @@ create table schedule (
 );
 create sequence seq_schedule_id start with 1 increment by 50;
 
-
+select * from schedule;
 -- 스케쥴 참여 인원
 create table schedule_join_member(
     id number not null,

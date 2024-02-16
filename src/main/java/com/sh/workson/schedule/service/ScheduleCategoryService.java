@@ -27,12 +27,11 @@ public class ScheduleCategoryService {
 
     public List<ScheduleCategoryDto> findByEmpId(EmployeeDetails employeeDetails) {
         Employee employee = employeeDetails.getEmployee();
-        Long id = employee.getId();
         List<ScheduleCategory> scheduleCategories = scheduleCategoryRepository.findByEmpId(employee.getId());
         List<ScheduleCategoryDto> scheduleCategoryDtos = scheduleCategories.stream()
-                .map(this::convertToScheduleCategoryDto)
-                .collect(Collectors.toList());
-        return scheduleCategoryDtos;
+                            .map(this::convertToScheduleCategoryDto)
+                            .collect(Collectors.toList());
+            return scheduleCategoryDtos;
     }
 
     private ScheduleCategoryDto convertToScheduleCategoryDto(ScheduleCategory scheduleCategory) {

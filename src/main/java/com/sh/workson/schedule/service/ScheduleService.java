@@ -3,6 +3,8 @@ package com.sh.workson.schedule.service;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import com.sh.workson.schedule.dto.CreateScheduleDto;
+import com.sh.workson.schedule.dto.ScheduleCategoryDto;
+import com.sh.workson.schedule.dto.ScheduleListDto;
 import com.sh.workson.schedule.entity.Schedule;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.repository.ScheduleCategoryRepository;
@@ -12,6 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,5 +46,22 @@ public class ScheduleService {
                     .id(createScheduleDto.getScheduleCategoryId())
                     .build());
         return schedule;
+    }
+
+    public List<ScheduleListDto> findByCategoryId(Long categoryId) {
+        log.debug("categoryId = {}", categoryId);
+        List<Schedule> schedules = scheduleRepository.findByCategoryId(categoryId);
+        log.debug("schedules = {}", schedules);
+        List<ScheduleListDto> scheduleListDtos = schedules.stream()
+                                .map(this::convertToScheduleListDto)
+                                .collect(Collectors.toList());
+        log.debug("scheduleListDtos = {}", scheduleListDtos);
+        return scheduleListDtos;
+    }
+
+    private ScheduleListDto convertToScheduleListDto(Schedule schedule){
+        ScheduleListDto scheduleListDto = modelMapper.map(schedule, ScheduleListDto.class);
+        scheduleListDto.setEmpId(schedule.getEmployee().getId());
+        return scheduleListDto;
     }
 }
