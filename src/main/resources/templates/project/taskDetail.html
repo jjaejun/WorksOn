@@ -181,9 +181,52 @@
             </aside>
         </div>
 
+        <!-- 업무 상세내용 조회 -->
+        <div class="mx-auto w-4/6">
+            <div class="flex justify-around items-center mb-4">
+                <div class="flex items-center w-full h-fit">
+                    <h1 class="font-semibold text-2xl text-gray-600 mr-4">업무 제목</h1>
+                    <h2 class="font-semibold text-gray-600">프로젝트 제목</h2>
+                </div>
+                <div class="flex w-fit h-fit">
+                    <button type="button" class="text-gray-700 bg-blue-50 focus:ring-4 hover:bg-blue-100 focus:outline-none font-medium rounded-lg text-sm w-[50px] py-1 border border-blue-600 me-2">수정</button>
+                    <button type="button" class="text-gray-700 bg-rose-50 focus:ring-4 hover:bg-rose-100 focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-sm font-medium">삭제</button>
+                </div>
+            </div>
+            <div class="w-full h-[2px] border-b border-gray-300"></div>
+            <table class="w-full">
+                <tbody class="w-full">
+                    <tr class="text-sm text-gray-600 w-full mb-1">
+                        <td class="w-1/6 hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">업무 생성자</td>
+                        <td class="w-5/6 hover:bg-gray-50 p-2 rounded-sm"></td>
+                    </tr>
+                    <tr class="text-sm text-gray-600 w-full mb-1">
+                        <td class="w-1/6 hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">업무 담당자</td>
+                        <td class="w-5/6 hover:bg-gray-50 p-2 rounded-sm"></td>
+                    </tr>
+                    <tr class="text-sm text-gray-600 w-full mb-1">
+                        <td class="w-1/6 hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">업무 중요도</td>
+                        <td class="w-5/6 hover:bg-gray-50 p-2 rounded-sm"></td>
+                    </tr>
+                    <tr class="text-sm text-gray-600 w-full mb-1">
+                        <td class="w-1/6 hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">시작일</td>
+                        <td class="w-5/6 hover:bg-gray-50 p-2 rounded-sm"></td>
+                    </tr>
+                    <tr class="text-sm text-gray-600 w-full mb-1">
+                        <td class="w-1/6 hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">종료일</td>
+                        <td class="w-5/6 hover:bg-gray-50 p-2 rounded-sm"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="w-full h-64 bg-gray-50 border border-gray-300 rounded-lg">
 
+            </div>
 
+            <!--댓글 영역-->
+            <div>
 
+            </div>
+        </div>
     </div>
 </div>
 <script layout:fragment="script" th:src="@{/js/project/taskDetail.js}">
