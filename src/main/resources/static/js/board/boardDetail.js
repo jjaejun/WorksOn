@@ -31,7 +31,10 @@ const frmEvent = () => {document.boardCommentCreateFrm.addEventListener('submit'
         },
         success(response){
             console.log(response);
+            alert(response);
+            document.location.reload();
         }
+
     })
 
 
