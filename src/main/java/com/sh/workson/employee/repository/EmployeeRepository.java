@@ -33,7 +33,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      */
     @Query("select name from Employee where id = :employeeId ")
     String findNameByEmpId(Long employeeId);
-    
+
     @Query("from Employee e where e.email = :email")
     Employee checkEmailDuplicate(String email);
 
