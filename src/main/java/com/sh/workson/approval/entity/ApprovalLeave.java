@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -14,7 +16,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class ApprovalLeave {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_approval_form_id_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_approval_form_id_generator")
     @SequenceGenerator(
             name = "seq_approval_form_id_generator",
             sequenceName = "seq_approval_form_id"
@@ -39,7 +41,19 @@ public class ApprovalLeave {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Approval approval;
+    @Column(name = "leave_type")
+    private String leaveType;
+
+    @Column(name = "annul")
+    private String annul;
+
+    @Column(name = "leave_count")
+    private Double leaveCount;
+
+    @OneToMany(mappedBy = "approvalLeave", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Approval> approvals = new ArrayList<>();
+
+
 
 }

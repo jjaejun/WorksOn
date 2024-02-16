@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html" layout:decorate="~{layout/default}">
+<head>
+    <title>회원 등록</title>
+    <style layout:fragment="style">
+
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="w-full bg-gray-50 p-10 grid gap-6 mb-8 md:grid-cols-1 xl:grid-cols-1">
+        <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">사원 등록</h1>
+        <div class="flex flex-wrap justify-center items-center p-10 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all">
+            <div class="w-full max-w-2xl">
+                <form name="employeeCreateFrm" method="post" th:action="@{/employee/employeeCreate.do}" enctype="multipart/form-data" class="p-4">
+
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">이메일</label>
+                        <input type="email" name="email" id="email" placeholder="abc@xyz.com" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        <!-- 이메일 중복검사 코멘트 -->
+                        <span class="guide ok hidden " >이 이메일은 사용가능합니다.</span>
+                        <span class="guide error hidden">이 이메일은 사용할 수 없습니다.</span>
+                        <input type="hidden" name="emailDuplicateCheck" id="emailDuplicateCheck" value="0"/>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">사원이름</label>
+                        <input type="text" name="name" id="name" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-gray-700">비밀번호</label>
+                        <input type="password" name="password" id="password" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">비밀번호 확인</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">핸드폰</label>
+                        <input type="text" name="phone" id="phone" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm">
+                    </div>
+
+                    <!-- 부서-->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">부서</label>
+                        <div class="mt-1">
+                            <th:block th:each="dept : ${departments}">
+                                <label class="inline-flex items-center">
+                                    <input  type="checkbox" onclick="checkOnlyOne(this)" th:name="'dept'" th:value="${dept.id}" class="form-checkbox h-5 w-5 text-blue-600">
+                                    <span class="ml-2 text-gray-700" th:text="${dept.name}">부서명</span>
+                                </label>
+                            </th:block>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">직급</label>
+                        <div class="mt-1">
+                            <th:block th:each="position : ${positions}">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" onclick="checkOnlyOne1(this)"  th:name="'position'" th:value="${position.id}" class="form-checkbox h-5 w-5 text-blue-600">
+                                    <span class="ml-2 text-gray-700" th:text="${position.name}">직급명</span>
+                                </label>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="birthday" class="block text-sm font-medium text-gray-700">생일</label>
+                        <input type="date" name="birthday" id="birthday" required class="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm">
+                    </div>
+
+
+                    <!-- 저장 버튼 -->
+                    <div class="flex justify-center mt-6">
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none transition duration-150 ease-in-out transform hover:-translate-y-1">등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:src="@{/js/employee/employeeCreate.js}"></script>
+</body>
+</html>

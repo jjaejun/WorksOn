@@ -29,5 +29,6 @@ public class ScheduleJoinMember {
 
     @OneToMany
     @JoinColumn(name = "id") // employee 의 id만 참조
+    @Builder.Default
     private List<Employee> employees = new ArrayList<>();
 }

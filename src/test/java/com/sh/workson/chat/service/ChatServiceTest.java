@@ -2,15 +2,10 @@ package com.sh.workson.chat.service;
 
 import com.sh.workson.chat.dto.ChatLogCreateDto;
 import com.sh.workson.chat.dto.ChatRoomCreateDto;
-import com.sh.workson.chat.entity.ChatRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -33,14 +28,11 @@ class ChatServiceTest {
     void test1() {
         // given
         Set<Long> longs = new LinkedHashSet<>();
-        longs.add(1L);
-        longs.add(51L);
-        longs.add(101L);
-        longs.add(151L);
-        longs.add(201L);
+        longs.add(852L);
+        longs.add(952L);
 
         ChatRoomCreateDto chatRoomCreateDto = ChatRoomCreateDto.builder()
-                .name("ESC")
+                .name("테스트트트트")
                 .empIds(longs)
                 .build();
         System.out.println("chatRoomCreateDto = " + chatRoomCreateDto);
@@ -58,7 +50,7 @@ class ChatServiceTest {
         // given
         ChatLogCreateDto chatLogCreateDto = ChatLogCreateDto.builder()
                 .content("너무 어려워요")
-                .empId(1L)
+                .employeeId(1L)
                 .chatRoomId(51L)
                 .build();
         System.out.println("chatLogCreateDto = " + chatLogCreateDto);

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,8 @@ public class Project {
     private Long id;
     @Column(nullable = false)
     private String title;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    private LocalDateTime endAt;
+    private LocalDate startAt;
+    private LocalDate endAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @Column
@@ -39,7 +39,7 @@ public class Project {
     private Status status;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "owner_id")
     private Employee employee;
 
 
@@ -47,4 +47,10 @@ public class Project {
     @JoinColumn(name = "project_id")
     @Builder.Default
     private List<ProjectEmployee> projectEmployees = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    @Builder.Default
+    private List<Task> tasks = new ArrayList<>();
+
 }

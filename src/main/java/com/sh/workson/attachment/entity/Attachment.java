@@ -1,5 +1,6 @@
 package com.sh.workson.attachment.entity;
 
+import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,14 +26,20 @@ public class Attachment {
             allocationSize = 50
     )
     private Long id;
-    private String boardType;
 
     @Column(name = "board_id")
     private Long boardId;
-
+    @Column(name = "board_type")
+    @Enumerated(EnumType.STRING)
+    private AttachType type;
     private String originalFileName;
     private String key;
     private String url;
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_id")
+    private Employee employee;
 }

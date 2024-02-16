@@ -91,8 +91,8 @@ create sequence seq_authority_id start with 1 increment by 50;
 create table project (
     id number not null,
     title varchar2(2000) not null,
-    created_at timestamp,
-    end_at timestamp,
+    start_at date,
+    end_at date,
     updated_at timestamp,
     status varchar2(100),
     owner_id number,
@@ -101,6 +101,10 @@ create table project (
 );
 create sequence seq_project_id start with 1 increment by 50;
 
+
+
+
+select * from project;
 -- 프로젝트 참여사원
 create table project_employee (
     id number not null,
@@ -140,8 +144,8 @@ create table task (
     name varchar2(1000) not null,
     content varchar2(4000),
     priority number default 1,
-    start_at timestamp not null,
-    end_at timestamp,
+    start_at date not null,
+    end_at date,
     status varchar2(30),
     owner_id number,
     emp_id number,
@@ -152,6 +156,7 @@ create table task (
     constraint fk_task_project_id foreign key (project_id) references project(id) on delete cascade
 );
 create sequence seq_task_id start with 1 increment by 50;
+
 
 -- 프로젝트 이슈
 create table issue (
@@ -172,13 +177,15 @@ create table issue (
 );
 create sequence seq_issue_id start with 1 increment by 50;
 
+
+
 --게시판
 create table board (
    id number not null,
    type varchar2(30) not null,
    title varchar2(100) not null,
    content varchar2(4000) not null,
-   view_count number default 0,
+   view_count number  default 0,
    created_at timestamp default systimestamp,
    updated_at timestamp default systimestamp,
    emp_id number, -- fk on delete set null일 경우, not null이면 안되서 고쳤습니다~
@@ -187,6 +194,10 @@ create table board (
    CONSTRAINT ck_board_type CHECK (type IN ('free', 'notification'))
 );
 create sequence seq_board_id start with 1 increment by 50;
+select * from board;
+
+
+
 
 --댓글
 create table board_comment (
@@ -202,8 +213,12 @@ create table board_comment (
     constraint fk_comment_board_id foreign key (board_id) references board(id) on delete cascade,
     constraint fk_comment_employee_id foreign key (emp_id) references employee(id) on delete set null,
     constraint fk_comment_parent_id foreign key (parent_comment_id) references board_comment(id) on delete cascade
+    
 );
 create sequence seq_board_comment_id start with 1 increment by 50;
+
+
+
 
 --첨부파일
 create table attachment (
@@ -213,11 +228,14 @@ create table attachment (
     original_file_name varchar(255) not null,
     key varchar2(1000) not null, 
     url varchar(1000) not null,
+    emp_id number,
     created_at timestamp default systimestamp,
-    constraint pk_attachment_id primary key (id)
+    constraints pk_attachment_id primary key (id),
+    constraints fk_attachment_emp_id foreign key (emp_id) references employee(id) on delete set null
 );
 create sequence seq_attachment_id start with 1 increment by 50;
 
+select * from attachment;
 
 -- 재준
 
@@ -298,20 +316,22 @@ create table reservation(
     , constraint fk_reservation_emp_id foreign key(emp_id) references employee(id) on delete cascade
     , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
 );
+alter table reservation rename column emp_id to employee_id;
 create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 우진
 
--- table drop
 
--- drop table approval_leave;
--- drop table approval_equipment;
--- drop table approval_cooperation;
--- drop table approval_attachment;
--- drop table approval_line;
--- drop table approval;
+-- 테이블 일괄 삭제 시
 
--- sequence drop
+drop table approval_line;
+drop table approval_attachment;
+drop table approval;
+drop table approval_leave;
+drop table approval_equipment;
+drop table approval_cooperation;
+
+-- 시퀀스 일괄 삭제시
 
 -- drop sequence seq_approval_form_id;
 -- drop sequence seq_approval_id;
@@ -325,12 +345,22 @@ create table approval_leave (
     , title varchar2(100) not null
     , start_date timestamp not null
     , end_date timestamp not null
-    , leave_content varchar2(500) 
+    , leave_content varchar2(500)
     , created_at timestamp default systimestamp
     , constraints pk_approval_leave_id primary key(id)
 );
 -- 결재 양식 관련 ex 연차/비품/협조 같은 시퀀스 사용예정 각 시퀀스 사용시 조인시 겹칠 우려 있어서 원하는 값이 조회 안될듯
-create sequence seq_approval_form_id start with 1 increment by 50; 
+create sequence seq_approval_form_id start with 1 increment by 50;
+
+-- 결재 연차 테이블에 컬럼 추가
+alter table approval_leave add leave_type varchar2(30); -- 결재 종류
+alter table approval_leave add annul varchar2(10); -- 반차 여부
+alter table approval_leave add constraints ck_approval_leave_annul check (annul in ('y', 'n'));
+delete from approval_leave;
+alter table approval_leave add leave_count varchar2(30); -- 결재 종류
+ALTER TABLE approval_leave MODIFY leave_count FLOAT(53); -- 연차 일수
+update approval_leave set leave_count = 1.0 where id = 11101;
+select * from approval_leave;
 
 -- 결재 비품신청 테이블
 create table approval_equipment (
@@ -349,7 +379,7 @@ create table approval_equipment (
 
 -- 결재 협조 테이블
 create table approval_cooperation (
-    id number not null
+  id number not null
     , name varchar2(20) default '협조 신청' not null
     , title varchar2(100) not null
     , content varchar2(2000)
@@ -362,17 +392,24 @@ create table approval_cooperation (
 );
 
 
--- 결재 테이블 테이블
+-- 결재 테이블
 create table approval (
-    id number not null
+  id number not null
     , emp_id number not null
-    , approval_type_id number
+    , emp_receives_id number
     , approval_start_date timestamp default systimestamp
     , approval_end_date timestamp
     , emergency varchar2(10) default 'N'
     , status varchar2(20) default '대기' not null
+    , approval_leave_id number
+    , approval_equipment_id number
+    , approval_cooperation_id number
     , constraints pk_approval_id primary key(id)
     , constraints fk_approval_employee_id foreign key(emp_id) references employee(id) on delete set null
+    , constraints fk_approval_employee_receives_id foreign key(emp_receives_id) references employee(id) on delete set null
+    , constraints fk_approval_approval_leave_id foreign key(approval_leave_id) references approval_leave(id) on delete set null
+    , constraints fk_approval_approval_equipment_id foreign key(approval_equipment_id) references approval_equipment(id) on delete set null
+    , constraints fk_approval_approval_cooperation_id foreign key(approval_cooperation_id) references approval_cooperation(id) on delete set null
     , constraints ck_approval_emergency check (emergency in ('Y', 'N'))
     , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
 );
@@ -388,14 +425,17 @@ create table approval_attachment (
     , type varchar2(30) not null
     , created_at timestamp default systimestamp
     , constraints pk_approval_attachment_id primary key(id)
-    , constraints fk_approval_attachment_id foreign key(approval_id) references approval(id) on delete set null
+    , constraints fk_approval_id foreign key(approval_id) references approval(id) on delete set null
 );
 create sequence seq_approval_attachment_id start with 1 increment by 50;
 
+-- 전자 결재 첨부파일 컬럼 추가
+alter table approval_attachment add key varchar2(2000);
+alter table approval_attachment add url varchar2(2000);
 
 -- 결재라인 테이블
 create table approval_line (
-    id number not null
+   id number not null
     , approval_id number not null
     , approver_id number not null
     , rejection varchar2(200)
@@ -425,7 +465,6 @@ create table schedule_category(
 );
 create sequence seq_schedule_category_id start with 1 increment by 50;
 
-select * from employee;
 -- 스케쥴
 create table schedule (
     id number not null,
@@ -441,7 +480,7 @@ create table schedule (
 );
 create sequence seq_schedule_id start with 1 increment by 50;
 
-
+select * from schedule;
 -- 스케쥴 참여 인원
 create table schedule_join_member(
     id number not null,
@@ -486,6 +525,7 @@ create table attend(
                        constraints pk_attend_id primary key(id),
                        constraints fk_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
+create sequence seq_attend_id start with 1 increment by 50;
 create table attend_request(
                                id number not null,
                                type varchar2(1000) not null,

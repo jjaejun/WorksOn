@@ -13,29 +13,61 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 });
 
-document.projectCreateFrm.addEventListener('submit', (e) => {
-    const frm = e.target;
-    const frmData = new FormData(frm);
-
-    // 유효성 검사해야됨
-
-
-
-    $.ajax({
-        url: `${contextPath}project/createProject.do`,
-        header: {
-            [csrfHeaderName] : csrfToken
-        },
-        data: frmData,
-        processData: false,
-        contentType: false,
-        method: 'post',
-        success(response) {
-            console.log(response);
-            frm.reset();
-        }
-
-    })
-
-
+document.querySelectorAll("article[data-project-id]").forEach((article) => {
+   article.addEventListener('click', (e) => {
+      const project = e.target;
+      const { projectId : id } = article.dataset;
+      location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+   });
 });
+
+/**
+ * page1에 대한 변수
+ */
+document.querySelectorAll(".ownerPageNumber").forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        const pageNumber2 = document.querySelector("#selectBtnEmpPage span").textContent - 1;
+        console.log(pageNumber2);
+
+        const button = e.target;
+        const { pageNumber} = button.dataset;
+        console.log(pageNumber);
+
+        let size = 8;
+        // 페이지 URL 생성
+        // page2 => emp
+
+        let url = '/WorksOn/project/projectList.do?continue&page1=' + pageNumber + '&size1=' + size + '&page2=' + pageNumber2 + '&size2=' + size;
+
+        console.log(url);
+        // 페이지 이동
+         window.location.href = url;
+    });
+});
+
+
+/**
+ * page2에 대한 변수
+ */
+document.querySelectorAll(".empPageNumber").forEach((btn) => {
+   btn.addEventListener('click', (e) => {
+       const pageNumber1 = document.querySelector("#selectBtnOwnerPage span").textContent - 1;
+       console.log(pageNumber1);
+
+       const button = e.target;
+      const {pageId, pageNumber} = button.dataset;
+       console.log(pageNumber);
+       console.log(pageId);
+
+        let size = 8;
+       // 페이지 URL 생성
+       // page2 => emp
+
+       let url = '/WorksOn/project/projectList.do?continue&page1=' + pageNumber1 + '&size1=' + size + '&page2=' + pageNumber + '&size2=' + size;
+
+       console.log(url);
+       // 페이지 이동
+        window.location.href = url;
+   });
+});
+

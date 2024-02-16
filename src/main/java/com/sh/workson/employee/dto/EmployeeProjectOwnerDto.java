@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeProjectOwnerDto {
     private Long id;
     private String name;
+    private String email;
     private String profileUrl;
     private String deptName;
     private String positionName;

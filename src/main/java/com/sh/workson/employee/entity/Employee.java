@@ -4,6 +4,8 @@ import com.sh.workson.authority.entity.Authority;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.position.entity.Position;
 import com.sh.workson.project.entity.Project;
+import com.sh.workson.schedule.entity.Schedule;
+import com.sh.workson.schedule.entity.ScheduleCategory;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -57,12 +59,12 @@ public class Employee {
     private List<Authority> authorities;
 
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id", unique = false, nullable = true)
     private Position position;
 
     // 부서와 사원은 양방향 OneToMany ManyToOne으로 변경될 예정입니다..
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id", unique = false, nullable = true)
     private Department department;
 
@@ -113,7 +115,6 @@ public class Employee {
     /**
      * 준희
      */
-
 
 
 

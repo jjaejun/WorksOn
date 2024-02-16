@@ -1,12 +1,19 @@
 #calendar{
-    /*height: 700px;*/
-    /*width: 700px;*/
+    /*height: 65%;*/
+    width: 84%;
     color: black;
-    /*margin: auto;*/
+    margin-right: auto;
 }
-
-.fc-button-bg-color{
-    color: cornflowerblue;
+#main_page{
+    display: flex;
+    flex-direction: row;
+    margin-left: -48px;
+}
+.fc-button-primary{
+    color : #3788d8;
+}
+fc-header-toolbar{
+    color : #3788d8;
 }
 
 :root{
@@ -40,15 +47,62 @@
 }
 
 
-#content{
-    display: flex;
-    flex-direction: row;
+/*#content{*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/
 
-}
 #v-line{
     margin: auto 10px;
-    border-left:  thick solid black;
-    height: 100%;
-    left: 15%;
+    border-left: 1px solid black;
+    height: 81%;
+    left: 28%;
     position: absolute;
+}
+
+#category{
+    margin-right: auto;
+}
+
+.calender-sidebar{
+
+}
+
+aside#calender-sidebar{
+    margin-top: -86px;
+}
+
+table, th, td {
+    text-align: center;
+}
+
+#my-category-list td,
+#calender-sidebar table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+/* 오버레이 배경에 대한 스타일링 */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
 }

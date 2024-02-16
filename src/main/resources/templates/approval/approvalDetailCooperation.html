@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/approval_default}">
+<head>
+    <title>결재 비품 상세 페이지</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <div class="container mx-auto p-4 bg-white border mt-8 mb-8">
+        <h1 class="text-3xl text-center mb-4">업 무 협 조</h1>
+        <div class="flex">
+            <table class="w-20% mb-6">
+                <tr class="border">
+                    <th class="border p-2">기안자</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${empId}" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">부서</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${deptId}" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">기안일</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${approvalEndDate}" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">문서번호</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${coId}" readonly></td>
+                </tr>
+            </table>
+            <table class="mb-6 ml-auto mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀장" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="이민정" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+            <table class="mb-6 mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="천무진" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+            <table class="mb-6">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="한준희" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+
+        <table class="w-full mb-6">
+            <tr class="border">
+                <th class="border p-2 w-32">수신처</th>
+                <td><input type="text" class="w-full p-2 border " th:value="${cooperationDept}"></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">제목</th>
+                <td><input type="text" class="w-full p-2 border " th:value="${title}"></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">내용</th>
+                <td><input type="text" class="w-full p-2 border " th:value="${content}"></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">기간 및 일시</th>
+                <td><input type="text" class="w-15% p-2 border " th:value="${startDate}" readonly>&nbsp ~ &nbsp<input type="text" class="w-20% p-2 border " th:value="${endDate}" readonly></td>
+            </tr>
+        </table>
+
+<!--        <h2 class="p-2 w-32">파일 첨부</h2>-->
+<!--        <div class="border-dotted">-->
+<!--            <input type="file" class="custom-file-input mb-3" name="upFile" id="upFile" multiple placeholder="이곳에 파일을 드래그 하세요. 또는 파일선택">-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재요청</button>-->
+    </div>
+</div>
+
+    <script>
+        function execCmd(command) {
+            document.execCommand(command, false, null);
+        }
+    </script>
+
+</html>

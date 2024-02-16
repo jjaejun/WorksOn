@@ -47,7 +47,7 @@
                 <span class="ml-4">일정</span>
               </a>
             </li>
-            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/chat}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/chat/chatMain.do}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
@@ -113,7 +113,7 @@
                 <span class="ml-4">게시판</span>
               </a>
             </li>
-            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/reservation}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/reservation/reservationRoom.do}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
@@ -123,6 +123,17 @@
                 <span class="ml-4">예약</span>
               </a>
             </li>
+<!--            무진 수정-->
+            <li sec:authorize="hasRole('HR')" class="relative px-6 py-3 h-[58px]" id="createEmployee" th:onclick="|location.href='@{/employee/employeeCreate.do}'|">
+              <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7-3h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0v2z"/>
+                </svg>
+                <span class="ml-4">회원등록</span>
+              </a>
+            </li>
+
           </ul>
           <div class="px-6 mt-48">
             <button

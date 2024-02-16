@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/approval_default}">
+<head>
+    <title>결재 연차 상세 페이지</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <div class="container mx-auto p-4 bg-white border mt-8 mb-8">
+        <h1 class="text-3xl text-center mb-4">연차 신청서</h1>
+        <div class="flex">
+            <table class="w-20% mb-6">
+                <tr class="border">
+                    <th class="border p-2">기안자</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${empId}" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">부서</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${deptId}" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">기안일</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${approvalEndDate}" readonly></td>
+                </tr>
+                <tr class="border">
+                    <th class="border p-2">문서번호</th>
+                    <td><input type="text" class="w-20% p-2 border " th:value="${leId}" readonly></td>
+                </tr>
+            </table>
+            <table class="mb-6 ml-auto mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀장" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="이민정" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+            <table class="mb-6 mr-1">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="천무진" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+            <table class="mb-6">
+                <tr class="border">
+                    <th class="border p-2 w-10" rowspan="4">승인</th>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="한준희" readonly></td>
+                </tr>
+                <tr class="border">
+                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+
+        <table class="w-full mb-6">
+            <tr class="border">
+                <th class="border p-2 w-32">휴가 종류</th>
+                <td>
+                    <input type="text" class="w-20% p-2 border " th:value="${leaveType}" readonly>
+                </td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">기간 및 일시</th>
+                <td><input type="text" class="w-15% p-2 border " th:value="${startDate}" readonly>&nbsp ~ &nbsp<input type="text" class="w-20% p-2 border " th:value="${endDate}" readonly></td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">반차 여부</th>
+                <td ><input type="text" class="w-12 p-2 border" th:if="${annul}">반차여부(체크시 기간 및 일시가 같은 날일때 0.5로 바뀜)</td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">연차 일수</th>
+                <td>
+                    신청연차 : <input type="text" class="w-24 p-2 border text-right" th:value="${leaveCount}" readonly>
+                </td>
+            </tr>
+            <tr class="border">
+                <th class="border p-2 w-32">휴가 사유</th>
+                <td><input type="text" class="w-full p-2 border" th:value="${leaveContent}"></td>
+            </tr>
+        </table>
+
+<!--        <button type="button"-->
+<!--                class="btn btn-outline-success btn-block mb-3 bg-blue-500 text-white p-2 rounded"-->
+<!--                th:each="attach, status : ${board.attachments}"-->
+<!--                th:text="|첨부파일${status.count} - ${attach.originalFilename}|"-->
+<!--                th:onclick="|location.href = '@{/board/fileDownload.do}?id=${attach.id}';|">-->
+<!--        </button>-->
+    </div>
+</div>
+    <script layout:fragment="script" th:src="@{/js/approval/approvalList.js}">
+    </script>
+    <script>
+        function execCmd(command) {
+            document.execCommand(command, false, null);
+        }
+    </script>
+    <!-- Modify the JavaScript code -->
+    <script>
+        document.addEventListener('click', function (event) {
+            var dropdownButton = document.getElementById('dropdownButton');
+            var dropdownMenu = dropdownButton.nextElementSibling;
+
+            if (!dropdownButton.contains(event.target)) {
+                // Clicked outside the dropdownButton, hide the dropdown menu
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Dropdown button click event to toggle the dropdown menu
+        document.getElementById('dropdownButton').addEventListener('click', function () {
+            var dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Menu item click event to update the button text and hide the dropdown menu
+        var menuItems = document.querySelectorAll('.relative .absolute a');
+        menuItems.forEach(function (menuItem) {
+            menuItem.addEventListener('click', function () {
+                var selectedValue = this.textContent.trim();
+                document.getElementById('dropdownButton').textContent = selectedValue;
+                this.closest('.absolute').classList.add('hidden');
+            });
+        });
+    </script>
+</html>

@@ -135,8 +135,13 @@ insert into schedule_category (id, color, name, emp_id) values
 (seq_schedule_category_id.nextval, 'Yellow', 'Presentation', 251);
 insert into schedule_category (id, color, name, emp_id) values 
 (seq_schedule_category_id.nextval, 'Purple', 'Project', 801);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'Red', 'Meeting', 902);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'blue', 'test1', 902);
+insert into schedule_category (id, color, name, emp_id) values 
+(seq_schedule_category_id.nextval, 'green', 'tes2', 902);
 
-select * from schedule;
 
 
 --schedule
@@ -155,14 +160,99 @@ insert into schedule (id, title, content, start_time, end_time, emp_id, schedule
 insert into schedule (id, title, content, start_time, end_time, emp_id, schedule_category_id) values 
 (seq_schedule_id.nextval, 'Team Workshop', 'Brainstorming session', timestamp '2024-02-10 11:00:00', timestamp '2024-02-10 13:00:00', 801, 201);
 
+
 --schedule_join_member
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 501, 51);
+(seq_schedule_join_member_id.nextval, 101, 51);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 501, 101);
+(seq_schedule_join_member_id.nextval, 101, 101);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 501, 201);
+(seq_schedule_join_member_id.nextval, 101, 201);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 151, 251);
+(seq_schedule_join_member_id.nextval, 151, 251);
 insert into schedule_join_member (id, schedule_id, emp_id) values 
-(seq_schedule_join_member.nextval, 151, 801);
+(seq_schedule_join_member_id.nextval, 151, 801);
+
+-- authority
+insert into authority values (seq_authority_id.nextval, 1, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 51, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 101, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 151, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 201, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 251, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 301, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 351, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 401, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 451, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 501, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 551, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 601, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 651, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 701, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 751, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 801, 'ROLE_EMP');
+
+-- 재준
+-- chat_log
+insert into chat_log values (seq_chat_log_id.nextval, '잘되나요?', default, 902, 2152);
+insert into chat_log values (seq_chat_log_id.nextval, '잘됩니다', default, 852, 2152);
+insert into chat_log values (seq_chat_log_id.nextval, '아마..?', default, 852, 2152);
+insert into chat_log values (seq_chat_log_id.nextval, '제발~~~~~~~', default, 902, 2152);
+
+-- resource
+insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 A', '호산빌딩 2층', '테이블 7개/의자 14개/스크린 1개(47인치)/무선 마이크 2개', 'Room');
+insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 B', '호산빌딩 3층', '테이블 5개/의자 10개/스크린 1개(38인치)/무선 마이크 2개', 'Room');
+insert into tb_resource values (seq_tb_resource_id.nextval, '회의실 C', '호산빌딩 4층', '테이블 10개/의자 20개/스크린 1개(60인치)/무선 마이크 2개', 'Room');
+
+insert into tb_resource values (seq_tb_resource_id.nextval, '맥북 에어', '인사과 이민정 사원에게 대여 가능', '13.3인치/CPU : M1/RAM : 8GB/SSD : 256GB', 'Notebook');
+insert into tb_resource values (seq_tb_resource_id.nextval, '갤럭시북4 프로', '인사과 이민정 사원에게 대여 가능', '16인치/CPU : Ultra7/RAM : 16GB/SSD : 512GB', 'Notebook');
+insert into tb_resource values (seq_tb_resource_id.nextval, '그램 2022', '인사과 이민정 사원에게 대여 가능', '15.6인치/CPU : i5-12세대/RAM : 16GB/SSD : 256GB', 'Notebook');
+
+insert into tb_resource values (seq_tb_resource_id.nextval, '아반떼', 'B2층 A-2', 'LPG/트렁크 공간 좁음', 'Car');
+insert into tb_resource values (seq_tb_resource_id.nextval, '소나타', 'B2층 A-1', '가솔린/범퍼 우측 찌그러짐, 조수석 문 긁힘', 'Car');
+insert into tb_resource values (seq_tb_resource_id.nextval, '그렌저', 'B2층 A-3', '가솔린/침수차량', 'Car');
+
+
+-- 민정
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 1', 'Sample content for Task 1', 1, TIMESTAMP '2024-02-14 08:00:00', TIMESTAMP '2024-02-14 16:00:00', 'INPROGRESS', 551, 151, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 2', 'Sample content for Task 2', 2, TIMESTAMP '2024-02-15 09:00:00', TIMESTAMP '2024-02-15 17:00:00', 'TODO', 201, 351, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 3', 'Sample content for Task 3', 3, TIMESTAMP '2024-02-16 10:00:00', TIMESTAMP '2024-02-16 18:00:00', 'DONE', 902, 401, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 4', 'Sample content for Task 4', 4, TIMESTAMP '2024-02-17 11:00:00', TIMESTAMP '2024-02-17 19:00:00', 'INPROGRESS', 101, 801, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 5', 'Sample content for Task 5', 2, TIMESTAMP '2024-02-18 12:00:00', TIMESTAMP '2024-02-18 20:00:00', 'TODO', 902, 651, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 6', 'Sample content for Task 6', 1, TIMESTAMP '2024-02-14 08:00:00', TIMESTAMP '2024-02-14 16:00:00', 'INPROGRESS', 551, 151, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 7', 'Sample content for Task 7', 2, TIMESTAMP '2024-02-15 09:00:00', TIMESTAMP '2024-02-15 17:00:00', 'TODO', 201, 351, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 8', 'Sample content for Task 8', 3, TIMESTAMP '2024-02-16 10:00:00', TIMESTAMP '2024-02-16 18:00:00', 'DONE', 902, 401, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 9', 'Sample content for Task 9', 4, TIMESTAMP '2024-02-17 11:00:00', TIMESTAMP '2024-02-17 19:00:00', 'INPROGRESS', 101, 902, 5952);
+INSERT INTO task (ID, NAME, CONTENT, PRIORITY, START_AT, END_AT, STATUS, OWNER_ID, EMP_ID, PROJECT_ID)
+VALUES (seq_task_id.nextval, 'Task 10', 'Sample content for Task 10', 2, TIMESTAMP '2024-02-18 12:00:00', TIMESTAMP '2024-02-18 20:00:00', 'TODO', 101, 902, 5952);
+
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 1', 'Sample content for Issue 1', 2, 'OPEN', 651, 551, 5952, 1);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 2', 'Sample content for Issue 2', 2, 'CLOSED', 451, 551, 5952, 51);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 3', 'Sample content for Issue 3', 4, 'INPROGRESS', 351, 401, 5952, 101);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 4', 'Sample content for Issue 4', 1, 'OPEN', 251, 401, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 5', 'Sample content for Issue 5', 2, 'CLOSED', 201, 201, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 6', 'Sample content for Issue 6', 3, 'INPROGRESS', 101, 201, 5952, 151);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 7', 'Sample content for Issue 7', 1, 'OPEN', 201, 151, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 8', 'Sample content for Issue 8', 4, 'CLOSED', 51, 351, 5952, 401);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 9', 'Sample content for Issue 9', 3, 'INPROGRESS', 401, 651, 5952, null);
+INSERT INTO ISSUE (ID, NAME, CONTENT, PRIORITY, STATUS, OWNER_ID, EMP_ID, PROJECT_ID, TASK_ID)
+VALUES (seq_issue_id.nextval, 'Issue 10', 'Sample content for Issue 10', 1, 'OPEN', 101, 451, 5952, null);
+
