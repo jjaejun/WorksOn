@@ -154,6 +154,7 @@ const createClickDelete = (empId) => {
 const createClickEvent = () => {
     document.querySelectorAll(".searchResult").forEach((emp) => {
         emp.addEventListener('click', (e) => {
+            e.stopPropagation();
 
             const input = document.querySelector("#create-search-input");
             input.value = '';

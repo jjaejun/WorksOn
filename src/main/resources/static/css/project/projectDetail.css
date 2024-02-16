@@ -6,11 +6,14 @@
     display: none;
 }
 
-
-
 .dragging {
     scale: 1.05;
     box-shadow: 0 5px 15px rgba(0,0,0,0.25);
     background: rgba(50, 50, 50);
     color: white;
+}
+
+.ownerPageNumber.disabled {
+    background-color: rgba(1, 1, 1, 0.5); /* 박스 색상 변경 */
+    pointer-events: none; /* 클릭 이벤트 비활성화 */
 }
