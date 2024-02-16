@@ -12,6 +12,6 @@ public class ReservationCreateDto {
     private LocalDateTime endAt;
     private String content;
     private Integer count;
-    private Long empId;
+    private Long employeeId;
     private Long resourceId;
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -55,12 +56,15 @@ public class ReservationContoller {
     @GetMapping("/reservationList.do")
     public void reservationDetail(@RequestParam("id") Long id, Model model) {
         List<Reservation> reservations = reservationService.findByResourceId(id);
+        model.addAttribute("resourceId", id);
         model.addAttribute("reservations", reservations);
     }
 
     @PostMapping("/createReservation.do")
-    public String createReservation(ReservationCreateDto reservationCreateDto) {
+    public String createReservation(ReservationCreateDto reservationCreateDto, RedirectAttributes redirectAttributes) {
         log.debug("reservationCreateDto = {}", reservationCreateDto);
+        reservationService.createReservation(reservationCreateDto);
+        redirectAttributes.addFlashAttribute("예약 신청이 완료되었습니다.😎");
         return "redirect:reservationList.do";
     }
 }
