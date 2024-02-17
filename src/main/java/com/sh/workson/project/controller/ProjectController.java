@@ -327,4 +327,16 @@ public class ProjectController {
         taskService.updateTaskDetail(taskDetailUpdateDto);
         return new ResponseEntity<>("업무 내용이 수정되었습니다.", HttpStatus.OK);
     }
+
+    @PostMapping("/deleteTask.do")
+    public String deleteTask(
+            @RequestParam("id") Long id,
+            @RequestParam("projectId") Long projectId
+    ){
+        log.debug("taskId = {}", id);
+        log.debug("projectId = {}", projectId);
+
+        taskService.deleteTask(id);
+        return "redirect:/project/projectDetail.do?id=" + projectId;
+    }
 }

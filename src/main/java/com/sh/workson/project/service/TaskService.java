@@ -115,4 +115,8 @@ public class TaskService {
         task.setPriority(taskDetailUpdateDto.getPriority());
         return task;
     }
+
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
+    }
 }

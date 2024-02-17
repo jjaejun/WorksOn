@@ -1,4 +1,10 @@
 
+document.querySelector("#deleteBtn").addEventListener('click', () => {
+    if(confirm("업무를 삭제하시겠습니까?")){
+        document.taskDeleteFrm.submit();
+    }
+})
+
 window.addEventListener('DOMContentLoaded', () => {
     lisColorChange();
     pageEvent();

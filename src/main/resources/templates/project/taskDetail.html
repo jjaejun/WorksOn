@@ -201,6 +201,10 @@
 
         <!-- 업무 상세내용 조회 -->
         <div class="mx-auto w-4/6">
+            <form th:action="@{/project/deleteTask.do}" method="post" name="taskDeleteFrm">
+                <input type="hidden" th:value="${task.id}" name="id">
+                <input type="hidden" th:value="${task.project.id}" name="projectId">
+            </form>
             <form name="taskDetailFrm">
                 <input type="hidden" id="id" th:value="${task.id}" name="id">
                 <div class="flex justify-around items-center mb-2">
