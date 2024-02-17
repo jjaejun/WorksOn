@@ -12,6 +12,7 @@ import com.sh.workson.project.dto.*;
 import com.sh.workson.project.entity.ProjectEmployee;
 import com.sh.workson.project.entity.Task;
 import com.sh.workson.project.service.ProjectService;
+import com.sh.workson.project.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,6 +58,8 @@ public class ProjectController {
     private S3FileService s3FileService;
     @Autowired
     private AttachmentService attachmentService;
+    @Autowired
+    private TaskService taskService;
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
@@ -264,7 +267,7 @@ public class ProjectController {
     ){
         log.debug("taskCreateDto = {}", taskCreateDto);
         taskCreateDto.setTaskOwnerId(employeeDetails.getEmployee().getId());
-        TaskListDto task = projectService.createTask(taskCreateDto);
+        TaskListDto task = taskService.createTask(taskCreateDto);
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
@@ -274,7 +277,7 @@ public class ProjectController {
             TaskUpdateDto taskUpdateDto
     ){
         log.debug("taskUpdateDto = {}", taskUpdateDto);
-        projectService.updateTask(taskUpdateDto);
+        taskService.updateTask(taskUpdateDto);
 
         return null;
     }
@@ -291,8 +294,10 @@ public class ProjectController {
             @RequestParam(name = "size2", defaultValue = "5") int size2
     ){
 
-        ProjectDetailDto projectDetailDto = projectService.findById(projectId);
-        model.addAttribute("project", projectDetailDto);
+        // task 찾기
+        TaskDetailDto taskDto = taskService.findById(id);
+        log.debug("taskDto = {}", taskDto);
+        model.addAttribute("task", taskDto);
 
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
@@ -311,6 +316,9 @@ public class ProjectController {
         model.addAttribute("projectOwnerSize", projects2.getSize());
         model.addAttribute("projectOwnerNumber", projects2.getNumber());
         model.addAttribute("projectOwnerTotalpages", projects2.getTotalPages());
+
+
+
 
     }
 }

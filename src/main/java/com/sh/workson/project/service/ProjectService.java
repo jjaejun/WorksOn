@@ -38,7 +38,7 @@ public class ProjectService {
     @Autowired
     private ProjectEmployeeRepository projectEmployeeRepository;
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     public Page<ProjectListDto> findAll(Pageable pageable) {
         Page<Project> projects = projectRepository.findAll(pageable);
@@ -121,7 +121,7 @@ public class ProjectService {
         if(!project.getTasks().isEmpty()){
             List<TaskListDto> taskListDtos = new ArrayList<>();
             for(Task task : project.getTasks()){
-                taskListDtos.add(covertToTaskListDto(task));
+                taskListDtos.add(taskService.convertToTaskListDto(task));
             }
             projectDetailDto.setTasks(taskListDtos);
         }
@@ -137,56 +137,5 @@ public class ProjectService {
         return attachmentRepository.findAllAttachmentByProjectId(id);
     }
 
-    public TaskListDto covertToTaskListDto(Task task){
-        return TaskListDto.builder()
-                .id(task.getId())
-                .name(task.getName())
-                .priority(task.getPriority())
-                .status(task.getStatus().toString())
-                .empId(task.getEmployee().getId())
-                .empName(task.getEmployee().getName())
-                .empProfileUrl(task.getEmployee().getProfileUrl())
-                .positionName(task.getEmployee().getPosition().getName())
-                .build();
-    }
-    public TaskListDto afterInsertCovertToTaskListDto(Task task){
-        return TaskListDto.builder()
-                .id(task.getId())
-                .name(task.getName())
-                .priority(task.getPriority())
-                .status(task.getStatus().toString())
-                .empId(task.getEmployee().getId())
-                .build();
-    }
-    public TaskListDto createTask(TaskCreateDto taskCreateDto) {
-        Task task = taskRepository.save(convertToTask(taskCreateDto));
-        return afterInsertCovertToTaskListDto(task);
-    }
 
-    private Task convertToTask(TaskCreateDto taskCreateDto) {
-        Task task = Task.builder()
-                .name(taskCreateDto.getName())
-                .content(taskCreateDto.getContent())
-                .priority(taskCreateDto.getPriority())
-                .startAt(taskCreateDto.getStartAt())
-                .endAt(taskCreateDto.getEndAt())
-                .build();
-        task.setOwner(Employee.builder().id(taskCreateDto.getTaskOwnerId()).build());
-        task.setEmployee(Employee.builder().id(taskCreateDto.getTaskEmpId()).build());
-        task.setProject(Project.builder().id(taskCreateDto.getProjectId()).build());
-        TaskStatus status = null;
-        switch (taskCreateDto.getStatus()){
-            case "To do": status = TaskStatus.TODO ; break;
-            case "In progress": status = TaskStatus.INPROGRESS ; break;
-            case "Done": status = TaskStatus.DONE ; break;
-        }
-        task.setStatus(status);
-        return task;
-    }
-
-    public void updateTask(TaskUpdateDto taskUpdateDto) {
-        Task task = taskRepository.findById(taskUpdateDto.getId()).orElseThrow();
-        task.setStatus(TaskStatus.valueOf(taskUpdateDto.getStatus()));
-        taskRepository.save(task);
-    }
 }
