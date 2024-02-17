@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("from Task t join fetch t.employee e join fetch e.department join fetch e.position join fetch t.project p where t.id = :id")
+    @Query("from Task t join fetch t.owner o join fetch o.department join fetch o.position join fetch t.employee e join fetch e.department join fetch e.position join fetch t.project p where t.id = :id")
     Optional<Task> findById(Long id);
 }

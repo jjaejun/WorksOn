@@ -202,10 +202,10 @@
         <!-- 업무 상세내용 조회 -->
         <div class="mx-auto w-4/6">
             <form name="taskDetailFrm">
+                <input type="hidden" id="id" th:value="${task.id}" name="id">
                 <div class="flex justify-around items-center mb-2">
                     <div class="flex items-center w-full h-fit">
                         <h1 class="font-semibold text-2xl text-gray-600 mr-4" th:text="${task.name}"></h1>
-                        <h2 class="font-semibold text-gray-600" th:text="${task.project.title}">프로젝트 제목</h2>
                     </div>
                     <!-- 수정버튼은 생성자와 담당자만 가능 -> 삭제는 생성자만 가능 -->
                     <div class="flex w-fit h-fit" id="taskFrmBtns">
@@ -225,18 +225,70 @@
                         <tr class="text-sm text-gray-600 w-full mb-1">
                             <td class="w-1/6 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">업무 담당자</td>
                             <td class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
-                                [[|${task.employee.deptName}] ${task.employee.name}${task.employee.positionName}|]]
-                                <input type="text"
-                                       name="taskEmp" id="taskEmp"
-                                       th:value="|${task.employee.deptName}] ${task.employee.name}${task.employee.positionName}|"
-                                       class="hidden absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
-                                <input type="hidden" name="newTaskEmpId" id="newTaskEmpId" th:value="${task.employee.id}">
+                                <div id="createSelectArea" class="absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0">
+                                    [[|[${task.employee.deptName}] ${task.employee.name}${task.employee.positionName}|]]
+                                </div>
+                                <input type="hidden" id="taskEmp" name="taskEmp" th:value="${task.employee.id}">
+                                <div class="hidden absolute z-10 flex flex-col items-center absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" id="newEmpSearch">
+                                    <div class="w-full relative">
+                                        <div class="flex w-full items-center">
+                                            <div class="w-2/3 flex-1 flex text-gray-900 text-sm relative">
+                                                <input id="create-search-input" th:value="|[${task.employee.deptName}] ${task.employee.name}${task.employee.positionName}|"
+                                                       class="bg-transparent appearance-none outline-none h-full w-full text-gray-800">
+                                                <div id="create-search-list"
+                                                     class="w-full absolute shadow top-10 bg-white z-40 w-full right-0 rounded max-h-select overflow-y-auto">
+                                                    <div class="flex flex-col w-full">
+                                                        <!--검색결과-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="text-sm text-gray-600 w-full mb-1">
+                            <td class="w-1/6 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">업무 상태</td>
+                            <td class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
+                                <input type="hidden" name="status" id="status" th:value="${task.status}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type product name" required="">
+                                <div id="states-button"
+                                        class="absolute text-left focus:border-none text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none h-full p-2 m-0" type="button">
+                                    [[${task.status}]]
+                                </div>
+                                <div id="dropdown-states" class="z-10 hidden absolute top-[36px] left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                                        <li>
+                                            <button type="button"
+                                                    class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <div class="inline-flex items-center" id="statusValue1" data-status="To do">
+                                                    <span class="w-[16px] h-[16px] rounded-full bg-yellow-300 mr-2"></span>To do
+                                                </div>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <div class="inline-flex items-center" id="statusValue2" data-status="In progress">
+                                                    <span class="w-[16px] h-[16px] rounded-full bg-blue-300 mr-2"></span>In progress
+                                                </div>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button"
+                                                    class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <div class="inline-flex items-center" id="statusValue3" data-status="Done">
+                                                    <span class="w-[16px] h-[16px] rounded-full bg-rose-300 mr-2"></span>Done
+                                                </div>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         <tr class="text-sm text-gray-600 w-full mb-1">
                             <td class="w-1/6 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">업무 중요도</td>
                             <td class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
-                                <div class="flex">
+                                <div class="flex" id="starArea">
                                     <div class="flex items-center" th:each="index : ${#numbers.sequence(1, task.priority)}">
                                         <svg th:id="|star${index}|"
                                                 class="star w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -255,26 +307,26 @@
                         </tr>
                         <tr class="text-sm text-gray-600 w-full mb-1">
                             <td class="w-1/6 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">시작일</td>
-                            <td class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
+                            <td id="startAtHtml" class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
                                 [[${task.startAt}]]
                                 <input type="date" th:value="${task.startAt}"
                                        id="startAt" name="startAt"
-                                       class="absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
+                                       class="hidden absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
                             </td>
                         </tr>
                         <tr class="text-sm text-gray-600 w-full mb-1">
                             <td class="w-1/6 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm border-r border-gray-300">종료일</td>
-                            <td class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
+                            <td id="endAtHtml" class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
                                 [[${task.endAt}]]
                                 <input type="date" th:value="${task.endAt}"
                                        id="endAt" name="endAt"
-                                       class="absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
+                                       class="hidden absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <!--업무 내용 영역-->
-                <div class="w-full relative text-sm text-gray-700 h-64 bg-gray-50 border p-2 border-gray-300 rounded-lg">
+                <div id="contentHtml" class="w-full relative text-sm text-gray-700 h-64 bg-gray-50 border p-2 border-gray-300 rounded-lg">
                     [[${task.content}]]
                     <textarea name="taskContent" id="taskContent" cols="30" rows="10" th:text="${task.content}"
                               class="hidden absolute text-sm text-gray-700 focus:bg-gray-50 bg-gray-50 rounded-lg top-0 left-0 border-none w-full h-full p-2 m-0">

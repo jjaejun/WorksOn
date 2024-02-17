@@ -316,9 +316,15 @@ public class ProjectController {
         model.addAttribute("projectOwnerSize", projects2.getSize());
         model.addAttribute("projectOwnerNumber", projects2.getNumber());
         model.addAttribute("projectOwnerTotalpages", projects2.getTotalPages());
+    }
 
 
-
-
+    @PostMapping("/updateTaskDetail.do")
+    public ResponseEntity<?> updateTaskDetail(
+            TaskDetailUpdateDto taskDetailUpdateDto
+    ){
+        log.debug("taskUpdateDto = {}", taskDetailUpdateDto);
+        taskService.updateTaskDetail(taskDetailUpdateDto);
+        return new ResponseEntity<>("업무 내용이 수정되었습니다.", HttpStatus.OK);
     }
 }

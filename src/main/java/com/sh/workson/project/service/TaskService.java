@@ -96,8 +96,23 @@ public class TaskService {
                 .build());
         taskDetailDto.setProject(ProjectTaskDetailDto.builder()
                         .id(task.getProject().getId())
-                        .title(task.getProject().getTitle())
                 .build());
         return taskDetailDto;
+    }
+
+    public void updateTaskDetail(TaskDetailUpdateDto taskDetailUpdateDto) {
+        Task task = taskDetailUpdateDtoCovertToTask(taskDetailUpdateDto);
+    }
+
+    private Task taskDetailUpdateDtoCovertToTask(TaskDetailUpdateDto taskDetailUpdateDto) {
+        Task task = taskRepository.findById(taskDetailUpdateDto.getId()).orElse(null);
+
+        task.setStatus(TaskStatus.valueOf(taskDetailUpdateDto.getStatus()));
+        task.setEmployee(Employee.builder().id(taskDetailUpdateDto.getEmpId()).build());
+        task.setContent(taskDetailUpdateDto.getContent());
+        task.setStartAt(taskDetailUpdateDto.getStartAt());
+        task.setEndAt(taskDetailUpdateDto.getEndAt());
+        task.setPriority(taskDetailUpdateDto.getPriority());
+        return task;
     }
 }
