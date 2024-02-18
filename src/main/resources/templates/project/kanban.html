@@ -21,7 +21,7 @@
             </div>
 
             <th:block th:each="task, status : ${taskTodos}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white hover:bg-gray-50 p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul class="flex flex-col">
                         <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
@@ -72,7 +72,7 @@
 
 
             <th:block th:each="task, status : ${taskProgresses}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 hover:bg-gray-50 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul>
                         <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
@@ -121,7 +121,7 @@
 
 
             <th:block th:each="task, status : ${taskDone}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 hover:bg-gray-50 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul>
                         <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>

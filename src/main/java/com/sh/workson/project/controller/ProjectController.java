@@ -9,8 +9,11 @@ import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.project.dto.*;
+import com.sh.workson.project.entity.ProjectComment;
+import com.sh.workson.project.entity.ProjectCommentType;
 import com.sh.workson.project.entity.ProjectEmployee;
 import com.sh.workson.project.entity.Task;
+import com.sh.workson.project.service.ProjectCommentService;
 import com.sh.workson.project.service.ProjectService;
 import com.sh.workson.project.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +63,8 @@ public class ProjectController {
     private AttachmentService attachmentService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private ProjectCommentService projectCommentService;
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
@@ -277,7 +282,8 @@ public class ProjectController {
             TaskUpdateDto taskUpdateDto
     ){
         log.debug("taskUpdateDto = {}", taskUpdateDto);
-        taskService.updateTask(taskUpdateDto);
+        if(taskUpdateDto.getStatus() != null)
+            taskService.updateTask(taskUpdateDto);
 
         return null;
     }
@@ -298,6 +304,9 @@ public class ProjectController {
         TaskDetailDto taskDto = taskService.findById(id);
         log.debug("taskDto = {}", taskDto);
         model.addAttribute("task", taskDto);
+
+        List<ProjectCommentDetailDto> commentDetailDtos = projectCommentService.findByTypeId(taskDto.getId(), ProjectCommentType.TASK);
+        model.addAttribute("comments", commentDetailDtos);
 
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
@@ -338,5 +347,25 @@ public class ProjectController {
 
         taskService.deleteTask(id);
         return "redirect:/project/projectDetail.do?id=" + projectId;
+    }
+
+
+    @PostMapping("/projectCommentCreate.do")
+    public ResponseEntity<?> projectCommentCreate(
+            ProjectCommentCreateDto commentCreateDto
+    ){
+        log.debug("commentCreateDto = {}", commentCreateDto);
+        ProjectCommentDetailDto projectCommentDetailDto = projectCommentService.createProjectComment(commentCreateDto);
+        log.debug("commentDetailDto = {}", projectCommentDetailDto);
+        return new ResponseEntity<>(projectCommentDetailDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/projectCommentDelete.do")
+    public ResponseEntity<?> projectCommentDelete(
+            ProjectCommentDeleteDto commentDeleteDto
+    ){
+        log.debug("commentCreateDto = {}", commentDeleteDto);
+        projectCommentService.deleteProjectComment(commentDeleteDto);
+        return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.OK);
     }
 }

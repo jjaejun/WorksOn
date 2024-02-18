@@ -1,3 +1,89 @@
+const deleteTask = (id) => {
+    const area = document.getElementById(`comment${id}`);
+    if(confirm("댓글을 삭제하시겠습니까?")){
+        $.ajax({
+            url: `${contextPath}project/projectCommentDelete.do`,
+            method: 'post',
+            headers: {
+                [csrfHeaderName] : csrfToken
+            },
+            data: {
+                id: id,
+            },
+            success(response){
+                alert(response);
+                area.outerHTML = '';
+            }
+        })
+    }
+};
+document.commentCreateFrm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const frm = e.target;
+    const content = frm.content;
+    const commentLevel = frm.commentLevel;
+    const empId = frm.empId;
+    const empName = frm.empName;
+    const empProfileUrl = frm.empProfileUrl;
+    const empPositionName = frm.empPositionName;
+    const typeId = frm.typeId;
+    const type = frm.type;
+    // comment 영역의 마지막 자식요소
+    const area = document.querySelector("#commentWrap").lastElementChild;
+
+    
+    $.ajax({
+        url: `${contextPath}project/projectCommentCreate.do`,
+        method: 'post',
+        headers: {
+            [csrfHeaderName] : csrfToken
+        },
+        data: {
+            content: content.value.trim(),
+            commentLevel: commentLevel.value,
+            empId: empId.value,
+            typeId: typeId.value,
+            type: type.value
+        },
+        success(response){
+            console.log(response);
+            const date = new Date();
+            const comment = `
+            <div class="comment flex" id="comment${response.id}">
+                <div class="flex-shrink-0 mr-3">
+                    <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" 
+                    src="https://images.unsplash.com/photo-1604426633861-11b2faead63c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80" alt="">
+                </div>
+                <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                    <div class="flex justify-between w-full">
+                        <div>
+                            <strong>${empName.value}${empPositionName.value}</strong> 
+                            <span class="text-xs text-gray-400">${date.getDate()}</span>    
+                        </div>
+                        <div>
+                            <button id="editBtn" type="button" data-comment-id="${response.id}"
+                                    class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[50px] py-1 border border-yellow-600 me-2">편집</button>
+                            <button id="deleteBtn" type="button" onclick="javascript:deleteTask(${response.id})"
+                                    class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-sm font-medium">삭제</button>
+                        </div>
+                    </div>
+                    <textarea style="outline: none;" readonly class="text-sm border-none focus:outline-none resize-none w-full h-fit" cols="3">${content.value}</textarea>
+                    <div class="mt-4 flex items-center">
+                        <div class="text-sm text-gray-500 font-semibold">
+                            답글달기
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            area.insertAdjacentHTML('afterend', comment);
+        }
+    })
+
+
+
+
+});
 
 document.querySelector("#deleteBtn").addEventListener('click', () => {
     if(confirm("업무를 삭제하시겠습니까?")){
