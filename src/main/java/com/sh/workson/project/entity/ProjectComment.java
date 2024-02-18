@@ -28,7 +28,7 @@ public class ProjectComment {
     private Long parentCommentId;
     private int commentLevel;
     @CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @JoinColumn(name = "emp_id")
     @OneToOne(fetch = FetchType.LAZY)

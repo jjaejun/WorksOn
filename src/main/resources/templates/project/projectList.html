@@ -57,7 +57,8 @@
                         <div class="absolute top-6 left-4">
                             <div class="flex items-center no-underline hover:underline text-black">
                                 <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
-                                    <img width="50px" alt="사원 프로필 사진" class="block rounded-full" th:src="${(project.employee.profileUrl != null) ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                                    <img width="50px" alt="사원 프로필 사진" class="block rounded-full"
+                                         th:src="${(project.employee.profileUrl != null) ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
                                 </div>
                                 <div>
                                     <p th:text="|${project.employee.deptName}|"
