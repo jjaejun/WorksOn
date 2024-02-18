@@ -1,3 +1,104 @@
+const commentReplyCreate = (parentId) => {
+    const frm = document.getElementById(`replyFrm${parentId}`);
+    const parentFrm = document.commentCreateFrm;
+
+    const content = frm.content;
+    const commentLevel = frm.commentLevel;
+    const empId = parentFrm.empId;
+    const empName = parentFrm.empName;
+    const empProfileUrl = parentFrm.empProfileUrl;
+    const empPositionName = parentFrm.empPositionName;
+    const typeId = parentFrm.typeId;
+    const type = parentFrm.type;
+
+    // frm의 이전 요소 앞에 끼워넣기
+    const area = frm.previousElementSibling;
+
+    $.ajax({
+        url: `${contextPath}project/projectCommentCreate.do`,
+        method: 'post',
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        data: {
+            content: content.value.trim(),
+            parentCommentId: parentId,
+            commentLevel: commentLevel.value,
+            empId: empId.value,
+            typeId: typeId.value,
+            type: type.value
+        },
+        success(response) {
+            console.log(response);
+            let profileUrl = '';
+            if (empProfileUrl.value === null) {
+                profileUrl = 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png';
+            } else {
+                profileUrl = empProfileUrl.value;
+            }
+            const date = new Date();
+            const comment = `
+            <div class="flex mb-1" id="comment${response.id}">
+                <div class="flex-shrink-0 mr-3">
+                    <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8" 
+                    src="${profileUrl}" alt="">
+                </div>
+                <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                    <div class="flex justify-between w-full">
+                        <div>
+                            <strong>${empName.value}${empPositionName.value}</strong> 
+                            <span class="text-xs text-gray-400">${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours()}:${date.getMinutes()}</span>    
+                        </div>
+                        <div>
+                            <button id="deleteBtn" type="button" onclick="javascript:deleteTask(${response.id})"
+                                    class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-xs font-medium">삭제</button>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm">
+                        ${content.value.trim()}
+                    </p>
+                </div>
+            </div>`;
+            area.insertAdjacentHTML('beforebegin', comment);
+            frm.reset();
+        }
+    })
+}
+
+const replyEvent = () => {
+    document.querySelectorAll(".reply").forEach((btn, i) => {
+       btn.addEventListener('click', (e) => {
+           const {parentId} = e.target.dataset;
+
+           const frm = `
+            <form name="commentReplyCreateFrm" id="replyFrm${parentId}">
+                <div class="flex items-center mt-2 rounded-lg">
+                    <textarea rows="1" name="content"
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                    placeholder="답글을 작성해주세요."></textarea>
+                        <input type="hidden" name="commentLevel" value="1">
+                    <button type="button" onclick="javascript:commentReplyCreate(${parentId})"
+                            class="inline-flex justify-center ml-1 p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                        <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                            <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>`;
+           const area = e.target.parentElement;
+           console.log(area.nextElementSibling);
+           if(area.nextElementSibling === null){
+               area.insertAdjacentHTML('afterend', frm);
+           }
+           else {
+               area.nextElementSibling.outerHTML = '';
+           }
+       });
+    })
+
+  // const createReplyFrm
+};
+
 const deleteTask = (id) => {
     const area = document.getElementById(`comment${id}`);
     if(confirm("댓글을 삭제하시겠습니까?")){
@@ -105,6 +206,7 @@ window.addEventListener('DOMContentLoaded', () => {
     pageEvent();
     editBtnEvent();
     updateBtnEvent();
+    replyEvent();
 });
 const dropDownEvent = (e) => {
     const dropDown = document.querySelector("#dropdown-states");
