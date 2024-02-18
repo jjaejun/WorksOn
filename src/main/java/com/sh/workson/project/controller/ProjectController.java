@@ -368,4 +368,15 @@ public class ProjectController {
         projectCommentService.deleteProjectComment(commentDeleteDto);
         return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.OK);
     }
+
+
+
+    @PostMapping("/updateProject.do")
+    public ResponseEntity<?> updateProject(
+            ProjectUpdateDto projectUpdateDto
+    ){
+        log.debug("taskUpdateDto = {}", projectUpdateDto);
+        projectService.updateProject(projectUpdateDto);
+        return new ResponseEntity<>("프로젝트 정보가 수정되었습니다.", HttpStatus.OK);
+    }
 }

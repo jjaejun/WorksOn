@@ -138,4 +138,16 @@ public class ProjectService {
     }
 
 
+    public void updateProject(ProjectUpdateDto projectUpdateDto) {
+        projectRepository.save(projectUpdateDtoConvertToProjectDto(projectUpdateDto));
+    }
+
+    private Project projectUpdateDtoConvertToProjectDto(ProjectUpdateDto projectUpdateDto) {
+        Project project = projectRepository.findById(projectUpdateDto.getId()).orElseThrow();
+        project.setTitle(projectUpdateDto.getTitle());
+        project.setStatus(projectUpdateDto.getStatus());
+        project.setStartAt(projectUpdateDto.getStartAt());
+        project.setEndAt(projectUpdateDto.getEndAt());
+        return project;
+    }
 }
