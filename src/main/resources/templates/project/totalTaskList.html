@@ -4,7 +4,7 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/default}">
 <head>
-    <title>종료된 프로젝트</title>
+    <title>내 업무목록</title>
 </head>
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
@@ -19,9 +19,9 @@
             </div>
             <aside class="mt-10 w-fit" id="sidebarProject">
                 <ul class="text-lg p-2 py-4 font-semibold hover:text-[#000000]">
-                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8">업무 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 text-blue-600 border-blue-600 pb-2 pr-8">업무 전체보기</li>
                     <li th:onclick="|location.href='@{/project/totalIssueList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">이슈 전체보기</li>
-                    <li th:onclick="|location.href='@{/project/doneProjectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 text-blue-600 border-blue-600 pb-2 pr-8 mt-4">완료된 프로젝트</li>
+                    <li th:onclick="|location.href='@{/project/doneProjectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">완료된 프로젝트</li>
                 </ul>
             </aside>
         </div>
@@ -30,7 +30,7 @@
     <div class="mx-auto w-5/6">
         <div class="mx-auto w-full mb-10">
             <h1 class="flex items-center">
-                <span class="mr-10 text-xl font-normal">완료된 프로젝트는 총 <strong>[[${totalCount}]]</strong>개입니다.</span>
+                <span class="mr-10 text-xl font-normal">내 업무는 총 <strong>[[${totalCount}]]</strong>개입니다.</span>
                 <span class="h-px flex-1 bg-gray-600"></span>
             </h1>
 
@@ -38,35 +38,36 @@
             <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                 <th class="px-4 py-3">프로젝트명</th>
+                <th class="px-4 py-3">업무명</th>
                 <th class="px-4 py-3">시작일</th>
                 <th class="px-4 py-3">종료일</th>
-                <th class="px-4 py-3">책임자</th>
-                <th class="px-4 py-3">권한</th>
+                <th class="px-4 py-3">생성자</th>
+                <th class="px-4 py-3">담당자</th>
             </tr>
             </thead>
             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="projectList">
             <!-- 반복되는 tr영역 -->
-                <th:block th:each="project, status: ${projects}">
-                    <tr th:data-id="${project.id}" class="cursor-pointer">
-                        <td class="px-4 py-3 text-sm" th:text="${project.title}">
+                <th:block th:each="task, status: ${tasks}">
+                    <tr th:data-id="${task.id}" class="cursor-pointer">
+                        <td class="px-4 py-3 text-sm" th:text="${task.name}">
                         </td>
-                        <td class="px-4 py-3 text-sm" th:text="|${#temporals.format(project.startAt, 'yyyy/MM/dd')}|">
+                        <td class="px-4 py-3 text-sm" th:text="|${#temporals.format(task.startAt, 'yyyy/MM/dd')}|">
                         </td>
-                        <td class="px-4 py-3 text-sm" th:text="|${#temporals.format(project.endAt, 'yyyy/MM/dd')}|">
+                        <td class="px-4 py-3 text-sm" th:text="|${#temporals.format(task.endAt, 'yyyy/MM/dd')}|">
                         </td>
                         <td class="px-4 py-3 text-sm">
                             <div class="flex items-center text-sm">
                                 <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                                     <img
                                             class="object-cover w-full h-full rounded-full"
-                                            th:src="${project.employee.profileUrl != null ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}"
+                                            th:src="${task.employee.profileUrl != null ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}"
                                             alt=""
                                             loading="lazy"
                                     />
                                     <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                                 </div>
                                 <div>
-                                    <p class="font-semibold" th:text="|[${project.employee.deptName}] ${project.employee.name}${project.employee.positionName}|">${employee.name}</p>
+                                    <p class="font-semibold" th:text="|[${task.employee.deptName}] ${task.employee.name}${task.employee.positionName}|">${employee.name}</p>
                                 </div>
                             </div>
                         </td>

@@ -9,6 +9,8 @@ import com.sh.workson.project.entity.TaskStatus;
 import com.sh.workson.project.repository.TaskRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,5 +120,10 @@ public class TaskService {
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    public Page<TaskDetailDto> findAllMyTask(Long id, Pageable pageable) {
+        Page<Task> tasks = taskRepository.findAllMyTask(id, pageable);
+        return tasks.map(project -> convertToTaskDetailDto(project));
     }
 }

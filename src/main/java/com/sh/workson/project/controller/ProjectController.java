@@ -394,4 +394,19 @@ public class ProjectController {
         model.addAttribute("number", projectListDtos.getNumber());
         model.addAttribute("totalpages", projectListDtos.getTotalPages());
     };
+
+
+    @GetMapping("/totalTaskList.do")
+    public void totalTaskList(
+            @PageableDefault(size = 15, page = 0) Pageable pageable,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model
+    ){
+        Page<TaskDetailDto> taskDetailDtos = taskService.findAllMyTask(employeeDetails.getEmployee().getId(), pageable);
+        model.addAttribute("tasks", taskDetailDtos);
+        model.addAttribute("totalCount", taskDetailDtos.getTotalElements());
+        model.addAttribute("size", taskDetailDtos.getSize());
+        model.addAttribute("number", taskDetailDtos.getNumber());
+        model.addAttribute("totalpages", taskDetailDtos.getTotalPages());
+    }
 }
