@@ -37,36 +37,27 @@
             <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
                 <span>결재자들 선택</span>
                 <hr class="mt-2">
-<!--                <div class="mt-2">-->
-<!--                    <th:block th:each="emp : ${employees}">-->
-<!--                        <label class="inline-flex items-center">-->
-<!--                            <input type="checkbox" th:name="'emp'" th:value="${emp.id}" class="form-checkbox h-3 w-3 ml-2 text-blue-600">-->
-<!--                            <div class="ml-2 text-gray-700" th:text="${emp.empName}">이름</div>-->
-<!--                        </label>-->
-<!--                        <br>-->
-<!--                    </th:block>-->
-<!--                </div>-->
                 <th:block th:each="dept : ${departments}">
-                    <button id="dropdownHelperRadioButton-${dept.id}" data-dropdown-toggle="dropdownHelperRadio-${dept.id}" class="mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" th:text="${dept.name + ' 부서'}">
+                    <button th:id="|dropdownHelperRadioButton-${dept.id}|" th:data-dropdown-toggle="|dropdownHelperRadio-${dept.id}|" class="mt-2 text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" th:text="${dept.name + ' 부서'}">
                         부서 <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                     </button>
 
                     <!-- Dropdown menu -->
-                    <div id="dropdownHelperRadio-${dept.id}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 6119.5px, 0px);">
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHelperRadioButton-${dept.id}">
+                    <div th:id="|dropdownHelperRadio-${dept.id}|" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 6119.5px, 0px);">
+                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" th:aria-labelledby="|dropdownHelperRadioButton-${dept.id}|">
 
                             <!-- Iterate through employees for the current department -->
-                            <th:block th:each="emp : ${employees}" th:if="${emp.deptName == dept.name}">
-                                <li>
+                            <th:block th:each="emp : ${employees}" th:if="${emp.deptName == dept.name}" >
+                                <li >
                                     <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                                         <div class="flex items-center h-5">
-                                            <input id="helper-radio-${emp.id}" name="helper-radio" th:value="${emp.id}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                            <input th:id="|helper-radio-${emp.id}|" name="helper-radio" th:value="${emp.id}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         </div>
                                         <div class="ms-2 text-sm">
-                                            <label for="helper-radio-${emp.id}" class="font-medium text-gray-900 dark:text-gray-300">
-                                                <div class="ml-2 text-gray-700" th:text="${emp.empName}">이름</div>
+                                            <label th:for="|helper-radio-${emp.id}|" class="font-medium text-gray-900 dark:text-gray-300">
+                                                <div class="ml-2 text-gray-700" th:text="${emp.empName + ' [' + emp.positionName + ']'}">이름</div>
                                             </label>
                                         </div>
                                     </div>

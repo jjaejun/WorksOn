@@ -547,7 +547,12 @@ public class ApprovalController {
     public void createApproval(Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         List<IApprover> employees = employeeService.findApprover(employeeDetails.getEmployee().getId());
         model.addAttribute("employees", employees);
+
         List<Department> departments = departmentService.findAll();
         model.addAttribute("departments", departments);
+
+        Employee loginUser = employeeService.findLoginUser(employeeDetails.getEmployee().getId());
+        model.addAttribute("loginUser", loginUser);
+        log.debug("loginUser = {}", loginUser.getRest());
     }
 }

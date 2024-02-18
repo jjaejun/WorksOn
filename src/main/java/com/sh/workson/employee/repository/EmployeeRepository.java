@@ -58,9 +58,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 """, nativeQuery = true)
     List<IApprover> findApprover(Long id);
 
-
-
-
+    @Query("from Employee e left join fetch e.department left join fetch e.position where e.id = :id")
+    Employee findLoginUser(Long id);
 
 
     /**
