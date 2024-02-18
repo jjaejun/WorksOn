@@ -240,6 +240,17 @@
                                 </span>
                                 </div>
                             </th:block>
+                            <th:block th:if="${project.status == 'DONE'}">
+                                <div class="mt-0.5 font-sm mb-2 statesBtn">
+                                <span
+                                      class="inline-flex items-center bg-green-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                             <path d="M11.28 6.78a.75.75 0 00-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l3.5-3.5z"></path>
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zm-1.5 0a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"></path>
+                                        </svg>완료
+                                    </span>
+                                </div>
+                            </th:block>
                             <div id="dropdown-states" class="z-10 hidden absolute top-[140px] left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                     <li>
@@ -289,10 +300,17 @@
                             <input type="text" name="projectTitle" id="projectTitle" class="hidden absolute top-0 left-0 text-2xl text-gray-700 flex items-center mb-4 border-none p-0" th:value="${project.title}" >
                         </div>
                         <!-- 수정버튼은 생성자와 담당자만 가능 -> 삭제는 생성자만 가능 -->
-                        <div class="flex w-fit h-fit" id="taskFrmBtns">
-                            <button id="editBtn" type="button" class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-yellow-600 me-2">편집</button>
-                            <button id="updateBtn" type="button" class="hidden text-gray-700 bg-blue-50 focus:ring-4 hover:focus:bg-blue-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-blue-600 me-2">편집 완료</button>
-                        </div>
+                        <th:block th:if="${project.status != 'DONE'}">
+                            <div class="flex w-fit h-fit" id="taskFrmBtns">
+                                <button id="editBtn" type="button" class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-yellow-600 me-2">편집</button>
+                                <button id="updateBtn" type="button" class="hidden text-gray-700 bg-blue-50 focus:ring-4 hover:focus:bg-blue-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-blue-600 me-2">편집 완료</button>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${project.status == 'DONE'}">
+                            <div class="flex w-fit h-fit">
+                                <div class="text-red-600 font-medium text-md py-1 me-2">종료된 프로젝트는 수정할 수 없습니다.</div>
+                            </div>
+                        </th:block>
                     </div>
 
                     <table class="w-full">
@@ -364,13 +382,13 @@
 
                     <div>
                         <!-- Modal toggle -->
-                        <div class="flex justify-end w-full mb-2">
-                            <button data-modal-target="static-modal" id="closeBtn" data-modal-toggle="static-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                + 파일 업로드하기
-                            </button>
-                        </div>
-
-
+                        <th:block th:if="${project.status == 'DONE'}">
+                            <div class="flex justify-end w-full mb-2">
+                                <button data-modal-target="static-modal" id="closeBtn" data-modal-toggle="static-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                    + 파일 업로드하기
+                                </button>
+                            </div>
+                        </th:block>
                         <!-- Main modal -->
                         <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                             <div class="relative p-4 w-full max-w-2xl max-h-full">

@@ -7,17 +7,19 @@
              class="drop flex-1 bg-yellow-100 rounded-lg p-4 space-y-2 min-h-[800px]">
             <div class="flex justify-between items-center">
                 <h1 class="font-semibold text-md">To do</h1>
-                <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="To do" data-modal-target="task-modal" data-modal-toggle="task-modal">
-                    <div class="flex-1 h-full">
-                        <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-yellow-200 rounded-lg">
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                </svg>
+                <th:block th:if="${project.status != 'DONE'}">
+                    <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="To do" data-modal-target="task-modal" data-modal-toggle="task-modal">
+                        <div class="flex-1 h-full">
+                            <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-yellow-200 rounded-lg">
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </th:block>
             </div>
 
             <th:block th:each="task, status : ${taskTodos}">
@@ -42,6 +44,7 @@
                     </ul>
                 </div>
             </th:block>
+            <th:block th:if="${project.status != 'DONE'}">
             <button class="w-full h-fit flex items-center justify-center cursor-pointer bg-white/20 border border-white p-3 rounded-md text-gray-600 hover:bg-white/60 modalBtn"
                     data-status="To do" data-modal-target="task-modal" data-modal-toggle="task-modal">
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -49,6 +52,7 @@
                 </svg>
                 <span>add task</span>
             </button>
+            </th:block>
 
 <!--            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item2</div>-->
         </div>
@@ -56,18 +60,20 @@
              class="drop flex-1 bg-blue-100 rounded-lg p-4 space-y-2 min-h-[800px]">
             <div class="flex justify-between items-center">
                 <h1 class="font-semibold text-md">In progress</h1>
-                <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="In progress"
-                     data-modal-target="task-modal" data-modal-toggle="task-modal">
-                    <div class="flex-1 h-full">
-                        <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-blue-200 rounded-lg">
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                </svg>
+                <th:block th:if="${project.status != 'DONE'}">
+                    <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="In progress"
+                         data-modal-target="task-modal" data-modal-toggle="task-modal">
+                        <div class="flex-1 h-full">
+                            <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-blue-200 rounded-lg">
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </th:block>
             </div>
 
 
@@ -93,6 +99,7 @@
                     </ul>
                 </div>
             </th:block>
+            <th:block th:if="${project.status != 'DONE'}">
             <button class="w-full h-fit flex items-center justify-center cursor-pointer bg-white/20 border border-white p-3 rounded-md text-gray-600 hover:bg-white/60 modalBtn"
                     data-status="In progress" data-modal-target="task-modal" data-modal-toggle="task-modal">
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -100,11 +107,13 @@
                 </svg>
                 <span>add task</span>
             </button>
+            </th:block>
         </div>
         <div id="dp3" data-zone="DONE"
              class="drop flex-1 bg-rose-100 rounded-lg p-4 space-y-2 min-h-[800px]">
             <div class="flex justify-between items-center">
                 <h1 class="font-semibold text-md">Done</h1>
+                <th:block th:if="${project.status != 'DONE'}">
                 <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="Done"
                      data-modal-target="task-modal" data-modal-toggle="task-modal">
                     <div class="flex-1 h-full">
@@ -117,6 +126,7 @@
                         </div>
                     </div>
                 </div>
+                </th:block>
             </div>
 
 
@@ -142,6 +152,7 @@
                     </ul>
                 </div>
             </th:block>
+            <th:block th:if="${project.status != 'DONE'}">
             <button class="w-full h-fit flex items-center justify-center cursor-pointer bg-white/20 border border-white p-3 rounded-md text-gray-600 hover:bg-white/60 modalBtn"
                     data-status="Done" data-modal-target="task-modal" data-modal-toggle="task-modal">
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -149,6 +160,7 @@
                 </svg>
                 <span>add task</span>
             </button>
+            </th:block>
         </div>
     </div>
 

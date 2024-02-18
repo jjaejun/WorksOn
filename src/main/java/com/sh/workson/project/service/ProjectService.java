@@ -150,4 +150,9 @@ public class ProjectService {
         project.setEndAt(projectUpdateDto.getEndAt());
         return project;
     }
+
+    public Page<ProjectListDto> findAllDoneProject(Long id, Pageable pageable) {
+        Page<Project> projects = projectRepository.findByAllDoneProject(id, pageable);
+        return projects.map(project -> convertToProjectDto(project));
+    }
 }

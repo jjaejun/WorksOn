@@ -379,4 +379,19 @@ public class ProjectController {
         projectService.updateProject(projectUpdateDto);
         return new ResponseEntity<>("프로젝트 정보가 수정되었습니다.", HttpStatus.OK);
     }
+
+
+    @GetMapping("/doneProjectList.do")
+    public void doneProjectList(
+            @PageableDefault(size = 15, page = 0) Pageable pageable,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model
+    ){
+        Page<ProjectListDto> projectListDtos = projectService.findAllDoneProject(employeeDetails.getEmployee().getId(), pageable);
+        model.addAttribute("projects", projectListDtos);
+        model.addAttribute("totalCount", projectListDtos.getTotalElements());
+        model.addAttribute("size", projectListDtos.getSize());
+        model.addAttribute("number", projectListDtos.getNumber());
+        model.addAttribute("totalpages", projectListDtos.getTotalPages());
+    };
 }

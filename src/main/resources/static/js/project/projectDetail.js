@@ -73,7 +73,7 @@ const updateBtnEvent = () => {
                 // status 편집
                 statesBtn.removeEventListener('click', dropDownEvent);
                 editBtn.classList.remove("hidden");
-                
+
                 alert(response);
             }
         })
