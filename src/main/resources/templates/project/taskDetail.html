@@ -341,44 +341,6 @@
 
             <!--댓글 영역-->
             <div class="w-full mt-10 mb-20">
-
-                <!-- component -->
-                <div class="antialiased mx-auto w-full">
-                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
-                    <div id="commentWrap" class="space-y-4">
-                        <th:block th:each="comment : ${comments}">
-                            <div class="comment flex" th:id="|comment${comment.id}|">
-                                <div class="flex-shrink-0 mr-3">
-                                    <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10"
-                                         th:src="${(comment.employee.profileUrl != null) ? comment.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
-                                </div>
-                                <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-                                    <div class="flex justify-between w-full">
-                                        <div>
-                                            <strong th:text="|${comment.employee.name}${comment.employee.position.name}|"></strong>
-                                            <span class="text-xs text-gray-400" th:text="${#temporals.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
-                                        </div>
-                                        <div>
-                                            <button type="button"
-                                                    class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[50px] py-1 border border-yellow-600 me-2">편집</button>
-                                            <button type="button" th:onclick="|javascript:deleteTask(${comment.id})|"
-                                                    class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-sm font-medium">삭제</button>
-                                        </div>
-                                    </div>
-                                    <textarea style="outline: none;" readonly class="text-sm border-none focus:outline-none resize-none w-full h-fit"
-                                              cols="3">[[${comment.content}]]</textarea>
-                                    <div class="mt-4 flex items-center">
-                                        <button class="reply text-sm text-gray-500 font-semibold" th:data-parent-id="${comment.id}">
-                                            답글달기
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </th:block>
-                    </div>
-                </div>
-
                 <form method="post" name="commentCreateFrm" th:action="@{/project/projectCommentCreate.do}">
                     <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                         <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
@@ -400,6 +362,70 @@
                         </div>
                     </div>
                 </form>
+                <!-- component -->
+                <div class="antialiased mx-auto w-full mt-10">
+                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
+                    <div id="commentWrap" class="space-y-4">
+                        <th:block th:each="comment : ${comments}">
+                            <div class="comment flex" th:id="|comment${comment.id}|" th:if="${comment.commentLevel == 1}">
+                                <div class="flex-shrink-0 mr-3">
+                                    <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10"
+                                         th:src="${(comment.employee.profileUrl != null) ? comment.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                                </div>
+                                <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                                    <div class="flex justify-between w-full">
+                                        <div>
+                                            <strong th:text="|${comment.employee.name}${comment.employee.position.name}|"></strong>
+                                            <span class="text-xs text-gray-400" th:text="${#temporals.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+                                        </div>
+                                        <div>
+                                            <button type="button"
+                                                    class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[50px] py-1 border border-yellow-600 me-2">편집</button>
+                                            <button type="button" th:onclick="|javascript:deleteTask(${comment.id})|"
+                                                    class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-sm font-medium">삭제</button>
+                                        </div>
+                                    </div>
+                                    <textarea style="outline: none;" readonly class="text-sm border-none focus:outline-none resize-none w-full h-fit"
+                                              cols="3">[[${comment.content}]]</textarea>
+
+                                    <!--대댓글 영역-->
+                                    <th:block th:each="reply : ${comments}">
+                                        <div class="flex mb-1" th:id="|comment${reply.id}|" th:if="${reply.commentLevel == 2 && reply.parentCommentId == comment.id}">
+                                            <div class="flex-shrink-0 mr-3">
+                                                <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8"
+                                                     th:src="${(reply.employee.profileUrl != null) ? reply.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                                            </div>
+                                            <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                                                <div class="flex justify-between w-full">
+                                                    <div>
+                                                        <strong th:text="|${reply.employee.name}${reply.employee.position.name}|"></strong>
+                                                        <span class="text-xs text-gray-400" th:text="${#temporals.format(reply.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+                                                    </div>
+                                                    <div th:onclick="|javascript:deleteTask(${reply.id})|">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer hover:text-red-400 rounded-full w-4 h-4 mt-1 mr-0">
+                                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <p class="text-xs sm:text-sm">[[${reply.content}]]</p>
+                                            </div>
+                                        </div>
+                                    </th:block>
+
+                                    <div class="mt-4 flex items-center">
+                                        <button class="reply text-sm text-gray-500 font-semibold" th:data-parent-id="${comment.id}">
+                                            답글달기
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>

@@ -49,9 +49,11 @@ const commentReplyCreate = (parentId) => {
                             <strong>${empName.value}${empPositionName.value}</strong> 
                             <span class="text-xs text-gray-400">${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours()}:${date.getMinutes()}</span>    
                         </div>
-                        <div>
-                            <button id="deleteBtn" type="button" onclick="javascript:deleteTask(${response.id})"
-                                    class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-xs font-medium">삭제</button>
+                        <div onclick="javascript:deleteTask(${response.id})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer hover:text-red-400 rounded-full w-4 h-4 mt-1 mr-0">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                         </div>
                     </div>
                     <p class="text-xs sm:text-sm">
@@ -76,7 +78,7 @@ const replyEvent = () => {
                     <textarea rows="1" name="content"
                     class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                     placeholder="답글을 작성해주세요."></textarea>
-                        <input type="hidden" name="commentLevel" value="1">
+                        <input type="hidden" name="commentLevel" value="2">
                     <button type="button" onclick="javascript:commentReplyCreate(${parentId})"
                             class="inline-flex justify-center ml-1 p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
                         <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
