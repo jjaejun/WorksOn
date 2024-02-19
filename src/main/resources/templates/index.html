@@ -6,7 +6,18 @@
 <head>
     <title>대시보드</title>
 </head>
-<style layout:fragment="style"></style>
+<style layout:fragment="style">
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #666;
+        color: #fff;
+    }
+</style>
 <div layout:fragment="content">
     <div class="w-full bg-gray-50 p-2">
         <table class="w-full">
@@ -133,7 +144,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="dailywork, status : ${dailyworks}" th:data-dailywork-id="${dailywork.id}">
-                                <td th:text="${dailywork.createdAt}"></td>
+                                <td th:text="${#temporals.format(dailywork.createdAt,'yyyy/MM/dd')}"></td>
                                 <td th:text="${dailywork.content}"></td>
                             </tr>
                             </tbody>
