@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
@@ -43,8 +45,7 @@ public class Project {
     private Employee employee;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectId")
     @Builder.Default
     private List<ProjectEmployee> projectEmployees = new ArrayList<>();
 

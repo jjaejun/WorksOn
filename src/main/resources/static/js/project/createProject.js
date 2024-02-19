@@ -61,6 +61,18 @@ const readClickEvent = () => {
     document.querySelectorAll(".searchResult").forEach((emp) => {
     emp.addEventListener('click', (e) => {
 
+        const validEmpId = e.target.dataset.empId;
+
+        // undefined일 때 입력되지 않도록 함
+        if(validEmpId === undefined){
+            return;
+        }
+        // 한번만 입력하도록 함
+        if(document.getElementById(`read${validEmpId}`) !== null){
+            alert("동일한 사원을 추가할 수 없습니다.")
+            return;
+        }
+
         const input = document.querySelector("#read-search-input");
         input.value = '';
         const searchList = document.querySelector("#read-search-list");
@@ -152,16 +164,28 @@ const createClickDelete = (empId) => {
  * 목록 중 하나 클릭 시 입력처리
  */
 const createClickEvent = () => {
-    document.querySelectorAll(".searchResult").forEach((emp) => {
+    const searchResult = document.querySelectorAll(".searchResult");
+    searchResult.forEach((emp, i) => {
         emp.addEventListener('click', (e) => {
-            e.stopPropagation();
+
+            const validEmpId = e.target.dataset.empId;
+            
+            // undefined일 때 입력되지 않도록 함
+            if(validEmpId === undefined){
+                return;
+            }
+            // 한번만 입력하도록 함
+            if(document.getElementById(`create${validEmpId}`) !== null){
+                alert("동일한 사원을 추가할 수 없습니다.")
+                return;
+            }
 
             const input = document.querySelector("#create-search-input");
             input.value = '';
             const searchList = document.querySelector("#create-search-list");
             searchList.innerHTML = '';
 
-            const {empId, empName, empPosition} = e.target.dataset;
+            const {empId, empName, empPosition} = searchResult[i].dataset;
             const selectArea = document.querySelector("#createSelectArea");
 
             selectArea.innerHTML += `
@@ -208,10 +232,11 @@ document.querySelector("#create-search-input").addEventListener('keyup', (e) => 
                     const {id, name, department: {name : deptName}, position: {name: positionName}, profileUrl} = e;
 
                     searchList.innerHTML += `
-                <div class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-blue-100 text-sm" onclick="javascript:createClickEvent();">
+                <div class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-blue-100 text-sm" 
+                        onclick="javascript:createClickEvent();">
                     <div class="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-blue-100">
-                        <div data-emp-id="${id}" data-emp-name="${name}" data-emp-position="${positionName}"
-                        class="searchResult w-full items-center flex">
+                        <div data-emp-id="${id}" data-emp-name="${name}" data-emp-position="${positionName}" 
+                            class="searchResult w-full items-center flex">
                             <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
                                 <img width="50px" alt="사원 프로필 사진" class="block rounded-full" 
                                 src="${profileUrl != null ? profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">

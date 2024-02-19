@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
@@ -19,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Data
+@DynamicUpdate
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_task_id_generator")

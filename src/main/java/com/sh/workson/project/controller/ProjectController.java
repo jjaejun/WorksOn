@@ -9,9 +9,13 @@ import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.project.dto.*;
+import com.sh.workson.project.entity.ProjectComment;
+import com.sh.workson.project.entity.ProjectCommentType;
 import com.sh.workson.project.entity.ProjectEmployee;
 import com.sh.workson.project.entity.Task;
+import com.sh.workson.project.service.ProjectCommentService;
 import com.sh.workson.project.service.ProjectService;
+import com.sh.workson.project.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,6 +61,10 @@ public class ProjectController {
     private S3FileService s3FileService;
     @Autowired
     private AttachmentService attachmentService;
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private ProjectCommentService projectCommentService;
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
@@ -264,7 +272,7 @@ public class ProjectController {
     ){
         log.debug("taskCreateDto = {}", taskCreateDto);
         taskCreateDto.setTaskOwnerId(employeeDetails.getEmployee().getId());
-        TaskListDto task = projectService.createTask(taskCreateDto);
+        TaskListDto task = taskService.createTask(taskCreateDto);
 
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
@@ -274,7 +282,8 @@ public class ProjectController {
             TaskUpdateDto taskUpdateDto
     ){
         log.debug("taskUpdateDto = {}", taskUpdateDto);
-        projectService.updateTask(taskUpdateDto);
+        if(taskUpdateDto.getStatus() != null)
+            taskService.updateTask(taskUpdateDto);
 
         return null;
     }
@@ -291,8 +300,13 @@ public class ProjectController {
             @RequestParam(name = "size2", defaultValue = "5") int size2
     ){
 
-        ProjectDetailDto projectDetailDto = projectService.findById(projectId);
-        model.addAttribute("project", projectDetailDto);
+        // task 찾기
+        TaskDetailDto taskDto = taskService.findById(id);
+        log.debug("taskDto = {}", taskDto);
+        model.addAttribute("task", taskDto);
+
+        List<ProjectCommentDetailDto> commentDetailDtos = projectCommentService.findByTypeId(taskDto.getId(), ProjectCommentType.TASK);
+        model.addAttribute("comments", commentDetailDtos);
 
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
@@ -311,6 +325,88 @@ public class ProjectController {
         model.addAttribute("projectOwnerSize", projects2.getSize());
         model.addAttribute("projectOwnerNumber", projects2.getNumber());
         model.addAttribute("projectOwnerTotalpages", projects2.getTotalPages());
+    }
 
+
+    @PostMapping("/updateTaskDetail.do")
+    public ResponseEntity<?> updateTaskDetail(
+            TaskDetailUpdateDto taskDetailUpdateDto
+    ){
+        log.debug("taskUpdateDto = {}", taskDetailUpdateDto);
+        taskService.updateTaskDetail(taskDetailUpdateDto);
+        return new ResponseEntity<>("업무 내용이 수정되었습니다.", HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteTask.do")
+    public String deleteTask(
+            @RequestParam("id") Long id,
+            @RequestParam("projectId") Long projectId
+    ){
+        log.debug("taskId = {}", id);
+        log.debug("projectId = {}", projectId);
+
+        taskService.deleteTask(id);
+        return "redirect:/project/projectDetail.do?id=" + projectId;
+    }
+
+
+    @PostMapping("/projectCommentCreate.do")
+    public ResponseEntity<?> projectCommentCreate(
+            ProjectCommentCreateDto commentCreateDto
+    ){
+        log.debug("commentCreateDto = {}", commentCreateDto);
+        ProjectCommentDetailDto projectCommentDetailDto = projectCommentService.createProjectComment(commentCreateDto);
+        log.debug("commentDetailDto = {}", projectCommentDetailDto);
+        return new ResponseEntity<>(projectCommentDetailDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/projectCommentDelete.do")
+    public ResponseEntity<?> projectCommentDelete(
+            ProjectCommentDeleteDto commentDeleteDto
+    ){
+        log.debug("commentCreateDto = {}", commentDeleteDto);
+        projectCommentService.deleteProjectComment(commentDeleteDto);
+        return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.OK);
+    }
+
+
+
+    @PostMapping("/updateProject.do")
+    public ResponseEntity<?> updateProject(
+            ProjectUpdateDto projectUpdateDto
+    ){
+        log.debug("taskUpdateDto = {}", projectUpdateDto);
+        projectService.updateProject(projectUpdateDto);
+        return new ResponseEntity<>("프로젝트 정보가 수정되었습니다.", HttpStatus.OK);
+    }
+
+
+    @GetMapping("/doneProjectList.do")
+    public void doneProjectList(
+            @PageableDefault(size = 15, page = 0) Pageable pageable,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model
+    ){
+        Page<ProjectListDto> projectListDtos = projectService.findAllDoneProject(employeeDetails.getEmployee().getId(), pageable);
+        model.addAttribute("projects", projectListDtos);
+        model.addAttribute("totalCount", projectListDtos.getTotalElements());
+        model.addAttribute("size", projectListDtos.getSize());
+        model.addAttribute("number", projectListDtos.getNumber());
+        model.addAttribute("totalpages", projectListDtos.getTotalPages());
+    };
+
+
+    @GetMapping("/totalTaskList.do")
+    public void totalTaskList(
+            @PageableDefault(size = 15, page = 0) Pageable pageable,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model
+    ){
+        Page<TaskDetailDto> taskDetailDtos = taskService.findAllMyTask(employeeDetails.getEmployee().getId(), pageable);
+        model.addAttribute("tasks", taskDetailDtos);
+        model.addAttribute("totalCount", taskDetailDtos.getTotalElements());
+        model.addAttribute("size", taskDetailDtos.getSize());
+        model.addAttribute("number", taskDetailDtos.getNumber());
+        model.addAttribute("totalpages", taskDetailDtos.getTotalPages());
     }
 }
