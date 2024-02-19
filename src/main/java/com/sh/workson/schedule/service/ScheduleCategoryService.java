@@ -2,9 +2,7 @@ package com.sh.workson.schedule.service;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
-import com.sh.workson.schedule.dto.CreateScheduleCategoryDto;
 import com.sh.workson.schedule.dto.ScheduleCategoryDto;
-import com.sh.workson.schedule.dto.UpdateSchduleCategoryDto;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.repository.ScheduleCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
