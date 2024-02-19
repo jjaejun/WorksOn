@@ -128,12 +128,11 @@ create table project_comment (
     comment_level number default 1,
     created_at timestamp not null,
     emp_id number,
-    project_id number not null,
+    type_id number not null,
     type varchar2(10),
     constraints pk_project_comment_id primary key(id),
     constraint fk_project_comment_parent_id foreign key (parent_comment_id) references project_comment(id) on delete cascade,
     constraints fk_project_comment_emp_id foreign key(emp_id) references employee(id) on delete set null,
-    constraints fk_project_comment_project_id foreign key(project_id) references project(id) on delete set null,
     constraints ck_project_comment_type check (type in ('TASK', 'ISSUE'))
 );
 create sequence seq_project_comment_id start with 1 increment by 50;
