@@ -6,6 +6,9 @@ import com.sh.workson.dayoff.entity.DayOffListDto;
 import com.sh.workson.dayoff.repository.DayOffRepository;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,5 +37,10 @@ public class DayOffService {
     private DayOffListDto convertToDayOffListDto(DayOff dayOff) {
         DayOffListDto dayOffListDto = modelMapper.map(dayOff, DayOffListDto.class);
         return dayOffListDto;
+    }
+
+    public Page<DayOffListDto> findEqSearchDate(Pageable pageable, Long id, LocalDateTime startOfYear, LocalDateTime endOfYear) {
+        Page<DayOff> dayOffPage = dayOffRepository.findEqSearchDate(pageable, id, startOfYear, endOfYear);
+        return dayOffPage.map((dayoff) -> convertToDayOffListDto(dayoff));
     }
 }
