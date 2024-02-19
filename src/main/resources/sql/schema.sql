@@ -128,12 +128,11 @@ create table project_comment (
     comment_level number default 1,
     created_at timestamp not null,
     emp_id number,
-    project_id number not null,
+    type_id number not null,
     type varchar2(10),
     constraints pk_project_comment_id primary key(id),
     constraint fk_project_comment_parent_id foreign key (parent_comment_id) references project_comment(id) on delete cascade,
     constraints fk_project_comment_emp_id foreign key(emp_id) references employee(id) on delete set null,
-    constraints fk_project_comment_project_id foreign key(project_id) references project(id) on delete set null,
     constraints ck_project_comment_type check (type in ('TASK', 'ISSUE'))
 );
 create sequence seq_project_comment_id start with 1 increment by 50;
@@ -144,7 +143,7 @@ create table task (
     name varchar2(1000) not null,
     content varchar2(4000),
     priority number default 1,
-    start_at date not null,
+    start_at date,
     end_at date,
     status varchar2(30),
     owner_id number,
@@ -324,12 +323,12 @@ create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 테이블 일괄 삭제 시
 
---drop table approval_line;
---drop table approval_attachment;
---drop table approval;
---drop table approval_leave;
---drop table approval_equipment;
---drop table approval_cooperation;
+--drop table approval_line cascade constraints;
+--drop table approval_attachment cascade constraints;
+--drop table approval cascade constraints;
+--drop table approval_leave cascade constraints;
+--drop table approval_equipment cascade constraints;
+--drop table approval_cooperation cascade constraints;
 
 -- 시퀀스 일괄 삭제시
 
@@ -357,6 +356,7 @@ alter table approval_leave add leave_type varchar2(30); -- 결재 종류
 alter table approval_leave add annul varchar2(10); -- 반차 여부
 alter table approval_leave add constraints ck_approval_leave_annul check (annul in ('y', 'n'));
 delete from approval_leave;
+alter table approval_leave add leave_count varchar2(30); -- 결재 종류
 ALTER TABLE approval_leave MODIFY leave_count FLOAT(53); -- 연차 일수
 update approval_leave set leave_count = 1.0 where id = 11101;
 select * from approval_leave;

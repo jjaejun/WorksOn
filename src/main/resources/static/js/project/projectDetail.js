@@ -1,3 +1,203 @@
+const dropDownEvent = (e) => {
+    const dropDown = document.querySelector("#dropdown-states");
+    dropDown.classList.toggle("hidden");
+}
+/**
+ * 편집완료 버튼 클릭 시
+ */
+const updateBtnEvent = () => {
+    // input태그들 편집불가하도록 하기
+    const banner = document.querySelector("#sticky-banner");
+    const statesBtn = document.querySelector(".statesBtn");
+    const updateBtn = document.querySelector("#updateBtn");
+    const editBtn = document.querySelector("#editBtn");
+
+    // 업데이트할 값 가져오기
+    const id = document.querySelector("#id");
+    const projectTitle = document.querySelector("#projectTitle");
+    const status = document.querySelector("#status");
+    const startAt = document.querySelector("#startAt");
+    const endAt = document.querySelector("#endAt");
+
+    document.querySelector("#updateBtn").addEventListener('click', (e) => {
+        const btn = e.target;
+        banner.classList.add("hidden");
+        btn.classList.add("hidden");
+
+        // 날짜 input 태그 변경
+        startAt.classList.add("hidden");
+        endAt.classList.add("hidden");
+
+        // content
+        projectTitle.classList.add("hidden");
+
+        // btn
+        updateBtn.classList.add("hidden");
+
+        console.log(projectTitle.value, status.value, startAt.value, endAt.value);
+
+        $.ajax({
+            url: `${contextPath}project/updateProject.do`,
+            data: {
+                id: id.value,
+                title: projectTitle.value,
+                status: status.value,
+                startAt: startAt.value,
+                endAt: endAt.value,
+            },
+            headers: {
+                [csrfHeaderName] : csrfToken
+            },
+            method: 'post',
+            success(response) {
+                // html 변경
+                document.querySelector("#startAtHtml").innerHTML = `
+                ${startAt.value}
+                <input type="date" value="${startAt.value}"
+                       id="startAt" name="startAt"
+                       class="hidden absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
+                `;
+                document.querySelector("#endAtHtml").innerHTML = `
+                ${endAt.value}
+                <input type="date" value="${endAt.value}"
+                       id="endAt" name="endAt"
+                       class="hidden absolute text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
+                `;
+                document.querySelector("#titleHtml").innerHTML = `
+                ${projectTitle.value}
+                <input type="text" name="projectTitle" id="projectTitle" class="hidden absolute top-0 left-0 text-2xl text-gray-700 flex items-center mb-4 border-none p-0" value="${projectTitle.value}" >
+                `;
+                document.getElementById(`project${id.value}`).firstElementChild.firstElementChild.innerHTML = `${projectTitle.value}`;
+
+                // 이벤트 삭제하기
+                // status 편집
+                statesBtn.removeEventListener('click', dropDownEvent);
+                editBtn.classList.remove("hidden");
+
+                alert(response);
+            }
+        })
+    });
+};
+/**
+ * 수정 버튼 클릭 시
+ * data-dropdown-toggle="dropdown-states"
+ */
+const editBtnEvent = () => {
+    // input태그들 편집가능하도록 하기
+    const projectTitle = document.querySelector("#projectTitle");
+    const startAt = document.querySelector("#startAt");
+    const endAt = document.querySelector("#endAt");
+    const banner = document.querySelector("#sticky-banner");
+    const statesBtn = document.querySelector(".statesBtn");
+    const dropDown = document.querySelector("#dropdown-states");
+    const updateBtn = document.querySelector("#updateBtn");
+
+    document.querySelector("#editBtn").addEventListener('click', (e) => {
+        const btn = e.target;
+        banner.classList.remove("hidden");
+        btn.classList.add("hidden");
+
+        // 날짜 input 태그 변경
+        startAt.classList.remove("hidden");
+        endAt.classList.remove("hidden");
+
+        // content
+        projectTitle.classList.remove("hidden");
+
+        // btn
+        updateBtn.classList.remove("hidden");
+
+        // status 편집
+        statesBtn.addEventListener('click', dropDownEvent);
+
+        // 상태 버튼 클릭 시
+        const statusInput = document.querySelector("#status");
+        const statusValueBtns = document.querySelectorAll(".statusValueBtn");
+        statusValueBtns.forEach((btn, i) => {
+            btn.addEventListener('click', (e) => {
+                statusInput.value = document.getElementById(`statusValue${i + 1}`).dataset.status;
+                console.log(statusInput.value);
+
+                statesBtn.innerHTML = statusValueBtns[i].innerHTML;
+                dropDown.classList.add("hidden");
+            });
+        });
+    });
+};
+
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    lisColorChange();
+    pageEvent();
+    editBtnEvent();
+    updateBtnEvent();
+});
+
+/**
+ * page1에 대한 변수
+ */
+const pageEvent = () => {
+    document.querySelectorAll(".ownerPageNumber").forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const pageNumber2 = document.querySelector("#selectBtnEmpPage").value;
+            const button = e.target;
+            const { pageNumber} = button.dataset;
+            let size = 5;
+            let url = `/WorksOn/project/projectDetail.do?id=${document.querySelector("#projectId").value}&continue&page1=${pageNumber}&size1=${size}&page2=${pageNumber2}&size2=${size}`;
+
+            console.log(url);
+
+            // Fetch API를 사용하여 비동기로 데이터 가져오기
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 서버로부터 받은 HTML을 현재 페이지의 콘텐츠에 적용
+                    let parser = new DOMParser();
+                    let newDocument = parser.parseFromString(html, 'text/html');
+
+                    const newSidebar = newDocument.querySelector("#sidebarProject");
+                    const originSidebar = document.querySelector("#sidebarProject");
+
+                    console.log(newDocument);
+                    originSidebar.innerHTML = newSidebar.innerHTML;
+                    lisColorChange();
+                    pageEvent();
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+        });
+    });
+};
+
+const lisColorChange = () => {
+    document.querySelectorAll(".articleLi").forEach((article) => {
+        article.addEventListener('click', (e) => {
+            const project = e.target;
+            const { projectId : id } = article.dataset;
+            location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+        });
+
+        // console.log(window.location);
+        const url = window.location.search;
+        if(url === `?id=${article.dataset.projectId}` || url === `?id=${article.dataset.projectId}&continue`){
+            article.classList.add("bg-gray-100");
+        }
+        else {
+            article.classList.remove("bg-gray-100");
+        }
+    });
+}
+
+
+
 const formattedCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -186,6 +386,9 @@ document.querySelector("#files-tab").addEventListener('click', (e) => {
 });
 
 document.querySelector("#employees-tab").addEventListener('click', (e) => {
+    console.log(e.target);
+
+
     const {projectId} = e.target.dataset;
     const tbody = document.querySelector("#employees tbody");
 

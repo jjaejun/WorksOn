@@ -11,13 +11,190 @@
 <div layout:fragment="content">
     <div class="flex flex-wrap">
         <input type="hidden" id="projectId" th:value="${project.id}">
-        <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
-             th:onclick="|location.href='@{/project/createProject.do}'|">
-            <button>
-                <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
-                <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
-            </button>
+        <div class="flex flex-col">
+            <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+                 th:onclick="|location.href='@{/project/createProject.do}'|">
+                <button>
+                    <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
+                    <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
+                </button>
+            </div>
+            <aside class="mt-10 w-fit" id="sidebarProject">
+                <div class="text-lg p-2 py-4 font-bold hover:text-[#000000]">
+                    <span class="border-b border-gray-300 pb-2 pr-8">내 프로젝트</span>
+                </div>
+                <ul class="approval-nav-ul" th:each="project, status : ${projectOwner}">
+                    <li class="articleLi font-normal hover:bg-gray-100 py-1 rounded-lg cursor-pointer"
+                        th:data-project-id="${project.id}" th:id="|project${project.id}|">
+                        <a class="inline-flex items-center text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+                            <span class="ml-4" th:text="${project.title}"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!--내 프로젝트 목록 페이지바-->
+                <div>
+                    <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                        <span class="flex mt-2 justify-center">
+                            <nav aria-label="Table navigation">
+                                <ul class="inline-flex items-center">
+                                    <!-- 이전 버튼 -->
+                                    <li>
+                                        <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                                th:if="${!(projectOwnerNumber > 0)}" readonly>
+                                            <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path
+                                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd"
+                                                        fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                        <button class="ownerPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                                aria-label="Previous"
+                                                th:data-page-number="${projectOwnerNumber - 1}"
+                                                th:if="${projectOwnerNumber > 0}">
+                                            <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" th:data-page-number="${projectOwnerNumber - 1}">
+                                                <path th:data-page-number="${projectOwnerNumber - 1}"
+                                                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                      clip-rule="evenodd"
+                                                      fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+
+                                    <th:block th:each="pageNumber : ${#numbers.sequence(0, projectOwnerTotalpages - 1)}">
+                                        <input type="hidden" th:value="${pageNumber}"
+                                               th:if="${pageNumber == projectOwnerNumber}"
+                                               id="selectBtnOwnerPage">
+                                    </th:block>
+                                    <!-- 다음 버튼 -->
+                                    <li>
+                                        <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                                th:if="${!(projectOwnerNumber < projectOwnerTotalpages - 1)}" readonly>
+                                            <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                            <path
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd"
+                                                    fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                        <button class="ownerPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                                aria-label="Next"
+                                                th:data-page-number="${projectOwnerNumber + 1}"
+                                                th:if="${projectOwnerNumber < projectOwnerTotalpages - 1}">
+                                            <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" th:data-page-number="${projectOwnerNumber + 1}">
+                                                <path th:data-page-number="${projectOwnerNumber + 1}"
+                                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                      clip-rule="evenodd"
+                                                      fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="text-lg p-2 py-4 font-bold hover:text-[#000000]">
+                    <span class="border-b border-gray-300 pb-2 pr-8">참여중인 프로젝트</span>
+                </div>
+                <ul class="approval-nav-ul" th:each="project, status : ${projectEmp}">
+                    <li class="articleLi font-normal hover:bg-gray-100 py-1 rounded-lg cursor-pointer"
+                        th:data-project-id="${project.id}" th:id="|project${project.id}|">
+                        <a class="inline-flex items-center text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+                            <span class="ml-4" th:text="${project.title}"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div id="page-bar-container-2" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                    <span class="flex mt-2 justify-center">
+                        <nav aria-label="Table navigation">
+                            <ul class="inline-flex items-center">
+                                <!-- 이전 버튼 -->
+                                <li>
+                                    <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                            th:if="${!(projectEmpNumber > 0)}" readonly>
+                                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                            <path
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                    <button class="empPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                            aria-label="Previous"
+                                            th:data-page-number="${projectEmpNumber - 1}"
+                                            th:if="${projectEmpNumber > 0}">
+                                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" th:data-page-number="${projectEmpNumber - 1}">
+                                            <path th:data-page-number="${projectEmpNumber - 1}"
+                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <!-- 페이지 번호 반복문 -->
+                                <th:block th:each="pageNumber : ${#numbers.sequence(0, projectEmpTotalpages - 1)}">
+                                    <input type="hidden" th:value="${pageNumber}"
+                                           th:if="${pageNumber == projectEmpNumber}"
+                                           id="selectBtnEmpPage">
+                                </th:block>
+
+                                <!-- 다음 버튼 -->
+                                <li>
+                                    <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                            th:if="${!(projectEmpNumber < projectEmpTotalpages - 1)}" readonly>
+                                            <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                            <path
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                    <button class="empPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                            aria-label="Next"
+                                            th:data-page-number="${projectEmpNumber + 1}"
+                                            th:if="${projectEmpNumber < projectEmpTotalpages - 1}">
+                                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" th:data-page-number="${projectEmpNumber + 1}">
+                                            <path th:data-page-number="${projectEmpNumber + 1}"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"
+                                                  fill-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+                </div>
+            </aside>
         </div>
+
+        <div id="sticky-banner" tabindex="-1" class="hidden fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-200 bg-blue-50 dark:bg-gray-700 dark:border-gray-600">
+            <div class="flex items-center mx-auto">
+                <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span class="inline-flex p-1 me-3 bg-gray-200 rounded-full dark:bg-gray-600 w-6 h-6 items-center justify-center flex-shrink-0">
+                        <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
+                            <path d="M15 1.943v12.114a1 1 0 0 1-1.581.814L8 11V5l5.419-3.871A1 1 0 0 1 15 1.943ZM7 4H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2v5a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4ZM4 17v-5h1v5H4ZM16 5.183v5.634a2.984 2.984 0 0 0 0-5.634Z"/>
+                        </svg>
+                        <span class="sr-only">Light bulb</span>
+                    </span>
+                    <span>이 페이지는 편집 가능합니다.</span>
+                </p>
+            </div>
+        </div>
+
         <div class="mx-auto w-5/6">
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
@@ -38,58 +215,134 @@
                 </ul>
             </div>
             <div id="default-tab-content">
-                <div class="hidden p-4 rounded-lg" id="project" role="tabpanel" aria-labelledby="project-tab">
-                    <div class="text-2xl text-gray-700 flex items-center">
-                        <div class="font-bold" th:text="${project.title}"></div>
-                        <th:block th:if="${project.status == 'ING'}">
-                            <div class="mt-0.5 font-sm ml-2">
+                <div class="hidden p-4 rounded-lg mb-20" id="project" role="tabpanel" aria-labelledby="project-tab">
+                    <form name="projectUpdateFrm">
+                        <div class="relative w-full">
+                            <input type="hidden" name="id" id="id" th:value="${project.id}" >
+                            <input type="hidden" name="status" id="status" th:value="${project.status}" >
+                            <th:block th:if="${project.status == 'ING'}">
+                                <div class="mt-0.5 font-sm mb-2 statesBtn">
                                 <span class="inline-flex items-center bg-blue-600 rounded-full px-2 text-sm text-white py-1 font-medium">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1 text-white" viewBox="0 0 16 16" width="16" height="16">
                                       <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
                                       <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
                                     </svg>진행
                                 </span>
-                            </div>
-                        </th:block>
-                        <th:block th:if="${project.status == 'NOT_YET'}">
-                            <div class="mt-0.5 font-sm ml-2">
+                                </div>
+                            </th:block>
+                            <th:block th:if="${project.status == 'NOT_YET'}">
+                                <div class="mt-0.5 font-sm mb-2 statesBtn">
                                 <span class="inline-flex items-center bg-gray-600 rounded-full px-2 text-sm text-white py-1 font-medium">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
                                             <path fill-rule="evenodd" d="M6.749.097a8.054 8.054 0 012.502 0 .75.75 0 11-.233 1.482 6.554 6.554 0 00-2.036 0A.75.75 0 016.749.097zM4.345 1.693A.75.75 0 014.18 2.74a6.542 6.542 0 00-1.44 1.44.75.75 0 01-1.212-.883 8.042 8.042 0 011.769-1.77.75.75 0 011.048.166zm7.31 0a.75.75 0 011.048-.165 8.04 8.04 0 011.77 1.769.75.75 0 11-1.214.883 6.542 6.542 0 00-1.439-1.44.75.75 0 01-.165-1.047zM.955 6.125a.75.75 0 01.624.857 6.554 6.554 0 000 2.036.75.75 0 01-1.482.233 8.054 8.054 0 010-2.502.75.75 0 01.858-.624zm14.09 0a.75.75 0 01.858.624 8.057 8.057 0 010 2.502.75.75 0 01-1.482-.233 6.55 6.55 0 000-2.036.75.75 0 01.624-.857zm-13.352 5.53a.75.75 0 011.048.165 6.542 6.542 0 001.439 1.44.75.75 0 01-.883 1.212 8.04 8.04 0 01-1.77-1.769.75.75 0 01.166-1.048zm12.614 0a.75.75 0 01.165 1.048 8.038 8.038 0 01-1.769 1.77.75.75 0 11-.883-1.214 6.543 6.543 0 001.44-1.439.75.75 0 011.047-.165zm-8.182 3.39a.75.75 0 01.857-.624 6.55 6.55 0 002.036 0 .75.75 0 01.233 1.482 8.057 8.057 0 01-2.502 0 .75.75 0 01-.624-.858z">
                                             </path>
                                         </svg>예정
                                 </span>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${project.status == 'DONE'}">
+                                <div class="mt-0.5 font-sm mb-2 statesBtn">
+                                <span
+                                      class="inline-flex items-center bg-green-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                             <path d="M11.28 6.78a.75.75 0 00-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l3.5-3.5z"></path>
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zm-1.5 0a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"></path>
+                                        </svg>완료
+                                    </span>
+                                </div>
+                            </th:block>
+                            <div id="dropdown-states" class="z-10 hidden absolute top-[140px] left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                                    <li>
+                                        <button type="button"
+                                                class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <span id="statusValue1" data-status="NOT_YET"
+                                              class="inline-flex items-center bg-gray-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                            <path fill-rule="evenodd" d="M6.749.097a8.054 8.054 0 012.502 0 .75.75 0 11-.233 1.482 6.554 6.554 0 00-2.036 0A.75.75 0 016.749.097zM4.345 1.693A.75.75 0 014.18 2.74a6.542 6.542 0 00-1.44 1.44.75.75 0 01-1.212-.883 8.042 8.042 0 011.769-1.77.75.75 0 011.048.166zm7.31 0a.75.75 0 011.048-.165 8.04 8.04 0 011.77 1.769.75.75 0 11-1.214.883 6.542 6.542 0 00-1.439-1.44.75.75 0 01-.165-1.047zM.955 6.125a.75.75 0 01.624.857 6.554 6.554 0 000 2.036.75.75 0 01-1.482.233 8.054 8.054 0 010-2.502.75.75 0 01.858-.624zm14.09 0a.75.75 0 01.858.624 8.057 8.057 0 010 2.502.75.75 0 01-1.482-.233 6.55 6.55 0 000-2.036.75.75 0 01.624-.857zm-13.352 5.53a.75.75 0 011.048.165 6.542 6.542 0 001.439 1.44.75.75 0 01-.883 1.212 8.04 8.04 0 01-1.77-1.769.75.75 0 01.166-1.048zm12.614 0a.75.75 0 01.165 1.048 8.038 8.038 0 01-1.769 1.77.75.75 0 11-.883-1.214 6.543 6.543 0 001.44-1.439.75.75 0 011.047-.165zm-8.182 3.39a.75.75 0 01.857-.624 6.55 6.55 0 002.036 0 .75.75 0 01.233 1.482 8.057 8.057 0 01-2.502 0 .75.75 0 01-.624-.858z">
+                                            </path>
+                                        </svg>예정
+                                        </span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button"
+                                                class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            <span id="statusValue2" data-status="ING"
+                                                  class="inline-flex items-center bg-blue-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                              <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+                                              <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
+                                            </svg>진행
+                                        </span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button"
+                                                class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <span id="statusValue3" data-status="DONE"
+                                              class="inline-flex items-center bg-green-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                             <path d="M11.28 6.78a.75.75 0 00-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l3.5-3.5z"></path>
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zm-1.5 0a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"></path>
+                                        </svg>완료
+                                        </span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    <div class="text-2xl text-gray-700 flex items-center mb-2 justify-between">
+                        <div class="font-bold relative" id="titleHtml">
+                            [[${project.title}]]
+                            <input type="text" name="projectTitle" id="projectTitle" class="hidden absolute top-0 left-0 text-2xl text-gray-700 flex items-center mb-4 border-none p-0" th:value="${project.title}" >
+                        </div>
+                        <!-- 수정버튼은 생성자와 담당자만 가능 -> 삭제는 생성자만 가능 -->
+                        <th:block th:if="${project.status != 'DONE'}">
+                            <div class="flex w-fit h-fit" id="taskFrmBtns">
+                                <button id="editBtn" type="button" class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-yellow-600 me-2">편집</button>
+                                <button id="updateBtn" type="button" class="hidden text-gray-700 bg-blue-50 focus:ring-4 hover:focus:bg-blue-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-blue-600 me-2">편집 완료</button>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${project.status == 'DONE'}">
+                            <div class="flex w-fit h-fit">
+                                <div class="text-red-600 font-medium text-md py-1 me-2">종료된 프로젝트는 수정할 수 없습니다.</div>
                             </div>
                         </th:block>
                     </div>
-                    <div th:include="~{project/kanban::kanban}"></div>
 
+                    <table class="w-full">
+                        <tbody class="w-full">
+                            <tr class="text-sm text-gray-600 w-full mb-1">
+                                <td class="w-1/12 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm ">시작일</td>
+                                <td id="startAtHtml" class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
+                                    [[${project.startAt}]]
+                                    <input type="date" th:value="${project.startAt}"
+                                           id="startAt" name="startAt"
+                                           class="hidden absolute w-1/3 text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
+                                </td>
+                            </tr>
+                            <tr class="text-sm text-gray-600 w-full mb-1">
+                                <td class="w-1/12 font-semibold hover:bg-gray-50 mr-2 p-2 rounded-sm ">종료일</td>
+                                <td id="endAtHtml" class="w-5/6 relative hover:bg-gray-50 p-2 rounded-sm">
+                                    [[${project.endAt}]]
+                                    <input type="date" th:value="${project.endAt}"
+                                           id="endAt" name="endAt"
+                                           class="hidden absolute w-1/3 text-sm text-gray-700 focus:bg-gray-50 focus:z-10 top-0 left-0 border-none w-full h-full p-2 m-0" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                    <div class="font-semibold text-xl text-gray-700 flex items-center my-4">업무보드</div>
+                    <div th:include="~{project/kanban::kanban}"></div>
                 </div>
+
                 <div class="hidden p-4 rounded-lg" id="employees" role="tabpanel" aria-labelledby="employees-tab">
                     <div class="w-full whitespace-no-wrap">
                         <div class="w-full max-w-sm bg-white mx-auto border border-gray-200 rounded-lg shadow">
-<!--                            <div class="flex justify-end px-4 pt-4">-->
-<!--                                <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">-->
-<!--                                    <span class="sr-only">Open dropdown</span>-->
-<!--                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">-->
-<!--                                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>-->
-<!--                                    </svg>-->
-<!--                                </button>-->
-<!--                                &lt;!&ndash; Dropdown menu &ndash;&gt;-->
-<!--                                <div id="dropdown" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">-->
-<!--                                    <ul class="py-2" aria-labelledby="dropdownButton">-->
-<!--                                        <li>-->
-<!--                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export Data</a>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="flex h-fit my-4 flex-col items-center">
                                 <h1 class="text-xl mb-3 text-blue-700 font-bold mx-4">프로젝트 관리자</h1>
                                 <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
@@ -129,13 +382,13 @@
 
                     <div>
                         <!-- Modal toggle -->
-                        <div class="flex justify-end w-full mb-2">
-                            <button data-modal-target="static-modal" id="closeBtn" data-modal-toggle="static-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                + 파일 업로드하기
-                            </button>
-                        </div>
-
-
+                        <th:block th:if="${project.status == 'DONE'}">
+                            <div class="flex justify-end w-full mb-2">
+                                <button data-modal-target="static-modal" id="closeBtn" data-modal-toggle="static-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                    + 파일 업로드하기
+                                </button>
+                            </div>
+                        </th:block>
                         <!-- Main modal -->
                         <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                             <div class="relative p-4 w-full max-w-2xl max-h-full">

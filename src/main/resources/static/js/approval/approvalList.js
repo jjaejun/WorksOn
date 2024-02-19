@@ -32,27 +32,124 @@ window.addEventListener('DOMContentLoaded', () =>{
     });
 });
 
-// $(document).ready(function () {
-//     $('.pagination a.page-link').on('click', function (e) {
-//         e.preventDefault();
+// 연차 문서함 - 비동기 처리
+// function changePage1(pageNumber) {
+//     let size = 1;
+//     // 페이지 URL 생성
+//     let url = '/WorksOn/approval/approvalLeave.do?continue&page=' + pageNumber + '&size=' + size;
 //
-//         var page = $(this).text();
-//         var url = `${contextPath}approval/approvalCooperation.do?page=` + page;
-//
-//         $.ajax({
-//             type: 'GET',
-//             url: url,
-//             success: function (data) {
-//                 // 페이지 내용 업데이트
-//                 $('#content').html(data);
-//
-//                 // 선택된 페이지 표시 업데이트 (이 부분은 적절히 수정해야 할 수 있습니다)
-//                 $('.pagination li').removeClass('active');
-//                 $(e.target).parent().addClass('active');
-//             },
-//             error: function (error) {
-//                 console.error('Error fetching page: ' + page, error);
+//     // Fetch API를 사용하여 비동기로 데이터 가져오기
+//     fetch(url)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
 //             }
+//             return response.text();
+//         })
+//         .then(html => {
+//             // 서버로부터 받은 HTML을 현재 페이지의 콘텐츠에 적용
+//             var parser = new DOMParser();
+//             var newDocument = parser.parseFromString(html, 'text/html');
+//             document.documentElement.innerHTML = newDocument.documentElement.innerHTML;
+//         })
+//         .catch(error => {
+//             console.error('Fetch error:', error);
 //         });
-//     });
-// });
+// }
+function changePage1(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalLeave.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 비품 문서함
+function changePage2(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalEquipment.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 협조 문서함
+function changePage3(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalCooperation.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 임시 저장함
+function changePage4(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalTemporary.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 수신 문서함
+function changePage5(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalReceived.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 발신 문서함
+function changePage6(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalSend.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 대기 문서함
+function changePage7(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalWait.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 결재 수신함
+function changePage8(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalReception.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
+
+// 결재 예정함
+function changePage9(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = '/WorksOn/approval/approvalExpected.do?continue&page=' + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
