@@ -7,22 +7,45 @@
   <aside id="sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
     <div class="py-4 text-[#000000]">
       <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
-        <span>예약하기</span>
+        <span>자원 목록</span>
         <hr class="mt-2">
       </div>
-        <ul class="flex flex-wrap -mb-px">
-          <li class="me-2">
-            <a th:href="|location.href='@{/reservation/reservationRoom.do}'|" class="px-6 py-3 h-[58px] border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Profile</a>
-          </li>
-          <li class="me-2">
-            <a th:href="|location.href='@{/reservation/reservationCar.do}'|" class="px-6 py-3 h-[58px] text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500" aria-current="page">Dashboard</a>
-          </li>
-          <li class="me-2">
-            <a th:href="|location.href='@{/reservation/reservationNotebook.do}'|" class="px-6 py-3 h-[58px] border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Settings</a>
-          </li>
-        </ul>
+      <ul class="approval-nav-ul">
+        <span class="z-20 absolute transition-all h-[58px] left-0 w-2 bg-[#FFFFFF] rounded-tr-lg rounded-br-lg opacity-0" aria-hidden="true"></span>
+
+        <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/reservation/reservationRoom.do}'|">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">회의실</span>
+          </a>
+        </li>
+
+        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/reservation/reservationCar.do}'|">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">차량</span>
+          </a>
+        </li>
+
+        <li class="relative px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/reservation/reservationNotebook.do}'|">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">노트북</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
+        <span>예약 목록</span>
+        <hr class="mt-2">
+      </div>
+      <ul class="approval-nav-ul">
+        <span class="z-20 absolute transition-all h-[58px] left-0 w-2 bg-[#FFFFFF] rounded-tr-lg rounded-br-lg opacity-0" aria-hidden="true"></span>
+
+        <li class="px-6 py-3 h-[58px] hover:bg-gray-200" th:onclick="|location.href='@{/reservation/reservationMyList.do}'|">
+          <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]">
+            <span class="ml-4">내 예약 목록</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </aside>
 </div>
-
 </html>

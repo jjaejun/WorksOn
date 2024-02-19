@@ -6,6 +6,7 @@ import com.sh.workson.authority.entity.Authority;
 import com.sh.workson.authority.entity.RoleAuth;
 import com.sh.workson.authority.service.AuthorityService;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
+import com.sh.workson.employee.dto.IApprover;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
@@ -79,7 +80,15 @@ public class EmployeeService {
     /**
      * 우진
      */
+    public List<Employee> findAll() {
+        List<Employee> employees = employeeRepository.findAll();
+        return  employees;
+    }
 
+    public List<IApprover> findApprover(Long id) {
+        List<IApprover> employees = employeeRepository.findApprover(id);
+        return employees;
+    }
 
 
 
@@ -125,8 +134,8 @@ public class EmployeeService {
     }
 
 
-
-
-
+    public Employee checkEmailDuplicate(String email) {
+        return employeeRepository.checkEmailDuplicate(email);
+    }
 
 }
