@@ -52,8 +52,8 @@ public class ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 
-    public Page<ReservationListDto> findBetweenSearchDate(Pageable pageable, Long resourceId, LocalDateTime startTime, LocalDateTime endTime) {
-        Page<Reservation> reservationPage = reservationRepository.findBetweenSearchDate(pageable, resourceId, startTime, endTime);
+    public Page<ReservationListDto> findBetweenSearchDatePage(Pageable pageable, Long resourceId, LocalDateTime startTime, LocalDateTime endTime) {
+        Page<Reservation> reservationPage = reservationRepository.findBetweenSearchDatePage(pageable, resourceId, startTime, endTime);
         return reservationPage.map((reservation -> convertToReservationListDto(reservation)));
     }
 
@@ -67,5 +67,9 @@ public class ReservationService {
                 .resourceId(reservation.getResourceId())
                 .build();
         return reservationListDto;
+    }
+
+    public int findBetweenSearchDate(Long resourceId, LocalDateTime startAt, LocalDateTime endAt) {
+        return reservationRepository.findBetweenSearchDate(resourceId, startAt, endAt);
     }
 }
