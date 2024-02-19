@@ -13,6 +13,7 @@ import com.sh.workson.project.entity.ProjectComment;
 import com.sh.workson.project.entity.ProjectCommentType;
 import com.sh.workson.project.entity.ProjectEmployee;
 import com.sh.workson.project.entity.Task;
+import com.sh.workson.project.service.IssueService;
 import com.sh.workson.project.service.ProjectCommentService;
 import com.sh.workson.project.service.ProjectService;
 import com.sh.workson.project.service.TaskService;
@@ -65,6 +66,8 @@ public class ProjectController {
     private TaskService taskService;
     @Autowired
     private ProjectCommentService projectCommentService;
+    @Autowired
+    private IssueService issueService;
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
@@ -411,5 +414,23 @@ public class ProjectController {
         model.addAttribute("size", taskDetailDtos.getSize());
         model.addAttribute("number", taskDetailDtos.getNumber());
         model.addAttribute("totalpages", taskDetailDtos.getTotalPages());
+    }
+
+
+    @GetMapping("/totalIssueList.do")
+    public void totalIssueList(
+        @PageableDefault(size = 10, page = 0) Pageable pageable,
+        @AuthenticationPrincipal EmployeeDetails employeeDetails,
+        Model model
+    ){
+        Page<IssueDetailDto> issueDetailDtos = issueService.findAllMyIssue(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("issue = {}", issueDetailDtos);
+
+        model.addAttribute("issues", issueDetailDtos);
+        model.addAttribute("totalCount", issueDetailDtos.getTotalElements());
+        model.addAttribute("size", issueDetailDtos.getSize());
+        model.addAttribute("number", issueDetailDtos.getNumber());
+        model.addAttribute("totalpages", issueDetailDtos.getTotalPages());
     }
 }

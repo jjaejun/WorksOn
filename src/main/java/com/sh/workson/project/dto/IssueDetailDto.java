@@ -1,7 +1,6 @@
 package com.sh.workson.project.dto;
 
 import com.sh.workson.employee.dto.EmployeeTaskDetailDto;
-import com.sh.workson.project.entity.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TaskDetailDto {
+public class IssueDetailDto {
     private Long id;
     private String name;
     private String content;
@@ -25,5 +24,5 @@ public class TaskDetailDto {
     private EmployeeTaskDetailDto owner;
     private EmployeeTaskDetailDto employee;
     private ProjectTaskDetailDto project;
-
+    private TaskIssueDetailDto task;
 }

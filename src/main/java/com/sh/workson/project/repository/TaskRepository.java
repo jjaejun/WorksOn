@@ -12,9 +12,9 @@ import java.util.Optional;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("from Task t join fetch t.owner o join fetch o.department join fetch o.position join fetch t.employee e join fetch e.department join fetch e.position join fetch t.project p where t.id = :id")
+    @Query("from Task t join fetch t.owner o join fetch o.department join fetch o.position join fetch t.employee e join fetch e.department join fetch e.position join fetch t.project p where t.id = :id order by t.id desc ")
     Optional<Task> findById(Long id);
 
-    @Query("from Task t left join fetch t.owner o left join fetch o.department left join fetch o.position left join fetch t.employee e left join fetch e.department left join fetch e.position left join fetch t.project p where t.owner.id = :id or t.employee.id = :id")
+    @Query("from Task t left join fetch t.owner o left join fetch o.department left join fetch o.position left join fetch t.employee e left join fetch e.department left join fetch e.position left join fetch t.project p where t.owner.id = :id or t.employee.id = :id order by t.id desc")
     Page<Task> findAllMyTask(Long id, Pageable pageable);
 }
