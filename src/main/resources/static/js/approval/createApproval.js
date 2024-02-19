@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const radioButtons = document.querySelectorAll('input[type="radio"][name="approval-form"]');
+    const today = new Date(); // 현재 날짜로 초기화
 
     // 로그인한 사용자 정보
     const empNameElement = document.getElementById('empName');
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">기안일</th>\n' +
-            '                <td><input type="date" class="w-20% p-2 border "></td>\n' +
+            '                <td><input type="date" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
             '        <table class="mb-6 ml-auto mr-1">\n' +
@@ -154,9 +155,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const startDateInput = document.getElementById('start_date');
         const endDateInput = document.getElementById('end_date');
         const annulCheck = document.getElementById('annul-check');
+        const draftDateInput = document.getElementById('draft_date');
 
         console.log(startDateInput);
         console.log(endDateInput);
+
+        draftDateInput.addEventListener('change', function () {
+            // 기안일이 변경될 때도 현재 날짜와 비교하여 처리
+            if (new Date(draftDateInput.value) < today) {
+                // 현재 날짜보다 이전일 경우 경고 메시지 출력 등의 처리
+                alert('기안일은 현재 날짜 이전으로 선택할 수 없습니다.');
+                draftDateInput.value = getCurrentDate();
+            }
+        });
 
         if (startDateInput && endDateInput && annulCheck) {
             startDateInput.addEventListener('change', function () {
@@ -189,6 +200,17 @@ document.addEventListener('DOMContentLoaded', function () {
             // const requestedLeaveInput = document.querySelector('input[name="requested_leave"]');
             // requestedLeaveInput.value = duration.toFixed(1);
 
+            if (startDate < today || endDate < startDate) {
+                // 현재 날짜보다 이전일 경우 경고 메시지 출력 등의 처리
+                alert('현재 날짜 이전의 날짜는 선택할 수 없습니다.');
+                startDateInput.value = '';
+                endDateInput.value = '';
+            } else {
+                // 현재 날짜 이후일 경우 정상적으로 업데이트
+                const durationInput = document.querySelector('input[name="duration"]');
+                durationInput.value = duration.toFixed(1);
+            }
+
         }
     }
 
@@ -212,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">기안일</th>\n' +
-            '                <td><input type="date" class="w-20% p-2 border "></td>\n' +
+            '                <td><input type="date" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
             '        <table class="mb-6 ml-auto mr-1">\n' +
@@ -267,6 +289,17 @@ document.addEventListener('DOMContentLoaded', function () {
             '\n' +
             '    <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재 재출</button>\n' +
             '</div>';
+
+        const draftDateInput = document.getElementById('draft_date');
+
+        draftDateInput.addEventListener('change', function () {
+            // 기안일이 변경될 때도 현재 날짜와 비교하여 처리
+            if (new Date(draftDateInput.value) < today) {
+                // 현재 날짜보다 이전일 경우 경고 메시지 출력 등의 처리
+                alert('기안일은 현재 날짜 이전으로 선택할 수 없습니다.');
+                draftDateInput.value = getCurrentDate();
+            }
+        });
     }
 
     function handleCooperationForm(empName, deptName) {
@@ -288,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">기안일</th>\n' +
-            '                <td><input type="date" class="w-20% p-2 border"></td>\n' +
+            '                <td><input type="date" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
             '        <table class="mb-6 ml-auto mr-1">\n' +
@@ -350,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '        </tr>\n' +
             '        <tr class="border">\n' +
             '           <th class="border p-2 w-32">기간 및 일시</th>\n' +
-            '           <td><input type="date" class="w-15% p-2 border ">&nbsp ~ &nbsp<input type="date" class="w-20% p-2 border "></td>\n' +
+            '           <td><input type="date" class="w-15% p-2 border" id="start_date">&nbsp ~ &nbsp<input type="date" class="w-20% p-2 border" id="end_date"></td>\n' +
             '        </tr>\n' +
             '    </table>\n' +
             '\n' +
@@ -361,7 +394,54 @@ document.addEventListener('DOMContentLoaded', function () {
             '\n' +
             '    <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재요청</button>\n' +
             '</div>';
+
+        const draftDateInput = document.getElementById('draft_date');
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+
+        draftDateInput.addEventListener('change', function () {
+            // 기안일이 변경될 때도 현재 날짜와 비교하여 처리
+            if (new Date(draftDateInput.value) < today) {
+                // 현재 날짜보다 이전일 경우 경고 메시지 출력 등의 처리
+                alert('기안일은 현재 날짜 이전으로 선택할 수 없습니다.');
+                draftDateInput.value = getCurrentDate();
+            }
+        });
+
+        if (startDateInput && endDateInput) {
+            startDateInput.addEventListener('change', function () {
+                updateDuration();
+            });
+
+            endDateInput.addEventListener('change', function () {
+                updateDuration();
+            });
+
+        }
+
+        function updateDuration() {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+
+            if (startDate < today || endDate < startDate) {
+                // 현재 날짜보다 이전일 경우 경고 메시지 출력 등의 처리
+                alert('현재 날짜 이전의 날짜는 선택할 수 없습니다.');
+                startDateInput.value = '';
+                endDateInput.value = '';
+            }
+        }
     }
+
+    function getCurrentDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+
 });
 
 
