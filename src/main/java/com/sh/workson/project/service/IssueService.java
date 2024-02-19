@@ -1,11 +1,11 @@
 package com.sh.workson.project.service;
 
 import com.sh.workson.employee.dto.EmployeeTaskDetailDto;
-import com.sh.workson.project.dto.IssueDetailDto;
-import com.sh.workson.project.dto.ProjectTaskDetailDto;
-import com.sh.workson.project.dto.TaskDetailDto;
-import com.sh.workson.project.dto.TaskIssueDetailDto;
+import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.project.dto.*;
 import com.sh.workson.project.entity.Issue;
+import com.sh.workson.project.entity.IssueStatus;
+import com.sh.workson.project.entity.Project;
 import com.sh.workson.project.entity.Task;
 import com.sh.workson.project.repository.IssueRepository;
 import org.modelmapper.ModelMapper;
@@ -14,6 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -55,5 +58,28 @@ public class IssueService {
                     .build());
         }
         return issueDetailDto;
+    }
+
+    public Page<IssueDetailDto> findTop3Issue(Long id, Pageable pageable) {
+        Page<Issue> issues = issueRepository.findAllMyIssue(id, pageable);
+        return issues.map(issue -> convertToIssueDetailDto(issue));
+    }
+
+    public Issue createIssue(IssueCreateDto issueCreateDto) {
+        Issue issue = issueRepository.save(issueCreateDtoConvertToIssue(issueCreateDto));
+        return issue;
+    }
+
+    private Issue issueCreateDtoConvertToIssue(IssueCreateDto issueCreateDto) {
+        return Issue.builder()
+                .content(issueCreateDto.getContent())
+                .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
+                .task(Task.builder().id(issueCreateDto.getTaskId()).build())
+                .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
+                .priority(issueCreateDto.getPriority())
+                .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
+                .name(issueCreateDto.getName())
+                .project(Project.builder().id(issueCreateDto.getProjectId()).build())
+                .build();
     }
 }

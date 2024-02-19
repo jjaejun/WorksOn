@@ -342,6 +342,7 @@
 
             <!--댓글 영역-->
             <div class="w-full mt-10 mb-20">
+                <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
                 <form method="post" name="commentCreateFrm" th:action="@{/project/projectCommentCreate.do}">
                     <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                         <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
@@ -365,7 +366,6 @@
                 </form>
                 <!-- component -->
                 <div class="antialiased mx-auto w-full mt-10">
-                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments</h3>
                     <div id="commentWrap" class="space-y-4">
                         <th:block th:each="comment : ${comments}">
                             <div class="comment flex" th:id="|comment${comment.id}|" th:if="${comment.commentLevel == 1}">
@@ -380,8 +380,8 @@
                                             <span class="text-xs text-gray-400" th:text="${#temporals.format(comment.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
                                         </div>
                                         <div>
-                                            <button type="button"
-                                                    class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[50px] py-1 border border-yellow-600 me-2">편집</button>
+<!--                                            <button type="button"-->
+<!--                                                    class="text-gray-700 bg-yellow-50 focus:ring-4 hover:focus:bg-yellow-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[50px] py-1 border border-yellow-600 me-2">편집</button>-->
                                             <button type="button" th:onclick="|javascript:deleteTask(${comment.id})|"
                                                     class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none focus:ring-rose-200 rounded-lg w-[50px] py-1 border border-rose-600 text-sm font-medium">삭제</button>
                                         </div>
@@ -425,8 +425,6 @@
                         </th:block>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

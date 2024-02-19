@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class TaskService {
@@ -126,5 +129,18 @@ public class TaskService {
     public Page<TaskDetailDto> findAllMyTask(Long id, Pageable pageable) {
         Page<Task> tasks = taskRepository.findAllMyTask(id, pageable);
         return tasks.map(project -> convertToTaskDetailDto(project));
+    }
+
+    public List<TaskSearchDto> findTaskByProjectId(String name, Long projectId) {
+        List<Task> tasks = taskRepository.findTaskByProjectId(name, projectId);
+        List<TaskSearchDto> taskSearchDtos = new ArrayList<>();
+        for(Task t: tasks){
+            taskSearchDtos.add(convertToTaskSearchDto(t));
+        }
+        return taskSearchDtos;
+    }
+
+    private TaskSearchDto convertToTaskSearchDto(Task t) {
+        return TaskSearchDto.builder().id(t.getId()).name(t.getName()).empName(t.getEmployee().getName()).build();
     }
 }
