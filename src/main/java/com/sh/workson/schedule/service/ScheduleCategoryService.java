@@ -2,7 +2,9 @@ package com.sh.workson.schedule.service;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.schedule.dto.CreateScheduleCategoryDto;
 import com.sh.workson.schedule.dto.ScheduleCategoryDto;
+import com.sh.workson.schedule.dto.UpdateSchduleCategoryDto;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.repository.ScheduleCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -38,4 +40,22 @@ public class ScheduleCategoryService {
         ScheduleCategoryDto scheduleCategoryDto = modelMapper.map(scheduleCategory, ScheduleCategoryDto.class);
         return scheduleCategoryDto;
     }
+
+    public void createScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
+    }
+    private ScheduleCategory convertToScheduleCategory(ScheduleCategoryDto scheduleCategoryDto){
+        ScheduleCategory scheduleCategory = modelMapper.map(scheduleCategoryDto, ScheduleCategory.class);
+        scheduleCategory.setEmployee(Employee.builder()
+                        .id(scheduleCategoryDto.getEmpId())
+                        .build());
+        scheduleCategory.setName(scheduleCategoryDto.getName());
+        scheduleCategory.setColor(scheduleCategoryDto.getColor());
+        return scheduleCategory;
+    }
+
+    public void updateScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
+    }
+
 }
