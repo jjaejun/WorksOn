@@ -127,7 +127,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
         Authority authority = Authority.builder()
                 .empId(employee.getId())  // authority id
-                .name(RoleAuth.ROLE_EMP)
+                .name(RoleAuth.ROLE_TMT)
                 .build();
         authorityService.createAuthority(authority);
         return employee;
