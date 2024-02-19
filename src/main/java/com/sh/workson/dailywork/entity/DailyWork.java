@@ -1,4 +1,4 @@
-package com.sh.workson.dayoff.entity;
+package com.sh.workson.dailywork.entity;
 
 import com.sh.workson.employee.entity.Employee;
 import jakarta.persistence.*;
@@ -7,30 +7,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dayoff")
+@Table(name = "daily_work")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DayOff {
+public class DailyWork {
     @Id
-    @GeneratedValue(generator = "seq_dayoff_id")
+    @GeneratedValue(generator = "seq_daily_work_id")
     @SequenceGenerator(
-            name = "seq_dayoff_id_generator",
-            sequenceName = "seq_dayoff_id"
+            name = "seq_daily_work_id_generator",
+            sequenceName = "seq_daily_work_id"
     )
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private Type type;
-    private LocalDateTime startAt;
-    private LocalDateTime endAt;
-    private int count;
-    @ManyToOne
+    private String content;
+    private LocalDateTime createdAt;
+    private int cherryCount;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    private String content;
-
 }

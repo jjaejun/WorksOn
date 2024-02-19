@@ -121,7 +121,22 @@ public class ReservationContoller {
         log.debug("T startTime = {}", startTime); // T startDate = 24/02/07 00:00
         log.debug("T endTime = {}", endTime); // T endDate = 24/02/10 23:59
 
-        Page<ReservationListDto> reservationPage = reservationService.findBetweenSearchDate(pageable, resourceId, startTime, endTime);
+        Page<ReservationListDto> reservationPage = reservationService.findBetweenSearchDatePage(pageable, resourceId, startTime, endTime);
         return ResponseEntity.ok(reservationPage);
+    }
+
+    @GetMapping("/reservationCheck.do")
+    public ResponseEntity<?> reservationCheck(
+            @RequestParam("startAt") LocalDateTime startAt,
+            @RequestParam("endAt") LocalDateTime endAt,
+            @RequestParam("resourceId") Long resourceId
+    ) {
+        log.debug("startAt = {}", startAt);
+        log.debug("endAt = {}", endAt);
+        log.debug("resourceId = {}", resourceId);
+
+        int reservationCheckNum = reservationService.findBetweenSearchDate(resourceId, startAt, endAt);
+        log.debug("reservationCheckNum = {}", reservationCheckNum);
+        return ResponseEntity.ok(reservationCheckNum);
     }
 }

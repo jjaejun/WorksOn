@@ -21,6 +21,7 @@ public class IndexController {
         }
         else {
 
+//            민준
 
 
 
@@ -34,6 +35,56 @@ public class IndexController {
 
 
 
+
+
+
+//            민정
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            재준
+
+
+
+
+
+
+
+
+
+
+//            준희
+
+
+
+
+
+
+
+
+//          무진
+
+
+
+
+
+
+
+//          우진             
 
 
 
