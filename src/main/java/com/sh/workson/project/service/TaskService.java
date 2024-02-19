@@ -98,6 +98,7 @@ public class TaskService {
                 .build());
         taskDetailDto.setProject(ProjectTaskDetailDto.builder()
                         .id(task.getProject().getId())
+                        .title(task.getProject().getTitle())
                 .build());
         return taskDetailDto;
     }

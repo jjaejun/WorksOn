@@ -26,4 +26,5 @@ public class TaskDetailDto {
     private EmployeeTaskDetailDto employee;
     private ProjectTaskDetailDto project;
 
+
 }

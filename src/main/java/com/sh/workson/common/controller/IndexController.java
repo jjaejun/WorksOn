@@ -20,6 +20,27 @@ public class IndexController {
             return "/auth/login";
         }
         else {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             return "index";
         }
     }

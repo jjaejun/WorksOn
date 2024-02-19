@@ -44,7 +44,6 @@ public class Project {
     @JoinColumn(name = "owner_id")
     private Employee employee;
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectId")
     @Builder.Default
     private List<ProjectEmployee> projectEmployees = new ArrayList<>();

@@ -398,11 +398,14 @@ public class ProjectController {
 
     @GetMapping("/totalTaskList.do")
     public void totalTaskList(
-            @PageableDefault(size = 15, page = 0) Pageable pageable,
+            @PageableDefault(size = 10, page = 0) Pageable pageable,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             Model model
     ){
         Page<TaskDetailDto> taskDetailDtos = taskService.findAllMyTask(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("task = {}", taskDetailDtos);
+
         model.addAttribute("tasks", taskDetailDtos);
         model.addAttribute("totalCount", taskDetailDtos.getTotalElements());
         model.addAttribute("size", taskDetailDtos.getSize());
