@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/approval_create_default}">
+<head>
+    <title>전자결재홈</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+
+    <h1 class="text-xl mb-4">새 결재 진행</h1>
+
+    <div id="create-form"
+         class="absolute shadow top-100 bg-white z-40 w-full lef-0 rounded max-h-select overflow-y-auto">
+        <div class="flex flex-col w-full">
+
+        </div>
+    </div>
+
+</div>
+
+<script layout:fragment="script" th:src="@{/js/approval/createApproval.js}">
+
+</script>
+</html>

@@ -35,7 +35,7 @@ public class ScheduleController {
     ScheduleCategoryService scheduleCategoryService;
 
     @GetMapping("/calender.do")
-    public void schedule(
+    public void scheduleCategoryList(
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             Model model){
         log.debug("employeeDetails = {}", employeeDetails);
@@ -92,6 +92,13 @@ public class ScheduleController {
         scheduleService.createSchedule(createScheduleDto);
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다!\uD83D\uDC4D");
         return "redirect:/schedule/calender.do";
+    }
+
+    @GetMapping("/categoryList.do")
+    public void myCategoryList(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model
+    ){
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sh.workson.employee.repository;
 
+import com.sh.workson.employee.dto.IApprover;
 import com.sh.workson.employee.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,15 +33,30 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      */
     @Query("select name from Employee where id = :employeeId ")
     String findNameByEmpId(Long employeeId);
-
+    
     @Query("from Employee e where e.email = :email")
     Employee checkEmailDuplicate(String email);
+
 
 
     /**
      * 우진
      */
-
+    @Query(value = """
+    select
+    	e.id
+    	, e.name as empName
+    	, d.name as deptName
+        , p.name as positionName
+    from
+    	employee e join department d
+    		on e.dept_id = d.id
+        join position p
+            on e.position_id = p.id
+    where
+    	e.id not in :id
+""", nativeQuery = true)
+    List<IApprover> findApprover(Long id);
 
 
 
