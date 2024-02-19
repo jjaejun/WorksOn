@@ -17,6 +17,13 @@
                     <span class="relative w-full text-md font-medium text-blue-600 transition-colors group-hover:text-white">프로젝트 생성</span>
                 </button>
             </div>
+            <aside class="mt-10 w-fit" id="sidebarProject">
+                <ul class="text-lg p-2 py-4 font-semibold hover:text-[#000000]">
+                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8">업무 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/totalIssueList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">이슈 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/doneProjectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">완료된 프로젝트</li>
+                </ul>
+            </aside>
         </div>
 
 
@@ -57,7 +64,8 @@
                         <div class="absolute top-6 left-4">
                             <div class="flex items-center no-underline hover:underline text-black">
                                 <div style="width: 40px; height: 40px; overflow: hidden" class="rounded-full">
-                                    <img width="50px" alt="사원 프로필 사진" class="block rounded-full" th:src="${(project.employee.profileUrl != null) ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
+                                    <img width="50px" alt="사원 프로필 사진" class="block rounded-full"
+                                         th:src="${(project.employee.profileUrl != null) ? project.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}">
                                 </div>
                                 <div>
                                     <p th:text="|${project.employee.deptName}|"
