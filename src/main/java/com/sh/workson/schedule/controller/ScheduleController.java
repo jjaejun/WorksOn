@@ -1,11 +1,7 @@
 package com.sh.workson.schedule.controller;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
-import com.sh.workson.employee.entity.Employee;
-import com.sh.workson.schedule.dto.CreateScheduleDto;
-import com.sh.workson.schedule.dto.ScheduleCategoryDto;
-import com.sh.workson.schedule.dto.ScheduleListDto;
-import com.sh.workson.schedule.entity.ScheduleCategory;
+import com.sh.workson.schedule.dto.*;
 import com.sh.workson.schedule.service.ScheduleCategoryService;
 import com.sh.workson.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
@@ -34,7 +30,7 @@ public class ScheduleController {
     @Autowired
     ScheduleCategoryService scheduleCategoryService;
 
-    @GetMapping("/calender.do")
+    @GetMapping("/calendar.do")
     public void scheduleCategoryList(
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             Model model){
@@ -91,7 +87,7 @@ public class ScheduleController {
         log.debug("createScheduleDto = {}", createScheduleDto);
         scheduleService.createSchedule(createScheduleDto);
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다!\uD83D\uDC4D");
-        return "redirect:/schedule/calender.do";
+        return "redirect:/schedule/calendar.do";
     }
 
     @GetMapping("/categoryList.do")
@@ -99,6 +95,70 @@ public class ScheduleController {
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             Model model
     ){
+    }
+
+    // @PostMapping("/CUCategory.do")
+    // public String CUCategory(
+    //         @Valid CreateScheduleCategoryDto createScheduleCategoryDto,
+    //         @Valid UpdateSchduleCategoryDto updateSchduleCategoryDto,
+    //         BindingResult bindingResult,
+    //         @RequestParam(name="id") Long id,
+    //         @RequestParam(name="color") String color,
+    //         @RequestParam(name="name") String name,
+    //         @AuthenticationPrincipal EmployeeDetails employeeDetails,
+    //         RedirectAttributes redirectAttributes
+    //         ){
+    //     if(bindingResult.hasErrors()) {
+    //         throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+    //     }
+    //     log.debug("name = {}", name);
+    //     log.debug("id = {}", id);
+    //     log.debug("color = {}", color);
+    //
+    //     if(id == null){
+    //         createScheduleCategoryDto.setColor(color);
+    //         createScheduleCategoryDto.setName(name);
+    //         createScheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+    //         scheduleCategoryService.createScheduleCategory(createScheduleCategoryDto);
+    //     }else {
+    //         updateSchduleCategoryDto.setColor(color);
+    //         updateSchduleCategoryDto.setName(name);
+    //         updateSchduleCategoryDto.setId(id);
+    //         updateSchduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+    //         scheduleCategoryService.updateScheduleCategory(updateSchduleCategoryDto);
+    //     }
+    //
+    //     return "redirect:/schedule/calendar.do";
+    // }
+    @PostMapping("/CUCategory.do")
+    public String cuCategory(
+            @Valid ScheduleCategoryDto scheduleCategoryDto, // 통합된 DTO 사용 가정
+            BindingResult bindingResult,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (bindingResult.hasErrors()) {
+            // 에러 처리 로직 개선
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            return "redirect:/errorPage"; // 에러 페이지로 리다이렉트
+        }
+
+        log.debug("name = {}", scheduleCategoryDto.getName());
+        log.debug("id = {}", scheduleCategoryDto.getId());
+        log.debug("color = {}", scheduleCategoryDto.getColor());
+
+        if (scheduleCategoryDto.getId() == null) {
+            // Create
+            scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+            scheduleCategoryService.createScheduleCategory(scheduleCategoryDto);
+        } else {
+            // Update
+            scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+            scheduleCategoryService.updateScheduleCategory(scheduleCategoryDto);
+        }
+
+        return "redirect:/schedule/calendar.do"; // 성공시 리다이렉트 경로
     }
 
 }

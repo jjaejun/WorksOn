@@ -38,4 +38,22 @@ public class ScheduleCategoryService {
         ScheduleCategoryDto scheduleCategoryDto = modelMapper.map(scheduleCategory, ScheduleCategoryDto.class);
         return scheduleCategoryDto;
     }
+
+    public void createScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
+    }
+    private ScheduleCategory convertToScheduleCategory(ScheduleCategoryDto scheduleCategoryDto){
+        ScheduleCategory scheduleCategory = modelMapper.map(scheduleCategoryDto, ScheduleCategory.class);
+        scheduleCategory.setEmployee(Employee.builder()
+                        .id(scheduleCategoryDto.getEmpId())
+                        .build());
+        scheduleCategory.setName(scheduleCategoryDto.getName());
+        scheduleCategory.setColor(scheduleCategoryDto.getColor());
+        return scheduleCategory;
+    }
+
+    public void updateScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
+    }
+
 }
