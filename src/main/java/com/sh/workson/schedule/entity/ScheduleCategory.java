@@ -28,7 +28,6 @@ public class ScheduleCategory {
     private String name;
     private String color;
     @ManyToOne
-    // @JoinColumn(name="id", insertable = false, updatable = false)
     @JoinColumn(name="emp_id")
     private Employee employee;
 }
