@@ -19,9 +19,10 @@
             </div>
             <aside class="mt-10 w-fit" id="sidebarProject">
                 <ul class="text-lg p-2 py-4 font-semibold hover:text-[#000000]">
-                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 text-blue-600 border-blue-600 pb-2 pr-8">업무 전체보기</li>
-                    <li th:onclick="|location.href='@{/project/totalIssueList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">이슈 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/projectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8">진행중인 프로젝트</li>
                     <li th:onclick="|location.href='@{/project/doneProjectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">완료된 프로젝트</li>
+                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 text-blue-600 border-blue-600 pb-2 mt-4 pr-8">업무 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/totalIssueList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">이슈 전체보기</li>
                 </ul>
             </aside>
         </div>

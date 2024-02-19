@@ -210,6 +210,7 @@
                 <div class="flex justify-around items-center mb-2">
                     <div class="flex items-center w-full h-fit">
                         <h1 class="font-semibold text-2xl text-gray-600 mr-4" th:text="${task.name}"></h1>
+                        <p class="text-xl px-2 py-1 font-semibold text-blue-700 bg-blue-50 rounded-full" th:text="${task.project.title}"></p>
                     </div>
                     <!-- 수정버튼은 생성자와 담당자만 가능 -> 삭제는 생성자만 가능 -->
                     <div class="flex w-fit h-fit" id="taskFrmBtns">
