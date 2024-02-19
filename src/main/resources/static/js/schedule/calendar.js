@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById("color").addEventListener('change', function () {
-      var selectedColor = document.getElementById("color");
+        var selectedColor = document.getElementById("color");
         selectedColor.value = selectedColor.options[selectedColor.selectedIndex].value;
     })
 
