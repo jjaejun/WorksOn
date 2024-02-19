@@ -27,7 +27,7 @@ public class DayOff {
     private Type type;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
-    private Long count;
+    private int count;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

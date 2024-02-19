@@ -20,6 +20,78 @@ public class IndexController {
             return "/auth/login";
         }
         else {
+
+//            민준
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            민정
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            재준
+
+
+
+
+
+
+
+
+
+
+//            준희
+
+
+
+
+
+
+
+
+//          무진
+
+
+
+
+
+
+
+//          우진             
+
+
+
+
+
+
+
             return "index";
         }
     }
