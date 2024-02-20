@@ -148,7 +148,7 @@ public class ProjectController {
             @RequestParam(name = "page2", defaultValue = "0") int page2,
             @RequestParam(name = "size2", defaultValue = "5") int size2,
             @RequestParam(name = "page2", defaultValue = "0") int page3,
-            @RequestParam(name = "size2", defaultValue = "5") int size3
+            @RequestParam(name = "size2", defaultValue = "3") int size3
     ){
         ProjectDetailDto projectDetailDto = projectService.findById(id);
         model.addAttribute("project", projectDetailDto);

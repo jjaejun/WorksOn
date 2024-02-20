@@ -604,12 +604,16 @@
                                 </tr>
                             </th:block>
                             </th:block>
+                            <th:block th:if="${issueCount == 0}">
+                                <tr id="issueNone" class="text-center p-2 bg-gray-50">
+                                    <td colspan="6">등록된 이슈가 없습니다.</td></tr>
+                            </th:block>
                             <!--tr 한줄 끝-->
                             </tbody>
                         </table>
-                        <th:block th:if="${issueCount == 0}">
-                            <div id="issueNone" class="text-center p-2 bg-gray-50">등록된 이슈가 없습니다.</div>
-                        </th:block>
+<!--                        <th:block th:if="${issueCount == 0}">-->
+<!--                            <div id="issueNone" class="text-center p-2 bg-gray-50">등록된 이슈가 없습니다.</div>-->
+<!--                        </th:block>-->
 
                     <div class="flex w-fit h-fit items-center">
                         <h2 class="text-lg text-gray-700 flex items-center my-2">✔ 진행중인 업무</h2>

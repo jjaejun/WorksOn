@@ -53,8 +53,8 @@ public class IssueService {
                 .build());
         if(issue.getTask() != null){
             issueDetailDto.setTask(TaskIssueDetailDto.builder()
-                    .id(issue.getProject().getId())
-                    .name(issue.getProject().getTitle())
+                    .id(issue.getTask().getId())
+                    .name(issue.getTask().getName())
                     .build());
         }
         return issueDetailDto;
