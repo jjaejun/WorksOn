@@ -122,3 +122,41 @@ document.querySelector("#email").onkeyup = (e) => {
         }
     });
 };
+
+// 저장 버튼 클릭 시 메일 발송
+document.getElementById('submitButton').addEventListener('click', function () {
+    sendMail();
+});
+
+function sendMail() {
+    const to = document.getElementById('to').value;
+    const cc = document.getElementById('cc').value;
+    const subject = document.getElementById('subject').value;
+    const body = document.getElementById('body').value;
+    const fileInput = document.getElementById('file');
+
+    const formData = new FormData();
+    formData.append('to', to);
+    formData.append('cc', cc);
+    formData.append('subject', subject);
+    formData.append('body', body);
+
+    if (fileInput.files.length > 0) {
+        for (let i = 0; i < fileInput.files.length; i++) {
+            formData.append('file', fileInput.files[i]);
+        }
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/mail/send', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                alert('메일이 발송되었습니다.');
+            } else {
+                alert('메일 발송에 실패했습니다.');
+            }
+        }
+    };
+    xhr.send(formData);
+}

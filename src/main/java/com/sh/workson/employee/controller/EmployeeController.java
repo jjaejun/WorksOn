@@ -6,6 +6,7 @@ import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.department.service.DepartmentService;
+import com.sh.workson.email.service.EmailService;
 import com.sh.workson.employee.dto.EmployeeCreateDto;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
 import com.sh.workson.employee.entity.Employee;
@@ -13,6 +14,7 @@ import com.sh.workson.employee.service.EmployeeService;
 import com.sh.workson.position.entity.Position;
 import com.sh.workson.position.service.PositionService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/employee")
 @Slf4j
 @Validated
@@ -49,6 +52,10 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private  final EmailService emailService;
+
+
 
     /**
      * 민정
@@ -186,6 +193,9 @@ public class EmployeeController {
         }
         log.debug("memberCreateDto = {}" ,employeeCreateDto);
 
+        emailService.send(employeeCreateDto.getEmail(),
+                        employeeCreateDto.getName(),
+                        employeeCreateDto.getPassword());
 
         Employee employee = employeeCreateDto.toEmployee();
         String encodedPassword = passwordEncoder.encode(employee.getPassword());
@@ -214,6 +224,8 @@ public class EmployeeController {
         return ResponseEntity.ok(resultMap);
 
     }
+
+
 
 
 
