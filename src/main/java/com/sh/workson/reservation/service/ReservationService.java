@@ -3,6 +3,7 @@ package com.sh.workson.reservation.service;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
 import com.sh.workson.reservation.dto.ReservationListDto;
+import com.sh.workson.reservation.dto.ReservationReturnDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.repository.ReservationRepository;
 import com.sh.workson.resource.entity.Resource;
@@ -71,5 +72,9 @@ public class ReservationService {
 
     public int findBetweenSearchDate(Long resourceId, LocalDateTime startAt, LocalDateTime endAt) {
         return reservationRepository.findBetweenSearchDate(resourceId, startAt, endAt);
+    }
+
+    public List<Reservation> findAllAfterToday(Long id, LocalDateTime today) {
+        return reservationRepository.findAllAfterToday(id, today);
     }
 }
