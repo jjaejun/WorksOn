@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <title>자원 추가</title>
+</head>
+<style layout:fragment="style">
+    .top-100 {
+        top: 100%
+    }
+
+    .bottom-100 {
+        bottom: 100%
+    }
+
+    .max-h-select {
+        max-height: 300px;
+    }
+</style>
+<div layout:fragment="content">
+    <div class="flex flex-wrap">
+        <div class="mx-auto w-4/5">
+            <div class="mx-auto w-full mb-10">
+                <h1 class="flex items-center">
+                    <span class="mr-10 text-2xl font-bold">자원 삭제하기</span>
+                    <span class="h-px flex-1 bg-gray-600"></span>
+                </h1>
+                <div class="relative w-2/3 mt-10 bg-white rounded-lg border border-gray-300 dark:bg-gray-700">
+                    <form class="p-4 md:p-5" name="deleteResourceFrm"
+                          th:action="@{/resource/deleteResource.do}" method="post">
+                        <div class="grid gap-4 mb-4 grid-cols-2">
+                            <div class="col-span-2">
+                                <select name="resourceList" id="resourceList">
+                                    <option value="">== 자원 선택 ==</option>
+                                    <option th:each="resource, status : ${resources}" th:value="${resource.id}"
+                                            th:text="${resource.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <table id="reservationList"
+                               class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
+                            <thead>
+                            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="px-4 py-2">예약자명</th>
+                                <th class="px-4 py-2">인원수</th>
+                                <th class="px-4 py-2">시작 시간</th>
+                                <th class="px-4 py-2">종료 시간</th>
+                                <th class="px-4 py-2">예약 사유</th>
+                            </tr>
+                            </thead>
+                            <tbody id="reservationListBody" class="text-gray-600 text-sm font-light">
+                            </tbody>
+                        </table>
+                        <button type="submit"
+                                class="text-white mx-auto inline-flex items-center bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                      clip-rule="evenodd"></path>
+                            </svg>
+                            삭제하기
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script layout:fragment="script" th:src="@{/js/resource/deleteResource.js}" }></script>
+</html>
