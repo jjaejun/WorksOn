@@ -2,11 +2,18 @@ package com.sh.workson.approval.service;
 
 import com.sh.workson.approval.dto.*;
 import com.sh.workson.approval.entity.Approval;
+import com.sh.workson.approval.entity.ApprovalCooperation;
+import com.sh.workson.approval.entity.ApprovalLine;
+import com.sh.workson.approval.entity.Status;
+import com.sh.workson.approval.repository.ApprovalCooperationRepository;
+import com.sh.workson.approval.repository.ApprovalLineRepository;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.approval.repository.ApprovalRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +23,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.core.convert.TypeDescriptor.map;
+
 @Service
 @Transactional
+@Slf4j
 public class ApprovalService {
 
     @Autowired
     private ApprovalRepository approvalRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private ApprovalCooperationRepository approvalCooperationRepository;
 
+    @Autowired
+    private ApprovalLineRepository approvalLineRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     // 연차 문서함 컨버트
     private ApprovalHomeLeaveDto convertToApprovalHomeLeaveDto(Approval approval) {
@@ -443,4 +458,68 @@ public class ApprovalService {
         Page<Approval> approvalPage = approvalRepository.findCooperation(id, pageable);
         return approvalPage.map((approval) -> convertToApprovalHomeCooperationDto(approval));
     }
+
+
+    /**
+     * mapper로 createCooperationDto -> Approval로 변환
+     * - 안될 시 mapper를 approval_cooperation으로 설정해보자
+     */
+    @Transactional
+    public void createCooperationApproval(CreateCooperationDto createCooperationDto) {
+//        ApprovalCooperation approvalCooperation = modelMapper.map(createCooperationDto,ApprovalCooperation.class);
+//        log.debug("approvalCooperation = {}", approvalCooperation);
+//
+//        approvalCooperationRepository.save(approvalCooperation);
+//
+//        Approval approval = Approval.builder()
+//                .employee(Employee.builder().build())
+//                .build();
+        ApprovalCooperation approvalCooperation = ApprovalCooperation.builder()
+                .name("업무 협조")
+                .cooperationDept(createCooperationDto.getCooperationDept())
+                .title(createCooperationDto.getTitle())
+                .content(createCooperationDto.getContent())
+                .StartDate(createCooperationDto.getStartDate())
+                .EndDate(createCooperationDto.getEndDate())
+                .build();
+
+        approvalCooperationRepository.save(approvalCooperation);
+
+        Approval approval = Approval.builder()
+                .approvalEndDate(createCooperationDto.getApprovalEndDate())
+                .status(Status.대기)
+                .employee(Employee.builder().id(createCooperationDto.getEmpId()).build())
+                .approvalCooperation(approvalCooperation)
+                .build();
+        approvalRepository.save(approval);
+
+        // mapper가 처리하지 못하는 cooperationDept, title, content, startDate, endDate
+        // approval_cooperation으로 처리
+
+
+        // approverId approver_line에 처리
+        List<ApprovalLine> approvalLines = new ArrayList<>();
+            for(Long a : createCooperationDto.getApproverId()) {
+                approvalLines.add(ApprovalLine.builder().approverId(a).approval(approval).status(Status.대기).build());
+            }
+        approvalLineRepository.saveAll(approvalLines);
+
+//        List<ApprovalLine> approvalLines = new ArrayList<>();
+//
+//        for (Long ApprovalId : createCooperationDto.getApprovalLineList()) {
+//            ApprovalLine approvalLine = ApprovalLine.builder()
+//                    .approverId(approverId)
+//                    .build();
+//
+//            approvalLines.add(approvalLine);
+//        }
+//
+//        approvalRepository.saveAll(approvalLines);
+
+
+
+    }
+
+
+
 }

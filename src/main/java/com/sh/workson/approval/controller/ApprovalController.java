@@ -1,6 +1,7 @@
 package com.sh.workson.approval.controller;
 
 import com.sh.workson.approval.dto.*;
+import com.sh.workson.approval.entity.Approval;
 import com.sh.workson.approval.service.ApprovalService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.department.entity.Department;
@@ -8,6 +9,7 @@ import com.sh.workson.department.service.DepartmentService;
 import com.sh.workson.employee.dto.IApprover;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,9 +19,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -547,12 +552,34 @@ public class ApprovalController {
     public void createApproval(Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         List<IApprover> employees = employeeService.findApprover(employeeDetails.getEmployee().getId());
         model.addAttribute("employees", employees);
+        log.debug("employees = {}", employees);
 
         List<Department> departments = departmentService.findAll();
         model.addAttribute("departments", departments);
+        log.debug("departments = {}", departments);
 
         Employee loginUser = employeeService.findLoginUser(employeeDetails.getEmployee().getId());
         model.addAttribute("loginUser", loginUser);
-        log.debug("loginUser = {}", loginUser.getRest());
+        log.debug("loginUser = {}", loginUser);
+    }
+
+    @PostMapping("/createApproval.do")
+    public String createApproval(@Valid CreateCooperationDto createCooperationDto,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes,
+                                 @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        // 1. 사용자 입력값
+        if(bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new RuntimeException(message);
+        }
+        log.debug("createApprovalDto = {}", createCooperationDto);
+
+        // createApprovalDto -> approval로 변환
+        createCooperationDto.setEmpId(employeeDetails.getEmployee().getId());
+        approvalService.createCooperationApproval(createCooperationDto);
+
+
+        return "redirect:/approval/approvalHome.do";
     }
 }

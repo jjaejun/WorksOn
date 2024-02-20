@@ -2,9 +2,22 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const radioButtons = document.querySelectorAll('input[type="radio"][name="approval-form"]');
+    const approvalButtons = document.querySelectorAll('input[type="checkbox"][name="helper-radio"]')
+
+    approvalButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            if (button.checked) {
+                handleApprovalSelection();
+            }
+        });
+    });
+
     const today = new Date(); // 현재 날짜로 초기화
 
     // 로그인한 사용자 정보
+    const empIdElement = document.getElementById('empId');
+    const empId = empIdElement.getAttribute('data-emp-id');
+
     const empNameElement = document.getElementById('empName');
     const empName = empNameElement.getAttribute('data-emp-name');
 
@@ -307,12 +320,14 @@ document.addEventListener('DOMContentLoaded', function () {
         createCooperationForm.innerHTML = ''; // 초기화
 
         // 업무협조 신청서
-        createCooperationForm.innerHTML = '<div class="container mx-auto p-8 bg-white border mt-10">\n' +
+        createCooperationForm.innerHTML = '<form name="createCooperationFrm" method="post" >' +
+            `<input type="hidden" name="_csrf" value="${csrfToken}">\n` +
+            '<div class="container mx-auto p-8 bg-white border mt-10">\n' +
             '    <h1 class="text-3xl text-center mb-4">업 무 협 조</h1>\n' +
             '    <div class="flex">\n' +
             '        <table class="w-20% mb-6">\n' +
             '            <tr class="border">\n' +
-            '                <th class="border p-2">기안자</th>\n' +
+            '                <th class="border p-2">기안자</th>' + `<input type="hidden" name="empId" value=${empId} />` +
             '                <td><input type="text" class="w-20% p-2 border" value="'+ empName +'" readonly></td>\n' +
             '            </tr>\n' +
             '            <tr class="border">\n' +
@@ -321,69 +336,29 @@ document.addEventListener('DOMContentLoaded', function () {
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">기안일</th>\n' +
-            '                <td><input type="date" class="w-20% p-2 border" id="draft_date"></td>\n' +
+            '                <td><input type="date" name="approvalEndDate" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
-            '        <table class="mb-6 ml-auto mr-1">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="팀장" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="이민정" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
-            '        <table class="mb-6 mr-1">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="천무진" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
-            '        <table class="mb-6">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="한준희" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
+            '    <div id="approval-section-container">\n' +
+            '     </div>\n' +
             '    </div>\n' +
             '\n' +
             '    <table class="w-full mb-6">\n' +
             '        <tr class="border">\n' +
             '            <th class="border p-2 w-32">수신처</th>\n' +
-            '            <td><input type="text" class="w-full p-2 border " placeholder="수신처"></td>\n' +
+            '            <td><input type="text" name="cooperationDept" class="w-full p-2 border " placeholder="수신처"></td>\n' +
             '        </tr>\n' +
             '        <tr class="border">\n' +
             '            <th class="border p-2 w-32">제목</th>\n' +
-            '            <td><input type="text" class="w-full p-2 border " placeholder="제목"></td>\n' +
+            '            <td><input type="text" name="title" class="w-full p-2 border " placeholder="제목"></td>\n' +
             '        </tr>\n' +
             '        <tr class="border">\n' +
             '            <th class="border p-2 w-32">내용</th>\n' +
-            '            <td><input type="text" class="w-full p-2 border " placeholder="내용"></td>\n' +
+            '            <td><input type="text" name="content" class="w-full p-2 border " placeholder="내용"></td>\n' +
             '        </tr>\n' +
             '        <tr class="border">\n' +
             '           <th class="border p-2 w-32">기간 및 일시</th>\n' +
-            '           <td><input type="date" class="w-15% p-2 border" id="start_date">&nbsp ~ &nbsp<input type="date" class="w-20% p-2 border" id="end_date"></td>\n' +
+            '           <td><input type="date" name="startDate" class="w-15% p-2 border" id="start_date">&nbsp ~ &nbsp<input type="date" name="endDate" class="w-20% p-2 border" id="end_date"></td>\n' +
             '        </tr>\n' +
             '    </table>\n' +
             '\n' +
@@ -393,11 +368,13 @@ document.addEventListener('DOMContentLoaded', function () {
             '    </div>\n' +
             '\n' +
             '    <button type="submit" class="bg-blue-500 text-white p-2 rounded">결재요청</button>\n' +
-            '</div>';
+            '</div>' +
+            '</form>';
 
         const draftDateInput = document.getElementById('draft_date');
         const startDateInput = document.getElementById('start_date');
         const endDateInput = document.getElementById('end_date');
+
 
         draftDateInput.addEventListener('change', function () {
             // 기안일이 변경될 때도 현재 날짜와 비교하여 처리
@@ -418,6 +395,9 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
         }
+
+        findCheckboxEmpId();
+        frmSubmit();
 
         function updateDuration() {
             const startDate = new Date(startDateInput.value);
@@ -441,28 +421,120 @@ document.addEventListener('DOMContentLoaded', function () {
         return `${year}-${month}-${day}`;
     }
 
+    function handleApprovalSelection() {
+        // const selectApprovals = getSelectedApprovals();
+        //
+        // const createLeaveForm = document.getElementById('create-form');
+        // const approvalSection = createApprovalSection(selectApprovals);
+        //
+        // createLeaveForm.innerHTML += approvalSection;
 
+        const createForm = document.getElementById('create-form');
+
+        // 이전에 생성된 승인 섹션 제거
+        const existingApprovalSection = createForm.querySelector('.approval-section');
+        if (existingApprovalSection) {
+            existingApprovalSection.remove();
+        }
+
+        const selectApprovals = getSelectedApprovals();
+
+        // 새로운 승인 섹션 생성 및 추가
+        const approvalSection = createApprovalSection(selectApprovals);
+        createForm.innerHTML += approvalSection;
+    }
+
+    function getSelectedApprovals() {
+        const selectedApprovals = [];
+
+        // 체크된 체크박스들을 선택
+        const checkboxes = document.querySelectorAll('input[name="helper-radio"]:checked');
+
+        checkboxes.forEach(function (checkbox) {
+            const empId = checkbox.value;
+            const empName = checkbox.parentElement.querySelector('.check-approval').innerText; // 선택된 체크박스의 부모에서 이름 가져오기 (예시 기준)
+
+            // console.log(empName);
+
+            // 선택된 승인자 정보를 배열에 추가
+            selectedApprovals.push({
+                id: empId,
+                name: empName
+            });
+        });
+
+        return selectedApprovals;
+    }
+
+
+
+
+
+// 동적으로 HTML을 생성하는 함수 추가 (예시)
+    function createApprovalSection(approvals) {
+        let employeesNameElements = document.querySelectorAll('.checkInfo'); // 클래스 선택
+
+        employeesNameElements.forEach(function (employeesNameElement) {
+            let employeesName = employeesNameElement.getAttribute('data-employees-name');
+            console.log(employeesName);
+
+            let employeesPositionName = employeesNameElement.getAttribute('data-position-name');
+            console.log(employeesPositionName);
+
+            let html = '<div class="text-xl p-2 py-4 font-bold hover:text-[#000000] approval-section">';
+
+            for (const approval of approvals) {
+                // 여기서 approval 객체의 프로퍼티에 접근하여 HTML을 생성
+                html += '<table class="mb-6 ml-auto mr-1">';
+                html += '<tr class="border">';
+                html += '<th class="border p-2 w-10" rowspan="4">승인</th>';
+                html += '</tr>';
+                html += '<tr class="border">';
+                html += '<td><input type="text" class="w-24 p-2" value="' + approval.name + '" readonly></td>';
+                html += '</tr>';
+                html += '<tr class="border">';
+                html += '<td><input type="text" class="w-24 p-2" value="' + approval.position + '" readonly></td>';
+                html += '</tr>';
+                html += '<tr class="border">';
+                html += '<td><input type="text" class="w-24 p-2" value="사인" readonly></td>';
+                html += '</tr>';
+                html += '</table>';
+            }
+
+            html += '</div>';
+            // 여기서 생성된 HTML을 해당 요소에 추가하거나 처리할 수 있습니다.
+            return html;
+        });
+    }
 });
 
+const frmSubmit = () => {
+  document.createCooperationFrm.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     const approvalFormRadioButtons = document.querySelectorAll('input[name="approval-form"]');
-//     const selectApproversButton = document.querySelector('#create-form');
-//
-//     selectApproversButton.addEventListener('click', function () {
-//         let isApprovalFormSelected = false;
-//
-//         approvalFormRadioButtons.forEach(function (radioButton) {
-//             if (radioButton.checked) {
-//                 isApprovalFormSelected = true;
-//             }
-//         });
-//
-//         if (isApprovalFormSelected) {
-//             // 여기에 결재자 선택을 위한 로직 추가
-//             alert('결재자를 선택할 수 있습니다.');
-//         } else {
-//             alert('먼저 결재 양식을 선택하세요.');
-//         }
-//     });
-// });
+     const frm = e.target;
+      console.log(frm);
+
+      console.log(frm.querySelectorAll('input'));
+
+  });
+};
+const findCheckboxEmpId = () => {
+    const checkboxes =  document.querySelectorAll('.check-approval').forEach((checkbox, i) => {
+        checkbox.addEventListener('change', (e) => {
+            const name = e.target;
+            const area = document.querySelector('#approval-section-container');
+            const {employeesName, positionName} = name.dataset;
+            if(name.checked){
+                area.innerHTML += `<input value="${name.value}" readonly name="approverId" /> ${employeesName}${positionName}`;
+            }
+
+            console.log(e.target)
+        });
+    });
+};
+
+
+window.addEventListener('DOMContentLoaded', (e) => {
+
+});

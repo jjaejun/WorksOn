@@ -53,11 +53,12 @@
                                 <li >
                                     <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                                         <div class="flex items-center h-5">
-                                            <input th:id="|helper-radio-${emp.id}|" name="helper-radio" th:value="${emp.id}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                            <input th:id="|helper-radio-${emp.id}|" name="helper-radio" th:value="${emp.id}" th:data-employees-name="${emp.empName}" th:data-position-name="${emp.positionName}"
+                                                   type="checkbox" class="check-approval w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" >
                                         </div>
                                         <div class="ms-2 text-sm">
                                             <label th:for="|helper-radio-${emp.id}|" class="font-medium text-gray-900 dark:text-gray-300">
-                                                <div class="ml-2 text-gray-700" th:text="${emp.empName + ' [' + emp.positionName + ']'}">이름</div>
+                                                <div class="checkInfo ml-2 text-gray-700" th:text="${emp.empName + ' [' + emp.positionName + ']'}" th:data-employees-name="${emp.empName}" th:data-position-name="${emp.positionName}" th:id="checkboxInfo">이름</div>
                                             </label>
                                         </div>
                                     </div>

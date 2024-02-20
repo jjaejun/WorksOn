@@ -360,6 +360,8 @@ alter table approval_leave add leave_count varchar2(30); -- 결재 종류
 ALTER TABLE approval_leave MODIFY leave_count FLOAT(53); -- 연차 일수
 update approval_leave set leave_count = 1.0 where id = 11101;
 select * from approval_leave;
+alter table approval_leave modify start_date date;
+alter table approval_leave modify end_date date;
 
 -- 결재 비품신청 테이블
 create table approval_equipment (
@@ -389,6 +391,10 @@ create table approval_cooperation (
     , created_at timestamp default systimestamp
     , constraints pk_approval_cooperation_id primary key(id)
 );
+alter table approval_cooperation modify start_date date;
+alter table approval_cooperation modify end_date date;
+alter table approval_cooperation modify name null;
+alter table approval_cooperation modify people null;
 
 
 -- 결재 테이블
@@ -413,6 +419,9 @@ create table approval (
     , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
 );
 create sequence seq_approval_id start with 1 increment by 50;
+
+alter table approval modify approval_start_date date
+alter table approval modify approval_end_date date
 
 -- 전자결재 첨부파일 테이블
 create table approval_attachment (

@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +32,10 @@ public class Approval {
 
     @CreationTimestamp
     @Column(name = "approval_start_date")
-    private Timestamp approvalStartDate;
+    private Date approvalStartDate;
 
     @Column(name = "approval_end_date")
-    private Timestamp approvalEndDate;
+    private Date approvalEndDate;
 
     @Column
     @Enumerated(EnumType.STRING)
