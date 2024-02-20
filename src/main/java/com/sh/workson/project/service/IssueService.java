@@ -61,7 +61,7 @@ public class IssueService {
     }
 
     public Page<IssueDetailDto> findTop3Issue(Long id, Pageable pageable) {
-        Page<Issue> issues = issueRepository.findAllMyIssue(id, pageable);
+        Page<Issue> issues = issueRepository.findTop3Issue(id, pageable);
         return issues.map(issue -> convertToIssueDetailDto(issue));
     }
 

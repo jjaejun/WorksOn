@@ -168,8 +168,8 @@ public class ProjectController {
             }
         }
 
-        Page<IssueDetailDto> issueDetailDtos = issueService.findTop3Issue(employeeDetails.getEmployee().getId(), PageRequest.of(page3, size3));
-        log.debug("issue = {}", issueDetailDtos);
+        Page<IssueDetailDto> issueDetailDtos = issueService.findTop3Issue(id, PageRequest.of(page3, size3));
+        log.debug("issue = {}", issueDetailDtos.toList());
         model.addAttribute("issues", issueDetailDtos);
         model.addAttribute("issueCount", issueDetailDtos.getTotalElements());
 
