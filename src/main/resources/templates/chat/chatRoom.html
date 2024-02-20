@@ -22,9 +22,9 @@
 
 <div layout:fragment="content">
     <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring">
-        <form th:action="@{/chat/deleteChatRoom.do}" method="post">
+        <form name="deleteChatRoomFrm" th:action="@{/chat/deleteChatRoom.do}" method="post">
             <input name="id" type="hidden" th:value="${chatRoomId}">
-            <button onclick="confirm('채팅방에서 나가시겠습니까?');">
+            <button id="deleteChatRoomBtn" type="button">
                 <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-red-500"></span>
                 <span class="relative text-md font-medium text-red-600 transition-colors group-hover:text-white">채팅방 나가기</span>
             </button>

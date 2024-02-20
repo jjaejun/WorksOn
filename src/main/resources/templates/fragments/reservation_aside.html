@@ -6,6 +6,20 @@
   <!-- Desktop sidebar -->
   <aside id="sidebar" class="z-20 w-48 pt-10 h-full bg-white-600 md:block flex-shrink-0">
     <div class="py-4 text-[#000000]">
+      <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+           th:onclick="|location.href='@{/resource/createResource.do}'|">
+        <button>
+          <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-blue-500"></span>
+          <span class="relative text-md font-medium text-blue-600 transition-colors group-hover:text-white">자원 추가</span>
+        </button>
+      </div>
+      <div class="w-fit h-fit mr-10 group relative inline-block overflow-hidden border border-indigo-600 px-10 py-2 focus:outline-none focus:ring"
+           th:onclick="|location.href='@{/resource/deleteResource.do}'|">
+        <button>
+          <span class="absolute inset-y-0 left-0 w-[2px] bg-blue-600 transition-all group-hover:w-full group-active:bg-red-500"></span>
+          <span class="relative text-md font-medium text-red-600 transition-colors group-hover:text-white">자원 삭제</span>
+        </button>
+      </div>
       <div class="text-xl p-2 py-4 font-bold hover:text-[#000000]">
         <span>자원 목록</span>
         <hr class="mt-2">

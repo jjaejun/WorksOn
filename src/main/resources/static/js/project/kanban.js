@@ -136,7 +136,7 @@ document.taskCreateFrm.addEventListener('submit', (e) => {
             }
 
             const drag = `
-            <div draggable="true" data-id="${response.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">
+            <div draggable="true" data-id="${response.id}" class="drag w-full hover:bg-gray-50 bg-white p-3 rounded-md shadow-sm text-gray-700">
                     <ul>
                         <li class="flex justify-between">
                             <div class="font-semibold">${name.value}</div>
@@ -164,7 +164,7 @@ document.taskCreateFrm.addEventListener('submit', (e) => {
             document.querySelector("#closeModal").click();
             dragEvent();
 
-         }, 1000);
+         }, 500);
       }
    })
 });

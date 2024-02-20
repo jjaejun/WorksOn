@@ -21,6 +21,4 @@ public class TaskListDto {
     private String empName;
     private String empProfileUrl;
     private String positionName;
-
-
 }
