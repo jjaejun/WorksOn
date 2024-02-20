@@ -1,9 +1,12 @@
 package com.sh.workson.auth.handler;
 
+import com.sh.workson.authority.entity.Authority;
+import com.sh.workson.authority.entity.RoleAuth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -23,7 +26,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         // 1. 알림 테이블에서 미확인 알림 조회
         // 2. ..
 
-
     	/**
        * 기본 redirect 페이지 지정
        */
@@ -37,7 +39,15 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
       if(savedRequest != null) {
       	targetUrl = savedRequest.getRedirectUrl();
       }
-      
+      // 로그인 사용자의 권한 확인 -> EMP_TEMP
+        for(GrantedAuthority authority :authentication.getAuthorities()){
+            if(authority.getAuthority().toString().equals(RoleAuth.ROLE_TEMP.toString())){
+                targetUrl = "/employee/passwordUpdate.do";
+            };
+        }
+
+
+
       log.debug("targetUrl = {}", targetUrl);
       
       redirectStrategy.sendRedirect(request, response, targetUrl);

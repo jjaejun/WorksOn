@@ -31,16 +31,17 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((authorizeRequest -> {
             authorizeRequest
-                    .requestMatchers("/", "/index.html").permitAll()
-                    .requestMatchers("/project/**").authenticated()
-                    .requestMatchers("/dashboard/**").authenticated()
-                    .requestMatchers("/board/**").authenticated()
-                    .requestMatchers("/approval/**").authenticated()
-                    .requestMatchers("/schedule/**").authenticated()
-                    .requestMatchers("/reservation/**").authenticated()
-                    .requestMatchers("/chat/**").authenticated()
-                    .requestMatchers("/attend/**").authenticated()
-                    .requestMatchers("/employee/**").authenticated()
+                    .requestMatchers("/", "/index.html").hasRole("EMP")
+                    .requestMatchers("/project/**").hasRole("EMP")
+                    .requestMatchers("/dashboard/**").hasRole("EMP")
+                    .requestMatchers("/board/**").hasRole("EMP")
+                    .requestMatchers("/approval/**").hasRole("EMP")
+                    .requestMatchers("/schedule/**").hasRole("EMP")
+                    .requestMatchers("/reservation/**").hasRole("EMP")
+                    .requestMatchers("/chat/**").hasRole("EMP")
+                    .requestMatchers("/attend/**").hasRole("EMP")
+                    .requestMatchers("/employee/passwordUpdate.do", "/passwordUpdate.html").hasRole("TEMP")
+                    .requestMatchers("/employee/**").hasRole("EMP")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     // 민정
 
@@ -75,6 +76,7 @@ public class WebSecurityConfig {
                     .loginPage("/auth/login.do")
                     .loginProcessingUrl("/auth/login.do")
                     // handler 달 경우 여기다가 작성
+                    .successHandler(new CustomSuccessHandler())
                     .permitAll();
         }));
 

@@ -225,6 +225,18 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/passwordUpdate.do")
+    public void passwordUpdate(){};
+
+    @PostMapping("/passwordUpdate.do")
+    public String passwordUpdate(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam("password") String password
+    ){
+        log.debug("password = {}", password);
+
+        return null;
+    }
 
 
 
