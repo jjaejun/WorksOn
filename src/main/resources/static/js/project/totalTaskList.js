@@ -1,9 +1,9 @@
 const trEvent = () => {
-    const trs = document.querySelectorAll("#projectList tr");
+    const trs = document.querySelectorAll("#taskList tr");
     trs.forEach((tr, i) => {
         tr.addEventListener('click', (e) => {
-            const { id } = trs[i].dataset;
-            location.href = `${contextPath}project/projectDetail.do?id=${id}`;
+            const { id, projectId } = trs[i].dataset;
+            location.href = `${contextPath}project/taskDetail.do?id=${id}&projectId=${projectId}`;
         });
     });
 }
@@ -17,8 +17,8 @@ const pageEvent = () => {
         btn.addEventListener('click', (e) => {
             const button = e.target;
             const { pageNumber} = button.dataset;
-            let size = 15;
-            let url = `/WorksOn/project/doneProjectList.do?page=${pageNumber}&size=${size}`;
+            let size = 10;
+            let url = `/WorksOn/project/totalTaskList.do?page=${pageNumber}&size=${size}`;
 
             console.log(url);
 
@@ -35,8 +35,8 @@ const pageEvent = () => {
                     let parser = new DOMParser();
                     let newDocument = parser.parseFromString(html, 'text/html');
 
-                    const newProjectList = newDocument.querySelector("#projectList");
-                    const originProjectList = document.querySelector("#projectList");
+                    const newProjectList = newDocument.querySelector("#taskList");
+                    const originProjectList = document.querySelector("#taskList");
                     const newPagebar = newDocument.querySelector("#page-bar-container");
                     const originPagebar = document.querySelector("#page-bar-container");
 

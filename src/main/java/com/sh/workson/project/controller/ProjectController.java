@@ -9,10 +9,8 @@ import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.project.dto.*;
-import com.sh.workson.project.entity.ProjectComment;
-import com.sh.workson.project.entity.ProjectCommentType;
-import com.sh.workson.project.entity.ProjectEmployee;
-import com.sh.workson.project.entity.Task;
+import com.sh.workson.project.entity.*;
+import com.sh.workson.project.service.IssueService;
 import com.sh.workson.project.service.ProjectCommentService;
 import com.sh.workson.project.service.ProjectService;
 import com.sh.workson.project.service.TaskService;
@@ -65,6 +63,8 @@ public class ProjectController {
     private TaskService taskService;
     @Autowired
     private ProjectCommentService projectCommentService;
+    @Autowired
+    private IssueService issueService;
 
     @GetMapping("/totalProjectList.do")
     public void totalProjectList(
@@ -146,7 +146,9 @@ public class ProjectController {
             @RequestParam(name = "page1",defaultValue = "0") int page1,
             @RequestParam(name = "size1", defaultValue = "5") int size1,
             @RequestParam(name = "page2", defaultValue = "0") int page2,
-            @RequestParam(name = "size2", defaultValue = "5") int size2
+            @RequestParam(name = "size2", defaultValue = "5") int size2,
+            @RequestParam(name = "page2", defaultValue = "0") int page3,
+            @RequestParam(name = "size2", defaultValue = "5") int size3
     ){
         ProjectDetailDto projectDetailDto = projectService.findById(id);
         model.addAttribute("project", projectDetailDto);
@@ -165,6 +167,11 @@ public class ProjectController {
                 }
             }
         }
+
+        Page<IssueDetailDto> issueDetailDtos = issueService.findTop3Issue(employeeDetails.getEmployee().getId(), PageRequest.of(page3, size3));
+        log.debug("issue = {}", issueDetailDtos);
+        model.addAttribute("issues", issueDetailDtos);
+        model.addAttribute("issueCount", issueDetailDtos.getTotalElements());
 
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));
@@ -398,15 +405,60 @@ public class ProjectController {
 
     @GetMapping("/totalTaskList.do")
     public void totalTaskList(
-            @PageableDefault(size = 15, page = 0) Pageable pageable,
+            @PageableDefault(size = 10, page = 0) Pageable pageable,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             Model model
     ){
         Page<TaskDetailDto> taskDetailDtos = taskService.findAllMyTask(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("task = {}", taskDetailDtos);
+
         model.addAttribute("tasks", taskDetailDtos);
         model.addAttribute("totalCount", taskDetailDtos.getTotalElements());
         model.addAttribute("size", taskDetailDtos.getSize());
         model.addAttribute("number", taskDetailDtos.getNumber());
         model.addAttribute("totalpages", taskDetailDtos.getTotalPages());
+    }
+
+
+    @GetMapping("/totalIssueList.do")
+    public void totalIssueList(
+        @PageableDefault(size = 10, page = 0) Pageable pageable,
+        @AuthenticationPrincipal EmployeeDetails employeeDetails,
+        Model model
+    ){
+        Page<IssueDetailDto> issueDetailDtos = issueService.findAllMyIssue(employeeDetails.getEmployee().getId(), pageable);
+
+        log.debug("issue = {}", issueDetailDtos);
+
+        model.addAttribute("issues", issueDetailDtos);
+        model.addAttribute("totalCount", issueDetailDtos.getTotalElements());
+        model.addAttribute("size", issueDetailDtos.getSize());
+        model.addAttribute("number", issueDetailDtos.getNumber());
+        model.addAttribute("totalpages", issueDetailDtos.getTotalPages());
+    }
+
+
+    @GetMapping("/searchTask.do")
+    public ResponseEntity<?> totalTaskList(
+            @RequestParam("name") String name,
+            @RequestParam("projectId") Long projectId,
+            Model model
+    ){
+        List<TaskSearchDto> tasks = taskService.findTaskByProjectId(name, projectId);
+        log.debug("task = {}", tasks);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/createIssue.do")
+    public ResponseEntity<?> createIssue(
+            IssueCreateDto issueCreateDto,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails
+    ){
+        issueCreateDto.setOwnerId(employeeDetails.getEmployee().getId());
+        Issue issue = issueService.createIssue(issueCreateDto);
+
+        return new ResponseEntity<>(issue.getId(), HttpStatus.OK);
     }
 }
