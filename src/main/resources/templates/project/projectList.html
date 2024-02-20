@@ -19,9 +19,10 @@
             </div>
             <aside class="mt-10 w-fit" id="sidebarProject">
                 <ul class="text-lg p-2 py-4 font-semibold hover:text-[#000000]">
-                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8">업무 전체보기</li>
-                    <li th:onclick="|location.href='@{/project/totalIssueList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">이슈 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/projectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 text-blue-600 border-blue-600 pb-2 pr-8">진행중인 프로젝트</li>
                     <li th:onclick="|location.href='@{/project/doneProjectList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">완료된 프로젝트</li>
+                    <li th:onclick="|location.href='@{/project/totalTaskList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">업무 전체보기</li>
+                    <li th:onclick="|location.href='@{/project/totalIssueList.do}'|" class="cursor-pointer hover:text-blue-600 border-b hover:border-blue-600 border-gray-300 pb-2 pr-8 mt-4">이슈 전체보기</li>
                 </ul>
             </aside>
         </div>
@@ -101,15 +102,25 @@
                         <ul class="inline-flex items-center">
                             <!-- 이전 버튼 -->
                             <li>
-                                <button class="ownerPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-blue"
+                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                        th:if="${!(projectOwnerNumber > 0)}" readonly>
+                                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                        <path
+                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"
+                                                fill-rule="evenodd"
+                                        ></path>
+                                    </svg>
+                                </button>
+                                <button class="ownerPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
                                         aria-label="Previous"
                                         th:data-page-number="${projectOwnerNumber - 1}"
                                         th:if="${projectOwnerNumber > 0}">
                                     <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" th:data-page-number="${projectOwnerNumber - 1}">
                                         <path th:data-page-number="${projectOwnerNumber - 1}"
-                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                clip-rule="evenodd"
-                                                fill-rule="evenodd"
+                                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                              clip-rule="evenodd"
+                                              fill-rule="evenodd"
                                         ></path>
                                     </svg>
                                 </button>
@@ -133,15 +144,25 @@
 
                             <!-- 다음 버튼 -->
                             <li>
-                                <button class="ownerPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue"
+                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                        th:if="${!(projectOwnerNumber < projectOwnerTotalpages - 1)}" readonly>
+                                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                    <path
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"
+                                            fill-rule="evenodd"
+                                    ></path>
+                                </svg>
+                            </button>
+                                <button class="ownerPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
                                         aria-label="Next"
                                         th:data-page-number="${projectOwnerNumber + 1}"
                                         th:if="${projectOwnerNumber < projectOwnerTotalpages - 1}">
                                     <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" th:data-page-number="${projectOwnerNumber + 1}">
                                         <path th:data-page-number="${projectOwnerNumber + 1}"
-                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                clip-rule="evenodd"
-                                                fill-rule="evenodd"
+                                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                              clip-rule="evenodd"
+                                              fill-rule="evenodd"
                                         ></path>
                                     </svg>
                                 </button>
@@ -224,15 +245,25 @@
                         <ul class="inline-flex items-center">
                             <!-- 이전 버튼 -->
                             <li>
-                                <button class="empPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-blue"
+                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                        th:if="${!(projectEmpNumber > 0)}" readonly>
+                                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                        <path
+                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"
+                                                fill-rule="evenodd"
+                                        ></path>
+                                    </svg>
+                                </button>
+                                <button class="empPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
                                         aria-label="Previous"
                                         th:data-page-number="${projectEmpNumber - 1}"
                                         th:if="${projectEmpNumber > 0}">
                                     <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" th:data-page-number="${projectEmpNumber - 1}">
                                         <path th:data-page-number="${projectEmpNumber - 1}"
-                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                clip-rule="evenodd"
-                                                fill-rule="evenodd"
+                                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                              clip-rule="evenodd"
+                                              fill-rule="evenodd"
                                         ></path>
                                     </svg>
                                 </button>
@@ -256,15 +287,25 @@
 
                             <!-- 다음 버튼 -->
                             <li>
-                                <button class="empPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue"
+                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                                        th:if="${!(projectEmpNumber < projectEmpTotalpages - 1)}" readonly>
+                                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                        <path
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clip-rule="evenodd"
+                                                fill-rule="evenodd"
+                                        ></path>
+                                    </svg>
+                                </button>
+                                <button class="empPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
                                         aria-label="Next"
                                         th:data-page-number="${projectEmpNumber + 1}"
                                         th:if="${projectEmpNumber < projectEmpTotalpages - 1}">
                                     <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" th:data-page-number="${projectEmpNumber + 1}">
                                         <path th:data-page-number="${projectEmpNumber + 1}"
-                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                clip-rule="evenodd"
-                                                fill-rule="evenodd"
+                                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                              clip-rule="evenodd"
+                                              fill-rule="evenodd"
                                         ></path>
                                     </svg>
                                 </button>
