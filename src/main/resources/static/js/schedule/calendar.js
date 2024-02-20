@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('name').value = name;
             document.getElementById('color').value = color.toUpperCase();
             document.getElementById('id').value = id;
+            document.getElementById('delete-category').value=id;
 
             console.log("name =", name, ", color =", color, ", id =", id);
 
@@ -337,6 +338,57 @@ document.addEventListener('DOMContentLoaded', () => {
         var selectedColor = document.getElementById("color");
         selectedColor.value = selectedColor.options[selectedColor.selectedIndex].value;
     })
-
-
 });
+
+
+document.getElementById('delete-category').addEventListener('click', function() {
+    const scheduleCategoryId = this.value;
+    // console.log('rowId = ', rowId)
+    $.ajax({
+        type: "POST",
+        headers: {
+            [csrfHeaderName]:csrfToken
+        },
+        url: `${contextPath}schedule/deleteCategory.do`,
+        data:{
+            scheduleCategoryId: scheduleCategoryId
+        },
+        success(resp){
+            document.getElementById('close-modal').click();
+            document.location.reload();
+        }
+    })
+
+
+})
+
+
+// document.querySelector('#delete-category').addEventListener('click', function (){
+//     const scheduleCategoryId = this.value;
+//     console.log(scheduleCategoryId);
+//     function sendData(data, url) {
+//         const form = document.createElement('form');
+//         form.setAttribute('method', 'post');
+//         form.setAttribute('action', url);
+//
+//         const hiddenInput = document.createElement('input');
+//         hiddenInput.setAttribute('type', 'hidden');
+//         hiddenInput.setAttribute('name', 'id');
+//         hiddenInput.setAttribute('value', data);
+//
+//         const csrfInput = document.createElement('input');
+//         csrfInput.setAttribute('type', 'hidden');
+//         csrfInput.setAttribute('name', csrfHeaderName);
+//         csrfInput.setAttribute('value', csrfToken);
+//
+//         form.appendChild(hiddenInput);
+//         form.appendChild(csrfInput);
+//         document.body.appendChild(form);
+//         form.submit();
+//     }
+//
+//     // 여기서 sendData 함수를 호출합니다. contextPath 변수가 정의되어 있어야 합니다.
+//     sendData(scheduleCategoryId, `${contextPath}schedule/deleteCategory.do`);
+//
+//
+// })

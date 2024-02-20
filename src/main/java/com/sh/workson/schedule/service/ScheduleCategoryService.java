@@ -56,4 +56,7 @@ public class ScheduleCategoryService {
         ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
     }
 
+    public void deleteById(Long id) {
+        scheduleCategoryRepository.deleteById(id);
+    }
 }
