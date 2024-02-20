@@ -72,6 +72,6 @@ document.updatePasswordFrm.addEventListener('submit', (e) => {
         e.preventDefault();
         return;
     }
-        EmployeeUpdatePasswordDto employee = 
+
     frm.submit();
 });

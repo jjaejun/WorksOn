@@ -37,7 +37,11 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
        */
       SavedRequest savedRequest = (SavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
       if(savedRequest != null) {
-      	targetUrl = savedRequest.getRedirectUrl();
+      	    targetUrl = savedRequest.getRedirectUrl();
+            if(savedRequest.getRedirectUrl().equals("/employee/passwordUpdate.do")){
+                targetUrl = "/";
+          }
+
       }
       // 로그인 사용자의 권한 확인 -> EMP_TEMP
         for(GrantedAuthority authority :authentication.getAuthorities()){
@@ -49,7 +53,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
 
       log.debug("targetUrl = {}", targetUrl);
-      
       redirectStrategy.sendRedirect(request, response, targetUrl);
     }    
 }
