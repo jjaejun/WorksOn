@@ -7,5 +7,5 @@ public class ScheduleCategoryDto {
     private Long id;
     private String name;
     private String color;
-    private Employee employee;
+    private Long empId;
 }
