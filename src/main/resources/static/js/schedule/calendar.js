@@ -23,14 +23,27 @@ document.addEventListener('DOMContentLoaded', function() {
         events: [],
         dateClick: function(selectionInfo) {
             console.log(selectionInfo);
-
         },
         eventClick: function(info) {
-            // info.jsEvent.preventDefault(); // don't let the browser navigate
+        // eventClick: function(selectionInfo) {
+        //     console.log(selectionInfo);
+            // let eventObj = selectionInfo;
+            let eventObj = info.event;
+            // info.jsEvent.preventDefault();
 
-            if (info.event.url) {
-                window.open(info.event.url);
-            }
+            console.log(eventObj);
+
+            $('#id').val(eventObj.id);
+            $('#title').val(eventObj.title);
+            $('#startTime').val(eventObj.start.toISOString().slice(0, 16)); // input datetime-local 포맷에 맞게 포맷팅
+            $('#endTime').val(eventObj.end ? eventObj.end.toISOString().slice(0, 16) : ''); // null 체크
+            $('#category').val(eventObj.extendedProps.categoryId); // 카테고리 ID가 충분하다고 가정, 필요에 따라 조정
+            $('#event-content').val(eventObj.extendedProps.content);
+
+            $('#schedule-modal').removeClass('hidden');
+
+            info.jsEvent.preventDefault();
+
         },
         eventTimeFormat: {
             hour: '2-digit',
@@ -51,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
             $.ajax({
                 url: `${contextPath}schedule/mySchedule.do`,
                 type: 'get',
+                extraParams: {
+                    custom_param1 : 'content'
+                },
                 // dataType:'json',
                 headers: {
                     [csrfHeaderName]: csrfToken
@@ -62,9 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 success: function(response) {
                     let events = response.map(function(item) {
                         return {
-                            id: item.id, // 이벤트의 고유 ID
+                            id: item.id,
                             title: item.title,
                             start: item.startTime,
+                            content:item.content,
                             end: item.endTime,
                             categoryId: categoryId,
                             color: item.color
@@ -90,12 +107,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+        $('#close-modal').on('click', function() {
+            $('#schedule-modal').addClass('hidden'); // 모달 숨기기
+        });
     });
 });
 
-/**
- * 모달창
- */
 
 
 // '모든 일정 보기' 체크박스를 토글할 때 모든 카테고리 체크박스를 체크/해제
@@ -315,9 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // 모달의 입력 필드에 데이터 설정
             document.getElementById('name').value = name;
             document.getElementById('color').value = color.toUpperCase();
-            document.getElementById('id').value = id;
+            document.getElementById('category-id').value = id;
+            document.getElementById('delete-category').value= id;
 
             console.log("name =", name, ", color =", color, ", id =", id);
+            console.log(document.getElementById('category-id').value)
 
             // 모달 표시
             const modal = document.getElementById('crud-modal');
@@ -337,6 +356,57 @@ document.addEventListener('DOMContentLoaded', () => {
         var selectedColor = document.getElementById("color");
         selectedColor.value = selectedColor.options[selectedColor.selectedIndex].value;
     })
-
-
 });
+
+
+document.getElementById('delete-category').addEventListener('click', function() {
+    const scheduleCategoryId = this.value;
+    // console.log('rowId = ', rowId)
+    $.ajax({
+        type: "POST",
+        headers: {
+            [csrfHeaderName]:csrfToken
+        },
+        url: `${contextPath}schedule/deleteCategory.do`,
+        data:{
+            scheduleCategoryId: scheduleCategoryId
+        },
+        success(resp){
+            document.getElementById('close-modal').click();
+            document.location.reload(); // 추후 비동기로 html 갱신
+        }
+    })
+
+
+})
+
+
+// document.querySelector('#delete-category').addEventListener('click', function (){
+//     const scheduleCategoryId = this.value;
+//     console.log(scheduleCategoryId);
+//     function sendData(data, url) {
+//         const form = document.createElement('form');
+//         form.setAttribute('method', 'post');
+//         form.setAttribute('action', url);
+//
+//         const hiddenInput = document.createElement('input');
+//         hiddenInput.setAttribute('type', 'hidden');
+//         hiddenInput.setAttribute('name', 'id');
+//         hiddenInput.setAttribute('value', data);
+//
+//         const csrfInput = document.createElement('input');
+//         csrfInput.setAttribute('type', 'hidden');
+//         csrfInput.setAttribute('name', csrfHeaderName);
+//         csrfInput.setAttribute('value', csrfToken);
+//
+//         form.appendChild(hiddenInput);
+//         form.appendChild(csrfInput);
+//         document.body.appendChild(form);
+//         form.submit();
+//     }
+//
+//     // 여기서 sendData 함수를 호출합니다. contextPath 변수가 정의되어 있어야 합니다.
+//     sendData(scheduleCategoryId, `${contextPath}schedule/deleteCategory.do`);
+//
+//
+// })
