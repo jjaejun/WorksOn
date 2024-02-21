@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -154,5 +155,14 @@ public class ProjectService {
     public Page<ProjectListDto> findAllDoneProject(Long id, Pageable pageable) {
         Page<Project> projects = projectRepository.findByAllDoneProject(id, pageable);
         return projects.map(project -> convertToProjectDto(project));
+    }
+
+    public Page<ProjectDashBoardDto> findTop3Project(Pageable pageable) {
+        Page<Project> projects = projectRepository.findTop3Project(pageable);
+        return projects.map(project -> convertToProjectDashBoardDto(project));
+    }
+
+    private ProjectDashBoardDto convertToProjectDashBoardDto(Project project) {
+        return new ProjectDashBoardDto(project.getId(), project.getTitle(), String.valueOf(project.getStatus()));
     }
 }

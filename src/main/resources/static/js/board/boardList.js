@@ -10,7 +10,6 @@ document.querySelectorAll("tr[data-board-id]").forEach((tr) =>{
     });
 });
 
-
 document.querySelectorAll(".pageNumber").forEach((btn) => {
     btn.addEventListener('click', (e) => {
         const button = e.target;

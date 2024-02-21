@@ -41,6 +41,13 @@ public class AttendService {
                         .map((emloyee) -> emloyee.getId())
                         .orElse(null)
         );
+
+        if(attend.getState().equals(State.LATE) || attend.getState().equals(State.WORK)){
+            attendListDto.setState("업무중");
+        }
+        else if(attend.getState().equals(State.QUIT)){
+            attendListDto.setState("퇴근");
+        }
         List<String> requestContents = attend.getAttendRequests().stream()
                 .map(attendRequest -> attendRequest.getContent())  // 각 객체의 content 속성을 가져옴
                 .collect(Collectors.toList());

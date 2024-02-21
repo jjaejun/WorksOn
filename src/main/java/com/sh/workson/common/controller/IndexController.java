@@ -10,16 +10,20 @@ import com.sh.workson.dailywork.service.DailyWorkService;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import com.sh.workson.employee.service.EmployeeService;
+import com.sh.workson.project.dto.ProjectDashBoardDto;
+import com.sh.workson.project.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,12 +49,14 @@ public class IndexController {
     private EmployeeRepository employeeRepository;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProjectService projectService;
 
     @GetMapping("")
     public String index(
             Authentication authentication,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
-            Model model,  @PageableDefault(value = 10, page = 0) Pageable pageable
+            Model model, @PageableDefault(value = 10, page = 0) Pageable pageable
     ){
         if(employeeDetails == null){
             return "/auth/login";
@@ -87,8 +93,8 @@ public class IndexController {
 
 
 //            민정
-
-
+            Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
+            model.addAttribute("projects", projectPage);
 
 
 
@@ -144,6 +150,7 @@ public class IndexController {
         }
     }
 
+    @Transactional
     @PostMapping("/indexCherry.do")
     public String indexCherry(
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
@@ -153,30 +160,40 @@ public class IndexController {
             @RequestParam("praise") String praise
     ){
         Long id = employeeDetails.getEmployee().getId();
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + id));
+
+        DailyWork dailyWork = DailyWork.builder()
+                .content(workLog)
+                .createdAt(LocalDateTime.now())
+                .cherryCount(employees.size() * Integer.parseInt(praise))
+                .employee(employeeDetails.getEmployee())
+                .build();
+
+        int totalUsedSeedCount = employees.size() * Integer.parseInt(praise);
+        int currentSeedCount = employee.getSeed();
+        int updatedSeedCount = Math.max(currentSeedCount - totalUsedSeedCount, 0);
+        employee.setSeed(updatedSeedCount);
+
+        // Save DailyWork entity
+        dailyWorkRepository.save(dailyWork);
 
         for (Long receivingEmployeeId : employees) {
             Employee receivingEmployee = employeeRepository.findById(receivingEmployeeId)
                     .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + receivingEmployeeId));
 
-            DailyWork dailyWork = DailyWork.builder()
-                    .content(workLog)
-                    .createdAt(LocalDateTime.now())
-                    .cherryCount(Integer.parseInt(praise))
-                    .employee(employeeDetails.getEmployee())
-                    .build();
-
-            // Save DailyWork entity
-            dailyWorkRepository.save(dailyWork);
+            int receivedCherry = Integer.parseInt(praise);
+            receivingEmployee.updateCherry(receivedCherry);
+            employeeRepository.save(receivingEmployee);
 
             Cherry cherry = Cherry.builder()
-                    .getCherry(Integer.parseInt(praise))
+                    .getCherry(receivedCherry)
                     .cherryContent(contentGift)
                     .employee(receivingEmployee)  // cherry를 받는 사람의 아이디로 설정
                     .dailyWork(dailyWork)
                     .build();
 
-            receivingEmployee.updateCherry(Integer.parseInt(praise));
-            employeeRepository.save(receivingEmployee);
+
 
             // Save Cherry entity
             cherryRepository.save(cherry);
@@ -187,3 +204,5 @@ public class IndexController {
     }
 
 }
+//            receivingEmployee.updateCherry(Integer.parseInt(praise));
+//            employeeRepository.save(receivingEmployee);
