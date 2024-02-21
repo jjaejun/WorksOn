@@ -1,5 +1,7 @@
 package com.sh.workson.reservation.controller;
 
+import com.sh.workson.attachment.entity.Attachment;
+import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attend.entity.AttendListDto;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
@@ -40,11 +42,14 @@ public class ReservationContoller {
     private ReservationService reservationService;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private AttachmentService attachmentService;
 
     @GetMapping("/reservationRoom.do")
     public void reservationRoom(Model model) {
         List<Resource> resources = resourceService.findByType(Type.Room);
         log.debug("resources = {}", resources);
+        List<Attachment> attachments = attachmentService.find
 
         model.addAttribute("resources", resources);
     }
