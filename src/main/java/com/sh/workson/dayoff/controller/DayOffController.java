@@ -34,41 +34,13 @@ public class DayOffController {
     @Autowired
     private DayOffRepository dayOffRepository;
 
+
     @GetMapping("/dayoffList.do")
-    public void dayoffList(
-            @PageableDefault(value = 10, page = 0) Pageable pageable, Model model,
-            @AuthenticationPrincipal EmployeeDetails employeeDetails
-    ){
-        Long id = employeeDetails.getEmployee().getId();
-
-        // 총 연차 정보
-        int totalDayOffCount = employeeDetails.getEmployee().getRest();
-
-        Page<DayOffListDto> dayOffPage = dayOffService.findAll(pageable, id);
-
-        // 사용 연차 정보
-        double useDayOffCount = dayOffPage.getContent().stream()
-                .mapToInt(DayOffListDto::getCount) // mapToInt를 사용하여 IntStream을 생성
-                .sum();
-
-        // 남은 연차 정보
-        double remainDayOffCount = totalDayOffCount - useDayOffCount;
-
-        model.addAttribute("size", dayOffPage.getSize());
-        model.addAttribute("number", dayOffPage.getNumber());
-        model.addAttribute("totalpages", dayOffPage.getTotalPages());
-        model.addAttribute("remainDayOffCount", String.valueOf(remainDayOffCount));
-        model.addAttribute("useDayOffCount", String.valueOf(useDayOffCount));
-        model.addAttribute("dayoffs", dayOffPage.getContent());
-        model.addAttribute("totalCount", dayOffPage.getTotalPages());
-        log.debug("dayoffs = {}", dayOffPage.getContent());
-    }
-
-    @GetMapping("/dayOffListSearchDate.do")
-    public ResponseEntity<?> dayoffListSearchDate(
+    public void dayoffListSearchDate(
             @RequestParam("year") String year,
-            @PageableDefault(value = 5, page = 0) Pageable pageable,
-            @AuthenticationPrincipal EmployeeDetails employeeDetails
+            @PageableDefault(value = 10, page = 0) Pageable pageable,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            Model model
     ){
         LocalDateTime yearTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(year)), ZoneId.systemDefault());
 //        log.debug("year = {}", year);
@@ -78,8 +50,31 @@ public class DayOffController {
         LocalDateTime endOfYear = yearTime.with(TemporalAdjusters.lastDayOfYear()).with(LocalTime.MAX);
         Long id = employeeDetails.getEmployee().getId();
 
+        // 총 연차 정보
+        int totalDayOffCount = employeeDetails.getEmployee().getRest();
+
+//        Page<DayOffListDto> dayOffPage = dayOffService.findAll(pageable, id);
+
         Page<DayOffListDto> dayOffListDtoPage = dayOffService.findEqSearchDate(pageable, id, startOfYear,endOfYear);
         log.debug("dayOffListDtoPage = {}", dayOffListDtoPage);
-        return ResponseEntity.ok(dayOffListDtoPage);
+
+        // 사용 연차 정보
+        double useDayOffCount = 0.0;
+        for(DayOffListDto dayOff : dayOffListDtoPage.get().toList()){
+            useDayOffCount += dayOff.getCount();
+        }
+        log.debug("useDayoffCount = {}", useDayOffCount);
+
+        // 남은 연차 정보
+        double remainDayOffCount = totalDayOffCount - useDayOffCount;
+
+        model.addAttribute("dayoffs", dayOffListDtoPage.getContent());
+        model.addAttribute("totalCount", dayOffListDtoPage.getTotalElements());
+        model.addAttribute("size", dayOffListDtoPage.getSize());
+        model.addAttribute("number", dayOffListDtoPage.getNumber());
+        model.addAttribute("totalpages", dayOffListDtoPage.getTotalPages());
+        model.addAttribute("remainDayOffCount", String.valueOf(remainDayOffCount));
+        model.addAttribute("useDayOffCount", String.valueOf(useDayOffCount));
+//        return ResponseEntity.ok(dayOffListDtoPage);
     }
 }

@@ -120,6 +120,7 @@ create sequence seq_project_employee_id start with 1 increment by 50;
 
 -- 프로젝트 첨부파일 - attachment 같이 사용
 
+
 -- 프로젝트 댓글
 create table project_comment (
     id number not null,
@@ -316,6 +317,7 @@ create table reservation(
     , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
 );
 alter table reservation rename column emp_id to employee_id;
+ALTER TABLE reservation MODIFY tb_resource_id NULL;
 create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 우진
@@ -571,5 +573,7 @@ create table cherry(
                        constraints fk_cherry_employee_id foreign key(employee_id) references employee(id) on delete cascade,
                        constraints fk_cherry_daily_work_id foreign key(daily_work_id) references daily_work(id) on delete cascade
 );
+ALTER TABLE cherry
+ADD cherry_content VARCHAR2(1000);
 create sequence seq_cherry_id start with 1 increment by 50;
 

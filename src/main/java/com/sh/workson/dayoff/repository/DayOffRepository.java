@@ -16,7 +16,7 @@ public interface DayOffRepository extends JpaRepository<DayOff, Long> {
     @Query("from DayOff d join fetch d.employee where d.employee.id = :id order by d.startAt desc ")
     Page<DayOff> findAll(Pageable pageable, @Param("id") Long id);
 
-    @Query("from DayOff d join fetch d.employee where d.employee.id = :id AND d.startAt >= :startOfYear AND d.startAt <= :endOfYear")
+    @Query("from DayOff d join fetch d.employee e join fetch e.position join fetch e.department where d.employee.id = :id AND d.startAt >= :startOfYear AND d.startAt <= :endOfYear")
     Page<DayOff> findEqSearchDate(Pageable pageable, @Param("id") Long id, @Param("startOfYear") LocalDateTime startOfYear, @Param("endOfYear") LocalDateTime endOfYear);
 
 

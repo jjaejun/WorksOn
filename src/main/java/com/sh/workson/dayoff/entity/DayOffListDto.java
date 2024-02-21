@@ -1,5 +1,6 @@
 package com.sh.workson.dayoff.entity;
 
+import com.sh.workson.employee.entity.Employee;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,5 +13,5 @@ public class DayOffListDto {
     private LocalDateTime endAt;
     private int count;
     private String content;
-
+    private Employee employee;
 }

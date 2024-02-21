@@ -42,9 +42,11 @@ public class ScheduleService {
         schedule.setEmployee(Employee.builder()
                     .id(createScheduleDto.getEmpId())
                     .build());
-        schedule.setScheduleCategory(ScheduleCategory.builder()
-                    .id(createScheduleDto.getScheduleCategoryId())
-                    .build());
+        if(createScheduleDto.getScheduleCategoryId() != null){
+            schedule.setScheduleCategory(ScheduleCategory.builder()
+                        .id(createScheduleDto.getScheduleCategoryId())
+                        .build());
+        }
         return schedule;
     }
 
@@ -64,5 +66,11 @@ public class ScheduleService {
         scheduleListDto.setEmpId(schedule.getEmployee().getId());
         scheduleListDto.setColor(schedule.getScheduleCategory().getColor());
         return scheduleListDto;
+    }
+
+
+
+    public void deleteById(Long id) {
+        scheduleRepository.deleteById(id);
     }
 }

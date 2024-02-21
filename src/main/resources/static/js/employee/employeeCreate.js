@@ -16,18 +16,18 @@ function checkOnlyOne1(element){
     element.checked = true;
 }
 
-/**
- *  비밀번호
- *
- */
-document.querySelector("#confirmPassword").onblur = (e) => {
-    const password = document.querySelector("#password");
-    const passwordConfirmation = e.target;
-    if (password.value !== passwordConfirmation.value) {
-        alert("패스워드가 일치하지 않습니다.");
-        password.select();
-    }
-};
+// /**
+//  *  비밀번호
+//  *
+//  */
+// document.querySelector("#confirmPassword").onblur = (e) => {
+//     const password = document.querySelector("#password");
+//     const passwordConfirmation = e.target;
+//     if (password.value !== passwordConfirmation.value) {
+//         alert("패스워드가 일치하지 않습니다.");
+//         password.select();
+//     }
+// };
 
 
 
@@ -35,7 +35,7 @@ document.employeeCreateFrm.onsubmit = (e) =>{
     const frm = e.target;
     const email = frm.email;
     const emailDuplicateCheck = frm.emailDuplicateCheck
-    const password = frm.password;
+    // const password = frm.password;
     const passwordConfirmation = frm.confirmPassword;
     const name = frm.name;
 
@@ -46,11 +46,11 @@ document.employeeCreateFrm.onsubmit = (e) =>{
     }
 
     // 비밀번호 일치 검사
-    if (password.value !== passwordConfirmation.value) {
-        alert("패스워드가 일치하지 않습니다.");
-        password.select();
-        return false;
-    }
+    // if (password.value !== passwordConfirmation.value) {
+    //     alert("패스워드가 일치하지 않습니다.");
+    //     password.select();
+    //     return false;
+    // }
 
     // 이름 형식 검사
     if (!/^[\w가-힣]{2,}$/.test(name.value)) {
@@ -74,6 +74,7 @@ document.employeeCreateFrm.onsubmit = (e) =>{
 /**
  *  이메일중복검사
  */
+
 document.querySelector("#email").onkeyup = (e) => {
     const email = e.target;
     const guideOk = document.querySelector(".guide.ok");

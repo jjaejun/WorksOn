@@ -132,7 +132,8 @@ document.commentCreateFrm.addEventListener('submit', (e) => {
     const typeId = frm.typeId;
     const type = frm.type;
     // comment 영역의 마지막 자식요소
-    const area = document.querySelector("#commentWrap").lastElementChild;
+    let area = document.querySelector("#commentWrap").lastElementChild;
+
 
     
     $.ajax({
@@ -181,14 +182,20 @@ document.commentCreateFrm.addEventListener('submit', (e) => {
                     </div>
                     <textarea style="outline: none;" readonly class="text-sm border-none focus:outline-none resize-none w-full h-fit" cols="3">${content.value}</textarea>
                     <div class="mt-4 flex items-center">
-                        <div class="text-sm text-gray-500 font-semibold">
+                        <div class="reply cursor-pointer text-sm text-gray-500 font-semibold">
                             답글달기
                         </div>
                     </div>
                 </div>
             </div>
             `;
-            area.insertAdjacentHTML('afterend', comment);
+            if(area === null){
+                document.querySelector("#commentWrap").innerHTML = comment;
+            }
+            else {
+                area.insertAdjacentHTML('afterend', comment);
+            }
+            replyEvent();
         }
     })
 

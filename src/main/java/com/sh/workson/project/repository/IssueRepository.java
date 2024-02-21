@@ -14,6 +14,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Query("from Issue i left join fetch i.owner o left join fetch o.department left join fetch o.position left join fetch i.employee e left join fetch e.department left join fetch e.position left join fetch i.project left join fetch i.task p where i.owner.id = :id or i.employee.id = :id order by i.id desc")
     Page<Issue> findAllMyIssue(Long id, Pageable pageable);
 
-    @Query("from Issue i left join fetch i.owner o left join fetch o.department left join fetch o.position left join fetch i.employee e left join fetch e.department left join fetch e.position left join fetch i.project left join fetch i.task p where i.owner.id = :id or i.employee.id = :id order by i.id desc")
+    @Query("from Issue i left join fetch i.owner o left join fetch o.department left join fetch o.position left join fetch i.employee e left join fetch e.department left join fetch e.position left join fetch i.project p left join fetch i.task where p.id = :id order by i.id desc")
     Page<Issue> findTop3Issue(Long id, Pageable pageable);
 }

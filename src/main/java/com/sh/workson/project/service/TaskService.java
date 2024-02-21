@@ -10,6 +10,7 @@ import com.sh.workson.project.repository.TaskRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,5 +143,10 @@ public class TaskService {
 
     private TaskSearchDto convertToTaskSearchDto(Task t) {
         return TaskSearchDto.builder().id(t.getId()).name(t.getName()).empName(t.getEmployee().getName()).build();
+    }
+
+    public Page<TaskDetailDto> findAllProjectTask(Long id, PageRequest pageable) {
+        Page<Task> tasks = taskRepository.findAllProjectTask(id, pageable);
+        return tasks.map(project -> convertToTaskDetailDto(project));
     }
 }
