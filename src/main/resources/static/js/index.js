@@ -1,3 +1,115 @@
+// 근태관리 실시간 시간 보여주기
+const Target = document.getElementById("clock");
+const today = document.getElementById("today");
+function clock() {
+    let time = new Date();
+
+    let year = time.getFullYear();
+    let month = time.getMonth();
+    let date = time.getDate();
+    let day = time.getDay();
+    let week = ['일', '월', '화', '수', '목', '금', '토'];
+
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    let seconds = time.getSeconds();
+
+    today.innerHTML = `${year}년 ${month + 1}월 ${date}일 (${week[day]})`;
+    Target.innerText =
+        `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
+}
+clock();
+setInterval(clock, 1000); // 1초마다 실행
+
+window.addEventListener('DOMContentLoaded', () => {
+    const btnStartWork = document.getElementById("btn-startwork");
+    const btnEndWork = document.getElementById("btn-endwork");
+    const workStateElement = document.getElementById("work-state");
+
+    btnStartWork.addEventListener('click', function () {
+        if (isAttendRegistered) {
+            alert('이미 출근이 등록되어 있습니다.');
+            return;
+        }
+        const {empId} =  btnStartWork.dataset;
+        console.log(empId);
+        // AJAX를 사용하여 출근 등록 요청
+        $.ajax({
+            type: 'POST',
+            headers: {
+                [csrfHeaderName]: csrfToken
+            },
+            url: `${contextPath}attend/startWork.do`,
+            data: {
+
+            },
+            success: function (response) {
+                alert(response);
+                // 출근 등록이 성공하면 상태를 변경
+                isAttendRegistered = true;
+
+                console.log('출근 등록 성공');
+                workStateElement.textContent = '업무중';
+                const currentTime = new Date();
+                const formattedTime = currentTime.toLocaleTimeString();
+                document.getElementById('startwork-time').textContent = formattedTime;
+
+            },
+            error: function (error) {
+                // 오류가 발생하면 오류 메시지 출력 또는 다른 처리 수행
+                console.error('에러 발생:', error.responseText);
+            }
+
+        });
+    });
+
+    let isEndWorkRegistered = false;
+    btnEndWork.addEventListener('click', function () {
+        if (isEndWorkRegistered) {
+            alert('이미 퇴근이 등록되어 있습니다.');
+            return;
+        }
+        const {empId} =  btnStartWork.dataset;
+        console.log(empId);
+        // AJAX를 사용하여 퇴근 등록 요청
+        $.ajax({
+            type: 'POST',
+            headers: {
+                [csrfHeaderName]: csrfToken
+            },
+            url: `${contextPath}attend/endWork.do`,
+            data: {
+
+            },
+            success: function (response) {
+                alert(response);
+                // 퇴근 등록이 성공하면 상태를 변경
+                isEndWorkRegistered = true;
+
+                console.log('퇴근 등록 성공');
+                workStateElement.textContent = '퇴근';
+                const currentTime = new Date();
+                const formattedTime = currentTime.toLocaleTimeString();
+                document.getElementById('endwork-time').textContent = formattedTime;
+
+            },
+            error: function (xhr, status, error) {
+                const errorMessage = JSON.parse(xhr.responseText).message;
+                if (errorMessage === "퇴근시간이 아닙니다.") {
+                    alert(errorMessage); // 예외 메시지를 팝업으로 표시
+                } else {
+                    // 그 외의 오류 처리
+                    console.error('서버 오류:', errorMessage);
+                }
+            }
+        });
+    });
+});
+
+
+// 근태관리 실시간 시간 보여주기 end
+
 // window.addEventListener('DOMContentLoaded', () =>{
 //     const focusBar = document.querySelector("#focus-bar");
 //

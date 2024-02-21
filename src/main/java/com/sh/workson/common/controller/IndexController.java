@@ -1,5 +1,8 @@
 package com.sh.workson.common.controller;
 
+import com.sh.workson.attend.entity.Attend;
+import com.sh.workson.attend.entity.State;
+import com.sh.workson.attend.service.AttendService;
 import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.cherry.entity.Cherry;
@@ -54,6 +57,8 @@ public class IndexController {
     private ProjectService projectService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private AttendService attendService;
 
     @GetMapping("")
     public String index(
@@ -102,7 +107,17 @@ public class IndexController {
             Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
             model.addAttribute("projects", projectPage);
 
+            Attend firstAttend = attendService.findByOrderByStartAt(id);
+            String stateKr = null;
+            if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
+                stateKr = "업무중";
+            }
+            else if(firstAttend.getState().equals(State.QUIT)){
+                stateKr = "퇴근";
+            }
 
+            model.addAttribute("attend", firstAttend);
+            model.addAttribute("state", stateKr);
 
 
 
