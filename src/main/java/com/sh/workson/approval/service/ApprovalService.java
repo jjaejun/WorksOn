@@ -10,6 +10,7 @@ import com.sh.workson.approval.repository.ApprovalLineRepository;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.approval.repository.ApprovalRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -41,6 +42,9 @@ public class ApprovalService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private EntityManager entityManager;
 
     // 연차 문서함 컨버트
     private ApprovalHomeLeaveDto convertToApprovalHomeLeaveDto(Approval approval) {
@@ -475,7 +479,7 @@ public class ApprovalService {
 //                .employee(Employee.builder().build())
 //                .build();
         ApprovalCooperation approvalCooperation = ApprovalCooperation.builder()
-                .name("업무 협조")
+                .name("협조 신청")
                 .cooperationDept(createCooperationDto.getCooperationDept())
                 .title(createCooperationDto.getTitle())
                 .content(createCooperationDto.getContent())
@@ -521,5 +525,34 @@ public class ApprovalService {
     }
 
 
+    public List<IApproverCooperation> findCooperationApprover(Long id) {
+        List<IApproverCooperation> iApproverCooperationList = approvalRepository.findCooperationApprover(id);
+        return  iApproverCooperationList;
+    }
 
+    @Transactional
+    public void recognizeCooperation(RecognizeCooperationDto recognizeCooperationDto) {
+
+
+        ApprovalLine existingApprovalLine = approvalLineRepository.findById(recognizeCooperationDto.getLineId()).orElse(null);
+
+        if (existingApprovalLine != null) {
+            existingApprovalLine.setStatus(Status.승인);
+            existingApprovalLine.setSign(recognizeCooperationDto.getSign());
+            approvalLineRepository.save(existingApprovalLine);
+        }
+
+        if ("isLast".equals(recognizeCooperationDto.getIsLast())) {
+            Approval existingApproval = approvalRepository.findById(existingApprovalLine.getApproval().getId()).orElse(null);
+            if (existingApproval != null) {
+                existingApproval.setStatus(Status.승인);
+                approvalRepository.save(existingApproval);
+            }
+        }
+    }
+
+    public List<ApprovalLine> findAll() {
+        List<ApprovalLine> approvalLineList = approvalLineRepository.findAll();
+        return approvalLineList;
+    }
 }

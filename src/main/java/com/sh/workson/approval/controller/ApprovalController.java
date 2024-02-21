@@ -2,6 +2,8 @@ package com.sh.workson.approval.controller;
 
 import com.sh.workson.approval.dto.*;
 import com.sh.workson.approval.entity.Approval;
+import com.sh.workson.approval.entity.ApprovalLeave;
+import com.sh.workson.approval.entity.ApprovalLine;
 import com.sh.workson.approval.service.ApprovalService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.department.entity.Department;
@@ -543,6 +545,12 @@ public class ApprovalController {
         model.addAttribute("content", iApprovalCooperation.getContent());
         model.addAttribute("startDate", iApprovalCooperation.getStartDate());
         model.addAttribute("endDate", iApprovalCooperation.getEndDate());
+        model.addAttribute("status", iApprovalCooperation.getStatus());
+//        model.addAttribute("lineId", iApprovalCooperation.getLineId());
+
+        List<IApproverCooperation> iApproverCooperationList = approvalService.findCooperationApprover(id);
+        model.addAttribute("approver", iApproverCooperationList);
+        log.debug("approver = {}", iApproverCooperationList);
     }
 
     /**
@@ -578,6 +586,29 @@ public class ApprovalController {
         // createApprovalDto -> approval로 변환
         createCooperationDto.setEmpId(employeeDetails.getEmployee().getId());
         approvalService.createCooperationApproval(createCooperationDto);
+
+
+        return "redirect:/approval/approvalHome.do";
+    }
+
+    @PostMapping("/approvalDetailCooperation.do")
+    public String recognize(@Valid RecognizeCooperationDto recognizeCooperationDto,
+                            BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new RuntimeException(message);
+        }
+        log.debug("recognizeCooperationdto = {}", recognizeCooperationDto);
+
+//        if ("isLast".equals(recognizeCooperationDto.getIsLast())) {
+//            recognizeCooperationDto.setIsLast(recognizeCooperationDto.getIsLast());
+//            approvalService.recognizeCooperation(recognizeCooperationDto);
+//        } else {
+//            approvalService.recognizeCooperation(recognizeCooperationDto);
+//        }
+        recognizeCooperationDto.setIsLast(recognizeCooperationDto.getIsLast());
+        approvalService.recognizeCooperation(recognizeCooperationDto);
 
 
         return "redirect:/approval/approvalHome.do";

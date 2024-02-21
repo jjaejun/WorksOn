@@ -455,6 +455,8 @@ create table approval_line (
 );
 create sequence seq_approval_line_id start with 1 increment by 50;
 
+alter table approval_line add sign varchar2(100);
+
 -- 무진
 
 -- table drop

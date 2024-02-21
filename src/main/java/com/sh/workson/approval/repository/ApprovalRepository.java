@@ -1,9 +1,6 @@
 package com.sh.workson.approval.repository;
 
-import com.sh.workson.approval.dto.ApprovalHomeLeaveDto;
-import com.sh.workson.approval.dto.IApprovalCooperation;
-import com.sh.workson.approval.dto.IApprovalEquipment;
-import com.sh.workson.approval.dto.IApprovalLeave;
+import com.sh.workson.approval.dto.*;
 import com.sh.workson.approval.entity.Approval;
 import com.sh.workson.approval.entity.ApprovalLeave;
 import org.springframework.data.domain.Page;
@@ -431,21 +428,24 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
 
     @Query(value = """
     select
-        a. *
-        , co.name
-        , co.title
-    from
-        employee e join approval a
-            on e.id = a.emp_id   
-         join approval_cooperation co
-            on a.approval_cooperation_id = co.id
-        left join approval_attachment at
-            on a.id = at.approval_id
-    where
-        a.emp_receives_id = :id and
-        a.status = '대기'
-    order by
-        a.id desc
+            a. *
+            , co.name
+            , co.title
+            , al.approver_id
+        from
+            employee e join approval a
+                on e.id = a.emp_id  \s
+             join approval_cooperation co
+                on a.approval_cooperation_id = co.id
+            left join approval_attachment at
+                on a.id = at.approval_id
+            left join approval_line al
+                on a.id = al.approval_id
+        where
+            al.approver_id = :id and
+            a.status = '대기'
+        order by
+            a.id desc
 """, nativeQuery = true)
     List<Approval> findWaitCooperation(Long id);
 
@@ -574,9 +574,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     IApprovalEquipment findEquipmentDetailById(Long id);
 
     @Query(value = """
-    select
+    select distinct 
         a.id
         , a.approval_end_date as approvalEndDate
+        , a.status as status
         , e.name as empId
         , d.name as deptId
         , co.id as coId
@@ -719,5 +720,23 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         a.id desc
 """, nativeQuery = true)
     Page<Approval> findCooperation(Long id, Pageable pageable);
+
+    @Query(value = """
+    select
+        li.approver_id as approverId
+        , li.id as lineId
+        , li.sign 
+        , e.name approverName
+    from
+        approval a join approval_cooperation co
+            on a.approval_cooperation_id = co.id
+        left join approval_line li
+            on a.id = li.approval_id
+        left join employee e
+            on li.approver_id = e.id
+    where
+        a.id = :id
+""", nativeQuery = true)
+    List<IApproverCooperation> findCooperationApprover(Long id);
 }
 

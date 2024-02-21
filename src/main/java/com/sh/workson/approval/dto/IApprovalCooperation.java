@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public interface IApprovalCooperation {
     Long getId(); // approval# id
     Timestamp getApprovalEndDate(); // approval# 기안일
+    String getStatus(); // approval# status
     String getEmpId(); // employee# 사원 이름
     String getDeptId(); // department# 해당 사원 부서
     Long getCoId(); // approval_cooperation# 문서번호
@@ -15,6 +16,7 @@ public interface IApprovalCooperation {
     String getContent(); // approval_cooperation# 내용
     Timestamp getStartDate(); // approval_cooperation# 협조 시작일
     Timestamp getEndDate(); // approval_cooperation# 협조 종료일
+//    Long getLineId(); // approval_Line# 아이디 값(pk값)
 
 
 }

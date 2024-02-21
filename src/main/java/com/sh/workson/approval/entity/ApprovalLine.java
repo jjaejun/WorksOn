@@ -36,6 +36,8 @@ public class ApprovalLine {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String sign;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_id")
     private Approval approval;
