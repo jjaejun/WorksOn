@@ -1,11 +1,7 @@
 package com.sh.workson.schedule.controller;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
-import com.sh.workson.employee.entity.Employee;
-import com.sh.workson.schedule.dto.CreateScheduleDto;
-import com.sh.workson.schedule.dto.ScheduleCategoryDto;
-import com.sh.workson.schedule.dto.ScheduleListDto;
-import com.sh.workson.schedule.entity.ScheduleCategory;
+import com.sh.workson.schedule.dto.*;
 import com.sh.workson.schedule.service.ScheduleCategoryService;
 import com.sh.workson.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
@@ -34,7 +30,7 @@ public class ScheduleController {
     @Autowired
     ScheduleCategoryService scheduleCategoryService;
 
-    @GetMapping("/calender.do")
+    @GetMapping("/calendar.do")
     public void scheduleCategoryList(
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             Model model){
@@ -58,8 +54,6 @@ public class ScheduleController {
             return new ResponseEntity<>(scheduleListDtos, HttpStatus.OK);
         }
     }
-
-
 
     @GetMapping("/createSchedule.do")
     public void  createSchedule(
@@ -85,13 +79,17 @@ public class ScheduleController {
         if(bindingResult.hasErrors()){
             throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
-        createScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
-        createScheduleDto.setScheduleCategoryId(scheduleCategoryId);
+        if(scheduleCategoryId != null){
+            createScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
+            createScheduleDto.setScheduleCategoryId(scheduleCategoryId);
+        }else {
+            createScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
+        }
 
-        log.debug("createScheduleDto = {}", createScheduleDto);
         scheduleService.createSchedule(createScheduleDto);
+        log.debug("createScheduleDto = {}", createScheduleDto);
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다!\uD83D\uDC4D");
-        return "redirect:/schedule/calender.do";
+        return "redirect:/schedule/calendar.do";
     }
 
     @GetMapping("/categoryList.do")
@@ -100,5 +98,74 @@ public class ScheduleController {
             Model model
     ){
     }
+
+    @PostMapping("/CUCategory.do")
+    public String cuCategory(
+            @Valid ScheduleCategoryDto scheduleCategoryDto,
+            BindingResult bindingResult,
+            @RequestParam(value = "category-id") Long id,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (bindingResult.hasErrors()) {
+            // 에러 처리 로직 개선
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            return "redirect:/errorPage"; // 에러 페이지로 리다이렉트
+        }
+
+        log.debug("name = {}", scheduleCategoryDto.getName());
+        log.debug("color = {}", scheduleCategoryDto.getColor());
+        log.debug("scheduleCategoryDto = {}", scheduleCategoryDto);
+        log.debug("id = {}", id);
+
+        if (id== null) {
+            // Create
+            scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+            scheduleCategoryService.createScheduleCategory(scheduleCategoryDto);
+        } else {
+            // Update
+            scheduleCategoryDto.setId(id);
+            scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+            scheduleCategoryService.updateScheduleCategory(scheduleCategoryDto);
+        }
+
+        return "redirect:/schedule/calendar.do";
+    }
+
+    @PostMapping("/deleteCategory.do")
+    @ResponseBody
+    public ResponseEntity<?> deleteCategory(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam (value = "scheduleCategoryId") Long id){
+        scheduleCategoryService.deleteById(id);
+        log.debug("id = {}", id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @PostMapping("updateSchedule.do")
+    public String updateSchedule(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails
+
+
+    ){
+
+        return null;
+        // return "redirect:/schedule/calendar.do";
+    }
+
+    @PostMapping("/deleteSchedule.do")
+    public String deleteSchedule(
+            @RequestParam(value = "id") Long id,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails
+    ){
+        log.debug("id = {}", id);
+        scheduleService.deleteById(id);
+
+
+        return "redirect:/schedule/calendar.do";
+    }
+
+
 
 }

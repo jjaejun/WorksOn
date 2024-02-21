@@ -5,7 +5,6 @@ import com.sh.workson.employee.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +23,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     /**
      * 민정
      */
+    @Query("from Employee e join fetch e.authorities join fetch e.department join fetch e.position where e.id = :id")
+    Optional<Employee> findById(@Param("id") Long id);
+
     @Query("from Employee e left join fetch e.department left join fetch e.position where e.name like '%' || :name || '%'")
-    List<Employee> findByName(String name);
+    List<Employee> findByName(@Param("name") String name);
 
 
     /**
@@ -58,8 +60,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 """, nativeQuery = true)
     List<IApprover> findApprover(Long id);
 
+
     @Query("from Employee e left join fetch e.department left join fetch e.position where e.id = :id")
     Employee findLoginUser(Long id);
+
+
 
 
     /**

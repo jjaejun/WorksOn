@@ -64,11 +64,11 @@ fc-header-toolbar{
     margin-right: auto;
 }
 
-.calender-sidebar{
+.calendar-sidebar{
 
 }
 
-aside#calender-sidebar{
+aside#calendar-sidebar{
     margin-top: -86px;
 }
 
@@ -77,7 +77,7 @@ table, th, td {
 }
 
 #my-category-list td,
-#calender-sidebar table td {
+#calendar-sidebar table td {
     text-align: center;
     vertical-align: middle;
 }
@@ -105,4 +105,11 @@ table, th, td {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 0;
+}
+
+.modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

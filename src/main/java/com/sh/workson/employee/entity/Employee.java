@@ -54,6 +54,10 @@ public class Employee {
     private int seed;
     private int cherry;
 
+//    public void updateCherry(int cherry) {
+//        this.cherry += cherry;
+//    }
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_id")
     private List<Authority> authorities;
@@ -134,9 +138,7 @@ public class Employee {
     }
 
 
-
-
-
-
-
+    public void updateCherry(int totalReceivedCherry) {
+        this.cherry += totalReceivedCherry;
+    }
 }

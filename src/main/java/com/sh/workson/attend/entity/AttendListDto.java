@@ -9,7 +9,7 @@ public class AttendListDto {
     private Long id;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
-    private State state;
+    private String state;
     private Long employeeId;
     private String content;
 }

@@ -10,9 +10,13 @@ import com.sh.workson.project.repository.TaskRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -98,6 +102,7 @@ public class TaskService {
                 .build());
         taskDetailDto.setProject(ProjectTaskDetailDto.builder()
                         .id(task.getProject().getId())
+                        .title(task.getProject().getTitle())
                 .build());
         return taskDetailDto;
     }
@@ -124,6 +129,24 @@ public class TaskService {
 
     public Page<TaskDetailDto> findAllMyTask(Long id, Pageable pageable) {
         Page<Task> tasks = taskRepository.findAllMyTask(id, pageable);
+        return tasks.map(project -> convertToTaskDetailDto(project));
+    }
+
+    public List<TaskSearchDto> findTaskByProjectId(String name, Long projectId) {
+        List<Task> tasks = taskRepository.findTaskByProjectId(name, projectId);
+        List<TaskSearchDto> taskSearchDtos = new ArrayList<>();
+        for(Task t: tasks){
+            taskSearchDtos.add(convertToTaskSearchDto(t));
+        }
+        return taskSearchDtos;
+    }
+
+    private TaskSearchDto convertToTaskSearchDto(Task t) {
+        return TaskSearchDto.builder().id(t.getId()).name(t.getName()).empName(t.getEmployee().getName()).build();
+    }
+
+    public Page<TaskDetailDto> findAllProjectTask(Long id, PageRequest pageable) {
+        Page<Task> tasks = taskRepository.findAllProjectTask(id, pageable);
         return tasks.map(project -> convertToTaskDetailDto(project));
     }
 }

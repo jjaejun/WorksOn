@@ -18,5 +18,8 @@ public interface ScheduleCategoryRepository extends JpaRepository<ScheduleCatego
     ScheduleCategory findByNameAndEmpId(Employee employee, String name);
 
 
-
+    @Query("from ScheduleCategory sc left join fetch sc.employee e where sc.id = :id")
+    Employee findEmployeeById(@Param("id") Long id);
 }
+
+//sc.employee.id = :empId and
