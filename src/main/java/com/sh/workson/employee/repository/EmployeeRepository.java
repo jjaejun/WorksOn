@@ -27,7 +27,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findById(@Param("id") Long id);
 
     @Query("from Employee e left join fetch e.department left join fetch e.position where e.name like '%' || :name || '%'")
-    List<Employee> findByName(String name);
+    List<Employee> findByName(@Param("name") String name);
 
 
     /**
@@ -59,8 +59,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     	e.id not in :id
 """, nativeQuery = true)
     List<IApprover> findApprover(Long id);
-
-
 
 
 
