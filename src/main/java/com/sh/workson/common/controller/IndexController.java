@@ -1,5 +1,6 @@
 package com.sh.workson.common.controller;
 
+import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.cherry.entity.Cherry;
 import com.sh.workson.cherry.repository.CherryRepository;
@@ -51,6 +52,8 @@ public class IndexController {
     private EmployeeService employeeService;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private AuthService authService;
 
     @GetMapping("")
     public String index(
@@ -70,14 +73,17 @@ public class IndexController {
             int totalCherryCount = employeeDetails.getEmployee().getCherry();
 
             Page<DailyWorkListDto> dailyWorkListDtoPage = dailyWorkService.findAll(pageable, id);
-
             model.addAttribute("totalSeedCount", String.valueOf(totalSeedCount));
             model.addAttribute("totalCherryCount", String.valueOf(totalCherryCount));
             model.addAttribute("dailyworks", dailyWorkListDtoPage.getContent());
             model.addAttribute("totalCount", dailyWorkListDtoPage.getTotalPages());
 
-            log.debug("dailyworks = {}", dailyWorkListDtoPage.getContent());
 
+
+
+
+
+            log.debug("dailyworks = {}", dailyWorkListDtoPage.getContent());
 
 
 
@@ -145,7 +151,6 @@ public class IndexController {
 
 
 
-
             return "index";
         }
     }
@@ -198,6 +203,8 @@ public class IndexController {
             // Save Cherry entity
             cherryRepository.save(cherry);
             log.debug("cherry = {}", cherry);
+            authService.updateAuthentication(employeeDetails.getUsername());
+
         }
 
         return "redirect:/";
