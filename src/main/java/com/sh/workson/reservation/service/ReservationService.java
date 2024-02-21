@@ -3,6 +3,7 @@ package com.sh.workson.reservation.service;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
 import com.sh.workson.reservation.dto.ReservationListDto;
+import com.sh.workson.reservation.dto.ReservationReturnDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.repository.ReservationRepository;
 import com.sh.workson.resource.entity.Resource;
@@ -52,8 +53,8 @@ public class ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 
-    public Page<ReservationListDto> findBetweenSearchDate(Pageable pageable, Long resourceId, LocalDateTime startTime, LocalDateTime endTime) {
-        Page<Reservation> reservationPage = reservationRepository.findBetweenSearchDate(pageable, resourceId, startTime, endTime);
+    public Page<ReservationListDto> findBetweenSearchDatePage(Pageable pageable, Long resourceId, LocalDateTime startTime, LocalDateTime endTime) {
+        Page<Reservation> reservationPage = reservationRepository.findBetweenSearchDatePage(pageable, resourceId, startTime, endTime);
         return reservationPage.map((reservation -> convertToReservationListDto(reservation)));
     }
 
@@ -67,5 +68,13 @@ public class ReservationService {
                 .resourceId(reservation.getResourceId())
                 .build();
         return reservationListDto;
+    }
+
+    public int findBetweenSearchDate(Long resourceId, LocalDateTime startAt, LocalDateTime endAt) {
+        return reservationRepository.findBetweenSearchDate(resourceId, startAt, endAt);
+    }
+
+    public List<Reservation> findAllAfterToday(Long id, LocalDateTime today) {
+        return reservationRepository.findAllAfterToday(id, today);
     }
 }

@@ -202,13 +202,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
    // 업무 생성시 status값 지정
    const btns = document.querySelectorAll(".modalBtn");
-   const statusInput = document.querySelector("#status");
-   const statesBtn = document.querySelector("#states-button");
+   const taskStatusInput = document.querySelector("#taskStatus");
+   const taskStatesBtn = document.querySelector("#task-states-button");
 
    btns.forEach((btn, i) => {
       const {status} = btn.dataset;
       btn.addEventListener('click', (e) => {
-         statusInput.value = status;
+         taskStatusInput.value = status;
          let defaultStatus = '';
 
          switch (status) {
@@ -217,18 +217,17 @@ window.addEventListener('DOMContentLoaded', () => {
             case "Done": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-rose-300 mr-2"></span>${status}</div>`; break;
          }
 
-         console.log(statusInput.value);
-         statesBtn.innerHTML = defaultStatus;
+         taskStatesBtn.innerHTML = defaultStatus;
       });
    });
 
-   const statusValueBtns = document.querySelectorAll(".statusValueBtn");
-   statusValueBtns.forEach((btn, i) => {
+   const taskStatusValueBtns = document.querySelectorAll(".taskStatusValueBtn");
+   taskStatusValueBtns.forEach((btn, i) => {
       btn.addEventListener('click', (e) => {
-         statusInput.value = document.getElementById(`statusValue${i + 1}`).dataset.status;
-         console.log(statusInput.value);
+         taskStatusInput.value = document.getElementById(`taskStatusValue${i + 1}`).dataset.status;
+         console.log(taskStatusInput.value);
 
-         statesBtn.innerHTML = statusValueBtns[i].innerHTML;
+         taskStatesBtn.innerHTML = taskStatusValueBtns[i].innerHTML;
       });
    });
 });

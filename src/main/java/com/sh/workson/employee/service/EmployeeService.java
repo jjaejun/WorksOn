@@ -6,6 +6,7 @@ import com.sh.workson.authority.entity.Authority;
 import com.sh.workson.authority.entity.RoleAuth;
 import com.sh.workson.authority.service.AuthorityService;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
+import com.sh.workson.employee.dto.EmployeeUpdatePasswordDto;
 import com.sh.workson.employee.dto.IApprover;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
@@ -127,7 +128,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
         Authority authority = Authority.builder()
                 .empId(employee.getId())  // authority id
-                .name(RoleAuth.ROLE_EMP)
+                .name(RoleAuth.ROLE_TEMP)
                 .build();
         authorityService.createAuthority(authority);
         return employee;
@@ -136,5 +137,15 @@ public class EmployeeService {
 
     public Employee checkEmailDuplicate(String email) {
         return employeeRepository.checkEmailDuplicate(email);
+    }
+
+    public void updatePassword(EmployeeUpdatePasswordDto employeeDto) {
+        Employee employee = employeeRepository.findById(employeeDto.getId()).orElseThrow();
+        employee.setPassword(employeeDto.getPassword());
+
+        employee = employeeRepository.save(employee);
+
+        authorityService.createAuthority(employeeDto.getAuthority());
+        System.out.println(employee);
     }
 }
