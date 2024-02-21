@@ -6,7 +6,9 @@ public enum RoleAuth {
     ROLE_CEO,
     ROLE_LEADER,
     ROLE_MANAGER,
-    ROLE_HR;
+    ROLE_HR,
+
+    ROLE_TEMP;
 
 }
 

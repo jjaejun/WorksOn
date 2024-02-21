@@ -1,4 +1,5 @@
-
+let pageType = document.querySelector("#type").value;
+console.log( document.querySelector("#type"));
 document.querySelectorAll("tr[data-board-id]").forEach((tr) =>{
     tr.style.cursor = "pointer";
     tr.addEventListener('click',(e) =>{
@@ -8,6 +9,17 @@ document.querySelectorAll("tr[data-board-id]").forEach((tr) =>{
         location.href = `${contextPath}board/boardDetail.do?id=${boardId}`;
     });
 });
+
+
+function changePage1(pageNumber) {
+    let pageSize = 0;
+    let size = pageSize;
+    // 페이지 URL 생성
+    let url = `/WorksOn/board/boardList.do?type=${pageType}&continue&page=` + pageNumber + '&size=' + size;
+
+    // 페이지 이동
+    window.location.href = url;
+}
 
 
 // document.getElementById("previousPage").addEventListener("click", function(event) {

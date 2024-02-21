@@ -10,6 +10,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center flex-shrink-0 text-white mr-6">
                 <span class="font-semibold text-xl tracking-tight">게시판</span>
+                <input type="hidden" id="type" th:value="${type}">
                 <ul class="ml-6 flex">
                     <!-- 자유게시판 -->
                     <li class="mr-6" id="freeBoard">
@@ -29,8 +30,9 @@
                 th:onclick="|location.href='@{/board/createBoard.do}'|">
             글쓰기
         </button>
+
         <!-- 총 게시물 수 -->
-        <p class="mb-4 text-gray-700">총 [[${totalCount}]]건의 게시물이 있습니다.</p>
+        <p class="mb-4 text-gray-700">총 [[${notiTotalCount}]]건의 게시물이 있습니다.</p>
         <!-- 게시물 테이블 -->
         <table id="tbl-board" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
             <thead>
@@ -41,44 +43,101 @@
                 <th class="px-4 py-2">작성일</th>
                 <th class="px-4 py-2">첨부파일</th>
                 <th class="px-4 py-2">조회수</th>
+                <th class="px-4 py-2 text-center">수정/삭제</th>
             </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
             <!-- 각각의 게시물 행 -->
-            <tr th:each="board, status : ${boards}" th:data-board-id="${board.id}">
+            <tr th:each="board, status : ${boardNoti}" th:data-board-id="${board.id}">
                 <td class="border px-4 py-2" th:text="${board.id}"></td>
                 <td class="border px-4 py-2" th:text="${board.title}"></td>
-                <td class="border px-4 py-2" th:text="${board.empId}"></td>
+                <td class="border px-4 py-2" th:text="${board.empName}"></td>
                 <td class="border px-4 py-2" th:text="${#temporals.format(board.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
                 <td class="border px-4 py-2">
                     <img th:if="${board.attachCount > 0}" th:src="@{/images/file.png}" width="16px">
                 </td>
                 <td class="border px-4 py-2" th:text="${board.viewCount}"></td>
+                <!-- 수정/삭제 버튼 -->
+                    <div th:if="${board.empId == #authentication.principal.employee.id}">
+                        <td class="border px-4 py-2 flex justify-center gap-4">
+                            <form th:action="@{/board/boardDelete.do}" method="post">
+                                <input type="hidden" name="boardId" th:value="${board.id}">
+                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    삭제
+                                </button>
+                            </form>
+                        </td>
+                    </div>
+
             </tr>
             </tbody>
         </table>
         <!-- 페이지네이션 -->
-        <div id="pagebar" class="mt-4">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+        <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+    <span class="flex mt-2 justify-center">
+        <nav aria-label="Table navigation">
+            <ul class="inline-flex items-center">
+                <!-- 이전 버튼 -->
+                <li>
+                    <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-blue"
+                            aria-label="Previous"
+                            th:attr="onclick='changePage1(\'' + (${notiNumber} - 1) + '\', \'' + ${notiSize} + '\')'"
+                            th:if="${notiNumber > 0}">
+                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                            <path
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                    fill-rule="evenodd"
+                            ></path>
+                        </svg>
+                    </button>
+                </li>
+
+                <!-- 페이지 번호 반복문 -->
+                <th:block th:each="pageNumber : ${#numbers.sequence(0, notiTotalpages - 1)}">
+                    <li>
+                        <button th:if="${pageNumber == notiNumber}"
+                                class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
+                            <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
+                            <span th:text="${pageNumber + 1}"></span>
+                        </button>
+                        <button th:unless="${pageNumber == notiNumber}"
+                                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue"
+                                th:attr="onclick='changePage1(\'' + ${pageNumber} + '\', \'' + ${notiSize} + '\')'">
+                            <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
+                            <span th:text="${pageNumber + 1}"></span>
+                        </button>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                </th:block>
+
+                <!-- 다음 버튼 -->
+                <li>
+                    <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue"
+                            aria-label="Next"
+                            th:attr="onclick='changePage1(\'' + (${notiNumber} + 1) + '\', \'' + ${notiSize} + '\')'"
+                            th:if="${notiNumber < notiTotalpages - 1}">
+                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                            <path
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd"
+                                    fill-rule="evenodd"
+                            ></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </span>
         </div>
     </div>
+    </div>
 </div>
+
+<script>
+    var pageSize = '[[${notiSize}]]';
+    var pageNumber = '[[${notiNumber}]]';
+    var totalPages = '[[${notiTotalpages}]]';
+</script>
 
 <script layout:fragment="script" th:src="@{/js/board/boardList.js}"></script>
 </html>

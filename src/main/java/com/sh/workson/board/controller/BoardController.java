@@ -7,10 +7,7 @@ import com.sh.workson.attachment.repository.AttachmentRepository;
 import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
-import com.sh.workson.board.dto.BoardCommentDto;
-import com.sh.workson.board.dto.BoardCreateDto;
-import com.sh.workson.board.dto.BoardDetailDto;
-import com.sh.workson.board.dto.BoardListDto;
+import com.sh.workson.board.dto.*;
 import com.sh.workson.board.entity.Board;
 import com.sh.workson.board.entity.BoardComment;
 import com.sh.workson.board.entity.Type;
@@ -24,6 +21,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -55,25 +53,34 @@ public class BoardController {
     @Autowired
     private BoardCommentService boardCommentService;
 
+    @GetMapping("/boardAllList.do")
+    public String boardAllList(){
+        return null;
+    }
 
     @GetMapping("/boardList.do")
     public void boardList(@RequestParam(name = "type", required = false) String type,
-                          @PageableDefault(size = 10, page = 0) Pageable pageable,
+                          @RequestParam(name = "page",defaultValue = "0") int page,
+                          @RequestParam(name = "size", defaultValue = "2") int size,
+                          @RequestParam(name = "page2", defaultValue = "0") int page2,
+                          @RequestParam(name = "size2", defaultValue = "2") int size2,
                           Model model) {
         log.info("Fetching board list. Type: {}", type);
 
-        Page<BoardListDto> boardPage;
+        Page<BoardListDto> boardNotiPage = boardService.findByType(Type.valueOf(type), PageRequest.of(page,size));;
 
-        if (type != null && type.equals("notification")) {
-            boardPage = boardService.findByType(Type.notification, pageable);
-        } else {
-            boardPage = boardService.findByType(Type.free, pageable);
-        }
 
-        log.debug("Boards: {}", boardPage.getContent());
+        log.debug("Boards: {}", boardNotiPage.getContent());
 
-        model.addAttribute("boards", boardPage.getContent());
-        model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
+        model.addAttribute("boardNoti", boardNotiPage.getContent());
+        model.addAttribute("notiTotalCount", boardNotiPage.getTotalElements()); //전체 게시물수
+        model.addAttribute("notiSize", boardNotiPage.getSize());
+        model.addAttribute("notiNumber", boardNotiPage.getNumber());
+        model.addAttribute("notiTotalpages", boardNotiPage.getTotalPages());
+        model.addAttribute("type", type);
+        log.debug("size = {}", boardNotiPage.getSize());
+        log.debug("number = {}", boardNotiPage.getNumber());
+        log.debug("totalpages = {}", boardNotiPage.getTotalPages());
 
 
     }
@@ -110,7 +117,7 @@ public class BoardController {
 
         //리다이렉트후에 사용자 피드백
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다");
-        return "redirect:/board/boardList.do";
+        return "redirect:/board/boardList.do?type=" + boardCreateDto.getType();
     }
 
     @GetMapping("/boardDetail.do")
@@ -162,6 +169,30 @@ public class BoardController {
         return s3FileService.download(attachmentDetailDto);
 
     }
+
+
+
+    @PostMapping("/boardUpdate.do")
+    public String update(BoardUpdateDto boardUpdateDto,
+                         Model model,
+                         @RequestParam("id") Long id,
+                         RedirectAttributes redirectAttributes) {
+        log.debug("boardUpdateDto = {}" , boardUpdateDto);
+        BoardUpdateDto boardUpdateDto1  = boardService.update(boardUpdateDto);
+        model.addAttribute("boardUpdateDto", boardUpdateDto1);
+
+        redirectAttributes.addFlashAttribute("msg", "게시글 수정이 완료되었습니다");
+
+        return "redirect:/board/boardDetail.do?id=" + id;
+    }
+
+    @PostMapping("/boardDelete.do")
+    public String deleteBoard(@RequestParam("boardId") Long id) {
+        boardService.deleteBoardById(id);
+        return "redirect:/board/boardList.do";
+    }
+
+
 
 
 
