@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">소속</th>\n' +
-            '                <td><input type="text" class="w-20% p-2 border " value="'+ deptName +'" readonly></td>\n' +
+            '                <td><input type="text" class="w-20% p-2 border " value="' + deptName + '" readonly></td>\n' +
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">기안일</th>\n' +
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '        <table class="w-20% mb-6">\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">기안자</th>' + `<input type="hidden" name="empId" value=${empId} />` +
-            '                <td><input type="text" class="w-20% p-2 border" value="'+ empName +'" readonly></td>\n' +
+            '                <td><input type="text" class="w-20% p-2 border" value="' + empName + '" readonly></td>\n' +
             '            </tr>\n' +
             '            <tr class="border">\n' +
             '                <th class="border p-2">소속</th>\n' +
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '                <td><input type="date" name="approvalEndDate" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
-            '    <div id="approval-section-container">\n' +
+            '    <div id="approval-section-container" class="ml-auto">\n' +
             '     </div>\n' +
             '    </div>\n' +
             '\n' +
@@ -467,9 +467,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-
-
-
 // 동적으로 HTML을 생성하는 함수 추가 (예시)
     function createApprovalSection(approvals) {
         let employeesNameElements = document.querySelectorAll('.checkInfo'); // 클래스 선택
@@ -508,31 +505,45 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// 새 결재 진행시 제출 코드(업무협조)
 const frmSubmit = () => {
-  document.createCooperationFrm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    document.createCooperationFrm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-     const frm = e.target;
-      console.log(frm);
+        const frm = e.target;
+        console.log(frm);
 
-      console.log(frm.querySelectorAll('input'));
+        console.log(frm.querySelectorAll('input'));
 
-  });
+    });
 };
+
+// 새 결재 진행에서 넣어주는 함수(업무협조)
 const findCheckboxEmpId = () => {
-    const checkboxes =  document.querySelectorAll('.check-approval').forEach((checkbox, i) => {
+    const checkboxes = document.querySelectorAll('.check-approval').forEach((checkbox, i) => {
         checkbox.addEventListener('change', (e) => {
             const name = e.target;
             const area = document.querySelector('#approval-section-container');
             const {employeesName, positionName} = name.dataset;
-            if(name.checked){
-                area.innerHTML += `<input value="${name.value}" readonly name="approverId" /> ${employeesName}${positionName}`;
+            if (name.checked) {
+                area.innerHTML += `<table class="mb-6 ml-auto mr-1">
+                                    <tr class="border">
+                                        <th class="border p-2 w-10" rowspan="4">승인</th>
+                                    </tr>
+                                    <tr class="border">
+                                        <td><input type="hidden" class="w-24 p-2" readonly >${positionName}</td>
+                                    </tr>
+                                    <tr class="border">
+                                        <td><input type="hidden" class="w-24 p-2" value="${name.value}" name="approverId" readonly >${employeesName}</td>
+                                    </tr>
+                                </table>`;
             }
 
             console.log(e.target)
         });
     });
 };
+
 
 
 // window.addEventListener('DOMContentLoaded', (e) => {
