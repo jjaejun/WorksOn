@@ -40,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
 
@@ -196,21 +197,39 @@ public class EmployeeController {
         }
         log.debug("memberCreateDto = {}" ,employeeCreateDto);
 
+        String generatedPassword = generateRandomPassword(12); // 12자리의 난수 생성
+
         emailService.send(employeeCreateDto.getEmail(),
                         employeeCreateDto.getName(),
-                        employeeCreateDto.getPassword());
+                            generatedPassword);
 
         Employee employee = employeeCreateDto.toEmployee();
-        String encodedPassword = passwordEncoder.encode(employee.getPassword());
+        String encodedPassword = passwordEncoder.encode(generatedPassword); // 생성된 난수를 암호화하여 저장
         employee.setPassword(encodedPassword);
 
         employee = employeeService.employeeCreate(employee);
+
 
         // 리다이렉트후 메세지처리
         redirectAttributes.addFlashAttribute("msg", "회원등록완료");
 
         return "redirect:/";
     }
+
+    private String generateRandomPassword(int length) {
+        String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+        String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+        String NUMBER = "0123456789";
+        String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
+
+        StringBuilder password = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int randomIndex = (int) (Math.random() * PASSWORD_ALLOW_BASE.length());
+            password.append(PASSWORD_ALLOW_BASE.charAt(randomIndex));
+        }
+        return password.toString();
+    }
+
 
 
     @PostMapping("/checkEmailDuplicate.do")
