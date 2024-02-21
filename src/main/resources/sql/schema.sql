@@ -317,6 +317,7 @@ create table reservation(
     , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
 );
 alter table reservation rename column emp_id to employee_id;
+ALTER TABLE reservation MODIFY tb_resource_id NULL;
 create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 우진
