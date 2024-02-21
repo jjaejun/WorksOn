@@ -71,15 +71,30 @@ public class IssueService {
     }
 
     private Issue issueCreateDtoConvertToIssue(IssueCreateDto issueCreateDto) {
-        return Issue.builder()
-                .content(issueCreateDto.getContent())
-                .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
-                .task(Task.builder().id(issueCreateDto.getTaskId()).build())
-                .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
-                .priority(issueCreateDto.getPriority())
-                .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
-                .name(issueCreateDto.getName())
-                .project(Project.builder().id(issueCreateDto.getProjectId()).build())
-                .build();
+        Issue issue = new Issue();
+        if(issueCreateDto.getTaskId() != null){
+            issue = Issue.builder()
+                    .content(issueCreateDto.getContent())
+                    .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
+                    .task(Task.builder().id(issueCreateDto.getTaskId()).build())
+                    .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
+                    .priority(issueCreateDto.getPriority())
+                    .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
+                    .name(issueCreateDto.getName())
+                    .project(Project.builder().id(issueCreateDto.getProjectId()).build())
+                    .build();
+        }
+        else {
+            issue = Issue.builder()
+                    .content(issueCreateDto.getContent())
+                    .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
+                    .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
+                    .priority(issueCreateDto.getPriority())
+                    .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
+                    .name(issueCreateDto.getName())
+                    .project(Project.builder().id(issueCreateDto.getProjectId()).build())
+                    .build();
+        }
+        return issue;
     }
 }
