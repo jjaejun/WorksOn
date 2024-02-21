@@ -53,7 +53,13 @@ public class ScheduleCategoryService {
     }
 
     public void updateScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
-        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
+       ScheduleCategory scheduleCategory = convertToScheduleCategory(scheduleCategoryDto);
+       scheduleCategory.setId(scheduleCategoryDto.getId());
+
+       scheduleCategoryRepository.save(scheduleCategory);
     }
 
+    public void deleteById(Long id) {
+        scheduleCategoryRepository.deleteById(id);
+    }
 }
