@@ -183,8 +183,8 @@
     <div class="mx-auto w-5/6">
         <div class="mx-auto w-full mb-10">
             <h1 class="flex items-center">
-                <span class="mr-10 text-xl font-normal">| 프로젝트 [[${tasks.get(0).project.title}]] |
-                <br>총 <strong>[[${totalCount}]]</strong>개입니다.</span>
+                <span class="mr-10 text-xl font-normal"><strong>[[${thisProject.title}]]</strong> 프로젝트의
+                <br>업무는 총 <strong>[[${totalCount}]]</strong>개입니다.</span>
                 <span class="h-px flex-1 bg-gray-600"></span>
             </h1>
 
@@ -347,6 +347,6 @@
     </div>
 
 </div>
-<script layout:fragment="script" th:src="@{/js/project/totalTaskList.js}">
+<script layout:fragment="script" th:src="@{/js/project/projectTotalTaskList.js}">
 </script>
 </html>

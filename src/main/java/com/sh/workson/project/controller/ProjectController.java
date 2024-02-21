@@ -496,7 +496,7 @@ public class ProjectController {
 
         Page<TaskDetailDto> taskDetailDtos = taskService.findAllProjectTask(id, PageRequest.of(page3, size3));
         log.debug("task = {}", taskDetailDtos);
-
+        model.addAttribute("thisProject", taskDetailDtos.getContent().get(0).getProject());
         model.addAttribute("tasks", taskDetailDtos);
         model.addAttribute("totalCount", taskDetailDtos.getTotalElements());
         model.addAttribute("size", taskDetailDtos.getSize());
