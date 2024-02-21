@@ -103,6 +103,7 @@ public class ScheduleController {
     public String cuCategory(
             @Valid ScheduleCategoryDto scheduleCategoryDto,
             BindingResult bindingResult,
+            @RequestParam(value = "category-id") Long id,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             RedirectAttributes redirectAttributes
     ) {
@@ -114,15 +115,17 @@ public class ScheduleController {
         }
 
         log.debug("name = {}", scheduleCategoryDto.getName());
-        log.debug("id = {}", scheduleCategoryDto.getId());
         log.debug("color = {}", scheduleCategoryDto.getColor());
+        log.debug("scheduleCategoryDto = {}", scheduleCategoryDto);
+        log.debug("id = {}", id);
 
-        if (scheduleCategoryDto.getId() == null) {
+        if (id== null) {
             // Create
             scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
             scheduleCategoryService.createScheduleCategory(scheduleCategoryDto);
         } else {
             // Update
+            scheduleCategoryDto.setId(id);
             scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
             scheduleCategoryService.updateScheduleCategory(scheduleCategoryDto);
         }
@@ -140,15 +143,16 @@ public class ScheduleController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    // @PostMapping("/deleteCategory.do")
-    // public String deleteCategory(
-    //         @AuthenticationPrincipal EmployeeDetails employeeDetails,
-    //         @RequestParam (value = "scheduleCategoryId") Long id,
-    //         RedirectAttributes redirectAttributes){
-    //     scheduleCategoryService.deleteById(id);
-    //     log.debug("id = {}", id);
-    //     return "redirect:/schedule/calendar.do";
-    // }
+    @PostMapping("updateSchedule.do")
+    public String updateSchedule(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails
+
+
+    ){
+
+        return null;
+        // return "redirect:/schedule/calendar.do";
+    }
 
     @PostMapping("/deleteSchedule.do")
     public String deleteSchedule(
@@ -156,10 +160,12 @@ public class ScheduleController {
             @AuthenticationPrincipal EmployeeDetails employeeDetails
     ){
         log.debug("id = {}", id);
-        // scheduleService.deleteSchedule(id);
+        scheduleService.deleteById(id);
 
 
         return "redirect:/schedule/calendar.do";
     }
+
+
 
 }

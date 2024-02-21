@@ -332,10 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // 모달의 입력 필드에 데이터 설정
             document.getElementById('name').value = name;
             document.getElementById('color').value = color.toUpperCase();
-            document.getElementById('id').value = id;
-            document.getElementById('delete-category').value=id;
+            document.getElementById('category-id').value = id;
+            document.getElementById('delete-category').value= id;
 
             console.log("name =", name, ", color =", color, ", id =", id);
+            console.log(document.getElementById('category-id').value)
 
             // 모달 표시
             const modal = document.getElementById('crud-modal');
