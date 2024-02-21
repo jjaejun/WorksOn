@@ -5,7 +5,10 @@ public enum State {
 //    QUIT("퇴근"),
 //    LATE("지각"),
 //    VACA("휴가");
-    WORK,QUIT, LATE, VACA;
+    WORK,
+    QUIT,
+    LATE,
+    VACA;
 
 //    private final String displayName;
 //

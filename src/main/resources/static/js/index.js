@@ -19,8 +19,32 @@
 // });
 
 // 버튼 클릭 시 폼 보이기
-document.getElementById("workBtn").addEventListener("click", function() {
-    document.getElementById("formContainer").style.display = "block";
+document.getElementById("workBtn").addEventListener("click", function(e) {
+    const frm = document.getElementById("formContainer");
+    const list = document.querySelector("#daliyWorkList");
+    const btn = e.target;
+
+    console.log(e.target);
+    console.log(frm);
+    if(frm.classList.contains("hidden")){
+        frm.classList.remove("hidden");
+        list.classList.add("hidden");
+        btn.innerHTML = "업무일지 내역보기";
+
+
+        btn.classList.add("bg-gray-500")
+        btn.classList.remove("bg-blue-500")
+    }
+    else {
+        frm.classList.add("hidden");
+        list.classList.remove("hidden");
+        btn.innerHTML = "업무일지 작성하기";
+
+
+        btn.classList.add("bg-blue-500");
+        btn.classList.remove("bg-gray-500");
+    }
+
 });
 
 const createClickDelete = (empId) => {

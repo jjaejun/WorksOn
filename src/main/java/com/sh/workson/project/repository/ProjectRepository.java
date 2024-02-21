@@ -35,4 +35,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("from Project p left join fetch p.employee e left join fetch e.department left join fetch e.position left join fetch p.tasks where p.id = :id order by p.id desc")
     Optional<Project> findById(Long id);
+
+    @Query("from Project p join fetch p.employee e join fetch e.department join fetch e.position order by p.id desc ")
+    Page<Project> findTop3Project(Pageable pageable);
 }
