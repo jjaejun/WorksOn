@@ -53,15 +53,15 @@ public class IssueService {
                 .build());
         if(issue.getTask() != null){
             issueDetailDto.setTask(TaskIssueDetailDto.builder()
-                    .id(issue.getProject().getId())
-                    .name(issue.getProject().getTitle())
+                    .id(issue.getTask().getId())
+                    .name(issue.getTask().getName())
                     .build());
         }
         return issueDetailDto;
     }
 
     public Page<IssueDetailDto> findTop3Issue(Long id, Pageable pageable) {
-        Page<Issue> issues = issueRepository.findAllMyIssue(id, pageable);
+        Page<Issue> issues = issueRepository.findTop3Issue(id, pageable);
         return issues.map(issue -> convertToIssueDetailDto(issue));
     }
 
@@ -71,15 +71,30 @@ public class IssueService {
     }
 
     private Issue issueCreateDtoConvertToIssue(IssueCreateDto issueCreateDto) {
-        return Issue.builder()
-                .content(issueCreateDto.getContent())
-                .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
-                .task(Task.builder().id(issueCreateDto.getTaskId()).build())
-                .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
-                .priority(issueCreateDto.getPriority())
-                .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
-                .name(issueCreateDto.getName())
-                .project(Project.builder().id(issueCreateDto.getProjectId()).build())
-                .build();
+        Issue issue = new Issue();
+        if(issueCreateDto.getTaskId() != null){
+            issue = Issue.builder()
+                    .content(issueCreateDto.getContent())
+                    .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
+                    .task(Task.builder().id(issueCreateDto.getTaskId()).build())
+                    .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
+                    .priority(issueCreateDto.getPriority())
+                    .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
+                    .name(issueCreateDto.getName())
+                    .project(Project.builder().id(issueCreateDto.getProjectId()).build())
+                    .build();
+        }
+        else {
+            issue = Issue.builder()
+                    .content(issueCreateDto.getContent())
+                    .owner(Employee.builder().id(issueCreateDto.getOwnerId()).build())
+                    .employee(Employee.builder().id(issueCreateDto.getEmpId()).build())
+                    .priority(issueCreateDto.getPriority())
+                    .status(IssueStatus.valueOf(issueCreateDto.getStatus()))
+                    .name(issueCreateDto.getName())
+                    .project(Project.builder().id(issueCreateDto.getProjectId()).build())
+                    .build();
+        }
+        return issue;
     }
 }

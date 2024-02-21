@@ -8,7 +8,7 @@ public enum RoleAuth {
     ROLE_MANAGER,
     ROLE_HR,
 
-    ROLE_TMT;
+    ROLE_TEMP;
 
 }
 

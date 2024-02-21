@@ -7,10 +7,7 @@ import com.sh.workson.attachment.repository.AttachmentRepository;
 import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
-import com.sh.workson.board.dto.BoardCommentDto;
-import com.sh.workson.board.dto.BoardCreateDto;
-import com.sh.workson.board.dto.BoardDetailDto;
-import com.sh.workson.board.dto.BoardListDto;
+import com.sh.workson.board.dto.*;
 import com.sh.workson.board.entity.Board;
 import com.sh.workson.board.entity.BoardComment;
 import com.sh.workson.board.entity.Type;
@@ -24,6 +21,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -55,27 +53,45 @@ public class BoardController {
     @Autowired
     private BoardCommentService boardCommentService;
 
+    @GetMapping("/boardAllList.do")
+    public void boardAllList(
+            @PageableDefault(size = 5, page = 0) Pageable pageable,
+            Model model
+    ){
+        Page<BoardListDto> boardPage = boardService.findAll(pageable);
+        model.addAttribute("boards", boardPage.getContent());
+        model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
+        model.addAttribute("size", boardPage.getSize());
+        model.addAttribute("number", boardPage.getNumber());
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+
+        log.debug("board = {}", boardPage.getContent());
+        log.debug("totalCount = {}", boardPage.getTotalElements());
+        log.debug("size = {}", boardPage.getSize());
+        log.debug("number = {}", boardPage.getNumber());
+        log.debug("totalPages = {}", boardPage.getTotalPages());
+
+    }
 
     @GetMapping("/boardList.do")
     public void boardList(@RequestParam(name = "type", required = false) String type,
-                          @PageableDefault(size = 10, page = 0) Pageable pageable,
+                          @PageableDefault(size = 5, page = 0) Pageable pageable,
                           Model model) {
         log.info("Fetching board list. Type: {}", type);
 
-        Page<BoardListDto> boardPage;
-
-        if (type != null && type.equals("notification")) {
-            boardPage = boardService.findByType(Type.notification, pageable);
-        } else {
-            boardPage = boardService.findByType(Type.free, pageable);
-        }
+        Page<BoardListDto> boardPage = boardService.findByType(Type.valueOf(type), pageable);;
 
         log.debug("Boards: {}", boardPage.getContent());
 
         model.addAttribute("boards", boardPage.getContent());
         model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
-
-
+        model.addAttribute("size", boardPage.getSize());
+        model.addAttribute("number", boardPage.getNumber());
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+        model.addAttribute("type", type);
+        log.debug("size = {}", boardPage.getSize());
+        log.debug("number = {}", boardPage.getNumber());
+        log.debug("totalpages = {}", boardPage.getTotalPages());
     }
 
     @GetMapping("/createBoard.do")
@@ -110,7 +126,7 @@ public class BoardController {
 
         //리다이렉트후에 사용자 피드백
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다");
-        return "redirect:/board/boardList.do";
+        return "redirect:/board/boardList.do?type=" + boardCreateDto.getType();
     }
 
     @GetMapping("/boardDetail.do")
@@ -162,6 +178,30 @@ public class BoardController {
         return s3FileService.download(attachmentDetailDto);
 
     }
+
+
+
+    @PostMapping("/boardUpdate.do")
+    public String update(BoardUpdateDto boardUpdateDto,
+                         Model model,
+                         @RequestParam("id") Long id,
+                         RedirectAttributes redirectAttributes) {
+        log.debug("boardUpdateDto = {}" , boardUpdateDto);
+        BoardUpdateDto boardUpdateDto1  = boardService.update(boardUpdateDto);
+        model.addAttribute("boardUpdateDto", boardUpdateDto1);
+
+        redirectAttributes.addFlashAttribute("msg", "게시글 수정이 완료되었습니다");
+
+        return "redirect:/board/boardDetail.do?id=" + id;
+    }
+
+    @PostMapping("/boardDelete.do")
+    public String deleteBoard(@RequestParam("boardId") Long id) {
+        boardService.deleteBoardById(id);
+        return "redirect:/board/boardList.do";
+    }
+
+
 
 
 

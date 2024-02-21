@@ -4,11 +4,14 @@ import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.authority.entity.Authority;
+import com.sh.workson.authority.entity.RoleAuth;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.department.service.DepartmentService;
 import com.sh.workson.email.service.EmailService;
 import com.sh.workson.employee.dto.EmployeeCreateDto;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
+import com.sh.workson.employee.dto.EmployeeUpdatePasswordDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
 import com.sh.workson.position.entity.Position;
@@ -225,6 +228,30 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/passwordUpdate.do")
+    public void passwordUpdate(){};
+
+    @PostMapping("/passwordUpdate.do")
+    public String passwordUpdate(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam("password") String password
+    ){
+        log.debug("password = {}", password);
+        EmployeeUpdatePasswordDto employee = EmployeeUpdatePasswordDto.builder()
+                .id(employeeDetails.getEmployee().getId())
+                .password(passwordEncoder.encode(password))
+                .build();
+        employee.setAuthority(Authority.builder()
+                    .id(employeeDetails.getEmployee().getAuthorities().get(0).getId())
+                    .empId(employeeDetails.getEmployee().getId())
+                    .name(RoleAuth.ROLE_EMP)
+                    .build());
+        log.debug("employee = {}", employee);
+        employeeService.updatePassword(employee);
+
+
+        return "redirect:/auth/login.do";
+    }
 
 
 

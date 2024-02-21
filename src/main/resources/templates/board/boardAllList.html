@@ -10,7 +10,6 @@
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center flex-shrink-0 text-white mr-6">
                 <span class="font-semibold text-xl tracking-tight">게시판</span>
-                <input type="hidden" id="type" th:value="${type}">
                 <ul class="ml-6 flex">
                     <!-- 자유게시판 -->
                     <li class="mr-6" id="freeBoard">
@@ -150,6 +149,5 @@
         </div>
     </div>
 </div>
-
-<script layout:fragment="script" th:src="@{/js/board/boardList.js}"></script>
+<script layout:fragment="script" th:src="@{/js/board/boardAllList.js}"></script>
 </html>

@@ -82,10 +82,10 @@ document.taskCreateFrm.addEventListener('submit', (e) => {
    e.preventDefault();
 
    const frm = e.target;
-   const name = frm.querySelector("#name");
+   const name = frm.querySelector("#taskName");
    const taskEmpId = frm.querySelector("#taskEmpId");
-   const priority = frm.querySelector("#priority");
-   const status = frm.querySelector("#status");
+   const priority = frm.querySelector("#taskPriority");
+   const status = frm.querySelector("#taskStatus");
    const startAt = frm.querySelector("#startAt");
    const endAt = frm.querySelector("#endAt");
    const content = frm.querySelector("#content");
@@ -169,14 +169,11 @@ document.taskCreateFrm.addEventListener('submit', (e) => {
    })
 });
 
-
-
-
 window.addEventListener('DOMContentLoaded', () => {
 
    // 업무 생성시 별 이벤트
    const stars = document.querySelectorAll(".starBtn");
-   const priority = document.querySelector("#priority");
+   const priority = document.querySelector("#taskPriority");
 
    // text-gray-300
    stars.forEach((btn, i) => {
@@ -194,7 +191,6 @@ window.addEventListener('DOMContentLoaded', () => {
          
          // 클릭한 요소의 인덱스 + 1로 input태그 value 설정하기
          priority.value = i + 1;
-
          console.log(priority.value);
       });
    });
@@ -202,13 +198,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
    // 업무 생성시 status값 지정
    const btns = document.querySelectorAll(".modalBtn");
-   const statusInput = document.querySelector("#status");
-   const statesBtn = document.querySelector("#states-button");
+   const taskStatusInput = document.querySelector("#taskStatus");
+   const taskStatesBtn = document.querySelector("#task-states-button");
 
    btns.forEach((btn, i) => {
       const {status} = btn.dataset;
       btn.addEventListener('click', (e) => {
-         statusInput.value = status;
+         taskStatusInput.value = status;
          let defaultStatus = '';
 
          switch (status) {
@@ -216,19 +212,16 @@ window.addEventListener('DOMContentLoaded', () => {
             case "In progress": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-blue-300 mr-2"></span>${status}</div>`; break;
             case "Done": defaultStatus = `<div class="inline-flex items-center"><span class="w-[16px] h-[16px] rounded-full bg-rose-300 mr-2"></span>${status}</div>`; break;
          }
-
-         console.log(statusInput.value);
-         statesBtn.innerHTML = defaultStatus;
+         taskStatesBtn.innerHTML = defaultStatus;
       });
    });
 
-   const statusValueBtns = document.querySelectorAll(".statusValueBtn");
-   statusValueBtns.forEach((btn, i) => {
+   const taskStatusValueBtns = document.querySelectorAll(".taskStatusValueBtn");
+   taskStatusValueBtns.forEach((btn, i) => {
       btn.addEventListener('click', (e) => {
-         statusInput.value = document.getElementById(`statusValue${i + 1}`).dataset.status;
-         console.log(statusInput.value);
-
-         statesBtn.innerHTML = statusValueBtns[i].innerHTML;
+         taskStatusInput.value = document.getElementById(`taskStatusValue${i + 1}`).dataset.status;
+         console.log(taskStatusInput.value);
+         taskStatesBtn.innerHTML = taskStatusValueBtns[i].innerHTML;
       });
    });
 });

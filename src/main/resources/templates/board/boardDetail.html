@@ -9,21 +9,29 @@
 <body>
 <div layout:fragment="content">
     <div id="board-container" class="w-50 mx-auto text-center">
-        <input type="text" class="form-control mb-3"
-               placeholder="제목" name="title" id="title" th:value="${board.title}" required>
-        <input type="text" class="form-control mb-3"
-               name="name" th:value="${board.employee != null ? board.employee.name:'퇴사자'}" readonly required>
-        <button type="button"
-                class="btn btn-outline-success btn-block mb-3"
-                th:each="attach, status : ${board.attachments}"
-                th:text="|첨부파일${status.count} - ${attach.originalFileName}|"
-                th:onclick="|location.href ='@{/board/fileDownload.do}?id=${attach.id}';|">
-        </button>
+        <form th:action="@{/board/boardUpdate.do}" method="post">
+            <div class="flex items-center justify-end px-3 py-2 border-t">
+                <input type="hidden" name="id" th:value="${board.id}">
+                    <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+                        수정
+                    </button>
+            </div>
 
-        <textarea class="form-control mb-3" name="content"
-                  placeholder="내용" th:text="${board.content}" required></textarea>
-        <input type="datetime-local" class="form-control" name="createdAt" th:value="${#temporals.format(board.createdAt,'yyyy-MM-dd HH:mm')}">
+            <input type="text" class="form-control mb-3"
+                   placeholder="제목" name="title" id="title" th:value="${board.title}" required>
+            <input type="text" class="form-control mb-3"
+                   name="name" th:value="${board.employee != null ? board.employee.name:'퇴사자'}" readonly required>
+            <button type="button"
+                    class="btn btn-outline-success btn-block mb-3"
+                    th:each="attach, status : ${board.attachments}"
+                    th:text="|첨부파일${status.count} - ${attach.originalFileName}|"
+                    th:onclick="|location.href ='@{/board/fileDownload.do}?id=${attach.id}';|">
+            </button>
 
+            <textarea class="form-control mb-3" name="content"
+                      placeholder="내용" th:text="${board.content}" required></textarea>
+            <input type="datetime-local" class="form-control" name="createdAt" th:value="${#temporals.format(board.updatedAt,'yyyy-MM-dd HH:mm')}">
+        </form>
         <br>
 
         <!-- 댓글 폼 시작 -->
@@ -79,9 +87,6 @@
                 </tbody>
             </table>
         </div>
-
-
-
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 </div>
