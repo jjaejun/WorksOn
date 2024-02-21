@@ -472,8 +472,8 @@ public class ProjectController {
             @RequestParam(name = "size1", defaultValue = "5") int size1,
             @RequestParam(name = "page2", defaultValue = "0") int page2,
             @RequestParam(name = "size2", defaultValue = "5") int size2,
-            @RequestParam(name = "page2", defaultValue = "0") int page3,
-            @RequestParam(name = "size2", defaultValue = "10") int size3
+            @RequestParam(name = "page3", defaultValue = "0") int page3,
+            @RequestParam(name = "size3", defaultValue = "10") int size3
     ){
         // 사원이 참여중인 프로젝트만 조회
         Page<ProjectListDto> projects = projectService.findByEmpId(employeeDetails.getEmployee(), PageRequest.of(page2, size2));

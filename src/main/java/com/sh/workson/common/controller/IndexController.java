@@ -10,10 +10,13 @@ import com.sh.workson.dailywork.service.DailyWorkService;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import com.sh.workson.employee.service.EmployeeService;
+import com.sh.workson.project.dto.ProjectDashBoardDto;
+import com.sh.workson.project.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +48,14 @@ public class IndexController {
     private EmployeeRepository employeeRepository;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProjectService projectService;
 
     @GetMapping("")
     public String index(
             Authentication authentication,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
-            Model model,  @PageableDefault(value = 10, page = 0) Pageable pageable
+            Model model, @PageableDefault(value = 10, page = 0) Pageable pageable
     ){
         if(employeeDetails == null){
             return "/auth/login";
@@ -87,8 +92,8 @@ public class IndexController {
 
 
 //            민정
-
-
+            Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
+            model.addAttribute("projects", projectPage);
 
 
 

@@ -17,55 +17,129 @@
 //     })
 // }
 
+window.addEventListener('DOMContentLoaded', () => {
+    pageEvent();
+})
+
+
+const pageEvent = () => {
+    document.querySelectorAll(".pageNumber").forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const button = e.target;
+            const year = document.querySelector("#year");
+            const yearValue = new Date(`${year.value}-01-01`);
+
+            const { pageNumber} = button.dataset;
+            let size = 10;
+            let url = `/WorksOn/dayoff/dayoffList.do?year=${yearValue.getTime()}&page=${pageNumber}&size=${size}`;
+
+            console.log(url);
+
+            // Fetch API를 사용하여 비동기로 데이터 가져오기
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 서버로부터 받은 HTML을 현재 페이지의 콘텐츠에 적용
+                    let parser = new DOMParser();
+                    let newDocument = parser.parseFromString(html, 'text/html');
+
+                    const newDayoffList = newDocument.querySelector(".leave-history");
+                    const originDayoffList = document.querySelector(".leave-history");
+
+
+                    originDayoffList.innerHTML = newDayoffList.innerHTML;
+
+                    pageEvent();
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+        });
+    });
+};
+
+
+
 document.getElementById("year").addEventListener('change', (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     const year = e.target.value;
     const tbody = document.querySelector("#searchDate tbody")
-    let yearValue;
-    switch (year) {
-        case "2024" :  yearValue = new Date('2024-01-01'); break;
-        case "2023" :  yearValue = new Date('2023-01-01'); break;
-        case "2022" :  yearValue = new Date('2022-01-01'); break;
-        case "2021" :  yearValue = new Date('2021-01-01'); break;
-        case "2020" :  yearValue = new Date('2020-01-01'); break;
-        case "2019" :  yearValue = new Date('2019-01-01'); break;
-        case "2018" :  yearValue = new Date('2018-01-01'); break;
-        default: throw new Error("지정한 년도는 조회 불가능합니다.");
-    }
+    const yearValue = new Date(`${year}-01-01`);
+
+    let size = 10;
+    let url = `/WorksOn/dayoff/dayoffList.do?year=${yearValue.getTime()}&page=0&size=${size}`;
+
+    // console.log(url);
+
     let timestamp = yearValue.getTime();
+    // Fetch API를 사용하여 비동기로 데이터 가져오기
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            // 서버로부터 받은 HTML을 현재 페이지의 콘텐츠에 적용
+            let parser = new DOMParser();
+            let newDocument = parser.parseFromString(html, 'text/html');
 
-    $.ajax({
-        url: `${contextPath}dayoff/dayOffListSearchDate.do`,
-        data: {
-            year: timestamp
-        },
-        headers: {
-            [csrfHeaderName]: csrfToken
-        },
-        success(response) {
-            console.log(response);
-            tbody.innerHTML = '';
-            response.content.forEach((off) => {
-                const {content, count, endAt, startAt, id, type} = off;
+            const newDayoffList = newDocument.querySelector(".leave-history");
+            const originDayoffList = document.querySelector(".leave-history");
+            const newRemainDayOffCount = newDocument.querySelector("#remainDayOffCount");
+            const originRemainDayOffCount = document.querySelector("#remainDayOffCount");
+            const newUseDayOffCount = newDocument.querySelector("#useDayOffCount");
+            const originUseDayOffCount = document.querySelector("#useDayOffCount");
 
-                tbody.innerHTML += `
-                <tr>
-                <td></td>
-                <td></td>
-                <td>${type}</td>
-                <td>
-                ${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}
-                ~
-                ${new Date(endAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}
-                </td>
-                <td>${count}</td>
-                <td>${content}</td>
-            </tr>
-                `
-            })
+            originDayoffList.innerHTML = newDayoffList.innerHTML;
+            originRemainDayOffCount.innerHTML = newRemainDayOffCount.innerHTML;
+            originUseDayOffCount.innerHTML = newUseDayOffCount.innerHTML;
+            pageEvent();
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
 
-        }
-    })
+
+
+    // $.ajax({
+    //     url: `${contextPath}dayoff/dayOffListSearchDate.do`,
+    //     data: {
+    //         year: timestamp
+    //     },
+    //     headers: {
+    //         [csrfHeaderName]: csrfToken
+    //     },
+    //     success(response) {
+    //         console.log(response);
+    //         tbody.innerHTML = '';
+    //         response.content.forEach((off) => {
+    //             const {employee, content, count, endAt, startAt, id, type} = off;
+    //
+    //             tbody.innerHTML += `
+    //             <tr>
+    //             <td>${employee.name}</td>
+    //             <td>${employee.position.name}</td>
+    //             <td>${type}</td>
+    //             <td>
+    //             ${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}
+    //             ~
+    //             ${new Date(endAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}
+    //             </td>
+    //             <td>${count}</td>
+    //             <td>${content}</td>
+    //         </tr>
+    //             `
+    //         })
+    //
+    //     }
+    // })
 });
 
 function changePage1(pageNumber) {
