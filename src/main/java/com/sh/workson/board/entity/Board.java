@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class Board {
     private int viewCount;
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @CreationTimestamp
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
     @OneToMany
     @JoinColumn(name = "board_id") // attachment.board_id 컬럼 참조
