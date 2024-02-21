@@ -1,19 +1,34 @@
 package com.sh.workson.common.controller;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.cherry.entity.Cherry;
+import com.sh.workson.cherry.repository.CherryRepository;
+import com.sh.workson.dailywork.entity.DailyWork;
 import com.sh.workson.dailywork.entity.DailyWorkListDto;
+import com.sh.workson.dailywork.repository.DailyWorkRepository;
 import com.sh.workson.dailywork.service.DailyWorkService;
+import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.employee.repository.EmployeeRepository;
+import com.sh.workson.employee.service.EmployeeService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -22,6 +37,14 @@ public class IndexController {
 
     @Autowired
     private DailyWorkService dailyWorkService;
+    @Autowired
+    private DailyWorkRepository dailyWorkRepository;
+    @Autowired
+    private CherryRepository cherryRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("")
     public String index(
@@ -120,4 +143,47 @@ public class IndexController {
             return "index";
         }
     }
+
+    @PostMapping("/indexCherry.do")
+    public String indexCherry(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam("createEmp") List<Long> employees,
+            @RequestParam("contentGift") String contentGift,
+            @RequestParam("workLog") String workLog,
+            @RequestParam("praise") String praise
+    ){
+        Long id = employeeDetails.getEmployee().getId();
+
+        for (Long receivingEmployeeId : employees) {
+            Employee receivingEmployee = employeeRepository.findById(receivingEmployeeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + receivingEmployeeId));
+
+            DailyWork dailyWork = DailyWork.builder()
+                    .content(workLog)
+                    .createdAt(LocalDateTime.now())
+                    .cherryCount(Integer.parseInt(praise))
+                    .employee(employeeDetails.getEmployee())
+                    .build();
+
+            // Save DailyWork entity
+            dailyWorkRepository.save(dailyWork);
+
+            Cherry cherry = Cherry.builder()
+                    .getCherry(Integer.parseInt(praise))
+                    .cherryContent(contentGift)
+                    .employee(receivingEmployee)  // cherry를 받는 사람의 아이디로 설정
+                    .dailyWork(dailyWork)
+                    .build();
+
+            receivingEmployee.updateCherry(Integer.parseInt(praise));
+            employeeRepository.save(receivingEmployee);
+
+            // Save Cherry entity
+            cherryRepository.save(cherry);
+            log.debug("cherry = {}", cherry);
+        }
+
+        return "redirect:/";
+    }
+
 }
