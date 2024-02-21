@@ -74,4 +74,8 @@ public class AttachmentService {
                 .build();
         return attachment;
     }
+
+    public List<Attachment> findByBoardId(Long id) {
+        return attachmentRepository.findByBoardId(id);
+    }
 }

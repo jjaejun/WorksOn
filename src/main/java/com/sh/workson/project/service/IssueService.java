@@ -53,15 +53,15 @@ public class IssueService {
                 .build());
         if(issue.getTask() != null){
             issueDetailDto.setTask(TaskIssueDetailDto.builder()
-                    .id(issue.getProject().getId())
-                    .name(issue.getProject().getTitle())
+                    .id(issue.getTask().getId())
+                    .name(issue.getTask().getName())
                     .build());
         }
         return issueDetailDto;
     }
 
     public Page<IssueDetailDto> findTop3Issue(Long id, Pageable pageable) {
-        Page<Issue> issues = issueRepository.findAllMyIssue(id, pageable);
+        Page<Issue> issues = issueRepository.findTop3Issue(id, pageable);
         return issues.map(issue -> convertToIssueDetailDto(issue));
     }
 

@@ -1,6 +1,7 @@
 package com.sh.workson.board.service;
 
 import com.sh.workson.attachment.dto.AttachmentCreateDto;
+import com.sh.workson.attachment.entity.AttachType;
 import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.repository.AttachmentRepository;
 import com.sh.workson.attachment.service.AttachmentService;
@@ -22,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -42,7 +45,12 @@ public class BoardService {
 
     public Page<BoardListDto> findAll(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAll(pageable);
-        return boardPage.map((board) -> convertToBoardListDto(board));
+        Page<BoardListDto> boardListDtos = boardPage.map((board) -> convertToBoardListDto(board));
+
+        for(int i = 0; i < boardPage.get().toList().size(); i ++){
+            boardListDtos.get().toList().get(i).setAttachCount(attachmentRepository.findByBoardId(boardListDtos.get().toList().get(i).getId()).size());
+        }
+        return boardListDtos;
     }
 
 
@@ -127,7 +135,12 @@ public class BoardService {
 
     public Page<BoardListDto> findByType(Type type, Pageable pageable) {
         Page<Board> boardPage = boardRepository.findByType(type, pageable);
-        return boardPage.map((board) -> convertToBoardListDto(board));
+        Page<BoardListDto> boardListDtos = boardPage.map((board) -> convertToBoardListDto(board));
+
+        for(int i = 0; i < boardPage.get().toList().size(); i ++){
+            boardListDtos.get().toList().get(i).setAttachCount(attachmentRepository.findByBoardId(boardListDtos.get().toList().get(i).getId()).size());
+        }
+        return boardListDtos;
     }
 
 

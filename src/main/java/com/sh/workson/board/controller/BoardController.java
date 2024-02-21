@@ -54,35 +54,44 @@ public class BoardController {
     private BoardCommentService boardCommentService;
 
     @GetMapping("/boardAllList.do")
-    public String boardAllList(){
-        return null;
+    public void boardAllList(
+            @PageableDefault(size = 5, page = 0) Pageable pageable,
+            Model model
+    ){
+        Page<BoardListDto> boardPage = boardService.findAll(pageable);
+        model.addAttribute("boards", boardPage.getContent());
+        model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
+        model.addAttribute("size", boardPage.getSize());
+        model.addAttribute("number", boardPage.getNumber());
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+
+        log.debug("board = {}", boardPage.getContent());
+        log.debug("totalCount = {}", boardPage.getTotalElements());
+        log.debug("size = {}", boardPage.getSize());
+        log.debug("number = {}", boardPage.getNumber());
+        log.debug("totalPages = {}", boardPage.getTotalPages());
+
     }
 
     @GetMapping("/boardList.do")
     public void boardList(@RequestParam(name = "type", required = false) String type,
-                          @RequestParam(name = "page",defaultValue = "0") int page,
-                          @RequestParam(name = "size", defaultValue = "2") int size,
-                          @RequestParam(name = "page2", defaultValue = "0") int page2,
-                          @RequestParam(name = "size2", defaultValue = "2") int size2,
+                          @PageableDefault(size = 5, page = 0) Pageable pageable,
                           Model model) {
         log.info("Fetching board list. Type: {}", type);
 
-        Page<BoardListDto> boardNotiPage = boardService.findByType(Type.valueOf(type), PageRequest.of(page,size));;
+        Page<BoardListDto> boardPage = boardService.findByType(Type.valueOf(type), pageable);;
 
+        log.debug("Boards: {}", boardPage.getContent());
 
-        log.debug("Boards: {}", boardNotiPage.getContent());
-
-        model.addAttribute("boardNoti", boardNotiPage.getContent());
-        model.addAttribute("notiTotalCount", boardNotiPage.getTotalElements()); //전체 게시물수
-        model.addAttribute("notiSize", boardNotiPage.getSize());
-        model.addAttribute("notiNumber", boardNotiPage.getNumber());
-        model.addAttribute("notiTotalpages", boardNotiPage.getTotalPages());
+        model.addAttribute("boards", boardPage.getContent());
+        model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수
+        model.addAttribute("size", boardPage.getSize());
+        model.addAttribute("number", boardPage.getNumber());
+        model.addAttribute("totalPages", boardPage.getTotalPages());
         model.addAttribute("type", type);
-        log.debug("size = {}", boardNotiPage.getSize());
-        log.debug("number = {}", boardNotiPage.getNumber());
-        log.debug("totalpages = {}", boardNotiPage.getTotalPages());
-
-
+        log.debug("size = {}", boardPage.getSize());
+        log.debug("number = {}", boardPage.getNumber());
+        log.debug("totalpages = {}", boardPage.getTotalPages());
     }
 
     @GetMapping("/createBoard.do")

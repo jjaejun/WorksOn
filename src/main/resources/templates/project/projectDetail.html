@@ -337,10 +337,14 @@
                         </div>
                     </form>
 
-                    <div class="flex w-fit h-fit items-center mt-10">
-                        <h2 class="text-lg text-gray-700 flex items-center my-2">✔ 최근 등록된 이슈</h2>
-                        <button id="createIssue" type="button" data-modal-target="issue-modal" data-modal-toggle="issue-modal"
-                                class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-rose-600 ml-2">이슈 등록</button>
+                    <div class="flex w-full h-fit items-center mt-10 my-2 justify-between">
+                        <div class="w-fit flex items-center">
+                            <h2 class="text-lg text-gray-700 flex items-center">✔ 최근 등록된 이슈</h2>
+                            <button id="createIssue" type="button" data-modal-target="issue-modal" data-modal-toggle="issue-modal"
+                                    class="text-gray-700 bg-rose-50 focus:ring-4 hover:focus:bg-rose-400 hover:focus:text-white focus:outline-none font-medium rounded-lg text-sm w-[100px] py-1 border border-rose-600 ml-2">이슈 등록</button>
+
+                        </div>
+                        <a th:href="@{/project/projectTotalIssueList.do?id=${project.id}}" class="text-md cursor-pointer text-gray-700 flex items-center my-2 hover:border-b border-gray-300">이슈 목록보기</a>
                     </div>
 
                     <div id="issue-modal" tabindex="-1" aria-hidden="true" class="hidden fixed top-20 right-0 left-0 z-50 justify-center items-center w-full">-->
@@ -604,15 +608,20 @@
                                 </tr>
                             </th:block>
                             </th:block>
+                            <th:block th:if="${issueCount == 0}">
+                                <tr id="issueNone" class="text-center p-2 bg-gray-50">
+                                    <td colspan="6">등록된 이슈가 없습니다.</td></tr>
+                            </th:block>
                             <!--tr 한줄 끝-->
                             </tbody>
                         </table>
-                        <th:block th:if="${issueCount == 0}">
-                            <div id="issueNone" class="text-center p-2 bg-gray-50">등록된 이슈가 없습니다.</div>
-                        </th:block>
+<!--                        <th:block th:if="${issueCount == 0}">-->
+<!--                            <div id="issueNone" class="text-center p-2 bg-gray-50">등록된 이슈가 없습니다.</div>-->
+<!--                        </th:block>-->
 
-                    <div class="flex w-fit h-fit items-center">
+                    <div class="flex w-full h-fit items-center justify-between">
                         <h2 class="text-lg text-gray-700 flex items-center my-2">✔ 진행중인 업무</h2>
+                        <a th:href="|@{/project/projectTotalTaskList.do?id=}${project.id}|" class="text-md cursor-pointer text-gray-700 flex items-center my-2 hover:border-b border-gray-300">업무 목록보기</a>
                     </div>
                     <div th:include="~{project/kanban::kanban}"></div>
                 </div>
