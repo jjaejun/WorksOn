@@ -175,11 +175,6 @@ public class IndexController {
         int updatedSeedCount = Math.max(currentSeedCount - totalUsedSeedCount, 0);
         employee.setSeed(updatedSeedCount);
 
-        int totalReceivedCherry = Integer.parseInt(praise);
-        employee.updateCherry(totalReceivedCherry);
-        employeeRepository.save(employee);
-
-
         // Save DailyWork entity
         dailyWorkRepository.save(dailyWork);
 
@@ -187,8 +182,12 @@ public class IndexController {
             Employee receivingEmployee = employeeRepository.findById(receivingEmployeeId)
                     .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + receivingEmployeeId));
 
+            int receivedCherry = Integer.parseInt(praise);
+            receivingEmployee.updateCherry(receivedCherry);
+            employeeRepository.save(receivingEmployee);
+
             Cherry cherry = Cherry.builder()
-                    .getCherry(Integer.parseInt(praise))
+                    .getCherry(receivedCherry)
                     .cherryContent(contentGift)
                     .employee(receivingEmployee)  // cherry를 받는 사람의 아이디로 설정
                     .dailyWork(dailyWork)
