@@ -79,11 +79,15 @@ public class ScheduleController {
         if(bindingResult.hasErrors()){
             throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
-        createScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
-        createScheduleDto.setScheduleCategoryId(scheduleCategoryId);
+        if(scheduleCategoryId != null){
+            createScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
+            createScheduleDto.setScheduleCategoryId(scheduleCategoryId);
+        }else {
+            createScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
+        }
 
-        log.debug("createScheduleDto = {}", createScheduleDto);
         scheduleService.createSchedule(createScheduleDto);
+        log.debug("createScheduleDto = {}", createScheduleDto);
         redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다!\uD83D\uDC4D");
         return "redirect:/schedule/calendar.do";
     }
@@ -145,5 +149,17 @@ public class ScheduleController {
     //     log.debug("id = {}", id);
     //     return "redirect:/schedule/calendar.do";
     // }
+
+    @PostMapping("/deleteSchedule.do")
+    public String deleteSchedule(
+            @RequestParam(value = "id") Long id,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails
+    ){
+        log.debug("id = {}", id);
+        // scheduleService.deleteSchedule(id);
+
+
+        return "redirect:/schedule/calendar.do";
+    }
 
 }

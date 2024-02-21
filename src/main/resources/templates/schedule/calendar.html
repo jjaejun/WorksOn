@@ -109,7 +109,7 @@
                                 </aside>
                             </div>
                             <div id='calendar'></div>
-
+                            <div th:include="~{schedule/scheduleDetail::scheduleDetail}"></div>
                             <!-- Modal toggle -->
                             <!-- target에 작성한 crud-modal이 아이디로 사용됨(변경 시 crud-modal을 모두 같은 이름으로 변경) -->
                             <!-- Modal toggle -->
@@ -139,7 +139,7 @@
                                                 </div>
                                                 <div class="col-span-2">
                                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">카테고리 이름</label>
-                                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type product name" required="">
+                                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="카테고리 이름을 입력해주세요" required="">
                                                 </div>
                                                 <div class="col-span-2 ">
                                                     <label for="color" class="block mb-2 text-sm font-medium text-gray-900">색상 선택하기</label>

@@ -23,14 +23,27 @@ document.addEventListener('DOMContentLoaded', function() {
         events: [],
         dateClick: function(selectionInfo) {
             console.log(selectionInfo);
-
         },
         eventClick: function(info) {
-            // info.jsEvent.preventDefault(); // don't let the browser navigate
+        // eventClick: function(selectionInfo) {
+        //     console.log(selectionInfo);
+            // let eventObj = selectionInfo;
+            let eventObj = info.event;
+            // info.jsEvent.preventDefault();
 
-            if (info.event.url) {
-                window.open(info.event.url);
-            }
+            console.log(eventObj);
+
+            $('#id').val(eventObj.id);
+            $('#title').val(eventObj.title);
+            $('#startTime').val(eventObj.start.toISOString().slice(0, 16)); // input datetime-local 포맷에 맞게 포맷팅
+            $('#endTime').val(eventObj.end ? eventObj.end.toISOString().slice(0, 16) : ''); // null 체크
+            $('#category').val(eventObj.extendedProps.categoryId); // 카테고리 ID가 충분하다고 가정, 필요에 따라 조정
+            $('#event-content').val(eventObj.extendedProps.content);
+
+            $('#schedule-modal').removeClass('hidden');
+
+            info.jsEvent.preventDefault();
+
         },
         eventTimeFormat: {
             hour: '2-digit',
@@ -51,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
             $.ajax({
                 url: `${contextPath}schedule/mySchedule.do`,
                 type: 'get',
+                extraParams: {
+                    custom_param1 : 'content'
+                },
                 // dataType:'json',
                 headers: {
                     [csrfHeaderName]: csrfToken
@@ -62,9 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 success: function(response) {
                     let events = response.map(function(item) {
                         return {
-                            id: item.id, // 이벤트의 고유 ID
+                            id: item.id,
                             title: item.title,
                             start: item.startTime,
+                            content:item.content,
                             end: item.endTime,
                             categoryId: categoryId,
                             color: item.color
@@ -90,12 +107,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+        $('#close-modal').on('click', function() {
+            $('#schedule-modal').addClass('hidden'); // 모달 숨기기
+        });
     });
 });
 
-/**
- * 모달창
- */
 
 
 // '모든 일정 보기' 체크박스를 토글할 때 모든 카테고리 체크박스를 체크/해제
@@ -355,7 +372,7 @@ document.getElementById('delete-category').addEventListener('click', function() 
         },
         success(resp){
             document.getElementById('close-modal').click();
-            document.location.reload();
+            document.location.reload(); // 추후 비동기로 html 갱신
         }
     })
 
