@@ -73,7 +73,8 @@ public class ReservationContoller {
 
     @GetMapping("/reservationList.do")
     public void reservationDetail(@RequestParam("id") Long id, Model model) {
-        List<Reservation> reservations = reservationService.findByResourceId(id);
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByResourceId(id, today);
         model.addAttribute("resourceId", id);
         model.addAttribute("reservations", reservations);
     }
@@ -91,7 +92,8 @@ public class ReservationContoller {
 
     @GetMapping("/reservationMyList.do")
     public void reservationMyDetail(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
-        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId());
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today);
         log.debug("reservations = {}", reservations);
         model.addAttribute("reservations", reservations);
     }

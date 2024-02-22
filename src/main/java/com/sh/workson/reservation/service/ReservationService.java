@@ -29,8 +29,8 @@ public class ReservationService {
     @Autowired
     private ModelMapper modelMapperStrict;
 
-    public List<Reservation> findByResourceId(Long id) {
-        return reservationRepository.findByResourceId(id);
+    public List<Reservation> findByResourceId(Long id, LocalDateTime today) {
+        return reservationRepository.findByResourceId(id, today);
     }
 
     public void createReservation(ReservationCreateDto reservationCreateDto) {
@@ -45,8 +45,8 @@ public class ReservationService {
     }
 
 
-    public List<Reservation> findByEmpId(Long id) {
-        return reservationRepository.findByEmpId(id);
+    public List<Reservation> findByEmpId(Long id, LocalDateTime today) {
+        return reservationRepository.findByEmpId(id, today);
     }
 
     public void deleteById(Long reservationId) {
