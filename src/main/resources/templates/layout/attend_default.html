@@ -33,9 +33,12 @@
         <header th:include="~{fragments/header::header}"></header>
         <section id="content" class="flex">
             <div th:include="~{fragments/aside::aside}"></div>
-            <div th:include="~{fragments/attend_aside::aside}"></div>
-            <div class="mt-32 w-full mx-12">
-                <div layout:fragment="content">
+            <div class="flex justify-between">
+                <div th:include="~{fragments/attend_aside::aside}"></div>
+                <div class="mt-28 w-full">
+                    <div layout:fragment="content">
+
+                    </div>
                 </div>
             </div>
         </section>
