@@ -1,15 +1,16 @@
-// document.querySelectorAll(".radio-wrap").forEach((box) => {
-//    box.addEventListener('click', (e) => {
-//         const input = box.firstElementChild;
-//
-//         if(input.checked){
-//
-//         }
-//         else {
-//             input.checked = true;
-//         }
-//    });
-// });
+const radios = document.querySelectorAll(".radio-wrap");
+radios.forEach((input) => {
+    input.addEventListener('click', (e) => {
+        const box = input.parentElement;
+
+        radios.forEach((r) => {
+            r.parentElement.classList.remove("bg-blue-100");
+            r.parentElement.classList.add("bg-gray-50");
+        });
+
+        box.classList.add("bg-blue-100");
+   });
+});
 
 const chatRoomIdIpt = document.querySelector('#chatRoomIdIpt');
 const ws = new SockJS(`http://${location.host}${contextPath}stomp`);
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${empName}</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${newCreatedAt}</span>
                                 </div>
-                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-blue-600 rounded-l-xl rounded-br-xl dark:bg-gray-700">
+                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-l-xl rounded-br-xl dark:bg-gray-700">
                                     <p class="text-sm font-normal text-white dark:text-white">${content}</p>
                                 </div>
                             </div>
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${empName}</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${newCreatedAt}</span>
                                 </div>
-                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-blue-600 rounded-l-xl rounded-br-xl dark:bg-gray-700">
+                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-l-xl rounded-br-xl dark:bg-gray-700">
                                     <p class="text-sm font-normal text-white dark:text-white">${content}</p>
                                 </div>
                             </div>
