@@ -69,8 +69,12 @@ public class EmployeeService {
     /**
      * 재준
      */
-    public String findByEmpId(Long employeeId) {
-        return employeeRepository.findByEmpId(employeeId);
+    public String findNameByEmpId(Long employeeId) {
+        return employeeRepository.findNameByEmpId(employeeId);
+    }
+
+    public String findProfileUrlByEmpId(Long employeeId) {
+        return employeeRepository.findProfileUrlByEmpId(employeeId);
     }
 
     private EmployeeChatDto covertToEmployeeDto(Employee employee) {
