@@ -9,7 +9,8 @@
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
 <!--    <form name="recognize" method="post">-->
-        <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+    <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+    <input type="hidden" th:value="${#authentication.principal.employee.id}" id="loginId">
     <div class="container mx-auto p-4 bg-white border mt-8 mb-8">
         <h1 class="text-3xl text-center mb-4">업 무 협 조</h1>
         <div class="flex">
@@ -41,11 +42,11 @@
                         <tr class="border">
                             <td><input type="text" class="w-24 p-2" th:value="${approver.approverName}" readonly></td>
                         </tr>
-                            <tr class="border approver">
+                            <tr class="border approver" th:data-emp-id="${approver.approverId}">
                          <td><input type="text" name="sign" class="signs w-24 p-2" th:value="${approver.sign}"  th:data-is-last="notLast" th:data-line-id="${approver.lineId}" th:readonly="${#authentication.principal.employee.id != approver.approverId}"></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="lineId" class="w-24 p-2" th:value="${approver.lineId}" readonly></td>
+                                <td><input type="hidden" name="lineId" class="w-24 p-2" th:value="${approver.lineId}" readonly></td>
                             </tr>
                     </th:block>
                 <th:block th:if="${iterStat.index != 0 && !iterStat.last}">
@@ -55,12 +56,12 @@
                     <tr class="border">
                         <td><input type="text" class="w-24 p-2" th:value="${approver.approverName}" readonly></td>
                     </tr>
-                    <tr class="border approver">
+                    <tr class="border approver" th:data-emp-id="${approver.approverId}">
                         <td><input type="text" name="sign" class="signs w-24 p-2" th:value="${approver.sign}" th:data-is-last="notLast" th:data-line-id="${approver.lineId}" th:readonly="${#authentication.principal.employee.id != approver.approverId}"></td>
 
                     </tr>
                     <tr>
-                        <td><input type="text" name="lineId" class="w-24 p-2" th:value="${approver.lineId}" readonly></td>
+                        <td><input type="hidden" name="lineId" class="w-24 p-2" th:value="${approver.lineId}" readonly></td>
                     </tr>
                 </th:block>
                 <th:block th:if="${iterStat.last}">
@@ -70,12 +71,12 @@
                     <tr class="border">
                         <td><input type="text" class="w-24 p-2" th:value="${approver.approverName}" readonly></td>
                     </tr>
-                    <tr class="border approver">
+                    <tr class="border approver" th:data-emp-id="${approver.approverId}">
                         <td><input type="text" name="sign" class="signs w-24 p-2" th:value="${approver.sign}" th:data-is-last="isLast" th:data-line-id="${approver.lineId}" th:readonly="${#authentication.principal.employee.id != approver.approverId}"></td>
 
                     </tr>
                     <tr>
-                        <td><input type="text" name="lineId" class="w-24 p-2" th:value="${approver.lineId}" readonly></td>
+                        <td><input type="hidden" name="lineId" class="w-24 p-2" th:value="${approver.lineId}" readonly></td>
                     </tr>
                 </th:block>
 <!--                </form>-->
@@ -115,9 +116,14 @@
                     th:if="${status == '대기' and #authentication.principal.employee.id == individualApprover.approverId}">승인</button>
         </form>
 
-        <button type="submit" class="bg-red-500 text-white p-2 rounded"
-                th:each="individualApprover : ${approver}"
-                th:if="${status == '대기' and #authentication.principal.employee.id == individualApprover.approverId}">반려</button>
+        <form th:action="@{/approval/rejectDetailCooperation.do}" method="post" name="recognizeFrm" id="rejectFrm">
+            <input type="hidden" name="sign">
+            <input type="hidden" name="id" th:value="${id}">
+            <input type="hidden" name="lineId">
+            <button type="submit" class="bg-red-500 text-white p-2 rounded" id="rejectionFrmBtn"
+                    th:each="individualApprover : ${approver}"
+                    th:if="${status == '대기' and #authentication.principal.employee.id == individualApprover.approverId}">반려</button>
+        </form>
 
 <!--        <h2 class="p-2 w-32">파일 첨부</h2>-->
 <!--        <div class="border-dotted">-->
