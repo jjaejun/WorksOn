@@ -109,12 +109,18 @@ public class IndexController {
 
             Attend firstAttend = attendService.findByOrderByStartAt(id);
             String stateKr = null;
-            if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
-                stateKr = "업무중";
+            if(firstAttend != null) {
+                if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
+                    stateKr = "업무중";
+                }
+                else if(firstAttend.getState().equals(State.QUIT)){
+                    stateKr = "퇴근";
+                }
             }
-            else if(firstAttend.getState().equals(State.QUIT)){
-                stateKr = "퇴근";
+            else {
+                stateKr = "";
             }
+
 
             model.addAttribute("attend", firstAttend);
             model.addAttribute("state", stateKr);
