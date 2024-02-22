@@ -7,6 +7,7 @@ import com.sh.workson.reservation.dto.ReservationReturnDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.repository.ReservationRepository;
 import com.sh.workson.resource.entity.Resource;
+import com.sh.workson.resource.entity.Type;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,13 +41,13 @@ public class ReservationService {
     private Reservation convertToReservation(ReservationCreateDto reservationCreateDto) {
         Reservation reservation = modelMapperStrict.map(reservationCreateDto, Reservation.class);
         reservation.setEmployee(Employee.builder().id(reservationCreateDto.getEmployeeId()).build());
-        reservation.setResourceId(reservationCreateDto.getResourceId());
+        reservation.setResource(Resource.builder().id(reservationCreateDto.getResourceId()).build());
         return reservation;
     }
 
 
-    public List<Reservation> findByEmpId(Long id, LocalDateTime today) {
-        return reservationRepository.findByEmpId(id, today);
+    public List<Reservation> findByEmpId(Long id, LocalDateTime today, Type type) {
+        return reservationRepository.findByEmpId(id, today, type);
     }
 
     public void deleteById(Long reservationId) {
@@ -65,7 +66,7 @@ public class ReservationService {
                 .content(reservation.getContent())
                 .count(reservation.getCount())
                 .empName(reservation.getEmployee().getName())
-                .resourceId(reservation.getResourceId())
+                .resourceId(reservation.getResource().getId())
                 .build();
         return reservationListDto;
     }

@@ -1,6 +1,7 @@
 package com.sh.workson.reservation.entity;
 
 import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.resource.entity.Resource;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,7 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    @Column(name = "tb_resource_id")
-    private Long resourceId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tb_resource_id")
+    private Resource resource;
 }
