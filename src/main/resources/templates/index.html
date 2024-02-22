@@ -109,8 +109,9 @@
                             <img th:src="@{/image/cherry/free-icon-cherry-6178275.png}" alt="Cherry Image" class="mr-2" width="80px" height="80px">
                         </div>
                         <div class="flex justify-around">
-                            <span class="font-bold text-gray-800 text-xl" th:text="|${#authentication.principal.employee.seed}|"></span>
-                            <span class="font-bold text-gray-800 text-xl" th:text="|${#authentication.principal.employee.cherry}|"></span>
+                            <span class="font-bold text-gray-800 text-xl" th:text="${totalSeedCount}"></span>
+                            <span class="font-bold text-gray-800 text-xl" th:text="${totalCherryCount}"></span>
+
                         </div>
                     </div>
                 </td>

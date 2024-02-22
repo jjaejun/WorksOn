@@ -170,6 +170,7 @@ public class IndexController {
                 .employee(employeeDetails.getEmployee())
                 .build();
 
+
         int totalUsedSeedCount = employees.size() * Integer.parseInt(praise);
         int currentSeedCount = employee.getSeed();
         int updatedSeedCount = Math.max(currentSeedCount - totalUsedSeedCount, 0);
