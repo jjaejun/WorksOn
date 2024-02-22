@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +31,10 @@ public class ApprovalLeave {
     private String title;
 
     @Column(nullable = false, name = "start_date")
-    private Timestamp startDate;
+    private Date startDate;
 
     @Column(nullable = false, name = "end_date")
-    private Timestamp endDate;
+    private Date endDate;
 
     @Column(name = "leave_content")
     private String leaveContent;
