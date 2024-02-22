@@ -34,8 +34,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     /**
      * 재준
      */
-    @Query("select e.name from Employee e where e.id = :employeeId ")
-    String findByEmpId(@Param("employeeId") Long employeeId);
+    @Query("select name from Employee where id = :employeeId")
+    String findNameByEmpId(@Param("employeeId") Long employeeId);
+
+    @Query("select profileUrl from Employee where id = :employeeId")
+    String findProfileUrlByEmpId(@Param("employeeId") Long employeeId);
 
     @Query("from Employee e where e.email = :email")
     Employee checkEmailDuplicate(@Param("email")String email);

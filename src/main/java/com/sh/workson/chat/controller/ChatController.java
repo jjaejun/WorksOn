@@ -86,12 +86,15 @@ public class ChatController {
         log.debug("chatRoomId = {}", chatRoomId);
         log.debug("chatLogCreateDto = {}", chatLogCreateDto);
         chatService.createChatLog(chatLogCreateDto);
-        String name = employeeService.findByEmpId(chatLogCreateDto.getEmployeeId());
+        String name = employeeService.findNameByEmpId(chatLogCreateDto.getEmployeeId());
         log.debug("name = {}", name);
+        String profileUrl = employeeService.findProfileUrlByEmpId(chatLogCreateDto.getEmployeeId());
+        log.debug("profileUrl = {}", profileUrl);
         ChatLogReturnDto chatLogReturnDto = ChatLogReturnDto.builder()
                 .empId(chatLogCreateDto.getEmployeeId())
                 .empName(name)
                 .content(chatLogCreateDto.getContent())
+                .profileUrl(profileUrl)
                 .build();
         log.debug("chatLogReturnDto = {}", chatLogReturnDto);
         return chatLogReturnDto;

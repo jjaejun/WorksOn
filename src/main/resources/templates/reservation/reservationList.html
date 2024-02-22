@@ -9,7 +9,6 @@
 <style layout:fragment="style"></style>
 <div layout:fragment="content">
 
-    <h1>회의실</h1>
     <table id="reservationTable" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
         <thead>
         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -24,8 +23,8 @@
         <tr th:each="reservation, status : ${reservations}">
             <td class="border px-4 py-2" th:text="${reservation.employee.name}"></td>
             <td class="border px-4 py-2" th:text="${reservation.count}"></td>
-            <td class="border px-4 py-2" th:text="${reservation.startAt}"></td>
-            <td class="border px-4 py-2" th:text="${reservation.endAt}"></td>
+            <td class="border px-4 py-2" th:text="${#temporals.format(reservation.startAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td class="border px-4 py-2" th:text="${#temporals.format(reservation.endAt, 'yyyy-MM-dd HH:mm')}"></td>
             <td class="border px-4 py-2" th:text="${reservation.content}"></td>
         </tr>
         <!-- Modal toggle -->
