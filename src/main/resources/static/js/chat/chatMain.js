@@ -1,3 +1,16 @@
+// document.querySelectorAll(".radio-wrap").forEach((box) => {
+//    box.addEventListener('click', (e) => {
+//         const input = box.firstElementChild;
+//
+//         if(input.checked){
+//
+//         }
+//         else {
+//             input.checked = true;
+//         }
+//    });
+// });
+
 const chatRoomIdIpt = document.querySelector('#chatRoomIdIpt');
 const ws = new SockJS(`http://${location.host}${contextPath}stomp`);
 const stompClient = Stomp.over(ws);
