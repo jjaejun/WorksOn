@@ -46,11 +46,14 @@ const dragEvent = () => {
          e.preventDefault();
 
          const lastChild = this.lastElementChild;
-         lastChild.before(dragTemp);
+         if(dragTemp !== undefined){
+            lastChild.before(dragTemp);
+            console.log(dragTemp);
+         }
 
          // ajax update 처리하기
-         console.log(e.dataTransfer.getData("text"));
-         console.log(e.target.dataset.zone);
+         // console.log(e.dataTransfer.getData("text"));
+         // console.log(e.target.dataset.zone);
 
          $.ajax({
             url: `${contextPath}project/updateTask.do`,
