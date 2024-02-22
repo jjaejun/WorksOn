@@ -5,6 +5,7 @@ var calendar;
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
+
     calendar = new FullCalendar.Calendar(calendarEl, {
         // plugins:[interactionPlugin],
         initialView: 'dayGridMonth',
@@ -20,6 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+        // eventDidMount: function(info) {
+        //     // 이벤트 DOM 요소에 속성 추가
+        //     $(info.el).closest('.fc-event').attr({
+        //         'data-modal-target': 'schedule-modal',
+        //         'data-modal-toggle': 'schedule-modal'
+        //     });
+        // },
         events: [],
         dateClick: function(selectionInfo) {
             console.log(selectionInfo);
@@ -28,8 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // eventClick: function(selectionInfo) {
         //     console.log(selectionInfo);
             // let eventObj = selectionInfo;
-            let eventObj = info.event;
             // info.jsEvent.preventDefault();
+            let eventObj = info.event;
 
             console.log(eventObj);
 
@@ -37,10 +45,23 @@ document.addEventListener('DOMContentLoaded', function() {
             $('#title').val(eventObj.title);
             $('#startTime').val(eventObj.start.toISOString().slice(0, 16)); // input datetime-local 포맷에 맞게 포맷팅
             $('#endTime').val(eventObj.end ? eventObj.end.toISOString().slice(0, 16) : ''); // null 체크
-            $('#category').val(eventObj.extendedProps.categoryId); // 카테고리 ID가 충분하다고 가정, 필요에 따라 조정
+            $('#schedule-category-id').val(eventObj.extendedProps.categoryId); // 카테고리 ID가 충분하다고 가정, 필요에 따라 조정
             $('#event-content').val(eventObj.extendedProps.content);
 
             $('#schedule-modal').removeClass('hidden');
+
+            // 모달 배경 div 생성
+            var modalBackdrop = document.createElement('div');
+            modalBackdrop.setAttribute('modal-backdrop', '');
+            modalBackdrop.className = 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40';
+
+            // 모달 배경을 body에 추가
+            document.body.appendChild(modalBackdrop);
+
+            // 모달 배경 클릭 이벤트 - 모달 배경을 클릭하면 제거
+            modalBackdrop.addEventListener('click', function() {
+                document.body.removeChild(modalBackdrop);
+            });
 
             info.jsEvent.preventDefault();
 
@@ -107,108 +128,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-        $('#close-modal').on('click', function() {
-            $('#schedule-modal').addClass('hidden'); // 모달 숨기기
-        });
+    });
+    //모달창 닫기 버튼 누르면 닫기
+    $('#close-modal').on('click', function() {
+        $('#schedule-modal').addClass('hidden'); // 모달 숨기기
+        $('div[modal-backdrop]').remove();
     });
 });
 
 
 
-// '모든 일정 보기' 체크박스를 토글할 때 모든 카테고리 체크박스를 체크/해제
-// function checkAllMyCategories(source) {
-//     document.querySelectorAll('input[name="myScheduleCategoryId"]').forEach(checkbox => {
-//         checkbox.checked = source.checked;
-//     });
-// }
-//
-// // 개별 'myScheduleCategoryId' 체크박스의 상태가 변경될 때 실행
-// document.addEventListener('DOMContentLoaded', function() {
-//     document.querySelectorAll('input[name="myScheduleCategoryId"]').forEach(function(checkbox) {
-//         checkbox.addEventListener('change', function() {
-//             // 'mainCheckbox'의 상태를 업데이트
-//             var allChecked = true;
-//             document.querySelectorAll('input[name="myScheduleCategoryId"]').forEach(function(cb) {
-//                 if (!cb.checked) {
-//                     allChecked = false;
-//                 }
-//             });
-//
-//             document.querySelector('input[name="mainCheckbox"]').checked = allChecked;
-//         });
-//     });
-// });
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     var calendarEl = document.getElementById('calendar');
-//     calendar = new FullCalendar.Calendar(calendarEl, {
-//         // 달력 설정...
-//         initialView: 'dayGridMonth',
-//         selectable: true,
-//         // 기타 달력 옵션...
-//     });
-//     calendar.render();
-//
-//     // 체크박스 상태 확인 및 처리 함수
-//     function handleCheckboxChange(checkbox) {
-//         let categoryId = checkbox.value;
-//         let isChecked = checkbox.checked;
-//
-//         if (isChecked) {
-//             // 체크될 때 AJAX 요청으로 이벤트 데이터 가져오기
-//             fetchEvents(categoryId, isChecked);
-//         } else {
-//             // 해제될 때 달력에서 이벤트 제거
-//             removeEvents(categoryId);
-//         }
-//     }
-//
-//     // 이벤트 가져오기
-//     function fetchEvents(categoryId, isChecked) {
-//         $.ajax({
-//             url: `${contextPath}/schedule/mySchedule.do`,
-//             type: 'GET',
-//             data: {
-//                 'categoryId': categoryId,
-//                 'isChecked': isChecked
-//             },
-//             success: function(response) {
-//                 let events = response.map(item => ({
-//                     id: item.id,
-//                     title: item.title,
-//                     start: item.startTime,
-//                     end: item.endTime,
-//                     categoryId: categoryId
-//                 }));
-//                 calendar.addEventSource(events);
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error("Request failed: ", error);
-//             }
-//         });
-//     }
-//
-//     // 이벤트 제거
-//     function removeEvents(categoryId) {
-//         var events = calendar.getEvents();
-//         events.forEach(function(event) {
-//             if (event.extendedProps.categoryId === categoryId) {
-//                 event.remove();
-//             }
-//         });
-//     }
-//
-//     // 체크박스에 대한 초기 처리 및 이벤트 리스너 설정
-//     document.querySelectorAll('input[type="checkbox"][name="myScheduleCategoryId"]').forEach(function(checkbox) {
-//         // 초기 상태에 대한 처리
-//         handleCheckboxChange(checkbox);
-//
-//         // 변경 시 처리를 위한 이벤트 리스너
-//         checkbox.addEventListener('change', function() {
-//             handleCheckboxChange(this);
-//         });
-//     });
-// });
 
 // function draw(data) {
 //     [
@@ -346,11 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 모달 닫기 버튼에 대한 이벤트 리스너 설정
-    document.querySelector('[data-modal-toggle="crud-modal"]').addEventListener('click', () => {
-        const modal = document.getElementById('crud-modal');
-        modal.classList.add('hidden'); // 모달 숨김
-        modal.classList.remove('flex'); // flex 클래스 제거
-    });
+    // document.querySelector('[data-modal-toggle="crud-modal"]').addEventListener('click', () => {
+    //     const modal = document.getElementById('crud-modal');
+    //     modal.classList.add('hidden'); // 모달 숨김
+    //     modal.classList.remove('flex'); // flex 클래스 제거
+    // });
 
     document.getElementById("color").addEventListener('change', function () {
         var selectedColor = document.getElementById("color");
@@ -376,8 +305,6 @@ document.getElementById('delete-category').addEventListener('click', function() 
             document.location.reload(); // 추후 비동기로 html 갱신
         }
     })
-
-
 })
 
 
