@@ -1,4 +1,5 @@
 const radios = document.querySelectorAll(".radio-wrap");
+
 radios.forEach((input) => {
     input.addEventListener('click', (e) => {
         const box = input.parentElement;
@@ -7,7 +8,6 @@ radios.forEach((input) => {
             r.parentElement.classList.remove("bg-blue-100");
             r.parentElement.classList.add("bg-gray-50");
         });
-
         box.classList.add("bg-blue-100");
    });
 });
@@ -43,8 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     chatRoomId: chatRoomIdIpt.value
                 },
                 success(chatLogs) {
+                    console.log(chatLogs);
                     chatLogs.forEach((chatlog) => {
-                        const {empId, empName, content, createdAt} = chatlog;
+                        const {empId, empName, content, createdAt, profileUrl} = chatlog;
+
+                        console.log(chatlog);
+
                         const newCreatedAt = new Date(createdAt).toLocaleTimeString('ko-KR', {
                             hour: '2-digit',
                             minute: '2-digit'
@@ -52,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         if (employeeId != empId) {
                             chatLogDiv.innerHTML += `
-                            <div class="mr-auto ml-8 min-w-[320px]">
-                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <div class="ml-auto mt-3 mr-16 min-w-[320px]">
+                                <div class="flex ml-auto items-center space-x-2 rtl:space-x-reverse mb-1">
                                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${empName}</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${newCreatedAt}</span>
                                 </div>
@@ -64,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             `;
                         } else if (employeeId == empId) {
                             chatLogDiv.innerHTML += `
-                            <div class="ml-auto mr-8 min-w-[320px]">
-                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <div class="mr-auto mt-3 ml-16 min-w-[320px]">
+                                <div class="flex mr-auto items-center space-x-2 rtl:space-x-reverse mb-1">
                                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${empName}</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${newCreatedAt}</span>
                                 </div>
@@ -75,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             `;
                         }
+
+                        chatLogDiv.scrollTop = chatLogDiv.scrollHeight;
                     })
                 }
             });
@@ -91,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (employeeId != empId) {
                     chatLogDiv.innerHTML += `
-                            <div class="mr-auto ml-8 min-w-[320px]">
-                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <div class="ml-auto mt-3 mr-16 min-w-[320px]">
+                                <div class="flex items-center space-x-2 rtl:space-x-reverse mb-1">
                                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${empName}</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${newCreatedAt}</span>
                                 </div>
@@ -103,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             `;
                 } else if (employeeId == empId) {
                     chatLogDiv.innerHTML += `
-                            <div class="ml-auto mr-8 min-w-[320px]">
-                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <div class="mr-auto mt-3 ml-16 min-w-[320px]">
+                                <div class="flex items-center space-x-2 rtl:space-x-reverse mb-1">
                                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${empName}</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">${newCreatedAt}</span>
                                 </div>
