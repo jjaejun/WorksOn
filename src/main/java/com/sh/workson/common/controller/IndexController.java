@@ -118,6 +118,10 @@ public class IndexController {
                 }
             }
             else {
+                // firstAttend가 null 일때는 startAt와 endAt만 셋팅한 빈 객체를 만들자
+                firstAttend = new Attend();
+                firstAttend.setStartAt(null);
+                firstAttend.setEndAt(null);
                 stateKr = "";
             }
 
