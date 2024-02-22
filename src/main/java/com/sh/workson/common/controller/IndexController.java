@@ -106,7 +106,7 @@ public class IndexController {
 //            민정
             Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
             model.addAttribute("projects", projectPage);
-
+            log.debug("projectDashBoard = {}", projectPage);
             Attend firstAttend = attendService.findByOrderByStartAt(id);
             String stateKr = null;
             if(firstAttend != null) {
