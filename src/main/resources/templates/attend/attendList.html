@@ -84,7 +84,7 @@
                                 <h1 class="w-full" id="endwork-time" th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></h1>
                             </div>
                             <div class="flex mt-10 w-full mx-auto items-center p-2rounded-lg transition-all">
-                                <button id="btn-startwork" th:data-emp-id="${attend.employee.id}"
+                                <button id="btn-startwork" th:data-emp-id="${#authentication.principal.employee.id}"
                                         class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                     출근하기
                                 </button>
@@ -117,7 +117,7 @@
                                     }
                                 </script>
 
-                                <button id="btn-endwork" th:data-emp-id="${attend.employee.id}"
+                                <button id="btn-endwork" th:data-emp-id="${#authentication.principal.employee.id}"
                                         class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                     퇴근하기
                                 </button>
@@ -170,6 +170,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <th:block th:if="${attend != null}">
                         <tr th:each="attend, status : ${attends}" th:data-attend-id="${attend.id}">
                             <td th:text="${#temporals.format(attend.startAt,'yyyy/MM/dd')}"></td>
                             <td th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
@@ -205,6 +206,7 @@
                             </script>
                             <td th:text="${attend.content}"></td>
                         </tr>
+                        </th:block>
                         </tbody>
                         <div id="crud-modal"
                              tabindex="-1"
@@ -232,7 +234,7 @@
                                         <div class="grid gap-4 mb-4 grid-cols-2">
                                             <div class="col-span-2">
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">이름</label>
-                                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" readonly required="" th:value="${attend.employee.name}">
+                                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" readonly required="" th:value="${#authentication.principal.employee.name}">
                                             </div>
                                             <div class="col-span-2">
                                                 <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">상태</label>
