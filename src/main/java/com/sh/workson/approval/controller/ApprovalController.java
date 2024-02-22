@@ -607,4 +607,18 @@ public class ApprovalController {
 
         return "redirect:/approval/approvalHome.do";
     }
+
+    @PostMapping("/rejectDetailCooperation.do")
+    public String reject(@Valid RejectCooperationDto rejectCooperationDto,
+                         BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new RuntimeException(message);
+        }
+        log.debug("rejectCooperationDto = {}", rejectCooperationDto);
+
+        approvalService.rejectCooperation(rejectCooperationDto);
+
+        return "redirect:/approval/approvalHome.do";
+    }
 }
