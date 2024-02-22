@@ -92,6 +92,11 @@ public class EmployeeService {
         return employees;
     }
 
+    public Employee findLoginUser(Long id) {
+        Employee loginUser = employeeRepository.findLoginUser(id);
+        return loginUser;
+    }
+
 
 
 
@@ -138,6 +143,7 @@ public class EmployeeService {
     public Employee checkEmailDuplicate(String email) {
         return employeeRepository.checkEmailDuplicate(email);
     }
+
 
     public void updatePassword(EmployeeUpdatePasswordDto employeeDto) {
         Employee employee = employeeRepository.findById(employeeDto.getId()).orElseThrow();

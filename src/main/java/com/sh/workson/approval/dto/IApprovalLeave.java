@@ -1,7 +1,9 @@
 package com.sh.workson.approval.dto;
 
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public interface IApprovalLeave {
     Long getId(); // approval#Id
