@@ -72,6 +72,12 @@ window.addEventListener('DOMContentLoaded', () => {
         focusBar.classList.remove("opacity-0");
         focusBar.style.top = `${lis[7].offsetTop}px`;
     }
+    else if(window.location.pathname.startsWith("/WorksOn/employee/employeeCreate")){
+        removeStyle(lis);
+        lis[8].classList.add("bg-blue-500");
+        focusBar.classList.remove("opacity-0");
+        focusBar.style.top = `${lis[8].offsetTop}px`;
+    }
 });
 
 const removeStyle = (lis) => {lis.forEach((li, i) => {

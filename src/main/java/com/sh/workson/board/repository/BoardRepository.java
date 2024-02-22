@@ -28,6 +28,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     int updateView(@Param("id") Long id);
 
     @Query("from Board b left join fetch b.employee e left join fetch b.attachments a where b.id = :id")
-    Optional<Board> findById(Long id);
+    Optional<Board> findById(@Param("id")Long id);
 
 }

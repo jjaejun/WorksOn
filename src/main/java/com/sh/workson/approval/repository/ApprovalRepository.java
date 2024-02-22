@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findAllLeave(Long id);
+    List<Approval> findAllLeave(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -52,7 +53,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findAllEquipment(Long id);
+    List<Approval> findAllEquipment(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -71,7 +72,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findAllCooperation(Long id);
+    List<Approval> findAllCooperation(@Param("id") Long id);
 
 
     @Query(value = """
@@ -92,7 +93,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findReLeave(Long id);
+    List<Approval> findReLeave(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -112,7 +113,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findReEquipment(Long id);
+    List<Approval> findReEquipment(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -132,7 +133,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findReCooperation(Long id);
+    List<Approval> findReCooperation(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -152,7 +153,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findCheckLeave(Long id, Pageable pageable);
+    Page<Approval> findCheckLeave(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -172,7 +173,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findCheckEquipment(Long id, Pageable pageable);
+    Page<Approval> findCheckEquipment(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -192,7 +193,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findCheckCooperation(Long id, Pageable pageable);
+    Page<Approval> findCheckCooperation(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -212,7 +213,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findProceedingLeave(Long id, Pageable pageable);
+    Page<Approval> findProceedingLeave(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -232,7 +233,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findProceedingEquipment(Long id, Pageable pageable);
+    Page<Approval> findProceedingEquipment(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -252,7 +253,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findProceedingCooperation(Long id, Pageable pageable);
+    Page<Approval> findProceedingCooperation(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -272,7 +273,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReceiveLeave(Long id, Pageable pageable);
+    Page<Approval> findReceiveLeave(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -292,7 +293,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReceiveEquipment(Long id, Pageable pageable);
+    Page<Approval> findReceiveEquipment(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -312,7 +313,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findReceiveCooperation(Long id, Pageable pageable);
+    Page<Approval> findReceiveCooperation(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -336,7 +337,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findReceptionLeave(Long deptId, Long id);
+    List<Approval> findReceptionLeave(@Param("deptId") Long deptId, @Param("id") Long id);
 
     @Query(value = """
     select
@@ -360,7 +361,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findReceptionEquipment(Long deptId, Long id);
+    List<Approval> findReceptionEquipment(@Param("deptId") Long deptId,@Param("id") Long id);
 
     @Query(value = """
     select
@@ -384,7 +385,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findReceptionCooperation(Long deptId, Long id);
+    List<Approval> findReceptionCooperation(@Param("deptId") Long deptId, @Param("id") Long id);
 
     @Query(value = """
     select
@@ -404,7 +405,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findWaitLeave(Long id);
+    List<Approval> findWaitLeave(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -424,7 +425,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findWaitEquipment(Long id);
+    List<Approval> findWaitEquipment(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -447,7 +448,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
         order by
             a.id desc
 """, nativeQuery = true)
-    List<Approval> findWaitCooperation(Long id);
+    List<Approval> findWaitCooperation(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -467,7 +468,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findExceptedLeave(Long id);
+    List<Approval> findExceptedLeave(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -487,7 +488,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findExceptedEquipment(Long id);
+    List<Approval> findExceptedEquipment(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -507,7 +508,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findExceptedCooperation(Long id);
+    List<Approval> findExceptedCooperation(@Param("id") Long id);
 
 
     @Query(value = """
@@ -571,7 +572,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    IApprovalEquipment findEquipmentDetailById(Long id);
+    IApprovalEquipment findEquipmentDetailById(@Param("id") Long id);
 
     @Query(value = """
     select distinct 
@@ -602,7 +603,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    IApprovalCooperation findCooperationDetailById(Long id);
+    IApprovalCooperation findCooperationDetailById(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -622,7 +623,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findTempoeraryLeave(Long id);
+    List<Approval> findTempoeraryLeave(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -642,7 +643,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findTemporaryEquipment(Long id);
+    List<Approval> findTemporaryEquipment(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -662,7 +663,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    List<Approval> findTemporaryCooperation(Long id);
+    List<Approval> findTemporaryCooperation(@Param("id") Long id);
 
     @Query(value = """
     select
@@ -681,7 +682,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findLeave(Long id, Pageable pageable);
+    Page<Approval> findLeave(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -700,7 +701,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findEquipment(Long id, Pageable pageable);
+    Page<Approval> findEquipment(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -719,7 +720,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     order by
         a.id desc
 """, nativeQuery = true)
-    Page<Approval> findCooperation(Long id, Pageable pageable);
+    Page<Approval> findCooperation(@Param("id") Long id, Pageable pageable);
 
     @Query(value = """
     select
@@ -737,6 +738,6 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     where
         a.id = :id
 """, nativeQuery = true)
-    List<IApproverCooperation> findCooperationApprover(Long id);
+    List<IApproverCooperation> findCooperationApprover(@Param("id") Long id);
 }
 

@@ -17,7 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      * email로 로그인 시, 권한 정보도 저장할 수 있어야한다.
      */
     @Query("from Employee e join fetch e.authorities join fetch e.department join fetch e.position where e.email = :email")
-    Employee findByEmail(@Param("email")String email);
+    Employee findByEmail(@Param("email") String email);
 
 
     /**
@@ -34,10 +34,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      * 재준
      */
     @Query("select name from Employee where id = :employeeId ")
-    String findNameByEmpId(Long employeeId);
+    String findNameByEmpId(@Param("employeeId") Long employeeId);
 
     @Query("from Employee e where e.email = :email")
-    Employee checkEmailDuplicate(String email);
+    Employee checkEmailDuplicate(@Param("email")String email);
 
 
 
@@ -58,11 +58,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     where
     	e.id not in :id
 """, nativeQuery = true)
-    List<IApprover> findApprover(Long id);
+    List<IApprover> findApprover(@Param("id") Long id);
 
 
     @Query("from Employee e left join fetch e.department left join fetch e.position where e.id = :id")
-    Employee findLoginUser(Long id);
+    Employee findLoginUser(@Param("id") Long id);
 
 
 
@@ -70,7 +70,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     /**
      * 민준
      */
-
 
 
 

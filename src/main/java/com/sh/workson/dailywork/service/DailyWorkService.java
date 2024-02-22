@@ -3,6 +3,7 @@ package com.sh.workson.dailywork.service;
 import com.sh.workson.dailywork.entity.DailyWork;
 import com.sh.workson.dailywork.entity.DailyWorkListDto;
 import com.sh.workson.dailywork.repository.DailyWorkRepository;
+import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,4 +34,6 @@ public class DailyWorkService {
         DailyWorkListDto dailyWorkListDto = modelMapper.map(dailyWork, DailyWorkListDto.class);
         return dailyWorkListDto;
     }
+
+
 }

@@ -1,5 +1,9 @@
 package com.sh.workson.common.controller;
 
+import com.sh.workson.attend.entity.Attend;
+import com.sh.workson.attend.entity.State;
+import com.sh.workson.attend.service.AttendService;
+import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.cherry.entity.Cherry;
 import com.sh.workson.cherry.repository.CherryRepository;
@@ -51,6 +55,10 @@ public class IndexController {
     private EmployeeService employeeService;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private AttendService attendService;
 
     @GetMapping("")
     public String index(
@@ -70,14 +78,17 @@ public class IndexController {
             int totalCherryCount = employeeDetails.getEmployee().getCherry();
 
             Page<DailyWorkListDto> dailyWorkListDtoPage = dailyWorkService.findAll(pageable, id);
-
             model.addAttribute("totalSeedCount", String.valueOf(totalSeedCount));
             model.addAttribute("totalCherryCount", String.valueOf(totalCherryCount));
             model.addAttribute("dailyworks", dailyWorkListDtoPage.getContent());
             model.addAttribute("totalCount", dailyWorkListDtoPage.getTotalPages());
 
-            log.debug("dailyworks = {}", dailyWorkListDtoPage.getContent());
 
+
+
+
+
+            log.debug("dailyworks = {}", dailyWorkListDtoPage.getContent());
 
 
 
@@ -96,7 +107,27 @@ public class IndexController {
             Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
             model.addAttribute("projects", projectPage);
 
+            Attend firstAttend = attendService.findByOrderByStartAt(id);
+            String stateKr = null;
+            if(firstAttend != null) {
+                if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
+                    stateKr = "업무중";
+                }
+                else if(firstAttend.getState().equals(State.QUIT)){
+                    stateKr = "퇴근";
+                }
+            }
+            else {
+                // firstAttend가 null 일때는 startAt와 endAt만 셋팅한 빈 객체를 만들자
+                firstAttend = new Attend();
+                firstAttend.setStartAt(null);
+                firstAttend.setEndAt(null);
+                stateKr = "";
+            }
 
+
+            model.addAttribute("attend", firstAttend);
+            model.addAttribute("state", stateKr);
 
 
 
@@ -145,7 +176,6 @@ public class IndexController {
 
 
 
-
             return "index";
         }
     }
@@ -169,6 +199,7 @@ public class IndexController {
                 .cherryCount(employees.size() * Integer.parseInt(praise))
                 .employee(employeeDetails.getEmployee())
                 .build();
+
 
         int totalUsedSeedCount = employees.size() * Integer.parseInt(praise);
         int currentSeedCount = employee.getSeed();
@@ -198,6 +229,8 @@ public class IndexController {
             // Save Cherry entity
             cherryRepository.save(cherry);
             log.debug("cherry = {}", cherry);
+            authService.updateAuthentication(employeeDetails.getUsername());
+
         }
 
         return "redirect:/";
