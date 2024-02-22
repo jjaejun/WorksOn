@@ -30,86 +30,87 @@
 </style>
 <div layout:fragment="content">
     <!-- 스타일 추가된 틀 -->
-    <div class="bg-white border border-gray-100 p-4 rounded-lg shadow-xs">
+    <div class="mx-auto w-5/6 flex flex-wrap mt-4">
+        <div class="w-full bg-white border border-gray-100 p-4 rounded-lg shadow-xs">
 
-        <!-- 4칸으로 나눈 구조 -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+            <!-- 4칸으로 나눈 구조 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
 
-            <!-- 첫 번째 칸: 프로필 사진과 이름 -->
-            <div class="col-span-3 md:col-span-1 flex items-center">
-                <img class= "object-cover w-20 h-20 rounded-full" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
-                <div class="ml-4">
-                    <h1 class="text-2xl font-bold " th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></h1>
+                <!-- 첫 번째 칸: 프로필 사진과 이름 -->
+                <div class="col-span-3 md:col-span-1 flex items-center">
+                    <img class= "object-cover w-20 h-20 rounded-full" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold " th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></h1>
+                    </div>
                 </div>
-            </div>
-            <div class="col-span-3 md:col-span-1 flex items-center flex-col">
-                <div class="mb-2">
-                    <p class="text-gray-600 flex-grow text-2xl">총 연차</p>
+                <div class="col-span-3 md:col-span-1 flex items-center flex-col">
+                    <div class="mb-2">
+                        <p class="text-gray-600 flex-grow text-2xl">총 연차</p>
+                    </div>
+                    <div class="mt-2">
+                        <span class="font-bold text-gray-800 text-xl" th:text="|${#authentication.principal.employee.rest}|"></span>
+                    </div>
                 </div>
-                <div class="mt-2">
-                     <span class="font-bold text-gray-800 text-xl" th:text="|${#authentication.principal.employee.rest}|"></span>
+                <div class="col-span-3 md:col-span-1 flex items-center flex-col">
+                    <div class="mb-2">
+                        <p class="text-gray-600 flex-grow text-2xl">사용 연차</p>
+                    </div>
+                    <div class="mt-2" id="useDayOffCount"  >
+                        <span class="font-bold text-gray-800 text-xl" th:text="${#strings.replace(useDayOffCount, '.0', '')}"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-span-3 md:col-span-1 flex items-center flex-col">
-                <div class="mb-2">
-                    <p class="text-gray-600 flex-grow text-2xl">사용 연차</p>
-                </div>
-                <div class="mt-2" id="useDayOffCount"  >
-                    <span class="font-bold text-gray-800 text-xl" th:text="${#strings.replace(useDayOffCount, '.0', '')}"></span>
-                </div>
-            </div>
-            <div class="col-span-3 md:col-span-1 flex items-center flex-col">
-                <div class="mb-2">
-                    <p class="text-gray-600 flex-grow text-2xl">남은 연차</p>
-                </div>
-                <div class="mt-2" id="remainDayOffCount" >
-                    <span class="font-bold text-gray-800 text-xl" th:text="${#strings.replace(remainDayOffCount, '.0', '')}"></span>
+                <div class="col-span-3 md:col-span-1 flex items-center flex-col">
+                    <div class="mb-2">
+                        <p class="text-gray-600 flex-grow text-2xl">남은 연차</p>
+                    </div>
+                    <div class="mt-2" id="remainDayOffCount" >
+                        <span class="font-bold text-gray-800 text-xl" th:text="${#strings.replace(remainDayOffCount, '.0', '')}"></span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mt-14">
-        <form>
-            <label for="year" class="text-semibold mr-1">연차 사용기간:</label>
-<!--            onchange="updateMonthOptions()"-->
-            <select class="border pl-1 pr-6 rounded-md bg-gray-50" id="year" >
-                <option value="2024">2024년</option>
-                <option value="2023">2023년</option>
-                <option value="2022">2022년</option>
-                <option value="2021">2021년</option>
-                <option value="2020">2020년</option>
-                <option value="2019">2019년</option>
-                <option value="2018">2018년</option>
-            </select>
-        </form>
-    </div>
-    <div class="leave-history mt-14">
-        <div class="leave-history-header">
-            <span class="text-2xl">사용내역</span>
+        <div class="mt-14 w-full">
+            <form>
+                <label for="year" class="text-semibold mr-1">연차 사용기간:</label>
+                <!--            onchange="updateMonthOptions()"-->
+                <select class="border pl-1 pr-6 rounded-md bg-gray-50" id="year" >
+                    <option value="2024">2024년</option>
+                    <option value="2023">2023년</option>
+                    <option value="2022">2022년</option>
+                    <option value="2021">2021년</option>
+                    <option value="2020">2020년</option>
+                    <option value="2019">2019년</option>
+                    <option value="2018">2018년</option>
+                </select>
+            </form>
         </div>
-        <table id="searchDate">
-            <thead>
-            <tr>
-                <th>이름</th>
-                <th>부서명</th>
-                <th>휴가종류</th>
-                <th>연차 사용기간</th>
-                <th>사용 연차</th>
-                <th>내용</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="dayoff, status : ${dayoffs}" th:data-dayoff-id="${dayoff.id}">
-                <td th:text="|${#authentication.principal.employee.name}|"></td>
-                <td th:text="${#authentication.principal.employee.department.name}"></td>
-                <td th:text="${dayoff.type}"></td>
-                <td th:text="|${#temporals.format(dayoff.startAt, 'yyyy/MM/dd')} ~ ${#temporals.format(dayoff.endAt, 'yyyy/MM/dd')}|"></td>
-                <td th:text="${dayoff.count}"></td>
-                <td th:text="${dayoff.content}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+        <div class="leave-history mt-14 w-full">
+            <div class="leave-history-header">
+                <span class="text-2xl">사용내역</span>
+            </div>
+            <table id="searchDate">
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>부서명</th>
+                    <th>휴가종류</th>
+                    <th>연차 사용기간</th>
+                    <th>사용 연차</th>
+                    <th>내용</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dayoff, status : ${dayoffs}" th:data-dayoff-id="${dayoff.id}">
+                    <td th:text="|${#authentication.principal.employee.name}|"></td>
+                    <td th:text="${#authentication.principal.employee.department.name}"></td>
+                    <td th:text="${dayoff.type}"></td>
+                    <td th:text="|${#temporals.format(dayoff.startAt, 'yyyy/MM/dd')} ~ ${#temporals.format(dayoff.endAt, 'yyyy/MM/dd')}|"></td>
+                    <td th:text="${dayoff.count}"></td>
+                    <td th:text="${dayoff.content}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="page-bar-container" class="w-full px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
                 <span class="flex mt-2 justify-center">
                     <nav aria-label="Table navigation">
                         <ul class="inline-flex items-center">
@@ -185,8 +186,8 @@
                         </ul>
                     </nav>
                 </span>
+            </div>
         </div>
-
     </div>
 </div>
 <script layout:fragment="script" th:src="@{/js/dayoff/dayoff.js}"></script>
