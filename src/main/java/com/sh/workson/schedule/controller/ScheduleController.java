@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,15 +144,25 @@ public class ScheduleController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @PostMapping("updateSchedule.do")
+    @PostMapping("/updateSchedule.do")
     public String updateSchedule(
-            @AuthenticationPrincipal EmployeeDetails employeeDetails
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @Valid UpdateScheduleDto updateScheduleDto,
+            @RequestParam(value = "schedule-category-id") Long scheduleCategoryId,
+            @RequestParam(value = "event-content") String content,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) throws IOException{
+        if(bindingResult.hasErrors()){
+            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        log.debug("updateScheduleDto = {}", updateScheduleDto);
+        log.debug("scheduleCategoryId = {}", scheduleCategoryId);
+        updateScheduleDto.setEmpId(employeeDetails.getEmployee().getId());
+        updateScheduleDto.setScheduleCategoryId(scheduleCategoryId);
+        updateScheduleDto.setContent(content);
+        scheduleService.updateSchedule(updateScheduleDto);
 
-
-    ){
-
-        return null;
-        // return "redirect:/schedule/calendar.do";
+        return "redirect:/schedule/calendar.do";
     }
 
     @PostMapping("/deleteSchedule.do")
@@ -161,8 +172,6 @@ public class ScheduleController {
     ){
         log.debug("id = {}", id);
         scheduleService.deleteById(id);
-
-
         return "redirect:/schedule/calendar.do";
     }
 
