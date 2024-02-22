@@ -13,4 +13,7 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
     List<Attachment> findAllAttachmentByProjectId(Long id);
     @Query("from Attachment a join fetch a.employee e join fetch e.position join fetch e.department join fetch e.authorities where a.boardId = :id and a.type = 'BOARD' order by a.createdAt desc")
     List<Attachment> findByBoardId(Long id);
+
+    @Query("from Attachment a where a.boardId = :id and a.type = 'RESOURCE' order by a.createdAt desc")
+    List<Attachment> findByResourceId(Long id);
 }

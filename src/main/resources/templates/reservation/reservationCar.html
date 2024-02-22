@@ -12,6 +12,7 @@
     <table id="tbl-approval-leave" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
         <thead>
         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <th class="px-4 py-2">사진</th>
             <th class="px-4 py-2">이름</th>
             <th class="px-4 py-2">위치</th>
             <th class="px-4 py-2">차량 정보</th>
@@ -20,6 +21,11 @@
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
         <tr th:each="resource, status : ${resources}" th:data-resource-id="${resource.id}">
+            <td class="border px-4 py-2">
+                <th:block th:if="${resource.attachments.size != 0}">
+                    <img th:src="${resource.attachments.get(0).url}" class="w-24 h-24 m-auto hover:w-80 hover:h-64">
+                </th:block>
+            </td>
             <td class="border px-4 py-2" th:text="${resource.name}"></td>
             <td class="border px-4 py-2" th:text="${resource.location}"></td>
             <td class="border px-4 py-2" th:text="${resource.info}"></td>

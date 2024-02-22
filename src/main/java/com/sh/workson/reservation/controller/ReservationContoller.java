@@ -8,6 +8,7 @@ import com.sh.workson.reservation.dto.ReservationCreateDto;
 import com.sh.workson.reservation.dto.ReservationListDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.service.ReservationService;
+import com.sh.workson.resource.dto.ResourceAttachmentDto;
 import com.sh.workson.resource.entity.Resource;
 import com.sh.workson.resource.entity.Type;
 import com.sh.workson.resource.service.ResourceService;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -47,27 +49,26 @@ public class ReservationContoller {
 
     @GetMapping("/reservationRoom.do")
     public void reservationRoom(Model model) {
-        List<Resource> resources = resourceService.findByType(Type.Room);
-        log.debug("resources = {}", resources);
-        List<Attachment> attachments = attachmentService.find
+        List<ResourceAttachmentDto> resourceAttachmentDtos = resourceService.findByType(Type.Room);
+        log.debug("resources = {}", resourceAttachmentDtos);
 
-        model.addAttribute("resources", resources);
+        model.addAttribute("resources", resourceAttachmentDtos);
     }
 
     @GetMapping("/reservationNotebook.do")
     public void reservationNotebook(Model model) {
-        List<Resource> resources = resourceService.findByType(Type.Notebook);
-        log.debug("resources = {}", resources);
+        List<ResourceAttachmentDto> resourceAttachmentDtos = resourceService.findByType(Type.Notebook);
+        log.debug("resources = {}", resourceAttachmentDtos);
 
-        model.addAttribute("resources", resources);
+        model.addAttribute("resources", resourceAttachmentDtos);
     }
 
     @GetMapping("/reservationCar.do")
     public void reservationCar(Model model) {
-        List<Resource> resources = resourceService.findByType(Type.Car);
-        log.debug("resources = {}", resources);
+        List<ResourceAttachmentDto> resourceAttachmentDtos = resourceService.findByType(Type.Car);
+        log.debug("resources = {}", resourceAttachmentDtos);
 
-        model.addAttribute("resources", resources);
+        model.addAttribute("resources", resourceAttachmentDtos);
     }
 
     @GetMapping("/reservationList.do")
