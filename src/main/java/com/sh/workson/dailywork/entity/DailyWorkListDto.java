@@ -1,5 +1,6 @@
 package com.sh.workson.dailywork.entity;
 
+import com.sh.workson.employee.entity.Employee;
 import lombok.Data;
 
 import java.time.LocalDateTime;

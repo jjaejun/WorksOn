@@ -10,17 +10,18 @@ document.querySelectorAll("tr[data-board-id]").forEach((tr) =>{
     });
 });
 
+document.querySelectorAll(".pageNumber").forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        const button = e.target;
+        const {pageNumber} = button.dataset;
+        const type = document.querySelector("#type");
 
-function changePage1(pageNumber) {
-    let pageSize = 0;
-    let size = pageSize;
-    // 페이지 URL 생성
-    let url = `/WorksOn/board/boardList.do?type=${pageType}&continue&page=` + pageNumber + '&size=' + size;
+        let size = 5;
+        let url = `/WorksOn/board/boardList.do?type=${type.value}&page=${pageNumber}&size=${size}`;
 
-    // 페이지 이동
-    window.location.href = url;
-}
-
+        window.location.href = url;
+    });
+});
 
 // document.getElementById("previousPage").addEventListener("click", function(event) {
 //     event.preventDefault(); // 기본 동작 방지

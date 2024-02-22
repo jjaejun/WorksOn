@@ -6,146 +6,295 @@
 <head>
     <title>대시보드</title>
 </head>
-<style layout:fragment="style"></style>
+<style layout:fragment="style">
+
+</style>
 <div layout:fragment="content">
-    <div class="w-full bg-gray-50 p-2">
-        <table class="w-full">
-            <tr class="w-full">
-                <td rowspan="3" class="w-1/3 h-full align-baseline">
-                    <div class="m-2 align-top text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
-                        <h4 class="my-4">2023년 01월 26일(금)</h4>
-                        <div th:id="img-wrap" class="my-2 rounded-full w-2/4 overflow-hidden bg-blue-50 mx-auto">
-                            <img class="object-cover" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
+    <div class="w-full bg-gray-50 p-2 flex">
+        <div class="w-1/3 grid grid-cols-1 gap-4">
+            <div class="flex m-2 items-center justify-center">
+                <div class="m-2 align-top text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
+                    <h4 class="my-4 text-2xl" id="today">2023년 01월 26일(금)</h4>
+                    <div th:id="img-wrap" class="my-2 rounded-full w-2/4 overflow-hidden bg-blue-50 mx-auto">
+                        <img class="object-cover" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
+                    </div>
+                    <p class="my-4 text-xl" th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></p>
+                    <h1 id="clock" class="my-4 text-5xl font-semibold text-blue-600">시계 위치</h1>
+                    <div class="w-full text-center my-2 bg-gray-50 p-5 mb-8"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
+                        <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
+                            <h1 class="w-1/3 font-semibold" >업무 상태</h1>
+                            <!--                                <h1 class="w-full" id="color" th:text="${(attend.state == T(com.sh.workson.attend.entity.State).LATE || attend.state == T(com.sh.workson.attend.entity.State).WORK) ? '업무중' : (attend.state == T(com.sh.workson.attend.entity.State).QUIT ? '퇴근' : '')}"></h1>-->
+                            <h1 class="w-full text-blue-600" id="work-state" th:text="${state}"></h1>
                         </div>
-                        <p class="my-4" th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></p>
-                        <h1 class="my-4 text-4xl font-bold">시계 위치</h1>
-                        <div class="w-full text-center my-2 bg-gray-50 p-5 mb-8"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
-                            <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
-                                <h1 class="w-1/3">업무 상태</h1>
-                                <h1 class="w-full">어쩌고</h1>
-                            </div>
-                            <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
-                                <h1 class="w-1/3">출근시간</h1>
-                                <h1 class="w-full">어쩌고</h1>
-                            </div>
-                            <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
-                                <h1 class="w-1/3">퇴근시간</h1>
-                                <h1 class="w-full">어쩌고</h1>
-                            </div>
-                            <div class="flex mt-10 w-full mx-auto items-center p-2rounded-lg transition-all">
-                                <button type="button" id=""
-                                        class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
+                            <h1 class="w-1/3 font-semibold">출근시간</h1>
+<!--                            <th:block th:if="${attend != null}">-->
+                                <h1 class="w-full" id="startwork-time" th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></h1>
+<!--                            </th:block>-->
+<!--                            <th:block th:if="${attend == null}">-->
+<!--                                <h1></h1>-->
+<!--                            </th:block>-->
+                        </div>
+                        <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
+                            <h1 class="w-1/3 font-semibold">퇴근시간</h1>
+<!--                            <th:block th:if="${attend != null}">-->
+                                <h1 class="w-full" id="endwork-time" th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></h1>
+<!--                            </th:block>-->
+<!--                            <th:block th:if="${attend != null}">-->
+<!--                                <h1></h1>-->
+<!--                            </th:block>-->
+                        </div>
+                        <div class="flex mt-10 w-full mx-auto items-center p-2rounded-lg transition-all">
+                            <button id="btn-startwork" th:data-emp-id="${#authentication.principal.employee.id}"
+                                    class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                 출근하기
-                                </button>
-                                <button type="button" id=""
-                                        class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                            </button>
+<!--                            <th:block th:if="${attend != null}">-->
+                                <input id="attend-startAt" th:value="${attend.startAt}" type="hidden">
+<!--                            </th:block>-->
+<!--                            <th:block th:if="${attend != null}">-->
+<!--                                <script>-->
+<!--                                    let isAttendRegistered = false;-->
+<!--                                </script>-->
+
+                                <script>
+                                    const attend = document.querySelector("#attend-startAt");
+                                    console.log(attend.value);
+                                    const startDay = attend.value.split("T")[0];
+                                    console.log(startDay);
+
+                                    const workState = document.querySelector("#work-state");
+                                    const start = document.querySelector("#startwork-time");
+                                    const end = document.querySelector("#endwork-time");
+
+                                    const currentDate = new Date();
+                                    const year = currentDate.getFullYear();
+                                    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                                    const day = currentDate.getDate().toString().padStart(2, '0');
+                                    const formattedDate = `${year}-${month}-${day}`;
+                                    let isAttendRegistered = false;
+                                    console.log(formattedDate);
+
+                                    if (startDay === formattedDate){
+                                        isAttendRegistered = true;
+                                    } else{
+                                        workState.innerHTML = '';
+                                        start.innerHTML = '';
+                                        end.innerHTML = '';
+                                        isAttendRegistered = false;
+                                    }
+                                </script>
+<!--                            </th:block>-->
+                            <button id="btn-endwork" th:data-emp-id="${#authentication.principal.employee.id}"
+                                    class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                 퇴근하기
-                                </button>
-                            </div>
+                            </button>
+<!--                            <th:block th:if="${attend != null}">-->
+                                <script th:if="${attend.endAt != null}" defer="defer">
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const btnEndWork = document.getElementById('btn-endwork');
+                                        btnEndWork.disabled = true;  // 퇴근 시간이 이미 등록되었으면 버튼 비활성화
+                                    });
+                                </script>
+<!--                            </th:block>-->
                         </div>
                     </div>
-                </td>
-                <td class="w-1/3 h-full align-baseline">
-                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
-                        <h1 class="text-2xl font-bold">내 프로젝트</h1>
-                        <ul class="mt-3">
-                           <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                               <span></span>
-                               <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                           </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                </div>
+            </div>
+        </div>
+        <div class="w-2/3 grid grid-cols-2 gap-2">
+            <div class="w-full">
+                <div class="m-2 flex flex-wrap items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                    <h1 class="text-2xl w-full font-bold">내 프로젝트</h1>
+                    <ul class="mt-3 w-full">
+                        <th:block th:if="${projects.size != 0}">
+                            <th:block th:each="project: ${projects}">
+                                <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-3 cursor-pointer bg-gray-50 hover:bg-blue-50 rounded-lg h-full relative">
+                                    <span class="text-md font-semibold" th:text="${project.title}"></span>
+
+                                    <th:block th:if="${project.status == 'ING'}">
+                                        <div class="absolute top-3 right-4 mt-0.5 font-sm">
+                                            <span class="inline-flex items-center bg-blue-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                                  <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+                                                  <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
+                                                </svg>진행
+                                            </span>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${project.status == 'NOT_YET'}">
+                                        <div class="absolute top-3 right-4 mt-0.5 font-sm">
+                                            <span class="inline-flex items-center bg-gray-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                                        <path fill-rule="evenodd" d="M6.749.097a8.054 8.054 0 012.502 0 .75.75 0 11-.233 1.482 6.554 6.554 0 00-2.036 0A.75.75 0 016.749.097zM4.345 1.693A.75.75 0 014.18 2.74a6.542 6.542 0 00-1.44 1.44.75.75 0 01-1.212-.883 8.042 8.042 0 011.769-1.77.75.75 0 011.048.166zm7.31 0a.75.75 0 011.048-.165 8.04 8.04 0 011.77 1.769.75.75 0 11-1.214.883 6.542 6.542 0 00-1.439-1.44.75.75 0 01-.165-1.047zM.955 6.125a.75.75 0 01.624.857 6.554 6.554 0 000 2.036.75.75 0 01-1.482.233 8.054 8.054 0 010-2.502.75.75 0 01.858-.624zm14.09 0a.75.75 0 01.858.624 8.057 8.057 0 010 2.502.75.75 0 01-1.482-.233 6.55 6.55 0 000-2.036.75.75 0 01.624-.857zm-13.352 5.53a.75.75 0 011.048.165 6.542 6.542 0 001.439 1.44.75.75 0 01-.883 1.212 8.04 8.04 0 01-1.77-1.769.75.75 0 01.166-1.048zm12.614 0a.75.75 0 01.165 1.048 8.038 8.038 0 01-1.769 1.77.75.75 0 11-.883-1.214 6.543 6.543 0 001.44-1.439.75.75 0 011.047-.165zm-8.182 3.39a.75.75 0 01.857-.624 6.55 6.55 0 002.036 0 .75.75 0 01.233 1.482 8.057 8.057 0 01-2.502 0 .75.75 0 01-.624-.858z">
+                                                        </path>
+                                                    </svg>예정
+                                            </span>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${project.status == 'DONE'}">
+                                        <div class="absolute top-3 right-4 mt-0.5 font-sm">
+                                            <span class="inline-flex items-center bg-green-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                                                        <path fill-rule="evenodd" d="M6.749.097a8.054 8.054 0 012.502 0 .75.75 0 11-.233 1.482 6.554 6.554 0 00-2.036 0A.75.75 0 016.749.097zM4.345 1.693A.75.75 0 014.18 2.74a6.542 6.542 0 00-1.44 1.44.75.75 0 01-1.212-.883 8.042 8.042 0 011.769-1.77.75.75 0 011.048.166zm7.31 0a.75.75 0 011.048-.165 8.04 8.04 0 011.77 1.769.75.75 0 11-1.214.883 6.542 6.542 0 00-1.439-1.44.75.75 0 01-.165-1.047zM.955 6.125a.75.75 0 01.624.857 6.554 6.554 0 000 2.036.75.75 0 01-1.482.233 8.054 8.054 0 010-2.502.75.75 0 01.858-.624zm14.09 0a.75.75 0 01.858.624 8.057 8.057 0 010 2.502.75.75 0 01-1.482-.233 6.55 6.55 0 000-2.036.75.75 0 01.624-.857zm-13.352 5.53a.75.75 0 011.048.165 6.542 6.542 0 001.439 1.44.75.75 0 01-.883 1.212 8.04 8.04 0 01-1.77-1.769.75.75 0 01.166-1.048zm12.614 0a.75.75 0 01.165 1.048 8.038 8.038 0 01-1.769 1.77.75.75 0 11-.883-1.214 6.543 6.543 0 001.44-1.439.75.75 0 011.047-.165zm-8.182 3.39a.75.75 0 01.857-.624 6.55 6.55 0 002.036 0 .75.75 0 01.233 1.482 8.057 8.057 0 01-2.502 0 .75.75 0 01-.624-.858z">
+                                                        </path>
+                                                    </svg>완료
+                                            </span>
+                                        </div>
+                                    </th:block>
+                                </li>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${projects.size == 0}">
+                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-3 cursor-pointer bg-gray-50 hover:bg-blue-50 rounded-lg h-full relative">
+                                최근 프로젝트가 없습니다.
                             </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                        </ul>
+                        </th:block>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="m-2 flex flex-wrap items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                    <h1 class="text-2xl w-full font-bold">이번달 내 체리현황</h1>
+                    <div class="flex justify-around mt-2 w-full mx-auto items-center p-2 rounded-lg transition-all">
+                        <div class="w-1/2 flex flex-col items-center">
+                            <div
+                                    class="w-full text-center flex items-center mx-auto text-xl text-black bg-gradient-to-br from-white-400 to-white-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                남은 씨앗 수
+                            </div>
+                            <div class="w-[100px] h-[100px] rounded-full bg-green-50 overflow-hidden border border-green-300 flex items-center justify-center">
+                                <img th:src="@{/image/cherry/free-icon-plant-8809609.png}" alt="Seed Image" width="80px" height="80px">
+                            </div>
+                            <div class="font-bold mt-1 w-full text-center text-gray-800 text-xl" th:text="|${#authentication.principal.employee.seed}|"></div>
+                        </div>
+                        <div class="w-1/2 flex flex-col items-center">
+                            <div class="w-full flex items-center mx-auto text-xl text-black bg-gradient-to-br from-white-400 to-white-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                받은 체리 수
+                            </div>
+                            <div class="w-[100px] h-[100px] rounded-full bg-rose-50 overflow-hidden border border-rose-300 flex items-center justify-center">
+                                <img th:src="@{/image/cherry/free-icon-cherry-6178275.png}" alt="Cherry Image"width="80px" height="80px">
+                            </div>
+                            <div class="font-bold mt-1 w-full text-center text-gray-800 text-xl" th:text="|${#authentication.principal.employee.cherry}|"></div>
+                        </div>
                     </div>
-                </td>
-                <td class="w-1/3 h-full align-baseline">
-                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
-                        <h1 class="text-2xl font-bold">이번달 내 체리현황</h1>
-                        <ul class="mt-3">
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                        </ul>
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="m-2 flex flex-wrap items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                    <h1 class="text-2xl w-full font-bold">내 전자결재함</h1>
+                    <ul class="mt-3 w-full">
+                        <h1 class="text-semibold text-md">결재 대기 문서</h1>
+                        <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                            <span></span>
+                            <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                        </li>
+                        <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                            <span></span>
+                            <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                        </li>
+                        <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                            <span></span>
+                            <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                        </li>
+                    </ul>
+                    <ul class="mt-3 w-full">
+                        <h1 class="w-full text-semibold text-md">내 문서함</h1>
+                        <li class="my-2 w-full flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                            <span></span>
+                            <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                        </li>
+                        <li class="my-2 flex w-full items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                            <span></span>
+                            <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                        </li>
+                        <li class="my-2 flex w-full items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
+                            <span></span>
+                            <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="m-2 flex flex-wrap items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
+                    <div class="flex w-full justify-between mb-2">
+                        <h1 class="text-2xl font-bold">일일 업무일지</h1>
+                        <button id="workBtn" class="mb-2 bg-blue-500 text-white px-2 py-2 rounded-md">업무일지 작성하기</button>
                     </div>
-                </td>
-            </tr>
-            <tr class="w-full">
-                <td class="w-1/3" rowspan="2">
-                    <div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
-                        <h1 class="text-2xl font-bold">내 전자결재함</h1>
-                        <ul class="mt-3">
-                            <h1>결재 대기 문서</h1>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                        </ul>
-                        <ul class="mt-3">
-                            <h1>내 문서함</h1>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                            <li class="my-2 flex items-center justify-between text-center border border-gray-100 items-center p-4 bg-blue-50 rounded-lg h-full">
-                                <span></span>
-                                <span class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">진행중</span>
-                            </li>
-                        </ul>
+                    <div id="formContainer" class="w-full hidden">
+                        <form class="flex flex-col"
+                              th:action="@{/indexCherry.do}" method="post">
+                            <!-- 칭찬하기 -->
+                            <label for="praise" class="text-xl font-normal py-2 rounded-md self-start">칭찬하기</label>
+                            <select id="praise" name="praise" class="mb-4 p-2 border-none bg-gray-50 rounded-md">
+                                <option value="3">씨앗 3개</option>
+                                <option value="2">씨앗 2개</option>
+                                <option value="1">씨앗 1개</option>
+                                <option value="0">씨앗 0개</option>
+                            </select>
+
+                            <!-- 직원검색 -->
+                            <div class="col-span-2 flex">
+                                <div class="w-full flex flex-col items-center mx-auto">
+                                    <div class="text-xl font-normal w-full rounded-md py-2 self-start">참여사원</div>
+                                    <div class="w-full">
+                                        <div class="flex flex-col relative">
+                                            <div class="w-full">
+                                                <div class="flex ml-4">
+                                                    <div id="createSelectArea" class="flex flex-auto flex-wrap">
+                                                        <!--선택된 요소 표현-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <input id="create-search-input" placeholder="사원이름을 검색하세요"
+                                                       type="text" class="mb-[16px] w-full border border-gray-300 rounded-md">
+                                            </div>
+                                            <div id="create-search-list"
+                                                 class="absolute shadow top-100 bg-white z-40 w-full lef-0 rounded max-h-select overflow-y-auto">
+                                                <div class="flex flex-col w-full">
+                                                    <!--검색결과-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 씨앗선물 -->
+                            <label for="contentGift" class="text-xl font-normal py-2 rounded-md self-start">전달내용</label>
+                            <input type="text" id="contentGift" class="border-none bg-gray-50 rounded-md"
+                                   name="contentGift" placeholder="전달내용">
+
+
+                            <!-- 업무일지 작성 -->
+                            <label for="workLog" class="mt-2 text-xl font-normal py-2 rounded-md self-start">업무일지 작성</label>
+                            <textarea class="border-none bg-gray-50 rounded-md"
+                                      id="workLog" name="workLog" rows="4" cols="50"></textarea>
+
+                            <!-- 제출 버튼 -->
+                            <input class="bg-blue-500 mt-2 text-white border-none w-full py-2 rounded-md cursor-pointer" type="submit" value="제출">
+                        </form>
                     </div>
-                </td>
-                <td class="w-1/3" rowspan="2">
-                    <div class="m-2 flex flex-col items-end border border-gray-100 p-4 bg-white rounded-lg shadow-xs">
-                        <h1 class="text-2xl font-bold py-2 rounded-md self-start">일일업무일지</h1>
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded-md">업무일지 작성하기</button>
-                        <table class="w-full">
-                            <thead>
-                            <tr>
-                                <th>작성일</th>
-                                <th>내용</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="dailywork, status : ${dailyworks}" th:data-dailywork-id="${dailywork.id}">
-                                <td th:text="${dailywork.createdAt}"></td>
-                                <td th:text="${dailywork.content}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-<!--            <tr class="w-full">-->
-<!--                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>-->
-<!--                <td class="w-1/3"><div class="m-2 items-center border border-gray-100 p-4 bg-white rounded-lg shadow-xs"></div></td>-->
-<!--            </tr>-->
-        </table>
+                    <table id="daliyWorkList" class="w-full rounded-md">
+                        <thead>
+                        <tr>
+                           <th colspan="2" class="text-md font-semibold mb-2">최근 작성한 업무일지</th>
+                        </tr>
+                        <tr>
+                            <th class="border p-2 border-gray-300 bg-blue-50">작성일</th>
+                            <th class="border p-2 border-gray-300 bg-blue-50">업무일지 내용</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dailywork, status : ${dailyworks}" th:data-dailywork-id="${dailywork.id}">
+                            <td class="border p-2 border-gray-300" th:text="${#temporals.format(dailywork.createdAt,'yyyy/MM/dd')}"></td>
+                            <td class="border p-2 border-gray-300" th:text="${dailywork.content}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script layout:fragment="script" th:src="@{/js/index.js}">
