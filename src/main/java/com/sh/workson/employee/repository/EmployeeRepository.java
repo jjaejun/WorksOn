@@ -1,5 +1,6 @@
 package com.sh.workson.employee.repository;
 
+import com.sh.workson.employee.dto.EmployeeChatDto;
 import com.sh.workson.employee.dto.IApprover;
 import com.sh.workson.employee.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,8 +34,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     /**
      * 재준
      */
-    @Query("select name from Employee where id = :employeeId ")
-    String findNameByEmpId(@Param("employeeId") Long employeeId);
+    @Query("select e.name from Employee e where e.id = :employeeId ")
+    String findByEmpId(@Param("employeeId") Long employeeId);
 
     @Query("from Employee e where e.email = :email")
     Employee checkEmailDuplicate(@Param("email")String email);
