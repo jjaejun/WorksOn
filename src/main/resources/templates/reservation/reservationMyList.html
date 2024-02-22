@@ -24,8 +24,8 @@
         <tr th:each="reservation, status : ${reservations}">
             <td class="border px-4 py-2" th:text="${reservation.employee.name}"></td>
             <td class="border px-4 py-2" th:text="${reservation.count}"></td>
-            <td class="border px-4 py-2" th:text="${reservation.startAt}"></td>
-            <td class="border px-4 py-2" th:text="${reservation.endAt}"></td>
+            <td class="border px-4 py-2" th:text="${#temporals.format(reservation.startAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td class="border px-4 py-2" th:text="${#temporals.format(reservation.endAt, 'yyyy-MM-dd HH:mm')}"></td>
             <td class="border px-4 py-2" th:text="${reservation.content}"></td>
             <td class="border px-4 py-2">
                 <form th:action="@{/reservation/deleteReservation.do}" method="post">
