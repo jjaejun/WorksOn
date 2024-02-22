@@ -61,20 +61,22 @@
                 </li>
 
                 <!-- 페이지 번호 반복문 -->
-                <th:block th:each="pageNumber : ${#numbers.sequence(0, totalpages - 1)}">
-                    <li>
-                        <button th:if="${pageNumber == number}"
-                                class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
-                            <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
-                            <span th:text="${pageNumber + 1}"></span>
-                        </button>
-                        <button th:unless="${pageNumber == number}"
-                                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue"
-                                th:attr="onclick='changePage4(\'' + ${pageNumber} + '\', \'' + ${size} + '\')'">
-                            <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
-                            <span th:text="${pageNumber + 1}"></span>
-                        </button>
-                    </li>
+                <th:block th:if="${totalpages > 0}">
+                    <th:block th:each="pageNumber : ${#numbers.sequence(0, totalpages - 1)}">
+                        <li>
+                            <button th:if="${pageNumber == number}"
+                                    class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
+                                <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
+                                <span th:text="${pageNumber + 1}"></span>
+                            </button>
+                            <button th:unless="${pageNumber == number}"
+                                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue"
+                                    th:attr="onclick='changePage4(\'' + ${pageNumber} + '\', \'' + ${size} + '\')'">
+                                <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
+                                <span th:text="${pageNumber + 1}"></span>
+                            </button>
+                        </li>
+                    </th:block>
                 </th:block>
 
                 <!-- 다음 버튼 -->

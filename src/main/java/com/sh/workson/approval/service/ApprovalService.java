@@ -555,4 +555,22 @@ public class ApprovalService {
         List<ApprovalLine> approvalLineList = approvalLineRepository.findAll();
         return approvalLineList;
     }
+
+    @Transactional
+    public void rejectCooperation(RejectCooperationDto rejectCooperationDto) {
+        ApprovalLine existingApprovalLine = approvalLineRepository.findById(rejectCooperationDto.getLineId()).orElse(null);
+
+        if(existingApprovalLine != null) {
+            existingApprovalLine.setStatus(Status.반려);
+            approvalLineRepository.save(existingApprovalLine);
+
+        }
+
+        Approval existingApproval = approvalRepository.findById(existingApprovalLine.getApproval().getId()).orElse(null);
+        if (existingApproval != null) {
+           existingApproval.setStatus(Status.반려);
+           approvalRepository.save(existingApproval);
+        }
+
+    }
 }
