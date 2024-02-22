@@ -193,21 +193,17 @@
             <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                 <th class="px-4 py-3">업무명</th>
-                <th class="px-4 py-3">시작일</th>
-                <th class="px-4 py-3">종료일</th>
-                <th class="px-4 py-3">중요도</th>
+                <th class="px-4 py-3">이슈명</th>
+                <th class="px-4 py-3">긴급도</th>
                 <th class="px-4 py-3">생성자</th>
                 <th class="px-4 py-3">담당자</th>
+                <th class="px-4 py-3">상태</th>
             </tr>
             </thead>
             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="taskList">
             <!-- 반복되는 tr영역 -->
                 <th:block th:each="issue, status: ${issues}">
                     <tr th:data-id="${issue.id}" th:data-project-id="${issue.project.id}" class="cursor-pointer">
-                        <td class="px-4 py-3 text-sm" >
-                                <span class="px-2 py-1 font-semibold text-blue-700 bg-blue-50 rounded-full" th:text="${issue.project.title}">
-                                </span>
-                        </td>
                         <td class="px-4 py-3 text-sm" th:if="${issue.task != null}">
                                 <span class="px-2 py-1 font-semibold text-rose-700 bg-rose-50 rounded-full" th:text="${issue.task.name}">
                                 </span>
