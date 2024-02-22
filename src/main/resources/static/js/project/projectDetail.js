@@ -306,7 +306,9 @@ const updateBtnEvent = () => {
                 statesBtn.removeEventListener('click', dropDownEvent);
                 editBtn.classList.remove("hidden");
 
-                alert(response);
+                // alert(response);
+                editBtnEvent();
+                updateBtnEvent();
             }
         })
     });
