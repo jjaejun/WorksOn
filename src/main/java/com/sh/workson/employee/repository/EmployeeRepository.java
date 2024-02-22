@@ -37,7 +37,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     String findNameByEmpId(Long employeeId);
     
     @Query("from Employee e where e.email = :email")
-    Employee checkEmailDuplicate(String email);
+    Employee checkEmailDuplicate(@Param("email")String email);
 
 
 
