@@ -61,11 +61,20 @@ public class AttendController {
 
         Attend firstAttend = attendService.findByOrderByStartAt(id);
         String stateKr = null;
-        if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
-            stateKr = "업무중";
+        if(firstAttend != null) {
+            if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
+                stateKr = "업무중";
+            }
+            else if(firstAttend.getState().equals(State.QUIT)){
+                stateKr = "퇴근";
+            }
         }
-        else if(firstAttend.getState().equals(State.QUIT)){
-            stateKr = "퇴근";
+        else {
+            // firstAttend가 null 일때는 startAt와 endAt만 셋팅한 빈 객체를 만들자
+            firstAttend = new Attend();
+            firstAttend.setStartAt(null);
+            firstAttend.setEndAt(null);
+            stateKr = "";
         }
 
         model.addAttribute("attend", firstAttend);
