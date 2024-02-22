@@ -11,12 +11,12 @@ function setApprovalInfo(sign, lineId) {
 window.addEventListener("DOMContentLoaded", () => {
     approvalEvent();
     // 폼 버튼 눌렀을때 동작 이벤트
-//     const frms = document.querySelectorAll("form[name=recognizeFrm]");
     const inputs = document.querySelectorAll(".signs");
     const frm = document.getElementById("recognizeFrm");
 
-//     let thisFrm;
-//
+    // 반려 관련
+    const frm2 = document.getElementById("companionFrm");
+
     inputs.forEach((input, i) => {
         input.addEventListener('keyup', (e) => {
             const sign = e.target.value;
@@ -28,6 +28,10 @@ window.addEventListener("DOMContentLoaded", () => {
             frm.sign.value = sign;
             frm.lineId.value = lineId;
             frm.isLast.value = isLast;
+
+            // 반려 관련
+            frm2.lineId.value = lineId;
+            frm2.isLast.value = isLast;
         });
 
     });

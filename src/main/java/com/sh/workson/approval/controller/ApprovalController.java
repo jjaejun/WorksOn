@@ -601,12 +601,6 @@ public class ApprovalController {
         }
         log.debug("recognizeCooperationdto = {}", recognizeCooperationDto);
 
-//        if ("isLast".equals(recognizeCooperationDto.getIsLast())) {
-//            recognizeCooperationDto.setIsLast(recognizeCooperationDto.getIsLast());
-//            approvalService.recognizeCooperation(recognizeCooperationDto);
-//        } else {
-//            approvalService.recognizeCooperation(recognizeCooperationDto);
-//        }
         recognizeCooperationDto.setIsLast(recognizeCooperationDto.getIsLast());
         approvalService.recognizeCooperation(recognizeCooperationDto);
 
