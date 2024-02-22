@@ -102,14 +102,6 @@ window.addEventListener('DOMContentLoaded', () => {
             url: `${contextPath}attend/endWork.do`,
             data: {
 
-
-
-
-
-
-
-
-
             },
             success: function (response) {
                 alert(response);

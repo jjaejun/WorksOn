@@ -2,14 +2,16 @@ package com.sh.workson.approval.dto;
 
 import lombok.Data;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 public class ApprovalHomeCooperationDto {
     // approval
     private Long id;
     private String emergency;
-    private Timestamp approvalEndDate;
+    private Date approvalEndDate;
     private String status;
 
     // approval Form

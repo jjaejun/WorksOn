@@ -202,66 +202,92 @@
             </thead>
             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="taskList">
             <!-- 반복되는 tr영역 -->
-                <th:block th:each="task, status: ${tasks}">
-                    <tr th:data-id="${task.id}" th:data-project-id="${task.project.id}" class="cursor-pointer">
+                <th:block th:each="issue, status: ${issues}">
+                    <tr th:data-id="${issue.id}" th:data-project-id="${issue.project.id}" class="cursor-pointer">
+                        <td class="px-4 py-3 text-sm" >
+                                <span class="px-2 py-1 font-semibold text-blue-700 bg-blue-50 rounded-full" th:text="${issue.project.title}">
+                                </span>
+                        </td>
+                        <td class="px-4 py-3 text-sm" th:if="${issue.task != null}">
+                                <span class="px-2 py-1 font-semibold text-rose-700 bg-rose-50 rounded-full" th:text="${issue.task.name}">
+                                </span>
+                        </td>
+                        <td class="px-4 py-3 text-sm" th:if="${issue.task == null}">
+                            -
+                        </td>
                         <td class="px-4 py-3 text-sm">
-                            <span class="px-2 py-1 font-semibold text-rose-700 bg-rose-50 rounded-full" th:text="${task.name}">
-                            </span>
+                                <span class="px-2 py-1 font-semibold text-yellow-700 bg-yellow-50 rounded-full" th:text="${issue.name}">
+                                </span>
                         </td>
-                        <td class="px-4 py-3 text-sm" th:text="|${#temporals.format(task.startAt, 'yyyy/MM/dd')}|">
+                        <td class="px-4 py-3 mt-1 text-sm" th:if="${issue.priority == 3}">
+                                <span class="px-2 py-1 font-bold text-red-600">
+                                    high
+                                </span>
                         </td>
-                        <td class="px-4 py-3 text-sm" th:text="|${#temporals.format(task.endAt, 'yyyy/MM/dd')}|">
+                        <td class="px-4 py-3 mt-1 text-sm" th:if="${issue.priority == 2}">
+                                <span class="px-2 py-1 font-bold text-orange-600">
+                                    middle
+                                </span>
                         </td>
-                        <td class="px-4 py-3 mt-1 text-sm flex items-center align-middle">
-                            <div class="flex items-center" th:each="index : ${#numbers.sequence(1, task.priority)}">
-                                <svg class="w-4 h-4 text-yellow-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                            </div>
-                            <div class="flex items-center" th:if="${task.priority != 5}" th:each="index : ${#numbers.sequence(1, (5 - task.priority))}">
-                                <svg class="w-4 h-4 ms-1 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                            </div>
+                        <td class="px-4 py-3 mt-1 text-sm" th:if="${issue.priority == 1}">
+                                <span class="px-2 py-1 font-bold text-gray-600">
+                                    low
+                                </span>
                         </td>
-                        <th:block th:if="${task.owner != null}">
+                        <th:block th:if="${issue.owner != null}">
                             <td class="px-4 py-3 text-sm">
                                 <div class="flex items-center text-sm">
                                     <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                                         <img
                                                 class="object-cover w-full h-full rounded-full"
-                                                th:src="${task.owner.profileUrl != null ? task.owner.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}"
+                                                th:src="${issue.owner.profileUrl != null ? issue.owner.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}"
                                                 alt=""
                                                 loading="lazy"
                                         />
                                         <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                                     </div>
                                     <div>
-                                        <p th:text="${task.owner.deptName}"></p>
-                                        <p class="font-semibold" th:text="|${task.owner.name}${task.owner.positionName}|"></p>
+                                        <p th:text="${issue.owner.deptName}"></p>
+                                        <p class="font-semibold" th:text="|${issue.owner.name}${issue.owner.positionName}|"></p>
                                     </div>
                                 </div>
                             </td>
                         </th:block>
-                        <th:block th:if="${task.employee != null}">
+                        <th:block th:if="${issue.employee != null}">
                             <td class="px-4 py-3 text-sm">
                                 <div class="flex items-center text-sm">
                                     <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                                         <img
                                                 class="object-cover w-full h-full rounded-full"
-                                                th:src="${task.employee.profileUrl != null ? task.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}"
+                                                th:src="${issue.employee.profileUrl != null ? issue.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}"
                                                 alt=""
                                                 loading="lazy"
                                         />
                                         <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                                     </div>
                                     <div>
-                                        <p th:text="${task.employee.deptName}"></p>
-                                        <p class="font-semibold" th:text="|${task.employee.name}${task.employee.positionName}|"></p>
+                                        <p th:text="${issue.owner.deptName}"></p>
+                                        <p class="font-semibold" th:text="|${issue.owner.name}${issue.owner.positionName}|"></p>
                                     </div>
                                 </div>
                             </td>
                         </th:block>
+                        <td class="px-4 py-3 mt-1 text-sm" th:if="${issue.status == 'CLOSE'}">
+                                <span class="inline-flex items-center m-2 px-3 py-1 bg-green-200 bg-gray-200 rounded-full text-sm font-semibold text-gray-700">
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                                    <span class="ml-1">
+                                      [[${issue.status}]]
+                                    </span>
+                                </span>
+                        </td>
+                        <td class="px-4 py-3 mt-1 text-sm" th:if="${issue.status == 'OPEN'}">
+                                <span class="inline-flex items-center m-2 px-2 py-1 bg-gray-200 bg-green-200 rounded-full text-sm font-semibold text-green-600">
+                                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                                    <span class="ml-1">
+                                      [[${issue.status}]]
+                                    </span>
+                                </span>
+                        </td>
                     </tr>
                 </th:block>
             <!--tr 한줄 끝-->
@@ -350,6 +376,6 @@
     </div>
 
 </div>
-<script layout:fragment="script" th:src="@{/js/project/projectTotalTaskList.js}">
+<script layout:fragment="script" th:src="@{/js/project/projectTotalIssueList.js}">
 </script>
 </html>
