@@ -1,3 +1,4 @@
+
 const commentReplyCreate = (parentId) => {
     const frm = document.getElementById(`replyFrm${parentId}`);
     const parentFrm = document.commentCreateFrm;
@@ -213,6 +214,7 @@ document.querySelector("#deleteBtn").addEventListener('click', () => {
 window.addEventListener('DOMContentLoaded', () => {
     lisColorChange();
     pageEvent();
+    empPageEvent();
     editBtnEvent();
     updateBtnEvent();
     replyEvent();
@@ -493,6 +495,7 @@ const pageEvent = () => {
                     originSidebar.innerHTML = newSidebar.innerHTML;
                     lisColorChange();
                     pageEvent();
+                    empPageEvent();
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
@@ -500,7 +503,48 @@ const pageEvent = () => {
         });
     });
 };
+/**
+ * page2에 대한 변수
+ */
+const empPageEvent = () => {
+    document.querySelectorAll(".empPageNumber").forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const pageNumber1 = document.querySelector("#selectBtnOwnerPage").value;
+            const button = e.target;
+            const { pageNumber} = button.dataset;
+            let size = 5;
+            let url = `/WorksOn/project/projectDetail.do?id=${document.querySelector("#projectId").value}&continue&page1=${pageNumber1}&size1=${size}&page2=${pageNumber}&size2=${size}`;
 
+            console.log(url);
+
+            // Fetch API를 사용하여 비동기로 데이터 가져오기
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 서버로부터 받은 HTML을 현재 페이지의 콘텐츠에 적용
+                    let parser = new DOMParser();
+                    let newDocument = parser.parseFromString(html, 'text/html');
+
+                    const newSidebar = newDocument.querySelector("#sidebarProject");
+                    const originSidebar = document.querySelector("#sidebarProject");
+
+                    console.log(newDocument);
+                    originSidebar.innerHTML = newSidebar.innerHTML;
+                    lisColorChange();
+                    pageEvent();
+                    empPageEvent();
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+        });
+    });
+};
 const lisColorChange = () => {
     document.querySelectorAll(".articleLi").forEach((article) => {
         article.addEventListener('click', (e) => {
