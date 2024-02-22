@@ -11,7 +11,7 @@ const modalEvent = () => {
             }
         });
     });
-}
+};
 document.querySelectorAll(".closeBtn").forEach((e) => {
     e.addEventListener('click', (btn) => {
         const modal = document.querySelector("#crud-modal");
