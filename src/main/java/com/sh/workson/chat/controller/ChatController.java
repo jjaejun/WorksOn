@@ -7,6 +7,7 @@ import com.sh.workson.chat.dto.ChatRoomCreateDto;
 import com.sh.workson.chat.entity.ChatLog;
 import com.sh.workson.chat.entity.ChatRoom;
 import com.sh.workson.chat.service.ChatService;
+import com.sh.workson.employee.dto.EmployeeChatDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,7 @@ public class ChatController {
             chatLogReturnDtos.add(ChatLogReturnDto.builder()
                             .empId(chatLog.getEmployee().getId())
                             .empName(chatLog.getEmployee().getName())
+                            .profileUrl(chatLog.getEmployee().getProfileUrl())
                             .content(chatLog.getContent())
                             .createdAt(chatLog.getCreatedAt())
                     .build());
@@ -86,10 +88,13 @@ public class ChatController {
         chatService.createChatLog(chatLogCreateDto);
         String name = employeeService.findNameByEmpId(chatLogCreateDto.getEmployeeId());
         log.debug("name = {}", name);
+        String profileUrl = employeeService.findProfileUrlByEmpId(chatLogCreateDto.getEmployeeId());
+        log.debug("profileUrl = {}", profileUrl);
         ChatLogReturnDto chatLogReturnDto = ChatLogReturnDto.builder()
                 .empId(chatLogCreateDto.getEmployeeId())
                 .empName(name)
                 .content(chatLogCreateDto.getContent())
+                .profileUrl(profileUrl)
                 .build();
         log.debug("chatLogReturnDto = {}", chatLogReturnDto);
         return chatLogReturnDto;

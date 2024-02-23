@@ -5,6 +5,7 @@ import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.authority.entity.Authority;
 import com.sh.workson.authority.entity.RoleAuth;
 import com.sh.workson.authority.service.AuthorityService;
+import com.sh.workson.employee.dto.EmployeeChatDto;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
 //import com.sh.workson.employee.dto.EmployeeUpdatePasswordDto;
 import com.sh.workson.employee.dto.EmployeeUpdatePasswordDto;
@@ -72,11 +73,13 @@ public class EmployeeService {
         return employeeRepository.findNameByEmpId(employeeId);
     }
 
+    public String findProfileUrlByEmpId(Long employeeId) {
+        return employeeRepository.findProfileUrlByEmpId(employeeId);
+    }
 
-
-
-
-
+    private EmployeeChatDto covertToEmployeeDto(Employee employee) {
+        return EmployeeChatDto.builder().name(employee.getName()).profileUrl(employee.getProfileUrl()).build();
+    }
 
 
     /**

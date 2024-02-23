@@ -1,5 +1,9 @@
 package com.sh.workson.common.controller;
 
+import com.sh.workson.approval.dto.ApprovalHomeCooperationDto;
+import com.sh.workson.approval.dto.ApprovalHomeEquipmentDto;
+import com.sh.workson.approval.dto.ApprovalHomeLeaveDto;
+import com.sh.workson.approval.service.ApprovalService;
 import com.sh.workson.attend.entity.Attend;
 import com.sh.workson.attend.entity.State;
 import com.sh.workson.attend.service.AttendService;
@@ -20,6 +24,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -36,6 +41,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -59,6 +67,9 @@ public class IndexController {
     private AuthService authService;
     @Autowired
     private AttendService attendService;
+    @Autowired
+    private ApprovalService approvalService;
+
 
     @GetMapping("")
     public String index(
@@ -104,9 +115,77 @@ public class IndexController {
 
 
 //            민정
+            // project
             Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
             model.addAttribute("projects", projectPage);
+            log.debug("projectDashBoard = {}", projectPage);
 
+
+
+//            Page<Approval>
+            List<ApprovalHomeLeaveDto> approvalWaitLeave = approvalService.findWaitLeave(employeeDetails.getEmployee().getId());
+            List<ApprovalHomeEquipmentDto> approvalWaitEquipment = approvalService.findWaitEquipment(employeeDetails.getEmployee().getId());
+            List<ApprovalHomeCooperationDto> approvalWaitCooperation = approvalService.findWaitCooperation(employeeDetails.getEmployee().getId());
+
+            List<Object> waitList = new ArrayList<>();
+            waitList.addAll(approvalWaitLeave);
+            waitList.addAll(approvalWaitEquipment);
+            waitList.addAll(approvalWaitCooperation);
+
+            Collections.sort(waitList, Comparator.comparingInt(o -> {
+                if (o instanceof ApprovalHomeLeaveDto) {
+                    return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+                } else if (o instanceof ApprovalHomeEquipmentDto) {
+                    return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+                } else if (o instanceof ApprovalHomeCooperationDto) {
+                    return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+                }
+                return 0;
+            }));
+
+            log.debug("size = {}",waitList.size());;
+            if(waitList.size() > 3){
+                model.addAttribute("waitApprovals", waitList.subList(0, 2));
+            }
+            else {
+                model.addAttribute("waitApprovals", waitList);
+            }
+
+            // 수신문서함
+            List<ApprovalHomeLeaveDto> approvalHomeLeaveDtoPage = approvalService.findReLeave(employeeDetails.getEmployee().getId());
+            List<ApprovalHomeEquipmentDto> approvalHomeEquipmentDtoPage = approvalService.findReEquipment(employeeDetails.getEmployee().getId());
+            List<ApprovalHomeCooperationDto> approvalHomeCooperationDtoPage= approvalService.findReCooperation(employeeDetails.getEmployee().getId());
+
+            List<Object> ReList = new ArrayList<>();
+            ReList.addAll(approvalHomeLeaveDtoPage);
+            ReList.addAll(approvalHomeEquipmentDtoPage);
+            ReList.addAll(approvalHomeCooperationDtoPage);
+
+            Collections.sort(ReList, Comparator.comparingInt(o -> {
+                if (o instanceof ApprovalHomeLeaveDto) {
+                    return Math.toIntExact(((ApprovalHomeLeaveDto) o).getId());
+                } else if (o instanceof ApprovalHomeEquipmentDto) {
+                    return Math.toIntExact(((ApprovalHomeEquipmentDto) o).getId());
+                } else if (o instanceof ApprovalHomeCooperationDto) {
+                    return Math.toIntExact(((ApprovalHomeCooperationDto) o).getId());
+                }
+                return 0;
+            }));
+
+            if(ReList.size() > 3){
+                model.addAttribute("reApprovals", ReList.subList(0, 2));
+            }
+            else {
+                model.addAttribute("reApprovals", ReList);
+            }
+
+
+
+
+
+
+
+            // 출퇴근 찍기
             Attend firstAttend = attendService.findByOrderByStartAt(id);
             String stateKr = null;
             if(firstAttend != null) {
