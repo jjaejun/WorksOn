@@ -26,7 +26,7 @@ public class Resource {
     private String info;
     @Enumerated(EnumType.STRING)
     private Type type;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "tb_resource_id")
     @Builder.Default
     private List<Reservation> reservations = new ArrayList<>();

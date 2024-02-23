@@ -63,4 +63,8 @@ public class ResourceService {
     public void deleteById(Long resourceId) {
         resourceRepository.deleteById(resourceId);
     }
+
+    public String findNameById(Long id) {
+        return resourceRepository.findNameById(id);
+    }
 }
