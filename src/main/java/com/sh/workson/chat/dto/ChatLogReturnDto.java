@@ -12,4 +12,5 @@ public class ChatLogReturnDto {
     private String empName;
     private String content;
     private LocalDateTime createdAt;
+    private String profileUrl;
 }

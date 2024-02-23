@@ -15,4 +15,7 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     @Query("from Resource order by type desc")
     List<Resource> findByOrderByType();
+
+    @Query("select name from Resource where id = :id")
+    String findNameById(Long id);
 }

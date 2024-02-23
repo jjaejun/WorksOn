@@ -1,3 +1,22 @@
+const projects = document.querySelectorAll(".project");
+projects.forEach((p, i) => {
+    p.addEventListener('click', (e) => {
+       const {projectId} = projects[i].dataset;
+       window.location.href = `${contextPath}project/projectDetail.do?id=${projectId}`;
+    });
+});
+const waitApprovals = document.querySelectorAll(".waitApproval");
+waitApprovals.forEach((p, i) => {
+    p.addEventListener('click', (e) => {
+        window.location.href = `${contextPath}approval/approvalWait.do`;
+    });
+});
+const reApprovals = document.querySelectorAll(".reApproval");
+reApprovals.forEach((p, i) => {
+    p.addEventListener('click', (e) => {
+        window.location.href = `${contextPath}approval/approvalReceived.do`;
+    });
+});
 // 근태관리 실시간 시간 보여주기
 const Target = document.getElementById("clock");
 const today = document.getElementById("today");
