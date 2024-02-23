@@ -89,7 +89,7 @@ public class ReservationContoller {
         log.debug("reservationCreateDto = {}", reservationCreateDto);
         reservationService.createReservation(reservationCreateDto);
         redirectAttributes.addFlashAttribute("msg", "예약 신청이 완료되었습니다.😎");
-        return "redirect:reservationMyList.do";
+        return "redirect:reservationMyListRoom.do";
     }
 
     @GetMapping("/reservationMyListRoom.do")
@@ -119,7 +119,7 @@ public class ReservationContoller {
         log.debug("reservationId = {}", reservationId);
         reservationService.deleteById(reservationId);
         redirectAttributes.addFlashAttribute("msg", "예약이 취소되었습니다.");
-        return "redirect:reservationMyList.do";
+        return "redirect:reservationMyListRoom.do";
     }
 
     @GetMapping("/reservationListSearchDate.do")
