@@ -1,3 +1,46 @@
+/**
+ * page2에 대한 변수
+ */
+const empPageEvent = () => {
+    document.querySelectorAll(".empPageNumber").forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const pageNumber1 = document.querySelector("#selectBtnOwnerPage").value;
+            const button = e.target;
+            const { pageNumber} = button.dataset;
+            let size = 5;
+            let url = `/WorksOn/project/projectDetail.do?id=${document.querySelector("#projectId").value}&continue&page1=${pageNumber1}&size1=${size}&page2=${pageNumber}&size2=${size}`;
+
+            console.log(url);
+
+            // Fetch API를 사용하여 비동기로 데이터 가져오기
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // 서버로부터 받은 HTML을 현재 페이지의 콘텐츠에 적용
+                    let parser = new DOMParser();
+                    let newDocument = parser.parseFromString(html, 'text/html');
+
+                    const newSidebar = newDocument.querySelector("#sidebarProject");
+                    const originSidebar = document.querySelector("#sidebarProject");
+
+                    console.log(newDocument);
+                    originSidebar.innerHTML = newSidebar.innerHTML;
+                    lisColorChange();
+                    sidebarPageEvent();
+                    empPageEvent();
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+        });
+    });
+};
+
 const sidebarPageEvent = () => {
     document.querySelectorAll(".ownerPageNumber").forEach((btn) => {
         btn.addEventListener('click', (e) => {
@@ -29,6 +72,7 @@ const sidebarPageEvent = () => {
                     originSidebar.innerHTML = newSidebar.innerHTML;
                     lisColorChange();
                     sidebarPageEvent();
+                    empPageEvent();
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
@@ -67,6 +111,7 @@ const lisColorChange = () => {
 window.addEventListener('DOMContentLoaded', () => {
     pageEvent();
     // trEvent();
+    empPageEvent();
     lisColorChange();
     sidebarPageEvent();
 });
