@@ -134,6 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#schedule-modal').addClass('hidden'); // 모달 숨기기
         $('div[modal-backdrop]').remove();
     });
+
+
 });
 
 
@@ -249,21 +251,42 @@ document.addEventListener('DOMContentLoaded', function() {
 //     });
 // });
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 모달 열기 버튼에 대한 이벤트 리스너 설정
-    document.querySelectorAll('.modal-Btn').forEach(button => {
-        button.addEventListener('click', event => {
-            const target = event.currentTarget;
-            const name = target.getAttribute('data-name');
-            const color = target.getAttribute('data-color');
-            const id = target.getAttribute('data-id');
+document.querySelectorAll('.update-category-btn').forEach(button => {
+    button.addEventListener('click', event => {
+        const target = event.currentTarget;
+        const name = target.getAttribute('data-name');
+        const color = target.getAttribute('data-color');
+        const id = target.getAttribute('data-id');
+        const modalTitle = document.getElementById('modal-title');
+        const form = document.querySelector('form');
+        const btn = document.getElementById('category-modal-button')
+
+        // 모달의 입력 필드에 데이터 설정
+        document.getElementById('name').value = name;
+        document.getElementById('color').value = color.toUpperCase();
+        document.getElementById('category-id').value = id;
+        document.getElementById('delete-category').value= id;
+
+        console.log("name =", name, ", color =", color, ", id =", id);
+        console.log(document.getElementById('category-id').value)
+
+        // 모달 표시
+        const modal = document.getElementById('crud-modal');
+        modal.classList.remove('hidden'); // hidden 클래스 제거
+        modal.classList.add('flex'); // flex 클래스 추가로 모달 표시
+
+        modalTitle.innerText = '카테고리 수정하기';
+        btn.innerText = '수정'
+        form.setAttribute('action', `${contextPath}schedule/updateCategory.do`);
+        form.method = 'post';
+    });
+
+    document.querySelector('.create-category-btn').addEventListener('click', event => {
+            const modalTitle = document.getElementById('modal-title');
+            const form = document.querySelector('form');
+            const btn = document.getElementById('category-modal-button')
 
             // 모달의 입력 필드에 데이터 설정
-            document.getElementById('name').value = name;
-            document.getElementById('color').value = color.toUpperCase();
-            document.getElementById('category-id').value = id;
-            document.getElementById('delete-category').value= id;
-
             console.log("name =", name, ", color =", color, ", id =", id);
             console.log(document.getElementById('category-id').value)
 
@@ -271,21 +294,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('crud-modal');
             modal.classList.remove('hidden'); // hidden 클래스 제거
             modal.classList.add('flex'); // flex 클래스 추가로 모달 표시
+
+            modalTitle.innerText = '카테고리 생성하기';
+            btn.innerText = '생성'
+            form.setAttribute('action', `${contextPath}schedule/createCategory.do`);
+            form.method = 'post';
         });
-    });
-
-    // 모달 닫기 버튼에 대한 이벤트 리스너 설정
-    // document.querySelector('[data-modal-toggle="crud-modal"]').addEventListener('click', () => {
-    //     const modal = document.getElementById('crud-modal');
-    //     modal.classList.add('hidden'); // 모달 숨김
-    //     modal.classList.remove('flex'); // flex 클래스 제거
-    // });
-
-    document.getElementById("color").addEventListener('change', function () {
-        var selectedColor = document.getElementById("color");
-        selectedColor.value = selectedColor.options[selectedColor.selectedIndex].value;
-    })
 });
+
+document.getElementById("color").addEventListener('change', function () {
+    var selectedColor = document.getElementById("color");
+    selectedColor.value = selectedColor.options[selectedColor.selectedIndex].value;
+})
 
 
 document.getElementById('delete-category').addEventListener('click', function() {
@@ -307,6 +327,20 @@ document.getElementById('delete-category').addEventListener('click', function() 
     })
 })
 
+function setModalAction(mode){
+    var form = document.categoryModal;
+
+    if(mode == "create"){
+        form.method = "post";
+        form.target = "_self";
+        form.action =
+    }
+    else if(mode == "update"){
+
+
+    }
+
+}
 
 // document.querySelector('#delete-category').addEventListener('click', function (){
 //     const scheduleCategoryId = this.value;

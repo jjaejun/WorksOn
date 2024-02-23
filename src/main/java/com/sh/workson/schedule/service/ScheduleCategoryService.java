@@ -2,6 +2,7 @@ package com.sh.workson.schedule.service;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.schedule.dto.CreateScheduleCategoryDto;
 import com.sh.workson.schedule.dto.ScheduleCategoryDto;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.repository.ScheduleCategoryRepository;
@@ -39,25 +40,23 @@ public class ScheduleCategoryService {
         return scheduleCategoryDto;
     }
 
-    public void createScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
-        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(scheduleCategoryDto));
+    public void createScheduleCategory(CreateScheduleCategoryDto createScheduleCategoryDto) {
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(createScheduleCategoryDto));
     }
-    private ScheduleCategory convertToScheduleCategory(ScheduleCategoryDto scheduleCategoryDto){
-        ScheduleCategory scheduleCategory = modelMapper.map(scheduleCategoryDto, ScheduleCategory.class);
+    private ScheduleCategory convertToScheduleCategory(CreateScheduleCategoryDto createScheduleCategoryDto){
+        ScheduleCategory scheduleCategory = modelMapper.map(createScheduleCategoryDto, ScheduleCategory.class);
         scheduleCategory.setEmployee(Employee.builder()
-                        .id(scheduleCategoryDto.getEmpId())
+                        .id(createScheduleCategoryDto.getEmpId())
                         .build());
-        scheduleCategory.setName(scheduleCategoryDto.getName());
-        scheduleCategory.setColor(scheduleCategoryDto.getColor());
+        scheduleCategory.setName(createScheduleCategoryDto.getName());
+        scheduleCategory.setColor(createScheduleCategoryDto.getColor());
         return scheduleCategory;
     }
-
-    public void updateScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
-       ScheduleCategory scheduleCategory = convertToScheduleCategory(scheduleCategoryDto);
-       scheduleCategory.setId(scheduleCategoryDto.getId());
-
-       scheduleCategoryRepository.save(scheduleCategory);
-    }
+    // public void updateScheduleCategory(ScheduleCategoryDto scheduleCategoryDto) {
+    //    ScheduleCategory scheduleCategory = convertToScheduleCategory(scheduleCategoryDto);
+    //    scheduleCategory.setId(scheduleCategoryDto.getId());
+    //    scheduleCategoryRepository.save(scheduleCategory);
+    // }
 
     public void deleteById(Long id) {
         scheduleCategoryRepository.deleteById(id);

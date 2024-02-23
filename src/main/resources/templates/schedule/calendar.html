@@ -51,7 +51,7 @@
                                                             <span style="margin-left: 45px">내 일정</span>
                                                         </td>
                                                         <td>
-                                                            <img th:src="@{/image/schedule/plus-sign.png}" class="mt-1 ml-3 modal-Btn" width="20px"
+                                                            <img th:src="@{/image/schedule/plus-sign.png}" class="mt-1 ml-3 create-category-btn" width="20px"
                                                                  style="cursor: pointer"
                                                                  data-modal-target="crud-modal" data-modal-toggle="crud-modal">
                                                         </td>
@@ -79,7 +79,7 @@
                                                           th:style="'background-color: ' + ${category.color}"></span>
                                                 </td>
                                                     <td>
-                                                        <img th:src="@{/image/schedule/edit_button.png}" class="mt-1 ml-3 modal-Btn" width="20px"
+                                                        <img th:src="@{/image/schedule/edit_button.png}" class="mt-1 ml-3 update-category-btn" width="20px"
                                                              th:id="${'update' + category.id}"
                                                              th:data-name="${category.name}"
                                                              th:data-color="${category.color}"
@@ -119,9 +119,7 @@
                                     <div class="relative bg-white rounded-lg shadow">
                                         <!-- Modal header -->
                                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                                            <h3 class="text-lg font-semibold text-gray-900">
-                                                카테고리 생성 / 수정하기
-                                            </h3>
+                                            <h3 id="modal-title" class="text-lg font-semibold text-gray-900"></h3>
                                             <button type="button" id="close-modal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="crud-modal">
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -131,8 +129,9 @@
                                         </div>
                                         <!-- Modal body -->
                                         <form class="p-4 md:p-5"
-                                            th:action="@{/schedule/CUCategory.do}"
                                             method="post">
+                                            <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+                                            <!--th:action="@{/schedule/CUCategory.do}"-->
                                             <div class="grid gap-4 mb-4 grid-cols-2">
                                                 <div class="col-span-2">
                                                     <input type="hidden" id="category-id" name="category-id" >
@@ -153,8 +152,7 @@
                                                 </div>
                                             </div>
                                             <div class="p-4 md:p-5 text-center">
-                                                <button type="submit" class="text-white bg-blue-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
-                                                    생성 / 수정
+                                                <button id=category-modal-button type="submit" class="text-white bg-blue-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
                                                 </button>
                                                 <button id="delete-category" type="button" class="text-white bg-red-600 focus:ring-4 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5">
                                                     삭제
