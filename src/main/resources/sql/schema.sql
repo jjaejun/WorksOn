@@ -587,4 +587,3 @@ create table cherry(
 ALTER TABLE cherry
 ADD cherry_content VARCHAR2(1000);
 create sequence seq_cherry_id start with 1 increment by 50;
-
