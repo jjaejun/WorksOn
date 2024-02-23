@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class ScheduleController {
 
         scheduleService.createSchedule(createScheduleDto);
         log.debug("createScheduleDto = {}", createScheduleDto);
-        redirectAttributes.addFlashAttribute("msg", "게시글을 성공적으로 등록했습니다!\uD83D\uDC4D");
+        redirectAttributes.addFlashAttribute("msg", "새 일정을 등록했습니다\uD83D\uDC4D");
         return "redirect:/schedule/calendar.do";
     }
 
@@ -100,11 +99,10 @@ public class ScheduleController {
     ){
     }
 
-    @PostMapping("/CUCategory.do")
-    public String cuCategory(
-            @Valid ScheduleCategoryDto scheduleCategoryDto,
+    @PostMapping("/createCategory.do")
+    public String createCategory(
+            @Valid CreateScheduleCategoryDto createScheduleCategoryDto,
             BindingResult bindingResult,
-            @RequestParam(value = "category-id") Long id,
             @AuthenticationPrincipal EmployeeDetails employeeDetails,
             RedirectAttributes redirectAttributes
     ) {
@@ -115,21 +113,37 @@ public class ScheduleController {
             return "redirect:/errorPage"; // 에러 페이지로 리다이렉트
         }
 
-        log.debug("name = {}", scheduleCategoryDto.getName());
-        log.debug("color = {}", scheduleCategoryDto.getColor());
-        log.debug("scheduleCategoryDto = {}", scheduleCategoryDto);
-        log.debug("id = {}", id);
+        log.debug("name = {}", createScheduleCategoryDto.getName());
+        log.debug("color = {}", createScheduleCategoryDto.getColor());
+        log.debug("createScheduleCategoryDto = {}", createScheduleCategoryDto);
 
-        if (id== null) {
-            // Create
-            scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
-            scheduleCategoryService.createScheduleCategory(scheduleCategoryDto);
-        } else {
-            // Update
-            scheduleCategoryDto.setId(id);
-            scheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
-            scheduleCategoryService.updateScheduleCategory(scheduleCategoryDto);
+        createScheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+        scheduleCategoryService.createScheduleCategory(createScheduleCategoryDto);
+
+        return "redirect:/schedule/calendar.do";
+    }
+
+    @PostMapping("/updateCategory.do")
+    public String updateCategory(
+            @Valid UpdateScheduleCategoryDto updateScheduleCategoryDto,
+            @RequestParam(value = "category-id") Long id,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (bindingResult.hasErrors()) {
+            // 에러 처리 로직 개선
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            return "redirect:/errorPage"; // 에러 페이지로 리다이렉트
         }
+
+        log.debug("updateScheduleCategoryDto = {}", updateScheduleCategoryDto);
+        log.debug("category id = {}", id);
+        updateScheduleCategoryDto.setEmpId(employeeDetails.getEmployee().getId());
+        updateScheduleCategoryDto.setId(id);
+
+        scheduleCategoryService.updateScheduleCategory(updateScheduleCategoryDto);
 
         return "redirect:/schedule/calendar.do";
     }
