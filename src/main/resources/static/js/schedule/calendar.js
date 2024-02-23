@@ -138,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('div[modal-backdrop]').remove();
     });
 
-
 });
 
 
