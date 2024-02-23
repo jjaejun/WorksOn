@@ -79,7 +79,7 @@ const issueTaskClickEvent = () => {
             searchList.innerHTML = '';
 
             const {taskId, taskName, empName} = e.target.dataset;
-            document.querySelector("#taskInfo").value = taskId;
+            document.querySelector("#issueEmpId").value = taskId;
             selectArea.innerHTML += `
             <span class="p-2 text-sm font-semibold text-rose-600 bg-rose-50 rounded-full">
                 ${taskName} (담당자 ${empName})
