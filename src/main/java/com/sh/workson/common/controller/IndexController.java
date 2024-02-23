@@ -119,6 +119,7 @@ public class IndexController {
             Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(employeeDetails.getEmployee().getId(), PageRequest.of(0, 3));
             model.addAttribute("projects", projectPage);
             log.debug("projectDashBoard = {}", projectPage);
+            model.addAttribute("totalProject", projectPage.getTotalElements());
 
 
 
