@@ -84,12 +84,32 @@ document.querySelector('#reservationCheckBtn').addEventListener('click', (e) => 
             if (response === 0) {
                 document.getElementById('atCheckGoodMsg').classList.remove('hidden');
                 document.getElementById('atCheckBadMsg').classList.add('hidden');
-                document.getElementById('reservationOkBtn').classList.remove('disabled');
+                document.getElementById('reservationOkBtn').classList.replace('bg-gray-700', 'bg-blue-700');
+                document.getElementById('reservationOkBtn').disabled = false;
             } else if (response > 0) {
                 document.getElementById('atCheckGoodMsg').classList.add('hidden');
                 document.getElementById('atCheckBadMsg').classList.remove('hidden');
                 document.getElementById('reservationOkBtn').classList.add('disabled');
+                document.getElementById('reservationOkBtn').disabled = true;
             }
         }
     });
 });
+
+document.querySelector('#startAt').addEventListener('change', (e) => {
+    document.getElementById('atCheckGoodMsg').classList.add('hidden');
+    document.getElementById('atCheckBadMsg').classList.remove('hidden');
+    document.getElementById('reservationOkBtn').classList.replace('bg-blue-700', 'bg-gray-700');
+    document.getElementById('reservationOkBtn').disabled = true;
+
+    console.log(e.target.value);
+    const endAt = document.querySelector('#endAt');
+    endAt.min = e.target.value;
+});
+document.querySelector('#endAt').addEventListener('change', () => {
+    document.getElementById('atCheckGoodMsg').classList.add('hidden');
+    document.getElementById('atCheckBadMsg').classList.remove('hidden');
+    document.getElementById('reservationOkBtn').classList.replace('bg-blue-700', 'bg-gray-700');
+    document.getElementById('reservationOkBtn').disabled = true;
+});
+

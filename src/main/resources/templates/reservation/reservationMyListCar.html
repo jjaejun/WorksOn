@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/reservation_default}">
+<head>
+    <title>예약 | 내 예약 내역</title>
+</head>
+<style layout:fragment="style"></style>
+<div layout:fragment="content">
+    <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px">
+            <li class="me-2">
+                <a th:href="@{/reservation/reservationMyListRoom.do}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">회의실</a>
+            </li>
+            <li class="me-2">
+                <a th:href="@{/reservation/reservationMyListCar.do}" class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500" aria-current="page">차량</a>
+            </li>
+            <li class="me-2">
+                <a th:href="@{/reservation/reservationMyListNotebook.do}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">노트북</a>
+            </li>
+        </ul>
+    </div>
+
+    <table id="tbl-approval-leave" class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
+        <thead>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <th class="px-4 py-2">차량명</th>
+            <th class="px-4 py-2">위치</th>
+            <th class="px-4 py-2">예약자명</th>
+            <th class="px-4 py-2">인원수</th>
+            <th class="px-4 py-2">시작 시간</th>
+            <th class="px-4 py-2">종료 시간</th>
+            <th class="px-4 py-2">예약 사유</th>
+            <th class="px-4 py-2">취소</th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+        <tr th:each="reservation, status : ${reservations}">
+            <td class="border px-4 py-2" th:text="${reservation.resource.name}"></td>
+            <td class="border px-4 py-2" th:text="${reservation.resource.location}"></td>
+            <td class="border px-4 py-2" th:text="${reservation.employee.name}"></td>
+            <td class="border px-4 py-2" th:text="${reservation.count}"></td>
+            <td class="border px-4 py-2" th:text="${#temporals.format(reservation.startAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td class="border px-4 py-2" th:text="${#temporals.format(reservation.endAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td class="border px-4 py-2" th:text="${reservation.content}"></td>
+            <td class="border px-4 py-2">
+                <form th:action="@{/reservation/deleteReservation.do}" method="post">
+                    <input name="reservationId" type="hidden" th:value="${reservation.id}">
+                    <button onclick="confirm('예약을 취소하시겠습니까?');" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                        취소
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+<script layout:fragment="script"></script>
+</html>

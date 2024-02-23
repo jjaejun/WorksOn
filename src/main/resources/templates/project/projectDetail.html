@@ -216,7 +216,7 @@
             </div>
             <div id="default-tab-content">
                 <div class="hidden px-4 rounded-lg mb-20" id="project" role="tabpanel" aria-labelledby="project-tab">
-                    <form name="projectUpdateFrm" >
+                    <form name="projectUpdateFrm" class="mb-10">
                         <div class="bg-gray-50 p-4">
                             <div class="relative w-full">
                                 <input type="hidden" name="id" id="id" th:value="${project.id}" >
@@ -252,7 +252,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div id="dropdown-states" class="z-10 hidden absolute top-[140px] left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                <div id="dropdown-states" class="z-10 hidden absolute top-[40px] left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                         <li>
                                             <button type="button"
@@ -337,7 +337,7 @@
                         </div>
                     </form>
 
-                    <div class="flex w-full h-fit items-center mt-10 my-2 justify-between">
+                    <div class="flex w-full h-fit items-center my-2 justify-between">
                         <div class="w-fit flex items-center">
                             <h2 class="text-lg text-gray-700 flex items-center">✔ 최근 등록된 이슈</h2>
                             <button id="createIssue" type="button" data-modal-target="issue-modal" data-modal-toggle="issue-modal"
