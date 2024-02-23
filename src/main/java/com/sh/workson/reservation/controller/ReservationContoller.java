@@ -73,8 +73,11 @@ public class ReservationContoller {
 
     @GetMapping("/reservationList.do")
     public void reservationDetail(@RequestParam("id") Long id, Model model) {
-        List<Reservation> reservations = reservationService.findByResourceId(id);
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByResourceId(id, today);
+        String resourceName = resourceService.findNameById(id);
         model.addAttribute("resourceId", id);
+        model.addAttribute("resourceName", resourceName);
         model.addAttribute("reservations", reservations);
     }
 
@@ -89,9 +92,24 @@ public class ReservationContoller {
         return "redirect:reservationMyList.do";
     }
 
-    @GetMapping("/reservationMyList.do")
-    public void reservationMyDetail(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
-        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId());
+    @GetMapping("/reservationMyListRoom.do")
+    public void reservationMyListRoom(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Room);
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+    @GetMapping("/reservationMyListCar.do")
+    public void reservationMyListCar(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Car);
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+    @GetMapping("/reservationMyListNotebook.do")
+    public void reservationMyListNotebook(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Notebook);
         log.debug("reservations = {}", reservations);
         model.addAttribute("reservations", reservations);
     }
