@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreateScheduleCategoryDto {
-    private String color;
     private String name;
+    private String color;
+    private Long empId;
 }

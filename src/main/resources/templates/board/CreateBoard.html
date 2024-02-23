@@ -1,33 +1,36 @@
 <!DOCTYPE html>
-<html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout/default}">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
 <head>
     <title>게시글 작성</title>
 </head>
-<style layout:fragment="style"></style>
-<div layout:fragment="content">
-    <div class="w-1/2 mx-auto text-center">
-        <form name="boardFrm" th:action="@{/board/createBoard.do}" method="post" enctype="multipart/form-data" class="mt-8">
-            <div class="relative mb-3">
-                <label for="type" class="text-sm text-gray-600">타입</label>
+<body>
+<div layout:fragment="content" class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-4xl w-full px-6 py-12 bg-white shadow-md rounded-lg">
+        <h1 class="text-3xl font-semibold mb-8 text-center">게시글 작성</h1>
+        <form name="boardFrm" th:action="@{/board/createBoard.do}" method="post" enctype="multipart/form-data">
+            <div class="mb-6">
+                <label for="type" class="block text-gray-700 text-sm font-bold mb-2">타입</label>
                 <select id="type" name="type" class="form-select block w-full mt-1">
-                    <option value="notification">공지사항</option>
+                    <option th:if="${#authorization.expression('hasAuthority(''ROLE_CEO'')')}" value="notification">공지사항</option>
                     <option value="free">자유게시판</option>
                 </select>
             </div>
-            <input type="text" class="form-input mb-3 block w-full" placeholder="제목" name="title" id="title" required>
-            <!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
-            <div class="relative mb-3">
-                <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                       type="file" name="files" multiple id="files">
+            <div class="mb-6">
+                <input type="text" class="form-input block w-full" placeholder="제목" name="title" id="title" required>
             </div>
-            <textarea class="form-textarea mb-3 block w-full" name="content" placeholder="내용" required></textarea>
-            <input type="submit"  class="btn btn-outline-success w-full" value="저장">
+            <div class="mb-6">
+                <input type="file" name="files" multiple id="files" class="form-input block w-full py-3 px-4 border rounded-md">
+            </div>
+            <div class="mb-6">
+                <textarea class="form-textarea block w-full h-60" name="content" placeholder="내용" required></textarea>
+            </div>
+            <div class="mb-6">
+                <input type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline w-full" value="저장">
+            </div>
         </form>
     </div>
 </div>
-
-<script layout:fragment="script" th:src="@{/js/board/boardCreate.js}"></script>
+</body>
 </html>

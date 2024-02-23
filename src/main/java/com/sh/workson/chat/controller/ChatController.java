@@ -7,10 +7,12 @@ import com.sh.workson.chat.dto.ChatRoomCreateDto;
 import com.sh.workson.chat.entity.ChatLog;
 import com.sh.workson.chat.entity.ChatRoom;
 import com.sh.workson.chat.service.ChatService;
+import com.sh.workson.employee.dto.EmployeeChatDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -47,7 +49,7 @@ public class ChatController {
         List<ChatRoom> myChatRooms = new ArrayList<>();
         chatRooms.forEach(chatRoom -> {
 //            log.debug("chatRoom = {}", chatRoom);
-            chatRoom.getChatEmps().forEach(employee -> {
+            chatRoom. getChatEmps().forEach(employee -> {
 //                log.debug("employee = {}", employee);
                 if (employee.getId().equals(id)) {
                     myChatRooms.add(chatRoom);
@@ -59,29 +61,42 @@ public class ChatController {
     }
 
     @GetMapping("/chatRoom.do")
-    public void chatRoom(@RequestParam("id") Long id, Model model) {
-        log.debug("id = {}", id);
-        List<ChatLog> chatRooms = chatService.findLogByRoomId(id);
-        log.debug("chatRooms = {}", chatRooms);
-        model.addAttribute("chatRoomId", id);
-        model.addAttribute("chatRooms", chatRooms);
+    public ResponseEntity<?> chatRoom(@RequestParam("chatRoomId") Long chatRoomId) {
+        log.debug("chatRoomId = {}", chatRoomId);
+        List<ChatLog> chatLogs = chatService.findLogByRoomId(chatRoomId);
+        List<ChatLogReturnDto> chatLogReturnDtos = new ArrayList<>();
+        chatLogs.forEach((chatLog -> {
+            chatLogReturnDtos.add(ChatLogReturnDto.builder()
+                            .empId(chatLog.getEmployee().getId())
+                            .empName(chatLog.getEmployee().getName())
+                            .profileUrl(chatLog.getEmployee().getProfileUrl())
+                            .content(chatLog.getContent())
+                            .createdAt(chatLog.getCreatedAt())
+                    .build());
+        }));
+        log.debug("chatLogReturnDtos = {}", chatLogReturnDtos);
+
+        return new ResponseEntity<>(chatLogReturnDtos, HttpStatus.OK);
     }
 
 
-    @MessageMapping("/chatRoom/{chatRoomId}")
-    @SendTo("/sub/chatRoom/{chatRoomId}")
+    @MessageMapping("/chatMain/{chatRoomId}")
+    @SendTo("/sub/chatMain/{chatRoomId}")
     public ChatLogReturnDto subMessage(@DestinationVariable Long chatRoomId, ChatLogCreateDto chatLogCreateDto) {
-
-//        log.debug("chatLogCreateDto = {}", chatLogCreateDto);
+        log.debug("chatRoomId = {}", chatRoomId);
+        log.debug("chatLogCreateDto = {}", chatLogCreateDto);
         chatService.createChatLog(chatLogCreateDto);
         String name = employeeService.findNameByEmpId(chatLogCreateDto.getEmployeeId());
-//        log.debug("name = {}", name);
+        log.debug("name = {}", name);
+        String profileUrl = employeeService.findProfileUrlByEmpId(chatLogCreateDto.getEmployeeId());
+        log.debug("profileUrl = {}", profileUrl);
         ChatLogReturnDto chatLogReturnDto = ChatLogReturnDto.builder()
-                .content(chatLogCreateDto.getContent())
                 .empId(chatLogCreateDto.getEmployeeId())
-                .name(name)
+                .empName(name)
+                .content(chatLogCreateDto.getContent())
+                .profileUrl(profileUrl)
                 .build();
-//        log.debug("chatLogReturnDto = {}", chatLogReturnDto);
+        log.debug("chatLogReturnDto = {}", chatLogReturnDto);
         return chatLogReturnDto;
     }
 

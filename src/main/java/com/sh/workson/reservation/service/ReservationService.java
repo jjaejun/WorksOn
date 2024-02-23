@@ -3,9 +3,11 @@ package com.sh.workson.reservation.service;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
 import com.sh.workson.reservation.dto.ReservationListDto;
+import com.sh.workson.reservation.dto.ReservationReturnDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.repository.ReservationRepository;
 import com.sh.workson.resource.entity.Resource;
+import com.sh.workson.resource.entity.Type;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +30,8 @@ public class ReservationService {
     @Autowired
     private ModelMapper modelMapperStrict;
 
-    public List<Reservation> findByResourceId(Long id) {
-        return reservationRepository.findByResourceId(id);
+    public List<Reservation> findByResourceId(Long id, LocalDateTime today) {
+        return reservationRepository.findByResourceId(id, today);
     }
 
     public void createReservation(ReservationCreateDto reservationCreateDto) {
@@ -39,21 +41,21 @@ public class ReservationService {
     private Reservation convertToReservation(ReservationCreateDto reservationCreateDto) {
         Reservation reservation = modelMapperStrict.map(reservationCreateDto, Reservation.class);
         reservation.setEmployee(Employee.builder().id(reservationCreateDto.getEmployeeId()).build());
-        reservation.setResourceId(reservationCreateDto.getResourceId());
+        reservation.setResource(Resource.builder().id(reservationCreateDto.getResourceId()).build());
         return reservation;
     }
 
 
-    public List<Reservation> findByEmpId(Long id) {
-        return reservationRepository.findByEmpId(id);
+    public List<Reservation> findByEmpId(Long id, LocalDateTime today, Type type) {
+        return reservationRepository.findByEmpId(id, today, type);
     }
 
     public void deleteById(Long reservationId) {
         reservationRepository.deleteById(reservationId);
     }
 
-    public Page<ReservationListDto> findBetweenSearchDate(Pageable pageable, Long resourceId, LocalDateTime startTime, LocalDateTime endTime) {
-        Page<Reservation> reservationPage = reservationRepository.findBetweenSearchDate(pageable, resourceId, startTime, endTime);
+    public Page<ReservationListDto> findBetweenSearchDatePage(Pageable pageable, Long resourceId, LocalDateTime startTime, LocalDateTime endTime) {
+        Page<Reservation> reservationPage = reservationRepository.findBetweenSearchDatePage(pageable, resourceId, startTime, endTime);
         return reservationPage.map((reservation -> convertToReservationListDto(reservation)));
     }
 
@@ -64,8 +66,16 @@ public class ReservationService {
                 .content(reservation.getContent())
                 .count(reservation.getCount())
                 .empName(reservation.getEmployee().getName())
-                .resourceId(reservation.getResourceId())
+                .resourceId(reservation.getResource().getId())
                 .build();
         return reservationListDto;
+    }
+
+    public int findBetweenSearchDate(Long resourceId, LocalDateTime startAt, LocalDateTime endAt) {
+        return reservationRepository.findBetweenSearchDate(resourceId, startAt, endAt);
+    }
+
+    public List<Reservation> findAllAfterToday(Long id, LocalDateTime today) {
+        return reservationRepository.findAllAfterToday(id, today);
     }
 }

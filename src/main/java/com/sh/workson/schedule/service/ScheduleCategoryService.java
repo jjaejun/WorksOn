@@ -2,7 +2,9 @@ package com.sh.workson.schedule.service;
 
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.employee.entity.Employee;
+import com.sh.workson.schedule.dto.CreateScheduleCategoryDto;
 import com.sh.workson.schedule.dto.ScheduleCategoryDto;
+import com.sh.workson.schedule.dto.UpdateScheduleCategoryDto;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.repository.ScheduleCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +39,35 @@ public class ScheduleCategoryService {
     private ScheduleCategoryDto convertToScheduleCategoryDto(ScheduleCategory scheduleCategory) {
         ScheduleCategoryDto scheduleCategoryDto = modelMapper.map(scheduleCategory, ScheduleCategoryDto.class);
         return scheduleCategoryDto;
+    }
+
+    public void createScheduleCategory(CreateScheduleCategoryDto createScheduleCategoryDto) {
+        ScheduleCategory scheduleCategory = scheduleCategoryRepository.save(convertToScheduleCategory(createScheduleCategoryDto));
+    }
+    private ScheduleCategory convertToScheduleCategory(CreateScheduleCategoryDto createScheduleCategoryDto){
+        ScheduleCategory scheduleCategory = modelMapper.map(createScheduleCategoryDto, ScheduleCategory.class);
+        scheduleCategory.setEmployee(Employee.builder()
+                        .id(createScheduleCategoryDto.getEmpId())
+                        .build());
+        scheduleCategory.setName(createScheduleCategoryDto.getName());
+        scheduleCategory.setColor(createScheduleCategoryDto.getColor());
+        return scheduleCategory;
+    }
+
+
+    public void deleteById(Long id) {
+        scheduleCategoryRepository.deleteById(id);
+    }
+
+    public void updateScheduleCategory(UpdateScheduleCategoryDto updateScheduleCategoryDto) {
+        scheduleCategoryRepository.save(convertUpdateSCToSC(updateScheduleCategoryDto));
+    }
+    private ScheduleCategory convertUpdateSCToSC(UpdateScheduleCategoryDto updateScheduleCategoryDto){
+        ScheduleCategory scheduleCategory = modelMapper.map(updateScheduleCategoryDto, ScheduleCategory.class);
+        scheduleCategory.setEmployee(Employee.builder()
+                .id(updateScheduleCategoryDto.getEmpId())
+                .build());
+        return  scheduleCategory;
+
     }
 }

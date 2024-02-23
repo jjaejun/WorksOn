@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,7 +29,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -44,10 +47,10 @@ public class AttendController {
 
     @GetMapping("/attendList.do")
     public void attendList(
-                           @PageableDefault(value = 10, page = 0) Pageable pageable, Model model,
-                           @AuthenticationPrincipal EmployeeDetails employeeDetails
-                           ) {
-
+           @PageableDefault(value = 10, page = 0) Pageable pageable,
+           Model model,
+           @AuthenticationPrincipal EmployeeDetails employeeDetails
+    ) {
         Long id = employeeDetails.getEmployee().getId();
         Page<AttendListDto> attendPage = attendService.findAll(pageable, id);
         model.addAttribute("attends", attendPage.getContent());
@@ -57,7 +60,25 @@ public class AttendController {
         model.addAttribute("totalpages", attendPage.getTotalPages());
 
         Attend firstAttend = attendService.findByOrderByStartAt(id);
+        String stateKr = null;
+        if(firstAttend != null) {
+            if(firstAttend.getState().equals(State.LATE) || firstAttend.getState().equals(State.WORK)){
+                stateKr = "업무중";
+            }
+            else if(firstAttend.getState().equals(State.QUIT)){
+                stateKr = "퇴근";
+            }
+        }
+        else {
+            // firstAttend가 null 일때는 startAt와 endAt만 셋팅한 빈 객체를 만들자
+            firstAttend = new Attend();
+            firstAttend.setStartAt(null);
+            firstAttend.setEndAt(null);
+            stateKr = "";
+        }
+
         model.addAttribute("attend", firstAttend);
+        model.addAttribute("state", stateKr);
         log.debug("attend = {}", firstAttend);
         log.debug("attends = {}", attendPage.getContent());
     }
@@ -130,9 +151,6 @@ public class AttendController {
         LocalDateTime startTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(startDate)), ZoneId.systemDefault());
         LocalDateTime endTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(endDate)), ZoneId.systemDefault());
 
-//        LocalDateTime startTime = LocalDateTime.parse(startDate.replace("T", "") + " 00:00", DateTimeFormatter.ofPattern("yy/MM/dd HH:mm"));
-//        LocalDateTime endTime = LocalDateTime.parse(endDate.replace("T", "") + " 23:59", DateTimeFormatter.ofPattern("yy/MM/dd HH:mm"));
-
         // endTime에 1일을 더함
         endTime = endTime.plusDays(1);
 
@@ -141,6 +159,16 @@ public class AttendController {
 
         Long id = employeeDetails.getEmployee().getId();
         Page<AttendListDto> attendPage = attendService.findBetweenSearchDate(pageable, id, startTime, endTime);
-        return ResponseEntity.ok(attendPage);
+        int size = attendPage.getSize();
+        int number = attendPage.getNumber();
+        int totalpages = attendPage.getTotalPages();
+
+        Map<String, Object> resultSet = new HashMap<>();
+        resultSet.put("size", size);
+        resultSet.put("number", number);
+        resultSet.put("totalpages", totalpages);
+        resultSet.put("attendPage", attendPage);
+
+        return new ResponseEntity<>(resultSet, HttpStatus.OK);
     }
 }

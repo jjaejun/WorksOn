@@ -1,4 +1,30 @@
+const modalEvent = () => {
+    document.querySelectorAll(".attendOnTime").forEach((e) => {
+        e.addEventListener('click', (btn) => {
+            const modal = document.querySelector("#crud-modal");
+
+            if(modal.classList.contains("hidden")){
+                modal.classList.remove("hidden");
+            }
+            else {
+                modal.classList.add("hidden");
+            }
+        });
+    });
+};
+document.querySelectorAll(".closeBtn").forEach((e) => {
+    e.addEventListener('click', (btn) => {
+        const modal = document.querySelector("#crud-modal");
+        modal.classList.add("hidden");
+    });
+});
+
+
+
 window.addEventListener('DOMContentLoaded', () =>{
+    modalEvent();
+
+
     const focusBar = document.querySelector("#focus-bar");
     const attendBtn = document.querySelector("#attendBtn");
     const lis = document.querySelectorAll("#nav-ul li");
@@ -163,6 +189,187 @@ function handleDateChange() {
     console.log(`선택된 시작 날짜: ${startDateInput.value}, 종료 날짜: ${endDateInput.value}`);
 }
 
+
+const pagebarEvent = () => {
+    document.querySelectorAll(".attendPageNumber").forEach((e) => {
+        e.addEventListener('click', (btn) => {
+            const button = btn.target;
+            const { pageNumber} = button.dataset;
+            let size = 5;
+            const startDate = startDateInput.datepicker.dates[0];
+            const endDate = endDateInput.datepicker.dates[0];
+            const tbody = document.querySelector("#searchDate tbody");
+
+            $.ajax({
+                type: "GET",
+                headers: {
+                    [csrfHeaderName]: csrfToken
+                },
+                url: `${contextPath}attend/attendListSearchDate.do`,
+                data: {
+                    startDate : startDate, // millis
+                    endDate : endDate,
+                    page: pageNumber,
+                    size: size
+                },
+                success(response){
+                    console.log(response);
+                    tbody.innerHTML = '';
+                    const pagebarContainer = document.querySelector("#page-bar-container");
+                    const {size, number, totalpages} = response;
+
+                    let previousBtn;
+                    if(number <= 0) {
+                        previousBtn = `
+                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                        readonly>
+                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path
+                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd"
+                        ></path>
+                    </svg>
+                </button>`;
+                    }
+                    else if(number > 0){
+                        previousBtn = `
+                <button class="attendPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                        aria-label="Previous"
+                        data-page-number="${number - 1}">
+                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" data-page-number="${number - 1}">
+                        <path data-page-number="${number - 1}"
+                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                              fill-rule="evenodd"
+                        ></path>
+                    </svg>
+                </button>`;
+                    }
+                    let pageNumberBtn = '';
+                    for(let i = 0; i <= totalpages - 1; i++){
+                        if(i === number){
+                            pageNumberBtn += `
+                    <button id="selectBtn"
+                            class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
+                        <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
+                        <span>${i + 1}</span>
+                    </button>`;
+                        }
+                        else {
+                            pageNumberBtn += `
+                    <button class="attendPageNumber px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue hover:bg-gray-100"
+                            data-page-id="owner" data-page-number="${i}">
+                        <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
+                        <span data-page-number="${i}">${i + 1}</span>
+                    </button>
+                    `;
+                        }
+                    }
+
+                    let nextBtn;
+                    if(number >= totalpages - 1) {
+                        nextBtn = `
+                            <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed" readonly>
+                                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                    <path
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"
+                                            fill-rule="evenodd"
+                                    ></path>
+                                </svg>
+                            </button>`;
+                                }
+                                else if(number < totalpages - 1){
+                                    nextBtn = `
+                            <button class="attendPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                                    aria-label="Next"
+                                    data-page-number="${number + 1}">
+                                <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" data-page-number="${number + 1}">
+                                    <path data-page-number="${number + 1}"
+                                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                          clip-rule="evenodd"
+                                          fill-rule="evenodd"
+                                    ></path>
+                                </svg>
+                            </button>`;
+                                }
+
+                    pagebarContainer.innerHTML = `
+                <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                    <span class="flex mt-2 justify-center">
+                        <nav aria-label="Table navigation">
+                            <ul class="inline-flex items-center">
+                                <!-- 이전 버튼 -->
+                                <li>
+                                    ${previousBtn}
+                                </li>
+                                <!-- 페이지 번호 반복문 -->
+                                    ${pageNumberBtn}
+                                <!-- 다음 버튼 -->
+                                <li>
+                                    ${nextBtn}
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+            </div>
+            `;
+                    console.log(pagebarContainer.innerHTML);
+                    pagebarEvent();
+
+                    response.attendPage.content.forEach((att) => {
+                        const {content, employeeId, endAt, id, startAt, state} = att;
+
+                        tbody.innerHTML += `
+                    <tr>
+                        <td>${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}</td>
+                        <td>${new Date(startAt).toLocaleTimeString()}</td>
+                        <td>${endAt ? new Date(endAt).toLocaleTimeString() : ''}</td>
+                        <td>
+                            <button class="attendOnTime times block text-black focus:ring-4 rounded-xl focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    type="button">
+                                    ${new Date(startAt).toLocaleString()}
+                            </button>
+                        </td>
+                        <td>${att.content}</td>
+                    </tr>
+                `;
+                        const stateElements = document.querySelectorAll('.times');
+                        stateElements.forEach((stateElement) => {
+                            if (stateElement) {
+                                const startAtValue = stateElement.innerHTML;
+                                const currentDate = new Date();
+                                const compareDate = new Date(startAtValue);
+                                let state;
+                                if (compareDate.getHours() >= 9) {
+                                    state = '지각';
+                                    stateElement.classList.add('bg-red-300');
+                                } else {
+                                    state = '정상출근';
+                                    stateElement.classList.add('bg-green-500');
+                                }
+
+                                stateElement.innerText = state;
+                            }
+                        });
+                    });
+                    modalEvent();
+                },
+                error(e){
+                    console.log(e);
+                }
+            });
+
+
+
+
+        });
+    });
+}
+
+
+
 // Submit 버튼 클릭 시 시작 날짜부터 종료 날짜까지 출력
 document.querySelector("#submitBtn").addEventListener('click', (e) => {
 
@@ -186,26 +393,129 @@ document.querySelector("#submitBtn").addEventListener('click', (e) => {
             endDate : endDate
         },
         success(response){
-            console.log(response)
+
+            console.log(response);
             tbody.innerHTML = '';
-            response.content.forEach((att) => {
+            const pagebarContainer = document.querySelector("#page-bar-container");
+            const {size, number, totalpages} = response;
+
+
+            let previousBtn;
+            if(number <= 0) {
+                previousBtn = `
+                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed"
+                        readonly>
+                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path
+                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd"
+                        ></path>
+                    </svg>
+                </button>`;
+            }
+            else if(number > 0){
+                previousBtn = `
+                <button class="attendPageNumber px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                        aria-label="Previous"
+                        data-page-number="${number - 1}">
+                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20" data-page-number="${number - 1}">
+                        <path data-page-number="${number - 1}"
+                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                              fill-rule="evenodd"
+                        ></path>
+                    </svg>
+                </button>`;
+            }
+            let pageNumberBtn = '';
+            for(let i = 0; i <= totalpages - 1; i++){
+                if(i === number){
+                    pageNumberBtn += `
+                    <button id="selectBtn"
+                            class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
+                        <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
+                        <span>${i + 1}</span>
+                    </button>`;
+                }
+                else {
+                    pageNumberBtn += `
+                    <button class="attendPageNumber px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue hover:bg-gray-100"
+                            data-page-id="owner" data-page-number="${i}">
+                        <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
+                        <span data-page-number="${i}">${i + 1}</span>
+                    </button>
+                    `;
+                }
+            }
+
+            let nextBtn;
+            if(number >= totalpages - 1) {
+                nextBtn = `
+                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none bg-gray-50 text-gray-300 focus:shadow-outline-blue cursor-not-allowed" readonly>
+                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                        <path
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd"
+                        ></path>
+                    </svg>
+                </button>`;
+            }
+            else if(number < totalpages - 1){
+                nextBtn = `
+                <button class="attendPageNumber px-3 py-1 rounded-md rounded-r-lg focus:outline-none bg-blue-100 hover:bg-blue-200 focus:shadow-outline-blue"
+                        aria-label="Next"
+                        data-page-number="${number + 1}">
+                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20" data-page-number="${number + 1}">
+                        <path data-page-number="${number + 1}"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clip-rule="evenodd"
+                              fill-rule="evenodd"
+                        ></path>
+                    </svg>
+                </button>`;
+            }
+
+            pagebarContainer.innerHTML = `
+                <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                    <span class="flex mt-2 justify-center">
+                        <nav aria-label="Table navigation">
+                            <ul class="inline-flex items-center">
+                                <!-- 이전 버튼 -->
+                                <li>
+                                    ${previousBtn}
+                                </li>
+                                <!-- 페이지 번호 반복문 -->
+                                    ${pageNumberBtn}
+                                <!-- 다음 버튼 -->
+                                <li>
+                                    ${nextBtn}
+                                </li>
+                            </ul>
+                        </nav>
+                    </span>
+            </div>
+            `;
+            console.log(pagebarContainer.innerHTML);
+            pagebarEvent();
+
+            response.attendPage.content.forEach((att) => {
                 const {content, employeeId, endAt, id, startAt, state} = att;
 
                 tbody.innerHTML += `
-                <tr>
-                                <td>${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}</td>
-                                <td>${new Date(startAt).toLocaleTimeString()}</td>
-                                <td>${endAt ? new Date(endAt).toLocaleTimeString() : ''}</td>
-                            <td>
-                                <button id="attendOnTime"
-                                        data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                        class="times block text-black focus:ring-4 rounded-xl focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                        type="button">
-                                        ${new Date(startAt).toLocaleString()}
-                                </button>
-                            </td>
-                            <td>${att.content}</td>
-                        </tr>
+                    <tr>
+                        <td>${new Date(startAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}</td>
+                        <td>${new Date(startAt).toLocaleTimeString()}</td>
+                        <td>${endAt ? new Date(endAt).toLocaleTimeString() : ''}</td>
+                        <td>
+                            <button class="attendOnTime times block text-black focus:ring-4 rounded-xl focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    type="button">
+                                    ${new Date(startAt).toLocaleString()}
+                            </button>
+                        </td>
+                        <td>${att.content}</td>
+                    </tr>
                 `;
                 const stateElements = document.querySelectorAll('.times');
                 stateElements.forEach((stateElement) => {
@@ -226,7 +536,7 @@ document.querySelector("#submitBtn").addEventListener('click', (e) => {
                     }
                 });
             });
-
+            modalEvent();
         },
         error(e){
             console.log(e);

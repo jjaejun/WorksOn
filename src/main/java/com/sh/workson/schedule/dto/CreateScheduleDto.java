@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 public class CreateScheduleDto {
     @NotEmpty(message = "제목은 필수입력사항 입니다.")
     private String title;
-    @NotNull(message = "카테고리는 필수입력사항 입니다.")
-    private Long ScheduleCategoryId;
+    // @NotNull(message = "카테고리는 필수입력사항 입니다.")
+    private Long scheduleCategoryId;
     private Long empId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

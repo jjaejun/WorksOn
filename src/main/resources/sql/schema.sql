@@ -120,6 +120,7 @@ create sequence seq_project_employee_id start with 1 increment by 50;
 
 -- 프로젝트 첨부파일 - attachment 같이 사용
 
+
 -- 프로젝트 댓글
 create table project_comment (
     id number not null,
@@ -128,12 +129,11 @@ create table project_comment (
     comment_level number default 1,
     created_at timestamp not null,
     emp_id number,
-    project_id number not null,
+    type_id number not null,
     type varchar2(10),
     constraints pk_project_comment_id primary key(id),
     constraint fk_project_comment_parent_id foreign key (parent_comment_id) references project_comment(id) on delete cascade,
     constraints fk_project_comment_emp_id foreign key(emp_id) references employee(id) on delete set null,
-    constraints fk_project_comment_project_id foreign key(project_id) references project(id) on delete set null,
     constraints ck_project_comment_type check (type in ('TASK', 'ISSUE'))
 );
 create sequence seq_project_comment_id start with 1 increment by 50;
@@ -144,7 +144,7 @@ create table task (
     name varchar2(1000) not null,
     content varchar2(4000),
     priority number default 1,
-    start_at date not null,
+    start_at date,
     end_at date,
     status varchar2(30),
     owner_id number,
@@ -224,7 +224,7 @@ create sequence seq_board_comment_id start with 1 increment by 50;
 create table attachment (
     id number,
     board_type varchar2(50) not null,
-    board_id number not null,
+    board_id number,
     original_file_name varchar(255) not null,
     key varchar2(1000) not null, 
     url varchar(1000) not null,
@@ -240,12 +240,12 @@ select * from attachment;
 -- 재준
 
 -- table drop
--- drop table chat_read;
--- drop table chat_log;
--- drop table chat_emp;
--- drop table chat_room;
--- drop table tb_resource;
--- drop table reservation;
+-- drop table chat_read cascade constraints;
+-- drop table chat_log cascade constraints;
+-- drop table chat_emp cascade constraints;
+-- drop table chat_room cascade constraints;
+-- drop table tb_resource cascade constraints;
+-- drop table reservation cascade constraints;
 
 -- sequence drop
 -- drop sequence seq_chat_log_id;
@@ -317,6 +317,7 @@ create table reservation(
     , constraint fk_reservation_tb_resource_id foreign key(tb_resource_id) references tb_resource(id) on delete cascade
 );
 alter table reservation rename column emp_id to employee_id;
+ALTER TABLE reservation MODIFY tb_resource_id NULL;
 create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 우진
@@ -324,12 +325,12 @@ create sequence seq_reservation_id start with 1 increment by 50;
 
 -- 테이블 일괄 삭제 시
 
-drop table approval_line;
-drop table approval_attachment;
-drop table approval;
-drop table approval_leave;
-drop table approval_equipment;
-drop table approval_cooperation;
+--drop table approval_line cascade constraints;
+--drop table approval_attachment cascade constraints;
+--drop table approval cascade constraints;
+--drop table approval_leave cascade constraints;
+--drop table approval_equipment cascade constraints;
+--drop table approval_cooperation cascade constraints;
 
 -- 시퀀스 일괄 삭제시
 
@@ -361,6 +362,8 @@ alter table approval_leave add leave_count varchar2(30); -- 결재 종류
 ALTER TABLE approval_leave MODIFY leave_count FLOAT(53); -- 연차 일수
 update approval_leave set leave_count = 1.0 where id = 11101;
 select * from approval_leave;
+alter table approval_leave modify start_date date;
+alter table approval_leave modify end_date date;
 
 -- 결재 비품신청 테이블
 create table approval_equipment (
@@ -390,6 +393,10 @@ create table approval_cooperation (
     , created_at timestamp default systimestamp
     , constraints pk_approval_cooperation_id primary key(id)
 );
+alter table approval_cooperation modify start_date date;
+alter table approval_cooperation modify end_date date;
+alter table approval_cooperation modify name null;
+alter table approval_cooperation modify people null;
 
 
 -- 결재 테이블
@@ -414,6 +421,9 @@ create table approval (
     , constraints ck_approval_status check (status in ('대기', '진행중', '임시저장', '승인', '반려', '예정'))
 );
 create sequence seq_approval_id start with 1 increment by 50;
+
+alter table approval modify approval_start_date date;
+alter table approval modify approval_end_date date;
 
 -- 전자결재 첨부파일 테이블
 create table approval_attachment (
@@ -447,11 +457,10 @@ create table approval_line (
 );
 create sequence seq_approval_line_id start with 1 increment by 50;
 
+alter table approval_line add sign varchar2(100);
+
 -- 무진
 
--- table drop
-
--- sequence drop
 
 -- 준희
 -- 스케쥴 카테고리
@@ -517,60 +526,65 @@ create sequence seq_schedule_join_member_id start with 1 increment by 50;
 -- drop sequence seq_daily_work_id;
 -- drop sequence seq_cherry_id;
 create table attend(
-                       id number,
-                       start_at timestamp,
-                       end_at timestamp,
-                       state varchar2(1000),
-                       employee_id number not null,
-                       constraints pk_attend_id primary key(id),
-                       constraints fk_employee_id foreign key(employee_id) references employee(id) on delete cascade
+       id number,
+       start_at timestamp,
+       end_at timestamp,
+       state varchar2(1000),
+       employee_id number not null,
+       constraints pk_attend_id primary key(id),
+       constraints fk_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
 create sequence seq_attend_id start with 1 increment by 50;
 create table attend_request(
-                               id number not null,
-                               type varchar2(1000) not null,
-                               content varchar2(1000) not null,
-                               attend_id number not null,
-                               check_ar varchar2(1000) not null,
-                               constraints pk_attend_request_id primary key(id),
-                               constraints fk_attend_id foreign key(attend_id) references attend(id) on delete cascade
+       id number not null,
+       type varchar2(1000) not null,
+       content varchar2(1000) not null,
+       attend_id number not null,
+       check_ar varchar2(1000) not null,
+       constraints pk_attend_request_id primary key(id),
+       constraints fk_attend_id foreign key(attend_id) references attend(id) on delete cascade
 );
 create sequence seq_attend_request_id start with 1 increment by 50;
 ALTER TABLE attend_request
     MODIFY content VARCHAR2(1000) NULL;
 ---------------------------------------------------------------------------------------------------------------------
 create table dayoff(
-                       id number not null,
-                       type varchar2(1000) not null,
-                       start_at timestamp not null,
-                       end_at timestamp not null,
-                       count number not null,
-                       employee_id number not null,
-                       content varchar2(1000) not null,
-                       constraints pk_dayoff_id primary key(id),
-                       constraints fk_dayoff_employee_id foreign key(employee_id) references employee(id) on delete cascade
+       id number not null,
+       type varchar2(1000) not null,
+       start_at timestamp not null,
+       end_at timestamp not null,
+       count number not null,
+       employee_id number not null,
+       content varchar2(1000) not null,
+       constraints pk_dayoff_id primary key(id),
+       constraints fk_dayoff_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
 create sequence seq_dayoff_id start with 1 increment by 50;
 -----------------------------------------------------------------------------------------------------------------------
 create table daily_work(
-                           id number not null,
-                           content varchar2(1000) not null,
-                           created_at timestamp default systimestamp,
-                           cherry_count number,
-                           employee_id number not null,
-                           constraints pk_daily_work primary key(id),
-                           constraints fk_daily_work_employee_id foreign key(employee_id) references employee(id) on delete cascade
+       id number not null,
+       content varchar2(1000) not null,
+       created_at timestamp default systimestamp,
+       cherry_count number,
+       employee_id number not null,
+       constraints pk_daily_work primary key(id),
+       constraints fk_daily_work_employee_id foreign key(employee_id) references employee(id) on delete cascade
 );
 create sequence seq_daily_work_id start with 1 increment by 50;
 -------------------------------------------------------------------------------------------------------------------------
 create table cherry(
-                       id number not null,
-                       get_cherry number,
-                       daily_work_id number not null,
-                       employee_id number not null,
-                       constraints pk_cherry_id primary key(id),
-                       constraints fk_cherry_employee_id foreign key(employee_id) references employee(id) on delete cascade,
-                       constraints fk_cherry_daily_work_id foreign key(daily_work_id) references daily_work(id) on delete cascade
+       id number not null,
+       get_cherry number,
+       daily_work_id number not null,
+       employee_id number not null,
+       constraints pk_cherry_id primary key(id),
+       constraints fk_cherry_employee_id foreign key(employee_id) references employee(id) on delete cascade,
+       constraints fk_cherry_daily_work_id foreign key(daily_work_id) references daily_work(id) on delete cascade
 );
+ALTER TABLE cherry
+ADD cherry_content VARCHAR2(1000);
 create sequence seq_cherry_id start with 1 increment by 50;
+
+
+commit;
 

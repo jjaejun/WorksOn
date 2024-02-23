@@ -3,49 +3,56 @@
 <head>
     <title>게시글 상세보기</title>
     <style layout:fragment="style">
-        /* 여기에 스타일을 추가하세요 */
+
     </style>
 </head>
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content" class="min-h-screen flex items-center justify-center bg-white">
+
     <div id="board-container" class="w-50 mx-auto text-center">
-        <input type="text" class="form-control mb-3"
-               placeholder="제목" name="title" id="title" th:value="${board.title}" required>
-        <input type="text" class="form-control mb-3"
-               name="name" th:value="${board.employee != null ? board.employee.name:'퇴사자'}" readonly required>
-        <button type="button"
-                class="btn btn-outline-success btn-block mb-3"
-                th:each="attach, status : ${board.attachments}"
-                th:text="|첨부파일${status.count} - ${attach.originalFileName}|"
-                th:onclick="|location.href ='@{/board/fileDownload.do}?id=${attach.id}';|">
-        </button>
+        <form th:action="@{/board/boardUpdate.do}" method="post">
+            <div class="flex items-center justify-end px-3 py-2 border-t">
+                <input type="hidden" name="id" th:value="${board.id}">
+                <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+                    수정
+                </button>
+            </div>
 
-        <textarea class="form-control mb-3" name="content"
-                  placeholder="내용" th:text="${board.content}" required></textarea>
-        <input type="datetime-local" class="form-control" name="createdAt" th:value="${#temporals.format(board.createdAt,'yyyy-MM-dd HH:mm')}">
+            <input type="text" class="form-control mb-3"
+                   placeholder="제목" name="title" id="title" th:value="${board.title}" required>
+            <input type="text" class="form-control mb-3"
+                   name="name" th:value="${board.employee != null ? board.employee.name:'퇴사자'}" readonly required>
+            <button type="button"
+                    class="btn btn-outline-success btn-block mb-3"
+                    th:each="attach, status : ${board.attachments}"
+                    th:text="|첨부파일${status.count} - ${attach.originalFileName}|"
+                    th:onclick="|location.href ='@{/board/fileDownload.do}?id=${attach.id}';|">
+            </button>
 
+            <textarea class="form-control mb-3" name="content"
+                      placeholder="내용" th:text="${board.content}" required></textarea>
+            <input type="datetime-local" class="form-control" name="createdAt" th:value="${#temporals.format(board.updatedAt,'yyyy-MM-dd HH:mm')}">
+        </form>
         <br>
 
         <!-- 댓글 폼 시작 -->
-        <div class="flex items-start gap-2.5">
-            <div class="flex flex-col w-full max-w-[400px] leading-1.5 p-6 border-gray-300 bg-gray-200 rounded-lg dark:bg-gray-700">
-                <form th:action="@{/board/boardDetail.do(id=${board.id})}" method="post" class="w-full">
-                    <div class="flex items-center space-x-2 rtl:space-x-reverse mb-2">
-                        <input type="hidden" name="commentLevel" value="1" />
-                        <input type="hidden" name="id" th:value="${board.id}" />
-                        <textarea class="flex-grow form-control rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" name="comment" placeholder="댓글을 입력하세요" required></textarea>
-                    </div>
-                    <div class="flex items-center justify-end px-3 py-2 border-t">
-                        <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
-                            댓글 등록
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div class="flex items-start gap-2.5 comment-form-container">
+            <form th:action="@{/board/boardDetail.do(id=${board.id})}" method="post" class="w-full">
+                <div class="flex items-center space-x-2 rtl:space-x-reverse mb-2">
+                    <input type="hidden" name="commentLevel" value="1" />
+                    <input type="hidden" name="id" th:value="${board.id}" />
+                    <textarea class="flex-grow form-control rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" name="comment" placeholder="댓글을 입력하세요" required></textarea>
+                </div>
+                <div class="flex items-center justify-end px-3 py-2 border-t">
+                    <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+                        댓글 등록
+                    </button>
+                </div>
+            </form>
         </div>
         <!-- 댓글 폼 끝 -->
 
-        <div class="relative my-8 shadow-xl sm:rounded-lg">
+        <div class="relative my-8 shadow-xl sm:rounded-lg comment-list">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <tbody>
                 <th:block th:each="comment : ${commentList}">
@@ -79,13 +86,10 @@
                 </tbody>
             </table>
         </div>
-
-
-
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 </div>
+</body>
 
 <script layout:fragment="script" th:src="@{/js/board/boardDetail.js}"></script>
-
 </html>

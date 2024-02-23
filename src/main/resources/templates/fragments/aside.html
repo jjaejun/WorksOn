@@ -10,7 +10,7 @@
       <!-- Desktop sidebar -->
       <aside
         id="sidebar"
-        class="z-20 w-48 pt-10 h-full bg-blue-600 md:block flex-shrink-0"
+        class="z-20 w-48 pt-10 h-min-screen h-full bg-blue-600 md:block flex-shrink-0"
       >
         <div class="py-4 text-[#FFFFFF]">
           <div
@@ -36,7 +36,7 @@
                 <span class="ml-4">대시보드</span>
               </a>
             </li>
-            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/schedule/calender.do}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" th:onclick="|location.href='@{/schedule/calendar.do}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
                 href="#"
@@ -92,7 +92,7 @@
                 <span class="ml-4">전자결재</span>
               </a>
             </li>
-            <li class="relative px-6 py-3 h-[58px]" id="attendBtn"  th:onclick="|location.href='@{/attend/attendList.do}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" id="attendBtn"  th:onclick="|location.href='@{/attend/attendList.do}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
@@ -102,7 +102,7 @@
                 <span class="ml-4">근태관리</span>
               </a>
             </li>
-            <li class="relative px-6 py-3 h-[58px]" id="boardList" th:onclick="|location.href='@{/board/boardList.do}'|">
+            <li class="relative px-6 py-3 h-[58px] hover:bg-blue-400" id="boardList" th:onclick="|location.href='@{/board/boardAllList.do}'|">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
@@ -124,7 +124,7 @@
               </a>
             </li>
 <!--            무진 수정-->
-            <li sec:authorize="hasRole('HR')" class="relative px-6 py-3 h-[58px]" id="createEmployee" th:onclick="|location.href='@{/employee/employeeCreate.do}'|">
+            <li sec:authorize="hasRole('HR')" class="relative px-6 py-3 h-[58px] hover:bg-blue-400" id="createEmployee" th:onclick="|location.href='@{/employee/employeeCreate.do}'|">
               <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-[#FFFFFF]"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
@@ -135,7 +135,7 @@
             </li>
 
           </ul>
-          <div class="px-6 mt-48">
+          <div class="px-6 mt-40">
             <button
               class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
             >

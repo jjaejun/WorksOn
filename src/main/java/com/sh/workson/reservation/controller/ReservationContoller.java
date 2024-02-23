@@ -1,11 +1,14 @@
 package com.sh.workson.reservation.controller;
 
+import com.sh.workson.attachment.entity.Attachment;
+import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attend.entity.AttendListDto;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.reservation.dto.ReservationCreateDto;
 import com.sh.workson.reservation.dto.ReservationListDto;
 import com.sh.workson.reservation.entity.Reservation;
 import com.sh.workson.reservation.service.ReservationService;
+import com.sh.workson.resource.dto.ResourceAttachmentDto;
 import com.sh.workson.resource.entity.Resource;
 import com.sh.workson.resource.entity.Type;
 import com.sh.workson.resource.service.ResourceService;
@@ -29,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,35 +44,40 @@ public class ReservationContoller {
     private ReservationService reservationService;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private AttachmentService attachmentService;
 
     @GetMapping("/reservationRoom.do")
     public void reservationRoom(Model model) {
-        List<Resource> resources = resourceService.findByType(Type.Room);
-        log.debug("resources = {}", resources);
+        List<ResourceAttachmentDto> resourceAttachmentDtos = resourceService.findByType(Type.Room);
+        log.debug("resources = {}", resourceAttachmentDtos);
 
-        model.addAttribute("resources", resources);
+        model.addAttribute("resources", resourceAttachmentDtos);
     }
 
     @GetMapping("/reservationNotebook.do")
     public void reservationNotebook(Model model) {
-        List<Resource> resources = resourceService.findByType(Type.Notebook);
-        log.debug("resources = {}", resources);
+        List<ResourceAttachmentDto> resourceAttachmentDtos = resourceService.findByType(Type.Notebook);
+        log.debug("resources = {}", resourceAttachmentDtos);
 
-        model.addAttribute("resources", resources);
+        model.addAttribute("resources", resourceAttachmentDtos);
     }
 
     @GetMapping("/reservationCar.do")
     public void reservationCar(Model model) {
-        List<Resource> resources = resourceService.findByType(Type.Car);
-        log.debug("resources = {}", resources);
+        List<ResourceAttachmentDto> resourceAttachmentDtos = resourceService.findByType(Type.Car);
+        log.debug("resources = {}", resourceAttachmentDtos);
 
-        model.addAttribute("resources", resources);
+        model.addAttribute("resources", resourceAttachmentDtos);
     }
 
     @GetMapping("/reservationList.do")
     public void reservationDetail(@RequestParam("id") Long id, Model model) {
-        List<Reservation> reservations = reservationService.findByResourceId(id);
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByResourceId(id, today);
+        String resourceName = resourceService.findNameById(id);
         model.addAttribute("resourceId", id);
+        model.addAttribute("resourceName", resourceName);
         model.addAttribute("reservations", reservations);
     }
 
@@ -80,12 +89,27 @@ public class ReservationContoller {
         log.debug("reservationCreateDto = {}", reservationCreateDto);
         reservationService.createReservation(reservationCreateDto);
         redirectAttributes.addFlashAttribute("msg", "예약 신청이 완료되었습니다.😎");
-        return "redirect:reservationMyList.do";
+        return "redirect:reservationMyListRoom.do";
     }
 
-    @GetMapping("/reservationMyList.do")
-    public void reservationMyDetail(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
-        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId());
+    @GetMapping("/reservationMyListRoom.do")
+    public void reservationMyListRoom(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Room);
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+    @GetMapping("/reservationMyListCar.do")
+    public void reservationMyListCar(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Car);
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+    @GetMapping("/reservationMyListNotebook.do")
+    public void reservationMyListNotebook(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Notebook);
         log.debug("reservations = {}", reservations);
         model.addAttribute("reservations", reservations);
     }
@@ -95,7 +119,7 @@ public class ReservationContoller {
         log.debug("reservationId = {}", reservationId);
         reservationService.deleteById(reservationId);
         redirectAttributes.addFlashAttribute("msg", "예약이 취소되었습니다.");
-        return "redirect:reservationMyList.do";
+        return "redirect:reservationMyListRoom.do";
     }
 
     @GetMapping("/reservationListSearchDate.do")
@@ -121,7 +145,22 @@ public class ReservationContoller {
         log.debug("T startTime = {}", startTime); // T startDate = 24/02/07 00:00
         log.debug("T endTime = {}", endTime); // T endDate = 24/02/10 23:59
 
-        Page<ReservationListDto> reservationPage = reservationService.findBetweenSearchDate(pageable, resourceId, startTime, endTime);
+        Page<ReservationListDto> reservationPage = reservationService.findBetweenSearchDatePage(pageable, resourceId, startTime, endTime);
         return ResponseEntity.ok(reservationPage);
+    }
+
+    @GetMapping("/reservationCheck.do")
+    public ResponseEntity<?> reservationCheck(
+            @RequestParam("startAt") LocalDateTime startAt,
+            @RequestParam("endAt") LocalDateTime endAt,
+            @RequestParam("resourceId") Long resourceId
+    ) {
+        log.debug("startAt = {}", startAt);
+        log.debug("endAt = {}", endAt);
+        log.debug("resourceId = {}", resourceId);
+
+        int reservationCheckNum = reservationService.findBetweenSearchDate(resourceId, startAt, endAt);
+        log.debug("reservationCheckNum = {}", reservationCheckNum);
+        return ResponseEntity.ok(reservationCheckNum);
     }
 }

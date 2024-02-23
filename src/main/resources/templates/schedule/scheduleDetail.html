@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org/"
+        xmlns:layout="http://www.ultraq.net.nz/tymeleaf/layout"
+        layout:decorate="~{layout/default}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/schedule/calendar.css}" />
+</head>
+<div th:fragment="scheduleDetail">
+    <!-- Modal toggle -->
+    <!-- target에 작성한 crud-modal이 아이디로 사용됨(변경 시 crud-modal을 모두 같은 이름으로 변경) -->
+    <!-- Modal toggle -->
+    <div id="schedule-modal" tabindex="-1" aria-hidden="true"
+         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <!--data-modal-target="schedule-modal"-->
+        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto"
+             style="position: fixed; top: 50%; left: 50%;transform: translate(-50%,-50%)">
+            <div class="relative bg-white rounded-lg shadow-xl">
+                <div class="flex items-start justify-between p-5 border-b rounded-t bg-gray-100">
+                    <h3 class="text-xl font-semibold text-gray-900">
+                        일정 상세보기
+                    </h3>
+                    <button type="button" id="close-modal"
+                            class="text-gray-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                            >
+                        <!--data-modal-toggle="schedule-modal"-->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <form th:action="@{/schedule/updateSchedule.do}"
+                      class="px-6 py-4" method="post" id="schedule-form">
+                    <!-- 토큰 추가할 때 직접 추가하려면 하단 양식으로 추가해주기 -->
+                    <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+                    <div class="grid gap-6 mb-6">
+                        <div class="col-span-1">
+                            <input type="hidden" id="id" name="id">
+                        </div>
+                        <div class="col-span-1 md:col-span-2">
+                            <label for="title" class="block mb-2 text-sm font-medium text-gray-900">일정 이름</label>
+                            <input type="text" name="title" id="title"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                   required="">
+                        </div>
+                        <div class="flex gap-6 w-full">
+                            <div class="w-1/2">
+                                <label for="startTime" class="block mb-2 text-sm font-medium text-gray-900">시작
+                                    시간</label>
+                                <input type="datetime-local" name="startTime" id="startTime"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                       required="">
+                            </div>
+                            <div class="w-1/2">
+                                <label for="endTime" class="block mb-2 text-sm font-medium text-gray-900">종료 시간</label>
+                                <input type="datetime-local" name="endTime" id="endTime"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+                        </div>
+                        <!--<div class="col-span-1 md:col-span-2">-->
+                        <!--    <label for="category" class="block mb-2 text-sm font-medium text-gray-900">일정 카테고리</label>-->
+                        <!--    <input type="text" name="category" id="category"-->
+                        <!--           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"-->
+                        <!--           required="">-->
+                        <!--</div>-->
+                        <input type="hidden" name="schedule-category-id" id="schedule-category-id">
+                        <div class="col-span-1 md:col-span-2">
+                            <label for="event-content" class="block mb-2 text-sm font-medium text-gray-900">일정
+                                내용</label>
+                            <input type="text" name="event-content" id="event-content"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                   required="">
+                        </div>
+                        <div class="flex justify-end space-x-3 col-span-1 md:col-span-2">
+                            <button type="submit" id="update-schedule"
+                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                수정
+                            </button>
+                            <button type="button" id="delete-schedule"
+                                    class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                삭제
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form th:action="@{/schedule/deleteSchedule.do}" method="post" name="deleteScheduleId">
+                    <input type="hidden" name="id" id="delete-schedule-id" >
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <script th:src="@{/js/schedule/scheduleDetail.js}"></script>
+</html>

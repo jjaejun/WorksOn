@@ -7,31 +7,26 @@
     <title>내 근태 현황</title>
 </head>
 <style layout:fragment="style">
-    .table-container {
-        width: 100%;
-        margin-top: 20px;
-    }
+    /*.table-container {*/
+    /*    width: 100%;*/
+    /*    margin-top: 20px;*/
+    /*}*/
 
-    .table-container table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: auto 0;
-    }
+    /*.table-container table {*/
+    /*    width: 100%;*/
+    /*    border-collapse: collapse;*/
+    /*    margin: auto 0;*/
+    /*}*/
 
-    .table-container th, .table-container td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
+    /*.table-container th, .table-container td {*/
+    /*    border: 1px solid #ddd;*/
+    /*    padding: 8px;*/
+    /*    text-align: center;*/
+    /*}*/
 
-    .table-container th {
-        background-color: #3498db;
-        color: white;
-    }
-
-    .table-container tr:hover {
-        background-color: #f5f5f5;
-    }
+    /*.table-container tr:hover {*/
+    /*    background-color: #f5f5f5;*/
+    /*}*/
     th#date-column {
         width: 15%; /* 원하는 크기로 조절하세요. */
     }
@@ -48,95 +43,93 @@
     th#reason-column {
         width: 35%; /* 원하는 크기로 조절하세요. */
     }
-
     #color{
         color: orangered;
     }
 </style>
 
 <div layout:fragment="content">
+      <div class="mx-auto w-5/6 flex">
+            <div class="w-1/3 p-8">
+                <table class="w-full">
+                    <tr class="w-full">
+                        <td rowspan="3" class="w-1/3 h-full align-baseline">
+                            <div class="m-2 w-full align-top text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
+                                <h4 class="my-4" id="year"></h4>
+                                <div th:id="img-wrap" class="my-2 rounded-full w-2/4 overflow-hidden bg-blue-50 mx-auto">
+                                    <img class="object-cover" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
+                                </div>
+                                <p class="my-4" th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></p>
+                                <h1 class="my-4 text-4xl font-bold" id="clock"></h1>
+                                <div class="w-full text-center my-2 bg-gray-50 p-3 mb-2"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
+                                    <div class="flex justify-between w-full my-2 mx-auto items-center p-2 rounded-lg transition-all">
+                                        <h1 class="w-fit font-semibold" id="work-state">업무 상태</h1>
+        <!--                                <h1 class="w-full" id="color" th:text="${(attend.state == T(com.sh.workson.attend.entity.State).LATE || attend.state == T(com.sh.workson.attend.entity.State).WORK) ? '업무중' : (attend.state == T(com.sh.workson.attend.entity.State).QUIT ? '퇴근' : '')}"></h1>-->
+                                        <h1 class="w-fit text-blue-600" th:text="${state}"></h1>
+                                    </div>
+                                    <div class="flex justify-between w-full my-2 mx-auto items-center p-2 rounded-lg transition-all">
+                                        <h1 class="w-fit font-semibold">출근시간</h1>
+                                        <h1 class="w-fit" id="startwork-time" th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></h1>
+                                    </div>
+                                    <div class="flex justify-between w-full my-2 mx-auto items-center p-2 rounded-lg transition-all">
+                                        <h1 class="w-fit font-semibold">퇴근시간</h1>
+                                        <h1 class="w-fit" id="endwork-time" th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></h1>
+                                    </div>
+                                    <div class="flex justify-between mt-10 w-full mx-auto items-center p-2 rounded-lg transition-all">
+                                        <button id="btn-startwork" th:data-emp-id="${#authentication.principal.employee.id}"
+                                                class="w-1/2 py-2 text-center text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm text-center me-2 mb-2">
+                                            출근하기
+                                        </button>
+                                        <input id="attend-startAt" th:value="${attend.startAt}" type="hidden">
+                                        <script th:if="${attend.startAt != null}">
+                                            const attend = document.querySelector("#attend-startAt");
+                                            console.log(attend.value);
+                                            const startDay = attend.value.split("T")[0];
+                                            console.log(startDay);
 
-    <div class="w-full bg-gray-50 p-2">
-      <div class="flex">
-        <div class="w-1/3 p-2">
-        <table class="w-full">
-            <tr class="w-full">
-                <td rowspan="3" class="w-1/3 h-full align-baseline">
-                    <div class="m-2 align-top text-center border border-gray-100 items-center p-4 bg-white rounded-lg shadow-xs h-full">
-                        <h4 class="my-4" id="year"></h4>
-                        <div th:id="img-wrap" class="my-2 rounded-full w-2/4 overflow-hidden bg-blue-50 mx-auto">
-                            <img class="object-cover" th:src="${#authentication.principal.employee.profileUrl != null ? #authentication.principal.employee.profileUrl : 'https://bucket-minjeong2024.s3.ap-northeast-2.amazonaws.com/profile.png'}" alt="" id="profile-preview">
-                        </div>
-                        <p class="my-4" th:text="|${#authentication.principal.employee.name} ${#authentication.principal.employee.position.name}|"></p>
-                        <h1 class="my-4 text-4xl font-bold" id="clock"></h1>
-                        <div class="w-full text-center my-2 bg-gray-50 p-5 mb-8"> <!-- xl:cols숫자 = 안에 들어있는 카드수 -->
-                            <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
-                                <h1 class="w-1/3" id="work-state">업무 상태</h1>
-                                <h1 class="w-full" id="color" th:text="${(attend.state == T(com.sh.workson.attend.entity.State).LATE || attend.state == T(com.sh.workson.attend.entity.State).WORK) ? '업무중' : (attend.state == T(com.sh.workson.attend.entity.State).QUIT ? '퇴근' : '')}"></h1>
+                                            const workState = document.querySelector("#work-state");
+                                            const start = document.querySelector("#startwork-time");
+                                            const end = document.querySelector("#endwork-time");
+
+                                            const currentDate = new Date();
+                                            const year = currentDate.getFullYear();
+                                            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                                            const day = currentDate.getDate().toString().padStart(2, '0');
+                                            const formattedDate = `${year}-${month}-${day}`;
+                                            let isAttendRegistered = false;
+                                            console.log(formattedDate);
+
+                                            if (startDay === formattedDate){
+                                                isAttendRegistered = true;
+                                            } else{
+                                                workState.innerHTML = '';
+                                                start.innerHTML = '';
+                                                end.innerHTML = '';
+                                                isAttendRegistered = false;
+                                            }
+                                        </script>
+
+                                        <button id="btn-endwork" th:data-emp-id="${#authentication.principal.employee.id}"
+                                                class="w-1/2 py-2 text-center text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm text-center me-2 mb-2">
+                                            퇴근하기
+                                        </button>
+                                        <script th:if="${attend.endAt != null}" defer="defer">
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const btnEndWork = document.getElementById('btn-endwork');
+                                                btnEndWork.disabled = true;  // 퇴근 시간이 이미 등록되었으면 버튼 비활성화
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
-                                <h1 class="w-1/3">출근시간</h1>
-                                <h1 class="w-full" id="startwork-time" th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></h1>
-                            </div>
-                            <div class="flex w-full my-2 mx-auto items-center p-2rounded-lg transition-all">
-                                <h1 class="w-1/3">퇴근시간</h1>
-                                <h1 class="w-full" id="endwork-time" th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></h1>
-                            </div>
-                            <div class="flex mt-10 w-full mx-auto items-center p-2rounded-lg transition-all">
-                                <button id="btn-startwork" th:data-emp-id="${attend.employee.id}"
-                                        class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                    출근하기
-                                </button>
-                                <input id="attend-startAt" th:value="${attend.startAt}" type="hidden">
-                                <script th:if="${attend.startAt != null}">
-                                    const attend = document.querySelector("#attend-startAt");
-                                    console.log(attend.value);
-                                    const startDay = attend.value.split("T")[0];
-                                    console.log(startDay);
+                        </td>
+                    </tr>
+                </table>
+            </div>
+                <div class="w-2/3 ml-4 p-2 table-container flex flex-wrap">
+                    <h1 class="text-3xl w-full font-bold mb-2">내 근태 현황</h1>
 
-                                    const workState = document.querySelector("#work-state");
-                                    const start = document.querySelector("#startwork-time");
-                                    const end = document.querySelector("#endwork-time");
-
-                                    const currentDate = new Date();
-                                    const year = currentDate.getFullYear();
-                                    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-                                    const day = currentDate.getDate().toString().padStart(2, '0');
-                                    const formattedDate = `${year}-${month}-${day}`;
-                                    let isAttendRegistered = false;
-                                    console.log(formattedDate);
-
-                                    if (startDay === formattedDate){
-                                        isAttendRegistered = true;
-                                    } else{
-                                        workState.innerHTML = '';
-                                        start.innerHTML = '';
-                                        end.innerHTML = '';
-                                        isAttendRegistered = false;
-                                    }
-                                </script>
-
-                                <button id="btn-endwork" th:data-emp-id="${attend.employee.id}"
-                                        class="w-fit flex items-center mx-auto text-white bg-gradient-to-br from-blue-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-200 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                    퇴근하기
-                                </button>
-                                <script th:if="${attend.endAt != null}" defer="defer">
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        const btnEndWork = document.getElementById('btn-endwork');
-                                        btnEndWork.disabled = true;  // 퇴근 시간이 이미 등록되었으면 버튼 비활성화
-                                    });
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        </div>
-                <div class="w-2/3 p-2 table-container">
-                    <h1 class="text-3xl font-bold mb-4">내 근태 현황</h1>
-
-                    <div date-rangepicker class="flex items-center mb-20">
+                    <div date-rangepicker class="flex w-full items-center mb-2">
                         <div class="relative">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -158,25 +151,25 @@
                     </div>
 
 
-                    <table id="searchDate" class="full">
+                    <table id="searchDate" class="w-full text-center">
                         <thead>
                             <tr>
-                                <th id="date-column">날짜</th>
-                                <th id="start-time-column">출근시간</th>
-                                <th id="end-time-column">퇴근시간</th>
-                                <th id="status-column">상태</th>
-                                <th id="reason-column">정정사유</th>
+                                <th id="date-column" class="border border-gray-300 bg-blue-500 text-white p-2">날짜</th>
+                                <th id="start-time-column" class="border border-gray-300 bg-blue-500 text-white p-2">출근시간</th>
+                                <th id="end-time-column" class="border border-gray-300 bg-blue-500 text-white p-2">퇴근시간</th>
+                                <th id="status-column" class="border border-gray-300 bg-blue-500 text-white p-2">상태</th>
+                                <th id="reason-column" class="border border-gray-300 bg-blue-500 text-white p-2">정정사유</th>
                             </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="attend, status : ${attends}" th:data-attend-id="${attend.id}">
-                            <td th:text="${#temporals.format(attend.startAt,'yyyy/MM/dd')}"></td>
-                            <td th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
-                            <td th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></td>
-                            <td>
-                                <button id="attendOnTime" th:text="${#temporals.format(attend.startAt, 'yyyy-MM-dd HH:mm:ss')}"
-                                        data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                        class="times block text-black focus:ring-4 rounded-xl focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        <th:block th:if="${attend != null}">
+                        <tr th:each="attend, status : ${attends}" th:data-attend-id="${attend.id}" class="py-2">
+                            <td class="bg-gray-50 " th:text="${#temporals.format(attend.startAt,'yyyy/MM/dd')}"></td>
+                            <td class="bg-gray-50" th:text="${#temporals.format(attend.startAt,'HH:mm:ss')}"></td>
+                            <td class="bg-gray-50" th:text="${#temporals.format(attend.endAt,'HH:mm:ss')}"></td>
+                            <td class="bg-gray-50">
+                                <button th:text="${#temporals.format(attend.startAt, 'yyyy-MM-dd HH:mm:ss')}"
+                                        class="attendOnTime times mx-auto block h-full text-white focus:ring-4 rounded-xl focus:outline-none focus:ring-rose-300 font-medium rounded-full text-sm p-2 hover:bg-rose-500 focus:ring-rose-500"
                                         type="button">
                                 </button>
                             </td>
@@ -186,31 +179,37 @@
                                     stateElements.forEach((stateElement) => {
                                         if (stateElement) {
                                             const startAtValue = stateElement.innerHTML;
-                                            const currentDate = new Date();
+                                            const defaultDate = new Date();
+                                            defaultDate.setHours(9, 0, 0, 0);
                                             const compareDate = new Date(startAtValue);
-                                            let state;
-                                            if (currentDate.getHours() >= 9) {
-                                                state = '지각';
-                                                stateElement.classList.add('bg-red-300');
-                                            } else {
-                                                state = '정상출근';
-                                                stateElement.classList.add('bg-green-500');
-                                            }
+                                            console.log(compareDate.getHours());
+                                            console.log(defaultDate.getHours());
+                                            console.log(compareDate.getHours() >= defaultDate.getHours());
 
-                                            stateElement.innerText = state;
+                                            if (compareDate.getHours() >= defaultDate.getHours()) {
+                                                stateElement.classList.add('bg-red-300');
+                                                stateElement.classList.remove('bg-green-300');
+                                                stateElement.innerHTML = '지각';
+
+                                            } else if (compareDate.getHours() < defaultDate.getHours()){
+                                                stateElement.classList.add('bg-green-500');
+                                                stateElement.classList.remove('bg-red-300');
+                                                stateElement.innerHTML = '정상출근';
+                                            }
                                         }
                                     })
 
                                 });
                             </script>
-                            <td th:text="${attend.content}"></td>
+                            <td class="bg-gray-50" th:text="${attend.content}"></td>
                         </tr>
+                        </th:block>
                         </tbody>
                         <div id="crud-modal"
                              tabindex="-1"
                              aria-hidden="true"
                              class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                            <div class="relative p-4 w-full left-[20%] top-[30%] max-w-2xl max-h-full">
                                 <!-- Modal content -->
                                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                     <!-- Modal header -->
@@ -218,7 +217,7 @@
                                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                                             정정요청
                                         </h3>
-                                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                                        <button type="button" class="closeBtn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
                                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                             </svg>
@@ -232,7 +231,7 @@
                                         <div class="grid gap-4 mb-4 grid-cols-2">
                                             <div class="col-span-2">
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">이름</label>
-                                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" readonly required="" th:value="${attend.employee.name}">
+                                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" readonly required="" th:value="${#authentication.principal.employee.name}">
                                             </div>
                                             <div class="col-span-2">
                                                 <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">상태</label>
@@ -241,13 +240,13 @@
                                                        readonly th:value="지각">
                                             </div>
                                             <div class="col-span-2">
-                                                <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">정정 사유</label>
-                                                <textarea id="content" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                                <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >정정 사유</label>
+                                                <textarea id="content" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required></textarea>
                                             </div>
                                         </div>
                                         <!--다른 스타일 버튼-->
                                         <div class="p-4 md:p-5 text-center">
-                                            <button data-modal-hide="crud-modal" id="btnRequest" type="button" class="text-white bg-blue-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                                            <button id="btnRequest" type="button" class="closeBtn text-white bg-blue-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
                                                 요청
                                             </button>
                                         </div>
@@ -256,7 +255,7 @@
                             </div>
                         </div>
                     </table>
-                    <div id="page-bar-container" class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
+                    <div id="page-bar-container" class="mx-auto px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
                         <span class="flex mt-2 justify-center">
                             <nav aria-label="Table navigation">
                                 <ul class="inline-flex items-center">
@@ -277,20 +276,22 @@
                                     </li>
 
                 <!-- 페이지 번호 반복문 -->
-                        <th:block th:each="pageNumber : ${#numbers.sequence(0, totalpages - 1)}">
-                            <li>
-                                <button th:if="${pageNumber == number}"
-                                        class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
-                                    <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
-                                    <span th:text="${pageNumber + 1}"></span>
-                                </button>
-                                <button th:unless="${pageNumber == number}"
-                                        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue"
-                                        th:attr="onclick='changePage1(\'' + ${pageNumber} + '\', \'' + ${size} + '\')'">
-                                    <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
-                                    <span th:text="${pageNumber + 1}"></span>
-                                </button>
-                            </li>
+                        <th:block th:if="${totalpages > 0}">
+                            <th:block th:each="pageNumber : ${#numbers.sequence(0, totalpages - 1)}">
+                                <li>
+                                    <button th:if="${pageNumber == number}"
+                                            class="px-3 py-1 text-white transition-colors duration-150 bg-blue-600 border border-r-0 border-blue-600 rounded-md focus:outline-none focus:shadow-outline-blue">
+                                        <!-- 현재 선택된 페이지는 특별한 스타일을 적용 -->
+                                        <span th:text="${pageNumber + 1}"></span>
+                                    </button>
+                                    <button th:unless="${pageNumber == number}"
+                                            class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-blue"
+                                            th:attr="onclick='changePage1(\'' + ${pageNumber} + '\', \'' + ${size} + '\')'">
+                                        <!-- 페이지가 선택되지 않은 경우의 스타일 및 이벤트 핸들러 -->
+                                        <span th:text="${pageNumber + 1}"></span>
+                                    </button>
+                                </li>
+                            </th:block>
                         </th:block>
 
                                 <!-- 다음 버튼 -->
@@ -313,12 +314,9 @@
                     </span>
                     </div>
                 </div>
-        </div>
-      </div>
+          </div>
     </div>
 
-
+<script layout:fragment="script" th:src="@{/js/attend/attendList.js}"></script>
 </html>
 
-    <script layout:fragment="script" th:src="@{/js/attend/attendList.js}"></script>
-</html>

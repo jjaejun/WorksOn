@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +40,10 @@ public class ApprovalCooperation {
     private String cooperationDept;
 
     @Column(nullable = false, name = "start_date")
-    private Timestamp StartDate;
+    private Date StartDate;
 
     @Column(name = "end_date")
-    private Timestamp EndDate;
+    private Date EndDate;
 
     @Column(nullable = false)
     private Long people;

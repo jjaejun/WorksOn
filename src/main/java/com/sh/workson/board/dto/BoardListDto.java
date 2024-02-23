@@ -18,11 +18,11 @@ public class BoardListDto {
     @Enumerated(EnumType.STRING)
     private Type type;
     private String title;
-    private String empId;
+    private Long empId;
+    private String empName;
     private String content;
     private Long viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int attachCount;
-
 }

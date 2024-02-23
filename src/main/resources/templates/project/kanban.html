@@ -5,24 +5,25 @@
     <div class="w-full bg-white space-x-7 mt-3 flex overflow-y-scroll overflow-hidden">
         <div id="dp1" data-zone="TODO"
              class="drop flex-1 bg-yellow-100 rounded-lg p-4 space-y-2 min-h-[800px]">
-            <div class="flex justify-between items-center modalBtn" data-status="To do"
-                 data-modal-target="task-modal" data-modal-toggle="task-modal">
+            <div class="flex justify-between items-center">
                 <h1 class="font-semibold text-md">To do</h1>
-                <div class="w-[36px] h-[36px] cursor-pointer">
-                    <div class="flex-1 h-full">
-                        <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-yellow-200 rounded-lg">
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                </svg>
+                <th:block th:if="${project.status != 'DONE'}">
+                    <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="To do" data-modal-target="task-modal" data-modal-toggle="task-modal">
+                        <div class="flex-1 h-full">
+                            <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-yellow-200 rounded-lg">
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </th:block>
             </div>
 
             <th:block th:each="task, status : ${taskTodos}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white hover:bg-gray-50 p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul class="flex flex-col">
                         <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
@@ -43,6 +44,7 @@
                     </ul>
                 </div>
             </th:block>
+            <th:block th:if="${project.status != 'DONE'}">
             <button class="w-full h-fit flex items-center justify-center cursor-pointer bg-white/20 border border-white p-3 rounded-md text-gray-600 hover:bg-white/60 modalBtn"
                     data-status="To do" data-modal-target="task-modal" data-modal-toggle="task-modal">
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -50,6 +52,7 @@
                 </svg>
                 <span>add task</span>
             </button>
+            </th:block>
 
 <!--            <div draggable="true" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700">Item2</div>-->
         </div>
@@ -57,23 +60,25 @@
              class="drop flex-1 bg-blue-100 rounded-lg p-4 space-y-2 min-h-[800px]">
             <div class="flex justify-between items-center">
                 <h1 class="font-semibold text-md">In progress</h1>
-                <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="In progress"
-                     data-modal-target="task-modal" data-modal-toggle="task-modal">
-                    <div class="flex-1 h-full">
-                        <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-blue-200 rounded-lg">
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                </svg>
+                <th:block th:if="${project.status != 'DONE'}">
+                    <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="In progress"
+                         data-modal-target="task-modal" data-modal-toggle="task-modal">
+                        <div class="flex-1 h-full">
+                            <div class="flex items-center justify-center flex-1 h-full p-2 bg-white text-gray-600 border border-gray-300 hover:bg-blue-200 rounded-lg">
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </th:block>
             </div>
 
 
             <th:block th:each="task, status : ${taskProgresses}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 hover:bg-gray-50 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul>
                         <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
@@ -94,6 +99,7 @@
                     </ul>
                 </div>
             </th:block>
+            <th:block th:if="${project.status != 'DONE'}">
             <button class="w-full h-fit flex items-center justify-center cursor-pointer bg-white/20 border border-white p-3 rounded-md text-gray-600 hover:bg-white/60 modalBtn"
                     data-status="In progress" data-modal-target="task-modal" data-modal-toggle="task-modal">
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -101,11 +107,13 @@
                 </svg>
                 <span>add task</span>
             </button>
+            </th:block>
         </div>
         <div id="dp3" data-zone="DONE"
              class="drop flex-1 bg-rose-100 rounded-lg p-4 space-y-2 min-h-[800px]">
             <div class="flex justify-between items-center">
                 <h1 class="font-semibold text-md">Done</h1>
+                <th:block th:if="${project.status != 'DONE'}">
                 <div class="w-[36px] h-[36px] cursor-pointer modalBtn" data-status="Done"
                      data-modal-target="task-modal" data-modal-toggle="task-modal">
                     <div class="flex-1 h-full">
@@ -118,11 +126,12 @@
                         </div>
                     </div>
                 </div>
+                </th:block>
             </div>
 
 
             <th:block th:each="task, status : ${taskDone}">
-                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 rounded-md shadow-sm text-gray-700 cursor-pointer">
+                <div draggable="true" th:data-id="${task.id}" class="drag w-full bg-white p-3 hover:bg-gray-50 rounded-md shadow-sm text-gray-700 cursor-pointer">
                     <ul>
                         <li class="flex justify-between" th:data-id="${task.id}">
                             <div class="font-semibold" th:text="${task.name}"></div>
@@ -143,6 +152,7 @@
                     </ul>
                 </div>
             </th:block>
+            <th:block th:if="${project.status != 'DONE'}">
             <button class="w-full h-fit flex items-center justify-center cursor-pointer bg-white/20 border border-white p-3 rounded-md text-gray-600 hover:bg-white/60 modalBtn"
                     data-status="Done" data-modal-target="task-modal" data-modal-toggle="task-modal">
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -150,6 +160,7 @@
                 </svg>
                 <span>add task</span>
             </button>
+            </th:block>
         </div>
     </div>
 
@@ -175,7 +186,7 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">업무명</label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            <input type="text" name="name" id="taskName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                    placeholder="업무명을 입력해주세요." required="">
                         </div>
                         <div class="col-span-2 flex">
@@ -203,14 +214,13 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-span-1">
-                            <label for="priority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">업무중요도</label>
-                            <input type="hidden" id="priority" name="priority"></input>
+                            <label for="taskPriority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">업무중요도</label>
+                            <input type="hidden" id="taskPriority" name="taskPriority"></input>
                             <div class="bg-gray-50 border border-gray-300 rounded-lg flex w-full p-2.5">
                                 <div class="flex items-center justify-center mx-auto">
                                     <svg id="star1" class="cursor-pointer starBtn w-5 h-5 ms-1 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -233,34 +243,34 @@
 
                         </div>
                         <div class="col-span-1">
-                            <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">진행상태</label>
+                            <label for="taskStatus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">진행상태</label>
                             <div class="flex">
-                                <input type="hidden" name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type product name" required="">
-                                <button id="states-button" data-dropdown-toggle="dropdown-states"
+                                <input type="hidden" name="status" id="taskStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type product name" required="">
+                                <button id="task-states-button" data-dropdown-toggle="task-dropdown-states"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:bg-gray-100 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" type="button">
                                 </button>
-                                <div id="dropdown-states" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="states-button">
+                                <div id="task-dropdown-states" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="task-states-button">
                                         <li>
                                             <button type="button"
-                                                    class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                <div class="inline-flex items-center" id="statusValue1" data-status="To do">
+                                                    class="taskStatusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <div class="inline-flex items-center" id="taskStatusValue1" data-status="To do">
                                                     <span class="w-[16px] h-[16px] rounded-full bg-yellow-300 mr-2"></span>To do
                                                 </div>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                <div class="inline-flex items-center" id="statusValue2" data-status="In progress">
+                                                    class="taskStatusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <div class=" inline-flex items-center" id="taskStatusValue2" data-status="In progress">
                                                     <span class="w-[16px] h-[16px] rounded-full bg-blue-300 mr-2"></span>In progress
                                                 </div>
                                             </button>
                                         </li>
                                         <li>
                                             <button type="button"
-                                                    class="statusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                <div class="inline-flex items-center" id="statusValue3" data-status="Done">
+                                                    class="taskStatusValueBtn inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <div class=" inline-flex items-center" id="taskStatusValue3" data-status="Done">
                                                     <span class="w-[16px] h-[16px] rounded-full bg-rose-300 mr-2"></span>Done
                                                 </div>
                                             </button>

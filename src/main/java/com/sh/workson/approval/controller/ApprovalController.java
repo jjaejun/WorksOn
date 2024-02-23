@@ -1,6 +1,9 @@
 package com.sh.workson.approval.controller;
 
 import com.sh.workson.approval.dto.*;
+import com.sh.workson.approval.entity.Approval;
+import com.sh.workson.approval.entity.ApprovalLeave;
+import com.sh.workson.approval.entity.ApprovalLine;
 import com.sh.workson.approval.service.ApprovalService;
 import com.sh.workson.auth.vo.EmployeeDetails;
 import com.sh.workson.department.entity.Department;
@@ -8,6 +11,7 @@ import com.sh.workson.department.service.DepartmentService;
 import com.sh.workson.employee.dto.IApprover;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,9 +21,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,7 +104,7 @@ public class ApprovalController {
      * 결재 대기 함
      */
     @GetMapping("/approvalWait.do")
-    public void approvalWait(@PageableDefault(size = 1, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalWait(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -149,7 +156,7 @@ public class ApprovalController {
      * - 같은 부서의 사람들의 결재 내용을 참조
      */
     @GetMapping("/approvalReception.do")
-    public void approvalReception(@PageableDefault(size = 3, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalReception(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.debug("pageable = {}", pageable);
         List<ApprovalHomeLeaveDto> approvalHomeReceptionLeave = approvalService.findReceptionLeave(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId());
         List<ApprovalHomeEquipmentDto> approvalHomeReceptionEquipment = approvalService.findReceptionEquipment(employeeDetails.getEmployee().getDepartment().getId(), employeeDetails.getEmployee().getId());
@@ -198,7 +205,7 @@ public class ApprovalController {
      * 결재 예정함
      */
     @GetMapping("/approvalExpected.do")
-    public void approvalExpected(@PageableDefault(size = 1, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalExpected(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -250,7 +257,7 @@ public class ApprovalController {
      * 임시 저장함 조회
      */
     @GetMapping("/approvalTemporary.do")
-    public void approvalTemporary(@PageableDefault(size = 2, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalTemporary(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -310,7 +317,7 @@ public class ApprovalController {
      * 연차 문서함 조회
      */
     @GetMapping("/approvalLeave.do")
-    public void approvalLeave(@PageableDefault(size = 2, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalLeave(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -337,7 +344,7 @@ public class ApprovalController {
      * 비품 문서함 조회
      */
     @GetMapping("/approvalEquipment.do")
-    public void approvalEquipment(@PageableDefault(size = 1, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalEquipment(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -358,7 +365,7 @@ public class ApprovalController {
      * 협조 문서함 조회
      */
     @GetMapping("/approvalCooperation.do")
-    public void approvalCooperation(@PageableDefault(size = 1, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalCooperation(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -384,7 +391,7 @@ public class ApprovalController {
      * 수신 문서함
      */
     @GetMapping("/approvalReceived.do")
-    public void approvalRecevied(@PageableDefault(size = 5, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalRecevied(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -434,7 +441,7 @@ public class ApprovalController {
      * 발송 문서함
      */
     @GetMapping("/approvalSend.do")
-    public void approvalSend(@PageableDefault(size = 10, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+    public void approvalSend(@PageableDefault(size = 8, page = 0) Pageable pageable, Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         log.info("approvalService = {}", approvalService.getClass());
 
         log.debug("pageable = {}", pageable);
@@ -538,6 +545,12 @@ public class ApprovalController {
         model.addAttribute("content", iApprovalCooperation.getContent());
         model.addAttribute("startDate", iApprovalCooperation.getStartDate());
         model.addAttribute("endDate", iApprovalCooperation.getEndDate());
+        model.addAttribute("status", iApprovalCooperation.getStatus());
+//        model.addAttribute("lineId", iApprovalCooperation.getLineId());
+
+        List<IApproverCooperation> iApproverCooperationList = approvalService.findCooperationApprover(id);
+        model.addAttribute("approver", iApproverCooperationList);
+        log.debug("approver = {}", iApproverCooperationList);
     }
 
     /**
@@ -547,7 +560,68 @@ public class ApprovalController {
     public void createApproval(Model model, @AuthenticationPrincipal EmployeeDetails employeeDetails) {
         List<IApprover> employees = employeeService.findApprover(employeeDetails.getEmployee().getId());
         model.addAttribute("employees", employees);
+        log.debug("employees = {}", employees);
+
         List<Department> departments = departmentService.findAll();
         model.addAttribute("departments", departments);
+        log.debug("departments = {}", departments);
+
+        Employee loginUser = employeeService.findLoginUser(employeeDetails.getEmployee().getId());
+        model.addAttribute("loginUser", loginUser);
+        log.debug("loginUser = {}", loginUser);
+    }
+
+    // 새 결재 진행 업무협조
+    @PostMapping("/createApproval.do")
+    public String createApproval(@Valid CreateCooperationDto createCooperationDto,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes,
+                                 @AuthenticationPrincipal EmployeeDetails employeeDetails) {
+        // 1. 사용자 입력값
+        if(bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new RuntimeException(message);
+        }
+        log.debug("createApprovalDto = {}", createCooperationDto);
+
+        // createApprovalDto -> approval로 변환
+        createCooperationDto.setEmpId(employeeDetails.getEmployee().getId());
+        approvalService.createCooperationApproval(createCooperationDto);
+
+
+        return "redirect:/approval/approvalHome.do";
+    }
+
+    // 협조 양식 승인
+    @PostMapping("/approvalDetailCooperation.do")
+    public String recognize(@Valid RecognizeCooperationDto recognizeCooperationDto,
+                            BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new RuntimeException(message);
+        }
+        log.debug("recognizeCooperationdto = {}", recognizeCooperationDto);
+
+        recognizeCooperationDto.setIsLast(recognizeCooperationDto.getIsLast());
+        approvalService.recognizeCooperation(recognizeCooperationDto);
+
+
+        return "redirect:/approval/approvalHome.do";
+    }
+
+    // 협조 양식 반려
+    @PostMapping("/rejectDetailCooperation.do")
+    public String reject(@Valid RejectCooperationDto rejectCooperationDto,
+                         BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new RuntimeException(message);
+        }
+        log.debug("rejectCooperationDto = {}", rejectCooperationDto);
+
+        approvalService.rejectCooperation(rejectCooperationDto);
+
+        return "redirect:/approval/approvalHome.do";
     }
 }

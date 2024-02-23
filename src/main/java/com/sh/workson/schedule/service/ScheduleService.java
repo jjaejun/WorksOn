@@ -3,8 +3,8 @@ package com.sh.workson.schedule.service;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.repository.EmployeeRepository;
 import com.sh.workson.schedule.dto.CreateScheduleDto;
-import com.sh.workson.schedule.dto.ScheduleCategoryDto;
 import com.sh.workson.schedule.dto.ScheduleListDto;
+import com.sh.workson.schedule.dto.UpdateScheduleDto;
 import com.sh.workson.schedule.entity.Schedule;
 import com.sh.workson.schedule.entity.ScheduleCategory;
 import com.sh.workson.schedule.repository.ScheduleCategoryRepository;
@@ -42,9 +42,11 @@ public class ScheduleService {
         schedule.setEmployee(Employee.builder()
                     .id(createScheduleDto.getEmpId())
                     .build());
-        schedule.setScheduleCategory(ScheduleCategory.builder()
-                    .id(createScheduleDto.getScheduleCategoryId())
-                    .build());
+        if(createScheduleDto.getScheduleCategoryId() != null){
+            schedule.setScheduleCategory(ScheduleCategory.builder()
+                        .id(createScheduleDto.getScheduleCategoryId())
+                        .build());
+        }
         return schedule;
     }
 
@@ -64,5 +66,30 @@ public class ScheduleService {
         scheduleListDto.setEmpId(schedule.getEmployee().getId());
         scheduleListDto.setColor(schedule.getScheduleCategory().getColor());
         return scheduleListDto;
+    }
+
+    public void deleteById(Long id) {
+        scheduleRepository.deleteById(id);
+    }
+
+    public void updateSchedule(UpdateScheduleDto updateScheduleDto) {
+        Schedule schedule = convertUpdateScheduleToSchedule(updateScheduleDto);
+        scheduleRepository.save(schedule);
+    }
+
+    private Schedule convertUpdateScheduleToSchedule(UpdateScheduleDto updateScheduleDto){
+        Schedule schedule = modelMapper.map(updateScheduleDto, Schedule.class);
+        schedule.setEmployee(Employee.builder()
+                .id(updateScheduleDto.getEmpId())
+                .build());
+        if(updateScheduleDto.getScheduleCategoryId() != null){
+            schedule.setScheduleCategory(ScheduleCategory.builder()
+                    .id(updateScheduleDto.getScheduleCategoryId())
+                    .build());
+        }
+        if(updateScheduleDto.getEndTime() == null){
+            schedule.setEndTime(updateScheduleDto.getStartTime());
+        }
+        return schedule;
     }
 }

@@ -45,3 +45,71 @@ document.querySelector("#submitBtn").addEventListener('click', (e) => {
         }
     })
 });
+
+document.querySelector('#count').addEventListener('input', (e) => {
+    console.log(e);
+    console.log(e.target.value);
+    const eVal = e.target.value;
+
+    if (eVal <= 0) {
+        document.querySelector('#countCheckMsg').classList.remove('hidden');
+    } else {
+        document.querySelector('#countCheckMsg').classList.add('hidden');
+    }
+});
+
+document.querySelector('#reservationCheckBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    const startAt = document.getElementById('startAt');
+    const endAt = document.getElementById('endAt');
+    const resourceId = document.getElementById('resourceIdForCheck');
+    console.log(startAt.value);
+    console.log(endAt.value);
+    console.log(resourceId.value)
+
+    $.ajax({
+        type: "GET",
+        headers: {
+            [csrfHeaderName]: csrfToken
+        },
+        url: `${contextPath}reservation/reservationCheck.do`,
+        data: {
+            startAt : startAt.value,
+            endAt : endAt.value,
+            resourceId : resourceId.value
+        },
+        success(response){
+            console.log(response);
+
+            if (response === 0) {
+                document.getElementById('atCheckGoodMsg').classList.remove('hidden');
+                document.getElementById('atCheckBadMsg').classList.add('hidden');
+                document.getElementById('reservationOkBtn').classList.replace('bg-gray-700', 'bg-blue-700');
+                document.getElementById('reservationOkBtn').disabled = false;
+            } else if (response > 0) {
+                document.getElementById('atCheckGoodMsg').classList.add('hidden');
+                document.getElementById('atCheckBadMsg').classList.remove('hidden');
+                document.getElementById('reservationOkBtn').classList.add('disabled');
+                document.getElementById('reservationOkBtn').disabled = true;
+            }
+        }
+    });
+});
+
+document.querySelector('#startAt').addEventListener('change', (e) => {
+    document.getElementById('atCheckGoodMsg').classList.add('hidden');
+    document.getElementById('atCheckBadMsg').classList.remove('hidden');
+    document.getElementById('reservationOkBtn').classList.replace('bg-blue-700', 'bg-gray-700');
+    document.getElementById('reservationOkBtn').disabled = true;
+
+    console.log(e.target.value);
+    const endAt = document.querySelector('#endAt');
+    endAt.min = e.target.value;
+});
+document.querySelector('#endAt').addEventListener('change', () => {
+    document.getElementById('atCheckGoodMsg').classList.add('hidden');
+    document.getElementById('atCheckBadMsg').classList.remove('hidden');
+    document.getElementById('reservationOkBtn').classList.replace('bg-blue-700', 'bg-gray-700');
+    document.getElementById('reservationOkBtn').disabled = true;
+});
+

@@ -4,15 +4,20 @@ import com.sh.workson.attachment.dto.ProfileAttachmentDto;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.service.AuthService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.authority.entity.Authority;
+import com.sh.workson.authority.entity.RoleAuth;
 import com.sh.workson.department.entity.Department;
 import com.sh.workson.department.service.DepartmentService;
+import com.sh.workson.email.service.EmailService;
 import com.sh.workson.employee.dto.EmployeeCreateDto;
 import com.sh.workson.employee.dto.EmployeeSearchDto;
+import com.sh.workson.employee.dto.EmployeeUpdatePasswordDto;
 import com.sh.workson.employee.entity.Employee;
 import com.sh.workson.employee.service.EmployeeService;
 import com.sh.workson.position.entity.Position;
 import com.sh.workson.position.service.PositionService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -35,10 +40,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/employee")
 @Slf4j
 @Validated
@@ -49,6 +56,10 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private  final EmailService emailService;
+
+
 
     /**
      * 민정
@@ -186,18 +197,39 @@ public class EmployeeController {
         }
         log.debug("memberCreateDto = {}" ,employeeCreateDto);
 
+        String generatedPassword = generateRandomPassword(12); // 12자리의 난수 생성
+
+        emailService.send(employeeCreateDto.getEmail(),
+                        employeeCreateDto.getName(),
+                            generatedPassword);
 
         Employee employee = employeeCreateDto.toEmployee();
-        String encodedPassword = passwordEncoder.encode(employee.getPassword());
+        String encodedPassword = passwordEncoder.encode(generatedPassword); // 생성된 난수를 암호화하여 저장
         employee.setPassword(encodedPassword);
 
         employee = employeeService.employeeCreate(employee);
+
 
         // 리다이렉트후 메세지처리
         redirectAttributes.addFlashAttribute("msg", "회원등록완료");
 
         return "redirect:/";
     }
+
+    private String generateRandomPassword(int length) {
+        String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+        String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+        String NUMBER = "0123456789";
+        String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER;
+
+        StringBuilder password = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int randomIndex = (int) (Math.random() * PASSWORD_ALLOW_BASE.length());
+            password.append(PASSWORD_ALLOW_BASE.charAt(randomIndex));
+        }
+        return password.toString();
+    }
+
 
 
     @PostMapping("/checkEmailDuplicate.do")
@@ -214,6 +246,32 @@ public class EmployeeController {
         return ResponseEntity.ok(resultMap);
 
     }
+
+    @GetMapping("/passwordUpdate.do")
+    public void passwordUpdate(){};
+
+    @PostMapping("/passwordUpdate.do")
+    public String passwordUpdate(
+            @AuthenticationPrincipal EmployeeDetails employeeDetails,
+            @RequestParam("password") String password
+    ){
+        log.debug("password = {}", password);
+        EmployeeUpdatePasswordDto employee = EmployeeUpdatePasswordDto.builder()
+                .id(employeeDetails.getEmployee().getId())
+                .password(passwordEncoder.encode(password))
+                .build();
+        employee.setAuthority(Authority.builder()
+                    .id(employeeDetails.getEmployee().getAuthorities().get(0).getId())
+                    .empId(employeeDetails.getEmployee().getId())
+                    .name(RoleAuth.ROLE_EMP)
+                    .build());
+        log.debug("employee = {}", employee);
+        employeeService.updatePassword(employee);
+
+
+        return "redirect:/auth/login.do";
+    }
+
 
 
 
