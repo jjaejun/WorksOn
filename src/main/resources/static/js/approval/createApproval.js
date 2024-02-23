@@ -84,48 +84,8 @@ document.addEventListener('DOMContentLoaded', function () {
             '                <td><input type="date" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
-            '        <table class="mb-6 ml-auto mr-1">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="팀장" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="이민정" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
-            '        <table class="mb-6 mr-1">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="천무진" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
-            '        <table class="mb-6">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="팀원" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="한준희" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
+            '    <div id="approval-section-container1" class="ml-auto">\n' +
+            '     </div>\n' +
             '    </div>\n' +
             '\n' +
             '    <table class="w-full mb-6">\n' +
@@ -250,20 +210,8 @@ document.addEventListener('DOMContentLoaded', function () {
             '                <td><input type="date" class="w-20% p-2 border" id="draft_date"></td>\n' +
             '            </tr>\n' +
             '        </table>\n' +
-            '        <table class="mb-6 ml-auto mr-1">\n' +
-            '            <tr class="border">\n' +
-            '                <th class="border p-2 w-10" rowspan="4">승인</th>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="총무과" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="성민준" readonly></td>\n' +
-            '                </tr>\n' +
-            '                <tr class="border">\n' +
-            '                    <td><input type="text" class="w-24 p-2" value="사인" readonly></td>\n' +
-            '                </tr>\n' +
-            '            </tr>\n' +
-            '        </table>\n' +
+            '    <div id="approval-section-container2" class="ml-auto">\n' +
+            '     </div>\n' +
             '    </div>\n' +
             '\n' +
             '    <table class="w-full mb-6 flex">\n' +
