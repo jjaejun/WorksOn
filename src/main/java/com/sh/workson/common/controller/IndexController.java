@@ -116,7 +116,7 @@ public class IndexController {
 
 //            민정
             // project
-            Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(PageRequest.of(0, 3));
+            Page<ProjectDashBoardDto> projectPage = projectService.findTop3Project(employeeDetails.getEmployee().getId(), PageRequest.of(0, 3));
             model.addAttribute("projects", projectPage);
             log.debug("projectDashBoard = {}", projectPage);
 

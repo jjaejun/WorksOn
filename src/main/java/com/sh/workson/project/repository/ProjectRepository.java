@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,5 +39,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findById(@Param("id") Long id);
 
     @Query("from Project p join fetch p.employee e join fetch e.department join fetch e.position order by p.id desc ")
-    Page<Project> findTop3Project(Pageable pageable);
+    Page<Project> findTop3Project(@Param("id") Long id, Pageable pageable);
 }
