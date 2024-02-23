@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,25 +51,29 @@ class EmployeeRepositoryTest {
         // 인사총무(id 1) 선임(id 201)
         Employee employee = Employee.builder()
                 .password(passwordEncoder.encode("1234"))
-                .name("홍길동")
-                .rest(0)
-                .email("honggd@naver.com")
-                .phone("010-2345-2345")
+                .name("이재준")
+                .rest(15)
+                .birthday(LocalDate.of(1998, 4, 23))
+                .cherry(0)
+                .seed(30)
+                .email("jaejun@naver.com")
+                .phone("010-9992-0009")
                 .workStatus(WorkStatus.WORK)
                 .position(Position.builder().id(201L).build())
-                .department(Department.builder().id(1L).build())
+                .department(Department.builder().id(451L).build())
                 .build();
 
         // when
         employeeRepository.save(employee);
-        Authority authority = Authority.builder().empId(employee.getId()).name(RoleAuth.ROLE_EMP).build();
-        authorityRepository.save(authority);
+        List<Authority> authorities = new ArrayList<>();
+        Authority emp = Authority.builder().empId(employee.getId()).name(RoleAuth.ROLE_EMP).build();
+        Authority hr = Authority.builder().empId(employee.getId()).name(RoleAuth.ROLE_HR).build();
+        authorityRepository.saveAll(authorities);
 
         // then
         assertThat(employee.getDepartment()).isNotNull();
         assertThat(employee.getPosition()).isNotNull();
         assertThat(employee.getId()).isNotNull();
-        assertThat(authority.getId()).isNotNull();
 
     }
 

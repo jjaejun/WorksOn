@@ -79,9 +79,18 @@ public class BoardController {
                           Model model) {
         log.info("Fetching board list. Type: {}", type);
 
-        Page<BoardListDto> boardPage = boardService.findByType(Type.valueOf(type), pageable);;
+        Page<BoardListDto> boardPage;
 
-        log.debug("Boards: {}", boardPage.getContent());
+        if (type != null && !type.isEmpty()) {
+            try {
+                boardPage = boardService.findByType(Type.valueOf(type), pageable);
+            } catch (IllegalArgumentException e) {
+                log.error("Invalid board type: {}", type);
+                boardPage = boardService.findAll(pageable);
+            }
+        } else {
+            boardPage = boardService.findAll(pageable);
+        }
 
         model.addAttribute("boards", boardPage.getContent());
         model.addAttribute("totalCount", boardPage.getTotalElements()); //전체 게시물수

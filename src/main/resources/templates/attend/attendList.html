@@ -179,18 +179,23 @@
                                     stateElements.forEach((stateElement) => {
                                         if (stateElement) {
                                             const startAtValue = stateElement.innerHTML;
-                                            const currentDate = new Date();
+                                            const defaultDate = new Date();
+                                            defaultDate.setHours(9, 0, 0, 0);
                                             const compareDate = new Date(startAtValue);
-                                            let state;
-                                            if (currentDate.getHours() >= 9) {
-                                                state = '지각';
-                                                stateElement.classList.add('bg-red-300');
-                                            } else {
-                                                state = '정상출근';
-                                                stateElement.classList.add('bg-green-500');
-                                            }
+                                            console.log(compareDate.getHours());
+                                            console.log(defaultDate.getHours());
+                                            console.log(compareDate.getHours() >= defaultDate.getHours());
 
-                                            stateElement.innerText = state;
+                                            if (compareDate.getHours() >= defaultDate.getHours()) {
+                                                stateElement.classList.add('bg-red-300');
+                                                stateElement.classList.remove('bg-green-300');
+                                                stateElement.innerHTML = '지각';
+
+                                            } else if (compareDate.getHours() < defaultDate.getHours()){
+                                                stateElement.classList.add('bg-green-500');
+                                                stateElement.classList.remove('bg-red-300');
+                                                stateElement.innerHTML = '정상출근';
+                                            }
                                         }
                                     })
 
