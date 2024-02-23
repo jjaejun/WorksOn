@@ -97,7 +97,7 @@ public class ResourceController {
                                 .startAt(reservation.getStartAt())
                                 .endAt(reservation.getEndAt())
                                 .content(reservation.getContent())
-                                .resourceId(reservation.getResourceId())
+                                .resourceId(reservation.getResource().getId())
                         .build()));
         log.debug("reservationReturnDtos = {}", reservationReturnDtos);
 

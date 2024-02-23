@@ -75,7 +75,9 @@ public class ReservationContoller {
     public void reservationDetail(@RequestParam("id") Long id, Model model) {
         LocalDateTime today = LocalDateTime.now();
         List<Reservation> reservations = reservationService.findByResourceId(id, today);
+        String resourceName = resourceService.findNameById(id);
         model.addAttribute("resourceId", id);
+        model.addAttribute("resourceName", resourceName);
         model.addAttribute("reservations", reservations);
     }
 
@@ -87,13 +89,27 @@ public class ReservationContoller {
         log.debug("reservationCreateDto = {}", reservationCreateDto);
         reservationService.createReservation(reservationCreateDto);
         redirectAttributes.addFlashAttribute("msg", "예약 신청이 완료되었습니다.😎");
-        return "redirect:reservationMyList.do";
+        return "redirect:reservationMyListRoom.do";
     }
 
-    @GetMapping("/reservationMyList.do")
-    public void reservationMyDetail(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+    @GetMapping("/reservationMyListRoom.do")
+    public void reservationMyListRoom(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
         LocalDateTime today = LocalDateTime.now();
-        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today);
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Room);
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+    @GetMapping("/reservationMyListCar.do")
+    public void reservationMyListCar(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Car);
+        log.debug("reservations = {}", reservations);
+        model.addAttribute("reservations", reservations);
+    }
+    @GetMapping("/reservationMyListNotebook.do")
+    public void reservationMyListNotebook(@AuthenticationPrincipal EmployeeDetails employeeDetails, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Reservation> reservations = reservationService.findByEmpId(employeeDetails.getEmployee().getId(), today, Type.Notebook);
         log.debug("reservations = {}", reservations);
         model.addAttribute("reservations", reservations);
     }
@@ -103,7 +119,7 @@ public class ReservationContoller {
         log.debug("reservationId = {}", reservationId);
         reservationService.deleteById(reservationId);
         redirectAttributes.addFlashAttribute("msg", "예약이 취소되었습니다.");
-        return "redirect:reservationMyList.do";
+        return "redirect:reservationMyListRoom.do";
     }
 
     @GetMapping("/reservationListSearchDate.do")
