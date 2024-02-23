@@ -196,6 +196,7 @@ document.commentCreateFrm.addEventListener('submit', (e) => {
             else {
                 area.insertAdjacentHTML('afterend', comment);
             }
+            content.value = '';
             replyEvent();
         }
     })
