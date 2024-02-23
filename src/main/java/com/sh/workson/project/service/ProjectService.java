@@ -157,8 +157,8 @@ public class ProjectService {
         return projects.map(project -> convertToProjectDto(project));
     }
 
-    public Page<ProjectDashBoardDto> findTop3Project(Pageable pageable) {
-        Page<Project> projects = projectRepository.findTop3Project(pageable);
+    public Page<ProjectDashBoardDto> findTop3Project(Long id, Pageable pageable) {
+        Page<Project> projects = projectRepository.findTop3Project(id, pageable);
         return projects.map(project -> convertToProjectDashBoardDto(project));
     }
 

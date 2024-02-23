@@ -342,7 +342,7 @@ const pagebarEvent = () => {
                                 const currentDate = new Date();
                                 const compareDate = new Date(startAtValue);
                                 let state;
-                                if (currentDate.getHours() >= 9) {
+                                if (compareDate.getHours() >= 9) {
                                     state = '지각';
                                     stateElement.classList.add('bg-red-300');
                                 } else {

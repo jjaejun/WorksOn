@@ -86,6 +86,9 @@
                         </div>
                     </div>
                 </form>
+                <form th:action="@{/schedule/deleteSchedule.do}" method="post" name="deleteScheduleId">
+                    <input type="hidden" name="id" id="delete-schedule-id" >
+                </form>
             </div>
         </div>
     </div>

@@ -92,7 +92,15 @@ table, th, td {
     background-color: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+}
+
+/*fullcalendar 의 동적 생성 요소는 !important 로 수정해야함 */
+.fc-popover{
+    z-index: 40 !important;
+}
+
+#schedule-modal{
+    z-index: 100;
 }
 
 /* 오버레이 배경에 대한 스타일링 */
