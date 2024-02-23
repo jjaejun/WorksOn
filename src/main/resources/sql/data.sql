@@ -1,14 +1,13 @@
 -- DML 작성
 -- department
-insert into department
-values (seq_department_id.nextval, '인사총무');
-insert into department
-values (seq_department_id.nextval, '경영지원');
-insert into department
-values (seq_department_id.nextval, 'Tech 개발');
-insert into department
-values (seq_department_id.nextval, '마케팅 사업');
-
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'경영지원부');
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'마케팅부');
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'연구개발부');
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'영업부');
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'서비스부');
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'인사부');
+Insert into DEPARTMENT (ID,NAME) values (seq_department_id.nextval,'기획부');
+select * from department;
 -- position
 insert into position
 values (seq_position_id.nextval, '대표', 1);
@@ -26,58 +25,87 @@ insert into position
 values (seq_position_id.nextval, '주임', 7);
 insert into position
 values (seq_position_id.nextval, '사원', 8);
+select * from position;
+
+select * from employee;
+select * from authority;
+
+insert into authority values (seq_authority_id.nextval, 502, 'ROLE_EMP');
+insert into authority values (seq_authority_id.nextval, 502, 'ROLE_HR');
+insert into authority values (seq_authority_id.nextval, 502, 'ROLE_CEO');
 
 -- employee
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '고혜진', 15, 'jindamgom@google.com', '010-1234-6864', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 251, 1);
+VALUES (seq_employee_id.nextval, '2144234', '고혜진', 15, 'jindamgom@google.com', '010-1234-6864', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 251, 201);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '김명준', 15, 'myeongjun0911@google.com/', '010-1234-6865', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 51, 51);
+VALUES (seq_employee_id.nextval, '2144234', '김명준', 15, 'myeongjun0911@google.com', '010-1234-6865', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 51, 201);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '김정효', 15, 'kimjeonghyo1@google.com/', '010-1234-6866', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 101, 101);
+VALUES (seq_employee_id.nextval, '2144234', '김정효', 15, 'kimjeonghyo1@google.com', '010-1234-6866', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 101, 251);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '성민준', 15, 'seoungminjun@google.com/', '010-1234-6867', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 151, 151);
+VALUES (seq_employee_id.nextval, '2144234', '오승현', 15, 'ehtjsdlfqhd@google.com', '010-1234-6868', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 201, 301);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '오승현', 15, 'ehtjsdlfqhd@google.com/', '010-1234-6868', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 201, 1);
+VALUES (seq_employee_id.nextval, '2144234', '유정호', 15, 'ryujeongho@google.com', '010-1234-6870', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 301, 451);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '오우진', 15, 'owj7182@google.com/', '010-1234-6869', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 251, 51);
+VALUES (seq_employee_id.nextval, '2144234', '임초임', 15, 'dlachdla@google.com', '010-1234-6873', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 51, 451);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '유정호', 15, 'ryujeongho@google.com/', '010-1234-6870', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 301, 101);
+VALUES (seq_employee_id.nextval, '2144234', '정승범', 15, 'seungbeom4382@google.com', '010-1234-6874', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 101, 451);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '이민정', 15, 'snailmin@google.com/', '010-1234-6871', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 351, 151);
+VALUES (seq_employee_id.nextval, '2144234', '정용준', 15, 'tior931108@google.com', '010-1234-6875', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 151, 501);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '이재준', 15, 'jjaejun@google.com', '010-1234-6872', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 301, 1);
+VALUES (seq_employee_id.nextval, '2144234', '정진우', 15, 'jinwoo2361@google.com', '010-1234-6876', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 201, 301);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '임초임', 15, 'dlachdla@google.com/', '010-1234-6873', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 51, 51);
+VALUES (seq_employee_id.nextval, '2144234', '한보경', 15, 'bokyunghan@google.com', '010-1234-6878', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 301, 251);
 INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '정승범', 15, 'seungbeom4382@google.com/', '010-1234-6874', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 101, 101);
-INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '정용준', 15, 'tior931108@google.com/', '010-1234-6875', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 151, 151);
-INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '정진우', 15, 'jinwoo2361@google.com', '010-1234-6876', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 201, 1);
-INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '천무진', 15, 'chunmujin@google.com/', '010-1234-6877', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 251, 51);
-INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '한보경', 15, 'bokyunghan@google.com/', '010-1234-6878', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 301, 101);
-INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '한승훈', 15, 'nlgz@google.com/', '010-1234-6879', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 351, 151);
-INSERT INTO EMPLOYEE (ID, PASSWORD, NAME, REST, EMAIL, PHONE, BIRTHDAY, CREATED_AT, UPDATED_AT, WORK_STATUS, PROFILE_ORIGINAL_NAME, PROFILE_KEY, PROFILE_URL, SEED, CHERRY, POSITION_ID, DEPT_ID)
-VALUES (seq_employee_id.nextval, '2144234', '한준희', 15, 'hjh705@google.com', '010-1234-6880', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 51, 1);
+VALUES (seq_employee_id.nextval, '2144234', '한승훈', 15, 'nlgz@google.com/', '010-1234-6879', NULL, systimestamp, systimestamp, 'WORK', NULL, NULL, NULL, 0, 0, 351, 201);
+select * from employee;
 
 -- project
-INSERT INTO PROJECT (ID, TITLE, CREATED_AT, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
-VALUES (seq_project_id.nextval, '사내 메신저 개발', TIMESTAMP '2024-01-05 00:00:00', TIMESTAMP '2024-04-25 00:00:00', NULL, 'ING', 351);
-INSERT INTO PROJECT (ID, TITLE, CREATED_AT, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
-VALUES (seq_project_id.nextval, '사내카페 앱오더 개발', TIMESTAMP '2024-01-30 00:00:00', TIMESTAMP '2024-04-30 00:00:00', NULL, 'ING', 651);
-INSERT INTO PROJECT (ID, TITLE, CREATED_AT, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
-VALUES (seq_project_id.nextval, 'BEMS 개발 과제', TIMESTAMP '2023-12-01 00:00:00', TIMESTAMP '2024-02-01 00:00:00', NULL, 'DONE', 801);
-INSERT INTO PROJECT (ID, TITLE, CREATED_AT, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
-VALUES (seq_project_id.nextval, '채용 홈페이지 UI 개선', TIMESTAMP '2023-12-15 00:00:00', TIMESTAMP '2024-02-01 00:00:00', NULL, 'DONE', 151);
-INSERT INTO PROJECT (ID, TITLE, CREATED_AT, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
-VALUES (seq_project_id.nextval, '취미활동 예약결재 플랫폼', TIMESTAMP '2023-12-12 00:00:00', TIMESTAMP '2024-04-12 00:00:00', NULL, 'ING', 401);
-INSERT INTO PROJECT (ID, TITLE, CREATED_AT, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
-VALUES (seq_project_id.nextval, 'AI 소개팅 어플', TIMESTAMP '2023-12-27 00:00:00', TIMESTAMP '2024-06-30 00:00:00', NULL, 'ING', 251);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '사내 메신저 개발', Date '2024-01-05', Date '2024-04-25', NULL, 'ING', 502);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '사내카페 앱오더 개발', Date '2024-01-30', Date '2024-04-30', NULL, 'ING', 51);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, 'BEMS 개발 과제', Date '2023-12-01', Date '2024-02-01', NULL, 'DONE', 201);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '채용 홈페이지 UI 개선', Date '2023-12-15', Date '2024-02-01', NULL, 'DONE', 502);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '취미활동 예약결재 플랫폼', Date '2023-12-12', Date '2024-04-12', NULL, 'ING', 502);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, 'AI 소개팅 어플', Date '2023-12-27', Date '2024-06-30', NULL, 'ING', 1);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '빅데이터 분석 도구 개발', Date '2023-11-15', Date '2024-08-31', NULL, 'ING', 101);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '웹사이트 리뉴얼 프로젝트', Date '2024-03-05', Date '2024-09-30', NULL, 'NOT_YET', 301);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '인공지능 기반 고객지원 시스템 구축', Date '2024-03-15', Date '2024-12-31', NULL, 'NOT_YET', 1);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, '머신러닝 기반 추천 시스템 개발', Date '2024-04-20', Date '2025-03-31', NULL, 'NOT_YET', 502);
+INSERT INTO PROJECT (ID, TITLE, Start_at, END_AT, UPDATED_AT, STATUS, OWNER_ID) 
+VALUES (seq_project_id.nextval, 'AI 기반 영상 분석 프로젝트', Date '2024-02-20', Date '2025-06-30', NULL, 'ING', 502);
+select * from project;
+select * from employee;
 
 -- prject_employee
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 1, 1, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 1, 51, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 1, 101, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 1, 151, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 1, 201, 'CREATE');
+
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 51, 502, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 51, 301, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 51, 401, 'CREATE');
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 51, 451, 'CREATE');
+
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 101, 1, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
@@ -87,9 +115,10 @@ VALUES (seq_project_employee_id.nextval, 101, 101, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 101, 151, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 101, 201, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 101, 401, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 101, 251, 'READ');
+
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 151, 301, 'READ');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
@@ -98,30 +127,83 @@ INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE)
 VALUES (seq_project_employee_id.nextval, 151, 401, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 151, 451, 'CREATE');
-INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE)
 VALUES (seq_project_employee_id.nextval, 201, 501, 'READ');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 201, 551, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 201, 351, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 201, 601, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 201, 301, 'CREATE');
+
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 251, 651, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 251, 401, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 251, 701, 'READ');
+VALUES (seq_project_employee_id.nextval, 251, 451, 'READ');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 251, 751, 'READ');
+VALUES (seq_project_employee_id.nextval, 251, 1, 'READ');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 301, 801, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 301, 51, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 301, 1252, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 301, 502, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
-VALUES (seq_project_employee_id.nextval, 351, 1302, 'CREATE');
+VALUES (seq_project_employee_id.nextval, 351, 502, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 351, 151, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 351, 201, 'CREATE');
 INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
 VALUES (seq_project_employee_id.nextval, 351, 351, 'READ');
+
+INSERT INTO PROJECT_EMPLOYEE (ID, PROJECT_ID, EMP_ID, PROJECT_ROLE) 
+VALUES (seq_project_employee_id.nextval, 401, 502, 'CREATE');
+
+-- attend
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+  (seq_attend_id.nextval,TO_TIMESTAMP('2024-02-01 08:59:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-01 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-02 08:59:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-02 18:20:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-03 08:58:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-03 18:01:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-04 09:01:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-04 18:32:00', 'YYYY-MM-DD HH24:MI:SS'), 'LATE', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-05 08:59:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-05 18:01:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-06 08:57:12', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-06 18:06:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-07 08:48:32', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-07 18:08:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-08 08:22:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-08 18:15:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-09 08:32:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-09 18:17:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-10 09:22:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-10 18:32:00', 'YYYY-MM-DD HH24:MI:SS'), 'LATE', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-11 09:12:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-11 18:19:00', 'YYYY-MM-DD HH24:MI:SS'), 'LATE', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-12 08:09:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-12 18:20:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-13 08:59:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-13 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-14 08:57:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-14 18:03:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-15 09:04:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-15 18:05:00', 'YYYY-MM-DD HH24:MI:SS'), 'LATE', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-16 08:59:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-16 18:06:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-17 09:32:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-17 18:32:00', 'YYYY-MM-DD HH24:MI:SS'), 'LATE', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-18 08:59:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-18 18:42:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-19 08:52:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-19 18:52:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-20 08:54:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-20 18:22:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-21 08:58:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-21 18:13:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-22 08:22:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-22 18:14:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
+INSERT INTO attend (id, start_at, end_at, state, employee_id) VALUES
+(seq_attend_id.nextval,TO_TIMESTAMP('2024-02-23 08:32:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-02-23 18:02:00', 'YYYY-MM-DD HH24:MI:SS'), 'WORK', 502);
 
 
 -- schedule_category
@@ -174,23 +256,7 @@ insert into schedule_join_member (id, schedule_id, emp_id) values
 (seq_schedule_join_member_id.nextval, 151, 801);
 
 -- authority
-insert into authority values (seq_authority_id.nextval, 1, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 51, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 101, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 151, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 201, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 251, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 301, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 351, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 401, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 451, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 501, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 551, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 601, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 651, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 701, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 751, 'ROLE_EMP');
-insert into authority values (seq_authority_id.nextval, 801, 'ROLE_EMP');
+
 
 -- 재준
 -- chat_log
