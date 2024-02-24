@@ -8,6 +8,7 @@ import com.sh.workson.attachment.entity.Attachment;
 import com.sh.workson.attachment.service.AttachmentService;
 import com.sh.workson.attachment.service.S3FileService;
 import com.sh.workson.auth.vo.EmployeeDetails;
+import com.sh.workson.employee.dto.EmployeeSearchDto;
 import com.sh.workson.project.dto.*;
 import com.sh.workson.project.entity.*;
 import com.sh.workson.project.service.IssueService;
@@ -543,4 +544,17 @@ public class ProjectController {
         model.addAttribute("number", issueDetailDtos.getNumber());
         model.addAttribute("totalpages", issueDetailDtos.getTotalPages());
     }
+
+
+    @GetMapping("/searchProjectEmployee.do")
+    public ResponseEntity<?> searchEmployee(
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "id") Long id
+    ){
+        List<EmployeeSearchDto> employees = projectService.findByNameAndProjectId(name, id);
+        log.debug("employees = {}", employees);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+
 }
