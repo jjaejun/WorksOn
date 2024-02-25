@@ -249,7 +249,6 @@ public class ProjectController {
                 log.debug("attachments = {}", attachments);
             }
         }
-
         return new ResponseEntity<>(attachments, HttpStatus.OK);
     }
 
