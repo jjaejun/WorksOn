@@ -175,8 +175,7 @@ public class ProjectService {
                 employeeDtos.add(converToEmployeeDtos(projects.get(i).getProjectEmployees().get(j).getEmployee()));
             }
         }
-
-        return employeeDtos;
+       return employeeDtos;
     }
 
     private EmployeeSearchDto converToEmployeeDtos(Employee employee) {

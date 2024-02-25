@@ -56,16 +56,17 @@ const approvalEvent = () => {
     const approvals = document.querySelectorAll(".approver");
     console.log(approvals);
     approvals.forEach((approval, iterStat) => {
-        if (iterStat != 0) {
+        if (iterStat !== 0) {
             const sign = approvals[iterStat - 1].querySelector("input[name=sign]");
-            console.log(sign.value);
             const {empId} = approval.dataset;
-            if(sign.value !== "" && loginId === empId) {
-                const thisSign = approval.querySelector("input[name=sign]");
-                console.dir(thisSign);
+            const thisSign = approval.querySelector("input[name=sign]");
 
+            if((sign.value !== "") && (loginId === empId)) {
                 thisSign.readOnly = false;
                 console.log(thisSign.readOnly);
+            }
+            else {
+                thisSign.readOnly = true;
             }
         }
     });
