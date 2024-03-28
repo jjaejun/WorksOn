@@ -1,5 +1,5 @@
 // 1. 페이지 로드 시
-const ws = new SockJS(`http://${location.host}${contextPath}stomp`);
+const ws = new SockJS(`https://${location.host}${contextPath}stomp`);
 // console.log(`${location.host}`, `${contextPath}`, `${chatRoomId}`);
 const stompClient = Stomp.over(ws);
 
