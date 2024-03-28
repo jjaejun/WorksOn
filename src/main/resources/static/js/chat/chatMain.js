@@ -13,7 +13,7 @@ radios.forEach((input) => {
 });
 
 const chatRoomIdIpt = document.querySelector('#chatRoomIdIpt');
-const ws = new SockJS(`http://${location.host}${contextPath}stomp`);
+const ws = new SockJS(`https://${location.host}${contextPath}stomp`);
 const stompClient = Stomp.over(ws);
 
 stompClient.connect({}, () => {
