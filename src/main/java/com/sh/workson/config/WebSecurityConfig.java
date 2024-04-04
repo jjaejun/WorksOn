@@ -38,7 +38,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/approval/**").hasRole("EMP")
                     .requestMatchers("/schedule/**").hasRole("EMP")
                     .requestMatchers("/reservation/**").hasRole("EMP")
-                    .requestMatchers("/chat/**").hasRole("EMP")
+                    .requestMatchers("/chat/**", "/stomp/**").hasRole("EMP")
                     .requestMatchers("/attend/**").hasRole("EMP")
                     .requestMatchers("/employee/passwordUpdate.do", "/passwordUpdate.html").hasRole("TEMP")
                     .requestMatchers("/employee/**").hasRole("EMP")
